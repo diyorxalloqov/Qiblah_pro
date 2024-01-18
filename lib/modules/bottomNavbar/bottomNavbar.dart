@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -10,6 +11,6 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold();
   }
 }

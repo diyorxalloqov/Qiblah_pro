@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:qiblah_pro/core/constants/app_images.dart';
-import 'package:qiblah_pro/modules/bottomNavbar/bottomNavbar.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -13,10 +11,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3)).then((value) =>
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const BottomNavbar()),
-            (route) => false));
+        Navigator.pushNamedAndRemoveUntil(
+            context, 'onBoarding', (route) => false));
     super.initState();
   }
 

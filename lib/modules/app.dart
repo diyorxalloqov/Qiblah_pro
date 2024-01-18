@@ -1,8 +1,7 @@
-import 'dart:io';
+import 'package:qiblah_pro/core/router/app_routes.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:qiblah_pro/modules/splash_page.dart';
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -10,13 +9,24 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Platform.isIOS
-        ? CupertinoApp(
-            debugShowCheckedModeBanner: false,
-            home: SplashPage(),
+        ? ScreenUtilInit(
+            // designSize: kIsWeb ? Size(1920, 1080) : Size(375, 667),
+            designSize: kIsWeb ? const Size(1440, 1024) : const Size(412, 892),
+            builder: (context, child) => CupertinoApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+              initialRoute: '/',
+              onGenerateRoute: RouteList.router.onGenerate,
+            ),
           )
-        : MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: SplashPage(),
+        : ScreenUtilInit(
+            designSize: kIsWeb ? const Size(1440, 1024) : const Size(412, 892),
+            builder: (context, child) => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+              initialRoute: '/',
+              onGenerateRoute: RouteList.router.onGenerate,
+            ),
           );
   }
 }
