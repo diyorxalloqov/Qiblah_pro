@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
@@ -90,12 +91,11 @@ class _RegisterPageState extends State<LoginPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const HighText(text: 'Kirish'),
+                      HighText(text: 'kirish'.tr()),
                       const SpaceHeight(),
-                      const Text(
-                          "Natijalaringiz va sozlamalaringizni qayta tiklash uchun profilingizga kirishingiz mumkin"),
+                      Text("kirish_promt".tr()),
                       SpaceHeight(height: 25.h),
-                      const SmallText(text: 'Telefon raqamingiz'),
+                      SmallText(text: 'telefon_raqamingiz'.tr()),
                       const SpaceHeight(),
                       Form(
                         key: _key,
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<LoginPage> {
                               ],
                               decoration: InputDecoration(
                                 filled: true,
-                                hintText: 'Phone number',
+                                hintText: 'telefon_raqam'.tr(),
                                 hintStyle: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -130,7 +130,7 @@ class _RegisterPageState extends State<LoginPage> {
                               ),
                             ),
                             SpaceHeight(height: 15.h),
-                            const SmallText(text: 'Parol'),
+                            SmallText(text: 'parol'.tr()),
                             const SpaceHeight(),
                             TextFormField(
                               focusNode: _focusNode,
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<LoginPage> {
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xffB5B9BC),
                                   ),
-                                  hintText: "Password"),
+                                  hintText: "parol".tr()),
                               validator: (value) {
                                 String? passwordError = validatePassword(value);
                                 if (value == null) {
@@ -187,7 +187,7 @@ class _RegisterPageState extends State<LoginPage> {
                                   borderRadius: BorderRadius.circular(12.r))),
                           child: Center(
                             child: Text(
-                              "Kirish",
+                              "kirish".tr(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16.sp,
@@ -198,19 +198,19 @@ class _RegisterPageState extends State<LoginPage> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Profilingiz yo’qmi? - ',
-                              style: TextStyle(
+                            Text(
+                              'profilingiz_yoqmi'.tr(),
+                              style: const TextStyle(
                                 color: Color(0xFF1D2124),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, 'login'),
+                              onTap: () => Navigator.pushReplacementNamed(
+                                  context, 'register'),
                               child: Text(
-                                'Ro’yxatdan o’tish',
+                                'royxatdan_otish'.tr(),
                                 style: TextStyle(
                                   color: primaryColor,
                                   fontSize: 16,
@@ -221,8 +221,8 @@ class _RegisterPageState extends State<LoginPage> {
                           ]),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 7.h),
-                        child: const Center(
-                            child: SmallText(text: 'Orqali kirish:')),
+                        child: Center(
+                            child: SmallText(text: 'orqali_kirish'.tr())),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

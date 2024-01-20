@@ -15,9 +15,12 @@ class RouteList {
       case 'login':
         return _navigate(const LoginPage());
       case 'register':
-      return _navigate(const RegisterPage());  
+        return _navigate(const RegisterPage());
       case "bottomNavbar":
         return _navigate(const BottomNavbar());
+      case "editProfile":
+        return _navigate(
+            EditProfilePage(profileBloc: settings.arguments as ProfileBloc));
     }
     return null;
   }

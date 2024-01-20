@@ -12,7 +12,7 @@ class BottomSheetWidget extends StatefulWidget {
 class _BottomSheetWidgetState extends State<BottomSheetWidget>
     with WidgetsBindingObserver {
   int selectedChipIndex = -1;
-  final List<String> _titles = const ['Ayol', "Erkak"];
+  final List<String> _titles = const ['ayol', "erkak"];
   final List<String> _icons = const [AppIcon.woman, AppIcon.man];
   bool _isKeyboardAppear = false;
   bool _isTextFieldFocused = false;
@@ -63,9 +63,9 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const HighText(text: 'Keling tanishib olamiz:'),
-            SpaceHeight(height: 30.h),
-            const SmallText(text: 'Ismingiz nima?'),
+            HighText(text: 'keling_tanishib_olamiz:'.tr()),
+            SpaceHeight(height: 20.h),
+            SmallText(text: 'ismingiz_nima'.tr()),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10.h),
               child: TextFormField(
@@ -77,13 +77,20 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 focusNode: _focusNode,
                 decoration: InputDecoration(
                   filled: true,
-                  hintText: 'Ismingizni yozing',
+                  hintText: 'ismingizni_yozing'.tr(),
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                     color: Color(0xffB5B9BC),
                   ),
                   fillColor: const Color(0xffF4F8FA),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      width: 1,
+                      color: Colors.white70,
+                    ),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
                   border: OutlineInputBorder(
                     borderSide: const BorderSide(
                       width: 1,
@@ -94,9 +101,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 ),
               ),
             ),
-            const SmallText(
-              text: 'Namoz rasmlari mos ko’rsatilishi uchun jinsni tanlang:',
-            ),
+            SmallText(text: 'jins_promt'.tr()),
             const SpaceHeight(),
             Wrap(
               alignment: WrapAlignment.start,
@@ -105,7 +110,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
               children: List.generate(2, (index) {
                 return ChoiceChip(
                   label: SizedBox(
-                    height: 45.h,
+                    height: 40.h,
                     width: 150.w,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -113,12 +118,11 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                       children: [
                         SvgPicture.asset(_icons[index]),
                         Text(
-                          _titles[index],
+                          _titles[index].tr(),
                           style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -144,16 +148,15 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
               }),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 24.h),
+              padding: EdgeInsets.symmetric(vertical: 20.h),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                     widget.pageController.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                    );
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.ease);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,
@@ -166,13 +169,12 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const SizedBox.shrink(),
-                      const Text(
-                        'Davom etish',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Text(
+                        'btn_davom_etish'.tr(),
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
                       ),
                       SvgPicture.asset(AppIcon.arrowRight),
                     ],

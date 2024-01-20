@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
@@ -90,12 +91,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const HighText(text: 'Ro’yxatdan o’tish'),
+                      HighText(text: 'royxatdan_otish'.tr()),
                       const SpaceHeight(),
-                      const Text(
-                          "Natijalaringiz va sozlamalaringizni saqlab qolish uchun ilovalada ro’yxatdan o’tishingiz mumkin!"),
+                      Text("royxatdan_otish_promt".tr()),
                       SpaceHeight(height: 25.h),
-                      const SmallText(text: 'Telefon raqamingiz'),
+                      SmallText(text: 'telefon_raqam'.tr()),
                       const SpaceHeight(),
                       Form(
                         key: _key,
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ],
                               decoration: InputDecoration(
                                 filled: true,
-                                hintText: 'Phone number',
+                                hintText: 'telefon_raqam'.tr(),
                                 hintStyle: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             SpaceHeight(height: 15.h),
-                            const SmallText(text: 'Parol'),
+                            SmallText(text: 'parol'.tr()),
                             const SpaceHeight(),
                             TextFormField(
                               focusNode: _focusNode,
@@ -161,17 +161,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                   hintText: "Password"),
                               validator: (value) {
                                 String? passwordError = validatePassword(value);
-                                if (value == null) {
-                                  return "Iltimos bo'sh qoldirmang";
-                                } else if (value.length < 4) {
-                                  return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                                } else if (passwordError != null) {
-                                  return passwordError;
-                                } else if (value.length > 16) {
-                                  return "Parol yaroqsiz";
-                                } else {
-                                  return null;
-                                }
+                                // if (value == null) {
+                                //   return "Iltimos bo'sh qoldirmang";
+                                // } else if (value.length < 4) {
+                                //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                                // } else if (passwordError != null) {
+                                //   return passwordError;
+                                // } else if (value.length > 16) {
+                                //   return "Parol yaroqsiz";
+                                // } else {
+                                //   return null;
+                                // }
                               },
                             )
                           ],
@@ -187,7 +187,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   borderRadius: BorderRadius.circular(12.r))),
                           child: Center(
                             child: Text(
-                              "Ro’yxatdan o’tish",
+                              "royxatdan_otish".tr(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16.sp,
@@ -198,9 +198,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Profilingiz bormi? - ',
-                              style: TextStyle(
+                            Text(
+                              'profilingiz_bormi'.tr(),
+                              style: const TextStyle(
                                 color: Color(0xFF1D2124),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -210,7 +210,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               onTap: () =>
                                   Navigator.pushNamed(context, 'login'),
                               child: Text(
-                                'Kirish',
+                                'kirish'.tr(),
                                 style: TextStyle(
                                   color: primaryColor,
                                   fontSize: 16,
@@ -221,8 +221,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           ]),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: 7.h),
-                        child: const Center(
-                            child: SmallText(text: 'Orqali kirish:')),
+                        child: Center(
+                            child: SmallText(text: 'orqali_kirish'.tr())),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
