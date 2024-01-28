@@ -39,7 +39,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     child: Container(
                       padding: EdgeInsets.all(15.0.dg),
                       decoration: BoxDecoration(
-                        color: greyColor.withOpacity(0.2),
+                        color: smallTextColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: const Column(
@@ -58,7 +58,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                     child: Container(
                       padding: EdgeInsets.all(15.0.dg),
                       decoration: BoxDecoration(
-                        color: greyColor.withOpacity(0.2),
+                        color: smallTextColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10.r),
                       ),
                       child: const Column(

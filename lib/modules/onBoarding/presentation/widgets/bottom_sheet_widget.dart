@@ -1,3 +1,4 @@
+import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class BottomSheetWidget extends StatefulWidget {
@@ -78,12 +79,12 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 decoration: InputDecoration(
                   filled: true,
                   hintText: 'ismingizni_yozing'.tr(),
-                  hintStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffB5B9BC),
+                  hintStyle:  TextStyle(
+                    fontSize: AppSizes.size_16,
+                    fontWeight: AppFontWeight.w_400,
+                    color: textFormFieldHintColor,
                   ),
-                  fillColor: const Color(0xffF4F8FA),
+                  fillColor: textFormFieldFillColor,
                   enabledBorder: OutlineInputBorder(
                     borderSide: const BorderSide(
                       width: 1,
@@ -103,50 +104,55 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
             ),
             SmallText(text: 'jins_promt'.tr()),
             const SpaceHeight(),
-            Wrap(
-              alignment: WrapAlignment.start,
-              spacing: 8.0,
-              runSpacing: 4.0,
-              children: List.generate(2, (index) {
-                return ChoiceChip(
-                  label: SizedBox(
-                    height: 40.h,
-                    width: 150.w,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(_icons[index]),
-                        Text(
-                          _titles[index].tr(),
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500),
+            Row(
+              children: [
+                Wrap(
+                  alignment: WrapAlignment.start,
+                  spacing: 8.0,
+                  runSpacing: 4.0,
+                  children: List.generate(2, (index) {
+                    return ChoiceChip(
+                      label: SizedBox(
+                        height: 39.h,
+                        width: 140.w,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(_icons[index]),
+                            Text(
+                              _titles[index].tr(),
+                              style: TextStyle(
+                                  fontSize: AppSizes.size_16,
+                                  color: highTextColor,
+                                  fontWeight: AppFontWeight.w_500),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  side: selectedChipIndex == index
-                      ? BorderSide(color: primaryColor, width: 1)
-                      : BorderSide.none,
-                  showCheckmark: false,
-                  backgroundColor: const Color(0xffF4F8FA),
-                  selectedColor: primaryColor.withOpacity(0.2),
-                  disabledColor: const Color(0xffF4F8FA),
-                  onSelected: (value) {
-                    setState(() {
-                      if (value) {
-                        selectedChipIndex = index;
-                      } else {
-                        selectedChipIndex = -1;
-                      }
-                    });
-                  },
-                  selected: selectedChipIndex == index,
-                );
-              }),
+                      ),
+                      side: selectedChipIndex == index
+                          ? BorderSide(color: primaryColor, width: 1)
+                          : BorderSide.none,
+                      showCheckmark: false,
+                      backgroundColor: scaffoldColor,
+                      selectedColor: primaryColor.withOpacity(0.2),
+                      disabledColor: textFormFieldHintColor,
+                      onSelected: (value) {
+                        setState(() {
+                          if (value) {
+                            selectedChipIndex = index;
+                          } else {
+                            selectedChipIndex = -1;
+                          }
+                        });
+                      },
+                      selected: selectedChipIndex == index,
+                    );
+                  }),
+                ),
+              ],
             ),
+            const Spacer(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20.h),
               child: GestureDetector(
@@ -171,10 +177,10 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                       const SizedBox.shrink(),
                       Text(
                         'btn_davom_etish'.tr(),
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                        style: AppfontFamily.inter.copyWith(
+                            fontSize: AppSizes.size_16,
+                            color: buttonNameColor,
+                            fontWeight: AppFontWeight.w_600),
                       ),
                       SvgPicture.asset(AppIcon.arrowRight),
                     ],

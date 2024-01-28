@@ -20,13 +20,13 @@ class _BottomNavbarState extends State<BottomNavbar> {
         type: BottomNavigationBarType.fixed,
         unselectedLabelStyle: const TextStyle(
           color: Colors.grey,
-          fontWeight: FontWeight.w400,
+          fontWeight: AppFontWeight.w_400,
         ),
         backgroundColor: Colors.white,
         fixedColor: Colors.black,
-        selectedLabelStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w600,
+        selectedLabelStyle: TextStyle(
+          color: highTextColor,
+          fontWeight: AppFontWeight.w_600,
         ),
         onTap: (v) {
           _currentIndex = v;
@@ -34,7 +34,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcon.home, color: greyColor),
+            icon: SvgPicture.asset(AppIcon.home, color: smallTextColor),
             activeIcon: Column(
               children: [
                 Container(

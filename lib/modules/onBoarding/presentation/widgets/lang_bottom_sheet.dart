@@ -1,5 +1,4 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/onBoarding/bloc/on_boarding_bloc.dart';
 
 showLangBottomSheet(BuildContext c) {
   showModalBottomSheet(
@@ -76,10 +75,10 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
                   child: Center(
                     child: Text(
                       'saqlash'.tr(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                      style: AppfontFamily.inter.copyWith(
+                        fontSize: AppSizes.size_16,
+                        color: buttonNameColor,
+                        fontWeight: AppFontWeight.w_600,
                       ),
                     ),
                   ),
@@ -111,10 +110,10 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
         },
         child: Text(
           languageName,
-          style: TextStyle(
+          style: AppfontFamily.inter.copyWith(
             color: selectedLang == languageCode ? primaryColor : Colors.black,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontSize: AppSizes.size_16,
+            fontWeight: AppFontWeight.w_500,
           ),
         ),
       ),

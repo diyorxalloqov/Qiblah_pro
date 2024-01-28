@@ -1,3 +1,4 @@
+import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class HighText extends StatelessWidget {
@@ -8,8 +9,12 @@ class HighText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-          fontSize: 28, fontWeight: FontWeight.w700, color: Colors.black),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      style: AppfontFamily.comforta.copyWith(
+          fontSize: AppSizes.size_28,
+          fontWeight: AppFontWeight.w_700,
+          color:highTextColor),
     );
   }
 }

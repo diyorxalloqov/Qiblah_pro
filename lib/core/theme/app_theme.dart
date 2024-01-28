@@ -1,18 +1,23 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class AppTheme {
-  ThemeData get lightMode => _ligthMode;
+ThemeData get lightMode => _ligthMode;
   ThemeData get darkMode => _darkMode;
   CupertinoThemeData get cupertinoLightMode => _cupertinoLightMode;
   CupertinoThemeData get cupertinoDarkMode => _cupertinoDarkMode;
 
-  final CupertinoThemeData _cupertinoLightMode = CupertinoThemeData();
-  final CupertinoThemeData _cupertinoDarkMode = CupertinoThemeData();
+  final CupertinoThemeData _cupertinoLightMode = CupertinoThemeData(
+      brightness: Brightness.light, scaffoldBackgroundColor: scaffoldColor);
+
+  final CupertinoThemeData _cupertinoDarkMode = CupertinoThemeData(
+      brightness: Brightness.dark, scaffoldBackgroundColor: scaffoldColor);
 
   final ThemeData _ligthMode = ThemeData(
     // elevatedButtonTheme: ElevatedButtonThemeData(
     //     style: ElevatedButton.styleFrom(backgroundColor: primaryColor)),
     brightness: Brightness.light,
+    scaffoldBackgroundColor: scaffoldColor,
+
     // appBarTheme: AppBarTheme(
     //     actionsIconTheme: const IconThemeData(color: Colors.black),
     //     backgroundColor: Colors.white.withOpacity(0.1),
@@ -27,6 +32,7 @@ class AppTheme {
 
   final ThemeData _darkMode = ThemeData(
     brightness: Brightness.dark,
+    scaffoldBackgroundColor: scaffoldColor
     // elevatedButtonTheme: ElevatedButtonThemeData(
     //     style: ElevatedButton.styleFrom(
     //         backgroundColor: Colors.blueGrey.shade800)),

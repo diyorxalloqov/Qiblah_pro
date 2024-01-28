@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/global/widgets/custom_app_bar.dart';
 
 class EditProfilePage extends StatefulWidget {
   final ProfileBloc profileBloc;
@@ -24,19 +25,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: scaffoldColor,
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: SvgPicture.asset(AppIcon.arrowLeft)),
-          centerTitle: true,
-          title: Text(
-            "profilni_tahrirlash".tr(),
-            style: const TextStyle(fontWeight: FontWeight.w700),
-          ),
-          actions: [
-            IconButton(onPressed: () {}, icon: SvgPicture.asset(AppIcon.logout))
-          ],
+        appBar: customAppbar(
+          context,
+          "profilni_tahrirlash".tr(),
+          icon1: AppIcon.logout,
+          onTap1: () {},
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -101,10 +94,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         decoration: InputDecoration(
                           filled: true,
                           hintText: 'ismingizni_yozing'.tr(),
-                          hintStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xffB5B9BC),
+                          hintStyle: TextStyle(
+                            fontSize: AppSizes.size_16,
+                            fontWeight: AppFontWeight.w_400,
+                            color: textFormFieldHintColor,
                           ),
                           fillColor: Colors.white,
                           enabledBorder: OutlineInputBorder(
@@ -142,10 +135,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           decoration: InputDecoration(
                             filled: true,
                             hintText: 'telefon_raqam'.tr(),
-                            hintStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffB5B9BC),
+                            hintStyle: TextStyle(
+                              fontSize: AppSizes.size_16,
+                              fontWeight: AppFontWeight.w_400,
+                              color: textFormFieldHintColor,
                             ),
                             fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
@@ -154,8 +147,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  width: 0.5, color: Colors.black),
+                              borderSide:
+                                  BorderSide(width: 0.5, color: highTextColor),
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                           ),
@@ -177,10 +170,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     SvgPicture.asset(_icons[index]),
                                     Text(
                                       _titles[index].tr(),
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
+                                      style: TextStyle(
+                                          fontSize: AppSizes.size_16,
+                                          color: highTextColor,
+                                          fontWeight: AppFontWeight.w_500),
                                     ),
                                   ],
                                 ),
@@ -191,7 +184,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               showCheckmark: false,
                               backgroundColor: Colors.white,
                               selectedColor: primaryColor.withOpacity(0.2),
-                              disabledColor: const Color(0xffF4F8FA),
+                              disabledColor: textFormFieldHintColor,
                               onSelected: (value) {
                                 print(value);
                                 setState(() {
@@ -220,7 +213,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           child: Container(
                             height: context.height * 0.07,
                             decoration: BoxDecoration(
-                                color: greyColor.withOpacity(0.2),
+                                color: smallTextColor.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(12.r)),
                             child: Center(
                               child: Row(
@@ -247,8 +240,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     'akkauntni_o’chirish'.tr(),
                                     style: const TextStyle(
                                       color: Color(0xFFFF0000),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: AppSizes.size_16,
+                                      fontWeight: AppFontWeight.w_600,
                                     ),
                                   )
                                 ],

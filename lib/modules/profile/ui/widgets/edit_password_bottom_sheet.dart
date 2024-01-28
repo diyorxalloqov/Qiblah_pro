@@ -132,19 +132,19 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: oldpasswordVisibile
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: const Color(0xffF4F8FA),
+                    fillColor: textFormFieldFillColor,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide(
-                            color: greyColor.withOpacity(0.3), width: 1)),
+                            color: smallTextColor.withOpacity(0.3), width: 1)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
-                    hintStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffB5B9BC),
+                    hintStyle: TextStyle(
+                      fontSize: AppSizes.size_16,
+                      fontWeight: AppFontWeight.w_400,
+                      color: textFormFieldHintColor,
                     ),
                     hintText: "eski_parolni_kiriting".tr()),
                 validator: (value) {
@@ -183,19 +183,19 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: newpassconfirmVisible
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: const Color(0xffF4F8FA),
+                    fillColor: textFormFieldFillColor,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide(
-                            color: greyColor.withOpacity(0.3), width: 1)),
+                            color: smallTextColor.withOpacity(0.3), width: 1)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
-                    hintStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffB5B9BC),
+                    hintStyle: TextStyle(
+                      fontSize: AppSizes.size_16,
+                      fontWeight: AppFontWeight.w_400,
+                      color: textFormFieldHintColor,
                     ),
                     hintText: "yangi_parolni_kiriting".tr()),
                 validator: (value) {
@@ -232,19 +232,19 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: confirmpassconfirmVisible
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: const Color(0xffF4F8FA),
+                    fillColor: textFormFieldFillColor,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide(
-                            color: greyColor.withOpacity(0.3), width: 1)),
+                            color: smallTextColor.withOpacity(0.3), width: 1)),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
-                    hintStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xffB5B9BC),
+                    hintStyle: TextStyle(
+                      fontSize: AppSizes.size_16,
+                      fontWeight: AppFontWeight.w_400,
+                      color: textFormFieldHintColor,
                     ),
                     hintText: "yangi_parolni_takrorlang".tr()),
                 validator: (value) {
@@ -278,9 +278,9 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                   child: Text(
                     'saqlash'.tr(),
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: AppSizes.size_16,
                       color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: AppFontWeight.w_600,
                     ),
                   ),
                 ),

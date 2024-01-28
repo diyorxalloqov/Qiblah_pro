@@ -1,4 +1,6 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_details_pages/juzlar_details_page.dart';
+// import 'package:qiblah_pro/modules/onBoarding/geolocation/auto_detect_page.dart';
 
 class RouteList {
   static final RouteList _generate = RouteList._init();
@@ -21,6 +23,26 @@ class RouteList {
       case "editProfile":
         return _navigate(
             EditProfilePage(profileBloc: settings.arguments as ProfileBloc));
+      case 'detailPage':
+        return _navigate(const AllFunctionPage());
+      case 'newsDetail':
+        return _navigate(const NewsDetailPage());
+      case 'learnNamozPage':
+        return _navigate(const LearnNamoz());
+      case 'namozSectionScreen':
+        return _navigate(const NamozSectionScreen());
+      case 'TimePage':
+        return _navigate(const TimePage());
+      case 'taqvimPage':
+        return _navigate(const TaqvimPage());
+      case 'quronPage':
+        return _navigate(const QuronPage());
+      case 'suralarDetails':
+        final args = settings.arguments as SuralarDetailsPageArguments;
+        return _navigate(SuralarDetailsPage(data: args));
+      case "juzlarDetails":
+        final args = settings.arguments as JuzlarDetailsArgument;
+        return _navigate(JuzlarDetailsPage(data: args));
     }
     return null;
   }

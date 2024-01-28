@@ -1,8 +1,4 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:qiblah_pro/core/router/app_routes.dart';
-import 'package:qiblah_pro/core/theme/app_theme.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/onBoarding/bloc/on_boarding_bloc.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -14,8 +10,11 @@ class App extends StatelessWidget {
     return Platform.isIOS
         ? ScreenUtilInit(
             designSize: kIsWeb ? const Size(1440, 1024) : const Size(412, 892),
-            builder: (context, child) => BlocProvider(
-                  create: (context) => OnBoardingBloc(),
+            builder: (context, child) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(create: (context) => OnBoardingBloc()),
+                    BlocProvider(create: (context) => UserBloc()),
+                  ],
                   child: CupertinoApp(
                     debugShowCheckedModeBanner: false,
                     navigatorKey: navigatorKey,
@@ -41,8 +40,11 @@ class App extends StatelessWidget {
               return ScreenUtilInit(
                 designSize:
                     kIsWeb ? const Size(1440, 1024) : const Size(412, 892),
-                builder: (context, child) => BlocProvider(
-                  create: (context) => OnBoardingBloc(),
+                builder: (context, child) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(create: (context) => OnBoardingBloc()),
+                    BlocProvider(create: (context) => UserBloc()),
+                  ],
                   child: MaterialApp(
                     debugShowCheckedModeBanner: false,
                     localizationsDelegates: context.localizationDelegates,

@@ -1,5 +1,5 @@
-import 'package:flutter/widgets.dart';
-import 'package:qiblah_pro/core/constants/app_colors.dart';
+import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class SmallText extends StatelessWidget {
   final String text;
@@ -9,10 +9,13 @@ class SmallText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 3,
       style: TextStyle(
-        fontSize: 14,
-        color: greyColor,
-        fontWeight: FontWeight.w400,
+        fontSize: AppSizes.size_14,
+        color: smallTextColor,
+        fontFamily: AppfontFamily.inter.fontFamily,
+        fontWeight: AppFontWeight.w_500,
       ),
     );
   }

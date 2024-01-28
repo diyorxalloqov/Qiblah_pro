@@ -69,7 +69,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
           child: MediumText(text: 'manzilni_qidirish'.tr()),
         ),
         Container(
-          height: context.height * .6,
+          height: context.height * .7,
           color: scaffoldColor,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
@@ -83,7 +83,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                       filled: true,
                       prefixIcon: Icon(
                         Icons.search,
-                        color: greyColor,
+                        color: smallTextColor,
                       ),
                       hintText: 'manzil'.tr(),
                       border: OutlineInputBorder(
@@ -115,14 +115,14 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                       SvgPicture.asset(
                                         AppIcon.location,
                                         width: 24.w,
-                                        color: greyColor,
+                                        color: smallTextColor,
                                       ),
                                       const SpaceWidth(),
                                       Text(
                                         itemIndex,
                                         style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
+                                          fontSize: AppSizes.size_16,
+                                          fontWeight: AppFontWeight.w_400,
                                         ),
                                       )
                                     ],

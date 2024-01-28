@@ -1,6 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class LoginPage extends StatefulWidget {
@@ -57,25 +55,41 @@ class _RegisterPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightGreen.shade50,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 126.w, vertical: 32.h),
+                padding: EdgeInsets.symmetric(vertical: 32.h),
                 decoration: BoxDecoration(
-                    gradient: RadialGradient(colors: [
+                    gradient: LinearGradient(colors: [
                   Colors.green.shade100,
                   Colors.lightGreen.shade50,
                   Colors.green.shade50
-                ])),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 90.r,
-                    backgroundColor: Colors.white,
-                    child: const Center(child: Text("Logo")),
-                  ),
+                ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      children: [
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                      ],
+                    ),
+                    CircleAvatar(
+                      radius: 88.r,
+                      backgroundColor: Colors.white,
+                      child: const Center(child: Text("Logo")),
+                    ),
+                    GestureDetector(
+                        onTap: () => Navigator.pushNamedAndRemoveUntil(
+                            context, 'bottomNavbar', (route) => false),
+                        child: SvgPicture.asset(AppIcon.cancel))
+                  ],
                 ),
               ),
               Container(
@@ -114,17 +128,15 @@ class _RegisterPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 filled: true,
                                 hintText: 'telefon_raqam'.tr(),
-                                hintStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0xffB5B9BC),
+                                hintStyle: TextStyle(
+                                  fontSize: AppSizes.size_16,
+                                  fontWeight: AppFontWeight.w_400,
+                                  color: textFormFieldHintColor,
                                 ),
-                                fillColor: const Color(0xffF4F8FA),
+                                fillColor: textFormFieldFillColor,
                                 border: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      style: BorderStyle.solid,
-                                      width: 0.5,
-                                      color: Colors.red),
+                                      style: BorderStyle.solid, width: 0.5),
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
                               ),
@@ -148,15 +160,15 @@ class _RegisterPageState extends State<LoginPage> {
                                           icon: passwordVisibile
                                               ? const Icon(Icons.visibility_off)
                                               : const Icon(Icons.visibility))),
-                                  fillColor: const Color(0xffF4F8FA),
+                                  fillColor: textFormFieldFillColor,
                                   filled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
-                                  hintStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0xffB5B9BC),
+                                  hintStyle: TextStyle(
+                                    fontSize: AppSizes.size_16,
+                                    fontWeight: AppFontWeight.w_400,
+                                    color: textFormFieldHintColor,
                                   ),
                                   hintText: "parol".tr()),
                               validator: (value) {
@@ -179,7 +191,10 @@ class _RegisterPageState extends State<LoginPage> {
                       ),
                       SpaceHeight(height: 15.h),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, 'bottomNavbar', (route) => false);
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: primaryColor,
                               fixedSize: Size(double.infinity, 50.h),
@@ -190,8 +205,8 @@ class _RegisterPageState extends State<LoginPage> {
                               "kirish".tr(),
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: AppSizes.size_16,
+                                  fontWeight: AppFontWeight.w_600),
                             ),
                           )),
                       const SpaceHeight(),
@@ -202,8 +217,8 @@ class _RegisterPageState extends State<LoginPage> {
                               'profilingiz_yoqmi'.tr(),
                               style: const TextStyle(
                                 color: Color(0xFF1D2124),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontSize: AppSizes.size_16,
+                                fontWeight: AppFontWeight.w_600,
                               ),
                             ),
                             GestureDetector(
@@ -213,8 +228,8 @@ class _RegisterPageState extends State<LoginPage> {
                                 'royxatdan_otish'.tr(),
                                 style: TextStyle(
                                   color: primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: AppSizes.size_16,
+                                  fontWeight: AppFontWeight.w_600,
                                 ),
                               ),
                             ),
