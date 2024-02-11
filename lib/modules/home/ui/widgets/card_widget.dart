@@ -51,7 +51,7 @@ class CardWidget extends StatelessWidget {
                     radius: 30.r,
                     child: CircleAvatar(
                       radius: 30.r,
-                      backgroundColor: scaffoldColor,
+                      backgroundColor: circleAvatarColor,
                       child: Center(
                         child: SvgPicture.asset(AppIcon.bookmark),
                       ),
@@ -63,7 +63,7 @@ class CardWidget extends StatelessWidget {
                     radius: 30.r,
                     child: CircleAvatar(
                       radius: 30.r,
-                      backgroundColor: scaffoldColor,
+                      backgroundColor: circleAvatarColor,
                       child: Center(
                         child: SvgPicture.asset(AppIcon.share),
                       ),

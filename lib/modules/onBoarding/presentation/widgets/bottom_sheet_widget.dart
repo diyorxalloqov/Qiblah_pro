@@ -1,4 +1,3 @@
-import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class BottomSheetWidget extends StatefulWidget {
@@ -18,6 +17,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
   bool _isKeyboardAppear = false;
   bool _isTextFieldFocused = false;
   late FocusNode _focusNode;
+  final TextEditingController _nameController = TextEditingController();
 
   @override
   void initState() {
@@ -54,12 +54,15 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
     }
   }
 
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  bool isMan = true;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
         width: double.infinity,
-        height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 470.h,
+        height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 520.h,
         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,38 +70,48 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
             HighText(text: 'keling_tanishib_olamiz:'.tr()),
             SpaceHeight(height: 20.h),
             SmallText(text: 'ismingiz_nima'.tr()),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10.h),
-              child: TextFormField(
-                onTap: () {
-                  setState(() {
-                    _isKeyboardAppear = true;
-                  });
-                },
-                focusNode: _focusNode,
-                decoration: InputDecoration(
-                  filled: true,
-                  hintText: 'ismingizni_yozing'.tr(),
-                  hintStyle:  TextStyle(
-                    fontSize: AppSizes.size_16,
-                    fontWeight: AppFontWeight.w_400,
-                    color: textFormFieldHintColor,
-                  ),
-                  fillColor: textFormFieldFillColor,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      width: 1,
-                      color: Colors.white70,
+            Form(
+              key: _key,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10.h),
+                child: TextFormField(
+                  onTap: () {
+                    setState(() {
+                      _isKeyboardAppear = true;
+                    });
+                  },
+                  focusNode: _focusNode,
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    hintText: 'ismingizni_yozing'.tr(),
+                    hintStyle: TextStyle(
+                      fontSize: AppSizes.size_16,
+                      fontWeight: AppFontWeight.w_400,
+                      color: textFormFieldHintColor,
                     ),
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      width: 1,
-                      color: Colors.white70,
+                    fillColor: textFormFieldFillColor,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Colors.white70,
+                      ),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-                    borderRadius: BorderRadius.circular(12.r),
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        width: 1,
+                        color: Colors.white70,
+                      ),
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Iltimos ismingizni kiriting';
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -134,11 +147,13 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                           ? BorderSide(color: primaryColor, width: 1)
                           : BorderSide.none,
                       showCheckmark: false,
-                      backgroundColor: scaffoldColor,
+                      backgroundColor: bottomSheetBackgroundColor,
                       selectedColor: primaryColor.withOpacity(0.2),
                       disabledColor: textFormFieldHintColor,
                       onSelected: (value) {
                         setState(() {
+                          index == 0 ? isMan = false : isMan = true;
+                          print(isMan);
                           if (value) {
                             selectedChipIndex = index;
                           } else {
@@ -152,17 +167,22 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 ),
               ],
             ),
-            const Spacer(),
+            const SpaceHeight(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20.h),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    widget.pageController.nextPage(
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.ease);
+                    if (_key.currentState!.validate()) {
+                      print(isMan);
+                      context.read<OnBoardingBloc>().add(UserDataEvent(
+                          name: _nameController.text, isMan: isMan));
+                      Navigator.pop(context);
+                      widget.pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.ease);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

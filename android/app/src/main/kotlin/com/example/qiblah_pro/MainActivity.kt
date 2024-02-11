@@ -1,4 +1,4 @@
-package com.example.qiblah_pro
+package com.behad.qibla.namoz
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -12,6 +12,7 @@ class _HomePageState extends State<HomePage> {
   String date = '';
 
   final List<String> _names = const [
+    "Qur'on",
     "Qibla",
     "Qazo counter",
     "Zikr",
@@ -19,10 +20,19 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<String> _icons = const [
+    AppIcon.quron,
     AppIcon.qibla,
     AppIcon.qazo_counter,
     AppIcon.zikr,
     AppIcon.Godnames
+  ];
+
+  final List<String> _itemPages = const [
+    'quron',
+    'qibla',
+    'qazo',
+    'zikr',
+    'names'
   ];
 
   @override
@@ -141,8 +151,7 @@ class _HomePageState extends State<HomePage> {
             decoration: ShapeDecoration(
               color: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
+                  borderRadius: BorderRadius.circular(12)),
             ),
             child: Column(
               children: [
@@ -157,9 +166,7 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: AppFontWeight.w_700),
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'detailPage');
-                      },
+                      onTap: () => Navigator.pushNamed(context, 'detailPage'),
                       child: Row(
                         children: [
                           Text(
@@ -182,14 +189,13 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 4,
+                        itemCount: 5,
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.only(left: 18.w),
                             child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, 'quronPage');
-                              },
+                              onTap: () => Navigator.pushNamed(
+                                  context, _itemPages[index]),
                               borderRadius: BorderRadius.circular(50.r),
                               child: Column(
                                 children: [

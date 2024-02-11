@@ -1,7 +1,4 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/onBoarding/presentation/widgets/lang_bottom_sheet.dart';
-import 'package:qiblah_pro/modules/onBoarding/presentation/widgets/location_bottom_sheet.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/settings_item_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -14,13 +11,16 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool isPremium = false;
   late ProfileBloc profileBloc;
+  // late GeolocationCubit geolocationCubit;
   int selectedChipIndex = 0;
   final List<String> _titles = const ['ayol', "erkak"];
   final List<String> _icons = const [AppIcon.woman, AppIcon.man];
+  String selectedLang = '';
 
   @override
   void initState() {
     profileBloc = ProfileBloc();
+    // geolocationCubit = GeolocationCubit();
     super.initState();
   }
 
@@ -275,7 +275,135 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         SettingsItemWidget(
-                            onTap: () => showLangBottomSheet(context),
+                            onTap: () => showModalBottomSheet(
+                                context: context,
+                                isDismissible: false,
+                                isScrollControlled: true,
+                                builder: (context) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: double.infinity,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.w, vertical: 25.h),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(24.r),
+                                              topRight: Radius.circular(24.r),
+                                            ),
+                                          ),
+                                          child: MediumText(
+                                              text: 'tilni_ozgartirish'.tr()),
+                                        ),
+                                        Container(
+                                          color: bottomSheetBackgroundColor,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: double.infinity,
+                                                margin:
+                                                    const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 12.w,
+                                                    vertical: 13.h),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.r),
+                                                  color: selectedLang == 'uz'
+                                                      ? primaryColor
+                                                          .withOpacity(0.2)
+                                                      : Colors.white,
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      selectedLang = 'uz';
+                                                      context.setLocale(
+                                                          Locale('uz'));
+
+                                                      print(selectedLang);
+                                                      context
+                                                          .read<
+                                                              OnBoardingBloc>()
+                                                          .add(ChangeLanguageEvent(
+                                                              selectedLang));
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    "O'zbekcha",
+                                                    style: AppfontFamily.inter
+                                                        .copyWith(
+                                                      color:
+                                                          selectedLang == 'uz'
+                                                              ? primaryColor
+                                                              : Colors.black,
+                                                      fontSize:
+                                                          AppSizes.size_16,
+                                                      fontWeight:
+                                                          AppFontWeight.w_500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                width: double.infinity,
+                                                margin:
+                                                    const EdgeInsets.all(12.0),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 12.w,
+                                                    vertical: 13.h),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.r),
+                                                  color: selectedLang == 'ru'
+                                                      ? primaryColor
+                                                          .withOpacity(0.2)
+                                                      : Colors.white,
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      selectedLang = 'ru';
+                                                      context.setLocale(
+                                                          Locale('ru'));
+
+                                                      print(selectedLang);
+                                                      context
+                                                          .read<
+                                                              OnBoardingBloc>()
+                                                          .add(ChangeLanguageEvent(
+                                                              selectedLang));
+
+                                                      Navigator.pop(context);
+                                                    });
+                                                  },
+                                                  child: Text(
+                                                    "Kirilcha",
+                                                    style: AppfontFamily.inter
+                                                        .copyWith(
+                                                      color:
+                                                          selectedLang == 'ru'
+                                                              ? primaryColor
+                                                              : Colors.black,
+                                                      fontSize:
+                                                          AppSizes.size_16,
+                                                      fontWeight:
+                                                          AppFontWeight.w_500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    )),
                             title: 'ilova_tili'.tr(),
                             subtitle: "O’zbekcha",
                             icon: AppIcon.globe),
@@ -310,7 +438,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                             )),
                         SettingsItemWidget(
-                            onTap: () => showLocationBottomSheet(context),
+                            onTap: () => showLocationBottomSheet(
+                                  context,
+                                ),
                             title: 'manzil'.tr(),
                             subtitle: "O’zbekcha",
                             icon: AppIcon.location)
@@ -357,7 +487,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     SvgPicture.asset(_icons[index]),
                                     Text(
                                       _titles[index].tr(),
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                           fontSize: AppSizes.size_16,
                                           color: highTextColor,
                                           fontWeight: AppFontWeight.w_500),

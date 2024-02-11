@@ -110,7 +110,7 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
           height: _isKeyboardAppear || _isTextFieldFocused
               ? context.height
               : context.height * 0.6,
-          color: scaffoldColor,
+          color: bottomSheetBackgroundColor,
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -10,6 +10,7 @@ class JuzlarDetailsPage extends StatefulWidget {
 
 class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
   final ScrollController _scrollController = ScrollController();
+  bool isSearchApp = false;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,11 @@ class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
       appBar: customAppbar(context, widget.data.suraName,
           icon1: AppIcon.filter,
           icon2: AppIcon.search,
-          onTap1: () {},
-          onTap2: () => showSettingBottomSheet(context)),
+          onTap1: () => showSettingBottomSheet(context),
+          onTap2: () {
+            isSearchApp = !isSearchApp;
+            setState(() {});
+          }),
       body: DraggableScrollbar.semicircle(
         controller: _scrollController,
         labelTextBuilder: (offsetY) => Text("${offsetY ~/ 100}"),

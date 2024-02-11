@@ -2,6 +2,7 @@ import 'dart:async';
 
 // import 'package:location/location.dart' hide PermissionStatus;
 import 'package:permission_handler/permission_handler.dart' hide ServiceStatus;
+import 'package:qiblah_pro/core/db/db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 part 'on_boarding_event.dart';
@@ -11,50 +12,13 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
   OnBoardingBloc() : super(const OnBoardingState()) {
     on<ChangeLanguageEvent>(_changeLanguage);
     on<NotificationPermissionEvent>(_permissionNotification);
-
-    on<LocationPermissionEvent>(_locationSettings);
+    on<UserDataEvent>(_userdata);
   }
 
-  // Location location = Location();
-  // late bool _serviceEnabled;
-  // late PermissionStatus _permissionGranted;
-  // late LocationData _locationData;
   late PermissionStatus _notPermission;
+  final DBService _dbService = DBService();
 
   var lang = const FlutterSecureStorage().read(key: Keys.lang);
-
-  void _locationSettings(
-      LocationPermissionEvent event, Emitter<OnBoardingState> emit) async {
-    // _serviceEnabled = await location.serviceEnabled();
-    // if (!_serviceEnabled) {
-    //   _serviceEnabled = await location.requestService();
-    //   if (!_serviceEnabled) {
-    //     return;
-    //   }
-    // }
-
-    // _permissionGranted = await Permission.location.status;
-    // if (_permissionGranted == PermissionStatus.denied) {
-    //   _permissionGranted = await Permission.notification.request();
-    //   if (_permissionGranted == PermissionStatus.granted ||
-    //       _permissionGranted == PermissionStatus.limited) {
-    //     // Initialize _locationData before using it
-    //     _locationData = await location.getLocation();
-    //     emit(state.copyWith(
-    //         isGarantedLocation: true,
-    //         latitude: _locationData.latitude,
-    //         longitude: _locationData.longitude));
-    //   }
-    // } else if (_permissionGranted == PermissionStatus.granted) {
-    //   _locationData = await location.getLocation();
-    //   emit(state.copyWith(
-    //       isGarantedLocation: true,
-    //       latitude: _locationData.latitude,
-    //       longitude: _locationData.longitude));
-    // }
-  }
-
-  ////////////
 
   FutureOr<void> _changeLanguage(
       ChangeLanguageEvent event, Emitter<OnBoardingState> emit) async {
@@ -88,6 +52,16 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
     } else {
       print('Notification permission denied');
       emit(state.copyWith(isGarantedNotification: false));
+    }
+  }
+
+  FutureOr<void> _userdata(UserDataEvent event, Emitter<OnBoardingState> emit) {
+    try {
+      _dbService
+          .insertUserdata(UserModel(isMan: event.isMan, name: event.name));
+      print('user data is saving');
+    } on DatabaseException catch (e) {
+      print(e.result.toString());
     }
   }
 }

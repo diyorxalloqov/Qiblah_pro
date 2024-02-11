@@ -10,7 +10,7 @@ ThemeData get lightMode => _ligthMode;
       brightness: Brightness.light, scaffoldBackgroundColor: scaffoldColor);
 
   final CupertinoThemeData _cupertinoDarkMode = CupertinoThemeData(
-      brightness: Brightness.dark, scaffoldBackgroundColor: scaffoldColor);
+      brightness: Brightness.dark, scaffoldBackgroundColor: scaffoldBlackColor);
 
   final ThemeData _ligthMode = ThemeData(
     // elevatedButtonTheme: ElevatedButtonThemeData(
@@ -32,7 +32,7 @@ ThemeData get lightMode => _ligthMode;
 
   final ThemeData _darkMode = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: scaffoldColor
+    scaffoldBackgroundColor: scaffoldBlackColor
     // elevatedButtonTheme: ElevatedButtonThemeData(
     //     style: ElevatedButton.styleFrom(
     //         backgroundColor: Colors.blueGrey.shade800)),

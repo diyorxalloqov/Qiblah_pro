@@ -50,5 +50,15 @@ class AppIcon {
   static const String check = 'assets/icons/check.svg';
   static const String search = 'assets/icons/search.svg';
   static const String filter = 'assets/icons/filter.svg';
+  static const String quron = 'assets/icons/quran.svg';
+  static const String tasbeh = 'assets/icons/tasbeh.svg';
+  static const String vibration = 'assets/icons/vibration.svg';
+  static const String refresh = 'assets/icons/refresh.svg';
+  static const String count = 'assets/icons/33_count.svg';
+  static const String pause = 'assets/icons/pause.svg';
+  static const String line = 'assets/icons/line.svg';
+
+
+
 
 }

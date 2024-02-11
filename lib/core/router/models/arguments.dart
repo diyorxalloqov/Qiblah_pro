@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:qiblah_pro/modules/home/blocs/names/names_bloc.dart';
+
 class OtpPageArguments {
   final String phone;
   OtpPageArguments({required this.phone});
@@ -24,4 +26,10 @@ class JuzlarDetailsArgument {
     required this.index,
     required this.suradata,
   });
+}
+
+class NamesDetailsArgument {
+  final NamesBloc namesBloc;
+  final int index;
+  NamesDetailsArgument({required this.namesBloc, required this.index});
 }

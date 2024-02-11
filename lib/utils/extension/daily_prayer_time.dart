@@ -10,14 +10,12 @@ extension Utils on DateTime {
 extension Converter on PrayerTimes {
   DailyPrayerTimes toDailyPrayerTimes() {
     return DailyPrayerTimes(
-      fajr: PrayerTime(fajr, isCurrent: currentPrayer() == Prayer.fajr),
-      sunrise:
-          PrayerTime(sunrise, isCurrent: currentPrayer() == Prayer.sunrise),
-      dhuhr: PrayerTime(dhuhr, isCurrent: currentPrayer() == Prayer.dhuhr),
+      bomdod: PrayerTime(fajr, isCurrent: currentPrayer() == Prayer.fajr),
+      quyosh: PrayerTime(sunrise, isCurrent: currentPrayer() == Prayer.sunrise),
+      peshin: PrayerTime(dhuhr, isCurrent: currentPrayer() == Prayer.dhuhr),
       asr: PrayerTime(asr, isCurrent: currentPrayer() == Prayer.asr),
-      maghrib:
-          PrayerTime(maghrib, isCurrent: currentPrayer() == Prayer.maghrib),
-      isha: PrayerTime(isha, isCurrent: currentPrayer() == Prayer.isha),
+      shom: PrayerTime(maghrib, isCurrent: currentPrayer() == Prayer.maghrib),
+      xufton: PrayerTime(isha, isCurrent: currentPrayer() == Prayer.isha),
     );
   }
 }

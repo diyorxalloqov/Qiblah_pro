@@ -1,18 +1,21 @@
-class DailyPrayerTimes {
-  PrayerTime fajr;
-  PrayerTime sunrise;
-  PrayerTime dhuhr;
-  PrayerTime asr;
-  PrayerTime maghrib;
-  PrayerTime isha;
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
-  DailyPrayerTimes(
-      {required this.fajr,
-      required this.sunrise,
-      required this.dhuhr,
+@immutable
+class DailyPrayerTimes {
+  final PrayerTime bomdod;
+  final PrayerTime quyosh;
+  final PrayerTime peshin;
+  final PrayerTime asr;
+  final PrayerTime shom;
+  final PrayerTime xufton;
+
+  const DailyPrayerTimes(
+      {required this.bomdod,
+      required this.quyosh,
+      required this.peshin,
       required this.asr,
-      required this.maghrib,
-      required this.isha});
+      required this.shom,
+      required this.xufton});
 }
 
 class PrayerTime {

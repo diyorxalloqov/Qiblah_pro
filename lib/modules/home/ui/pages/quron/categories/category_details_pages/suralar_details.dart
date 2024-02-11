@@ -17,8 +17,8 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
       appBar: customAppbar(context, widget.data.suraName,
           icon1: AppIcon.filter,
           icon2: AppIcon.search,
-          onTap1: () {},
-          onTap2: () => showSettingBottomSheet(context)),
+          onTap1: () => showSettingBottomSheet(context),
+          onTap2: () {}),
       body: DraggableScrollbar.semicircle(
         controller: _scrollController,
         labelTextBuilder: (offsetY) => Text("${offsetY ~/ 100}"),

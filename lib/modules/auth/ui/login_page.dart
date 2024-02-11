@@ -1,3 +1,4 @@
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
@@ -52,6 +53,9 @@ class _RegisterPageState extends State<LoginPage> {
     super.initState();
   }
 
+  final FlCountryCodePicker countryPicker = const FlCountryCodePicker();
+  String dialCode = '+998';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +87,7 @@ class _RegisterPageState extends State<LoginPage> {
                     CircleAvatar(
                       radius: 88.r,
                       backgroundColor: Colors.white,
-                      child: const Center(child: Text("Logo")),
+                      child: Center(child: Image.asset(AppImages.appLogo)),
                     ),
                     GestureDetector(
                         onTap: () => Navigator.pushNamedAndRemoveUntil(
@@ -133,6 +137,18 @@ class _RegisterPageState extends State<LoginPage> {
                                   fontWeight: AppFontWeight.w_400,
                                   color: textFormFieldHintColor,
                                 ),
+                                prefixIcon: TextButton(
+                                    onPressed: () async {
+                                      final picked = await countryPicker
+                                          .showPicker(context: context);
+                                      dialCode = picked?.dialCode ?? '+998';
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      dialCode,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    )),
                                 fillColor: textFormFieldFillColor,
                                 border: OutlineInputBorder(
                                   borderSide: const BorderSide(

@@ -10,8 +10,9 @@ class MediumText extends StatelessWidget {
       text,
       overflow: TextOverflow.ellipsis,
       maxLines: 2,
-      style: AppfontFamily.comforta.copyWith(
+      style: TextStyle(
           fontSize: AppSizes.size_18,
+          fontFamily: AppfontFamily.comforta.fontFamily,
           fontWeight: AppFontWeight.w_700,
           color: highTextColor),
     );

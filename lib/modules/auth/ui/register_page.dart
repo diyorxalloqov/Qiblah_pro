@@ -1,5 +1,6 @@
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -53,6 +54,9 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
   }
 
+  final FlCountryCodePicker countryPicker = const FlCountryCodePicker();
+  String dialCode = '+998';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,10 +85,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ],
                     ),
                     CircleAvatar(
-                      radius: 88.r,
-                      backgroundColor: Colors.white,
-                      child: const Center(child: Text("Logo")),
-                    ),
+                        radius: 88.r,
+                        backgroundColor: Colors.white,
+                        child: Center(child: Image.asset(AppImages.appLogo))),
                     GestureDetector(
                         onTap: () => Navigator.pushNamedAndRemoveUntil(
                             context, 'bottomNavbar', (route) => false),
@@ -134,6 +137,18 @@ class _RegisterPageState extends State<RegisterPage> {
                               ],
                               decoration: InputDecoration(
                                 filled: true,
+                                prefixIcon: TextButton(
+                                    onPressed: () async {
+                                      final picked = await countryPicker
+                                          .showPicker(context: context);
+                                      dialCode = picked?.dialCode ?? '+998';
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      dialCode,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    )),
                                 hintText: 'telefon_raqam'.tr(),
                                 hintStyle: TextStyle(
                                   fontSize: AppSizes.size_16,
@@ -200,7 +215,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SpaceHeight(height: 15.h),
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            // await StorageRepository.deleteBool(
+                            //     Keys.isOnboarding);
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'bottomNavbar', (route) => false);
                           },
@@ -252,12 +269,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                                backgroundColor: anotherSignInColor,
-                                child: SvgPicture.asset(AppIcon.facebook)),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {},
+                          //   child: CircleAvatar(
+                          //       backgroundColor: anotherSignInColor,
+                          //       child: SvgPicture.asset(AppIcon.facebook)),
+                          // ),
+                          const SizedBox(),
                           GestureDetector(
                             onTap: () => _googleSignIn(context),
                             child: CircleAvatar(
@@ -276,12 +294,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 backgroundColor: anotherSignInColor,
                                 child: SvgPicture.asset(AppIcon.telegram)),
                           ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                                backgroundColor: anotherSignInColor,
-                                child: SvgPicture.asset(AppIcon.apple)),
-                          ),
+                          Platform.isIOS
+                              ? GestureDetector(
+                                  onTap: () async {},
+                                  child: CircleAvatar(
+                                      backgroundColor: anotherSignInColor,
+                                      child: SvgPicture.asset(AppIcon.apple)),
+                                )
+                              : const SizedBox(),
                         ],
                       )
                     ]),
@@ -296,9 +316,27 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _googleSignIn(BuildContext context) async {
     GoogleSignIn googleSignIn = GoogleSignIn(scopes: ['email']);
     try {
-      await googleSignIn.signIn();
-    } catch (error) {
+      final GoogleSignInAccount? account = await googleSignIn.signIn();
+      if (account != null) {
+        // Signed in successfully, now obtain the authentication tokens
+        final GoogleSignInAuthentication googleAuth =
+            await account.authentication;
+        String? accessToken = googleAuth.accessToken;
+        String? idToken = googleAuth.idToken;
+        print(account.displayName);
+        print(account.email);
+        print(account.id);
+
+        // Use accessToken and idToken as needed
+        print('Access Token: $accessToken');
+        print('ID Token: $idToken');
+      } else {
+        // User canceled the sign-in process
+        print('Google Sign-In canceled');
+      }
+    } on PlatformException catch (error) {
       print('Google Sign-In Error: $error');
+      // Handle sign-in errors here
     }
   }
 }

@@ -2,18 +2,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qiblah_pro/core/singletons/service_locator.dart';
 import 'package:qiblah_pro/modules/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
+  // await Hive.initFlutter();
+  // HiveDBService.registerAdapters();
   await setupLocator();
+  final SharedPreferences sharedPreferences =
+      await SharedPreferences.getInstance();
 
   runApp(EasyLocalization(
       saveLocale: true,
       startLocale: const Locale("uz"),
       supportedLocales: const [Locale("uz"), Locale("ru")],
       path: "lib/core/lang",
-      child: const App()));
+      child: App(pref: sharedPreferences)));
 }
 
 

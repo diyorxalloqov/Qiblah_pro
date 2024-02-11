@@ -1,6 +1,9 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/names_details_page.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/tasbeh_name_page.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_details_pages/juzlar_details_page.dart';
-// import 'package:qiblah_pro/modules/onBoarding/geolocation/auto_detect_page.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/zikr/tasbeh.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr.dart';
 
 class RouteList {
   static final RouteList _generate = RouteList._init();
@@ -35,14 +38,31 @@ class RouteList {
         return _navigate(const TimePage());
       case 'taqvimPage':
         return _navigate(const TaqvimPage());
-      case 'quronPage':
-        return _navigate(const QuronPage());
       case 'suralarDetails':
         final args = settings.arguments as SuralarDetailsPageArguments;
         return _navigate(SuralarDetailsPage(data: args));
       case "juzlarDetails":
         final args = settings.arguments as JuzlarDetailsArgument;
         return _navigate(JuzlarDetailsPage(data: args));
+      case 'quron':
+        return _navigate(const QuronPage());
+      case "qibla":
+        return _navigate(const QiblaPage());
+      case "zikr":
+        return _navigate(const ZikrPage());
+      case "names":
+        return _navigate(const NamesPage());
+      case "qazo":
+        return _navigate(const QazoPage());
+      case 'zikrMain':
+        return _navigate(const ZikrMain());
+      case "namesDetailsPage":
+        final args = settings.arguments as NamesDetailsArgument;
+        return _navigate(NamesDetailsPage(namesDetailsArgument: args));
+      case 'tasbehPage':
+        return _navigate(const TasbehPage());
+      case 'tasbehNamePage':
+        return _navigate(const TasbehNamePage());
     }
     return null;
   }

@@ -4,10 +4,12 @@ class TimeItem extends StatelessWidget {
   final VoidCallback volumeOnTap;
   final String namozName;
   final String time;
+  final Widget icon;
   const TimeItem(
       {super.key,
       required this.namozName,
       required this.time,
+      required this.icon,
       required this.volumeOnTap});
 
   @override
@@ -37,9 +39,7 @@ class TimeItem extends StatelessWidget {
                     fontWeight: AppFontWeight.w_400),
               ),
               const SpaceWidth(),
-              IconButton(
-                  onPressed: volumeOnTap,
-                  icon: SvgPicture.asset(AppIcon.volume))
+              IconButton(onPressed: volumeOnTap, icon: icon)
             ],
           )
         ],

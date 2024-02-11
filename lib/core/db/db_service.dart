@@ -1,6 +1,5 @@
 import 'package:path/path.dart';
-import 'package:qiblah_pro/modules/global/model/user_model.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class DBService {
   static final DBService _dBService = DBService._internal();
@@ -10,7 +9,7 @@ class DBService {
   DBService._internal();
 
   static String userTable = 'user';
-  static String budgets = 'budgets';
+  static String qazoTable = 'qazo';
 
   static Database? _database;
 
@@ -26,22 +25,31 @@ class DBService {
     return await openDatabase(
       path,
       onCreate: _onCreate,
-      version: 1,
+      version: 2,
+      onUpgrade: _onUpgrade,
       onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    await db.execute("DROP TABLE IF EXISTS $userTable");
     await db.execute(
-      'CREATE TABLE $userTable(id INTEGER PRIMARY KEY, name TEXT,userLanguage TEXT)',
+      'CREATE TABLE $userTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, userLanguage TEXT, isMan INTEGER)',
     );
-    // await db.execute(
-    //   'CREATE TABLE $budgets(id INTEGER PRIMARY KEY,name TEXT,color_hex TEXT,  type TEXT, budget INTEGER, spent INTEGER,date DATETIME )',
-    // );
   }
+
+  Future<void> _onCreate(Database db, int version) async {
+    // user
+    await db.execute(
+      'CREATE TABLE $userTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, userLanguage TEXT, isMan INTEGER)',
+    );
+  }
+
+  /// user
 
   Future<void> insertUserdata(UserModel usermodel) async {
     final db = await _dBService.database;
+    print(usermodel.toJson().values.toList());
     await db.insert(
       userTable,
       usermodel.toJson(),
@@ -54,9 +62,10 @@ class DBService {
     final List<Map<String, dynamic>> maps = await db.query(userTable);
     if (maps.isNotEmpty) {
       return UserModel(
-        id: maps[0]['id'],
-        name: maps[0]['name'],
-      );
+          id: maps[0]['id'],
+          name: maps[0]['name'],
+          isMan: maps[0]['isMan'] == 1,
+          userLanguage: maps[0]['userLanguage']);
     } else {
       return null;
     }
@@ -64,7 +73,6 @@ class DBService {
 
   Future<void> updateUser(UserModel usermodel) async {
     final db = await _dBService.database;
-
     await db.update(
       userTable,
       usermodel.toJson(),
@@ -75,7 +83,6 @@ class DBService {
 
   Future<void> deleteUser(int id) async {
     final db = await _dBService.database;
-
     await db.delete(
       userTable,
       where: 'id = ?',

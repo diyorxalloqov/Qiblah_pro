@@ -1,4 +1,3 @@
-import 'package:qiblah_pro/core/constants/app_fontfamily.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class SmallText extends StatelessWidget {

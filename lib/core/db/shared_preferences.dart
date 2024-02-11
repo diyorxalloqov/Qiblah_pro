@@ -36,6 +36,11 @@ class StorageRepository {
     return _preferences!.setStringList(key, value);
   }
 
+  static Future<bool>? deleteList(String key) {
+    if (_preferences == null) return null;
+    return _preferences!.remove(key);
+  }
+
   /////// STRING
 
   static String getString(String key, {String defValue = ''}) {
@@ -53,9 +58,20 @@ class StorageRepository {
     return _preferences!.remove(key);
   }
 
-  static Future<bool>? updateString(String key, String value) {
+  /// INT
+  static int getInt(String key, {int defValue = 0}) {
+    if (_preferences == null) return defValue;
+    return _preferences!.getInt(key) ?? defValue;
+  }
+
+  static Future<bool>? putInt(String key, int value) {
     if (_preferences == null) return null;
-    return _preferences!.setString(key, value);
+    return _preferences!.setInt(key, value);
+  }
+
+  static Future<bool>? deleteInt(String key) {
+    if (_preferences == null) return null;
+    return _preferences!.remove(key);
   }
 
   ///// DOUBLE
@@ -75,11 +91,6 @@ class StorageRepository {
     return _preferences!.remove(key);
   }
 
-  static Future<bool>? updateDouble(String key, double value) {
-    if (_preferences == null) return null;
-    return _preferences!.setDouble(key, value);
-  }
-
   //////////  BOOLEAN
 
   static bool getBool(String key, {bool defValue = false}) {
@@ -95,10 +106,5 @@ class StorageRepository {
   static Future<bool>? deleteBool(String key) {
     if (_preferences == null) return null;
     return _preferences!.remove(key);
-  }
-
-  static Future<bool>? updateBool(String key, bool value) {
-    if (_preferences == null) return null;
-    return _preferences!.setBool(key, value);
   }
 }

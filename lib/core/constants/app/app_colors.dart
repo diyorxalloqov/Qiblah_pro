@@ -20,6 +20,24 @@ Color arabicTextColor = const Color(0xff000000);
 Color tanlanganlarItemColor = const Color(0xffFFFFFF);
 Color bottomAppbarColor = const Color(0xffFFFFFF);
 Color circleAvatarColor = const Color(0xFFF4F7FA);
+Color bottomSheetBackgroundColor = const Color(0xFFF4F7FA);
+Color bottomSheetBackgroundBlackColor = const Color(0xFF1D2124);
+List<Color> qazoDiagramColor = const [
+  Color(0xff9341E4),
+  Color(0xffE4CA41),
+  Color(0xff41E4E4),
+  Color(0xffE44141),
+  Color(0xff0A9D4E)
+];
+Color scaffoldBlackColor = const Color(0xff1E2125);
+// zikr
+Color containerColor = const Color(0xffFFFFFF);
+Color ertalabki_zikr = const Color(0xffFFFDE6);
+Color tungi_zikrlar = const Color(0xffE8E7F2);
+Color allohdan_sorash = const Color(0xffE7F2EF);
+Color kerakli_duolar = const Color(0xffFFECE9);
+Color asmaul_husna = const Color(0xffFCF3DC);
+Color tanlangan_zikrlar = const Color(0xffDCECFC);
 
 ///
 
