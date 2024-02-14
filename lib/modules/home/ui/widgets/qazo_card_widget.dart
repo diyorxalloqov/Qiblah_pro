@@ -18,7 +18,6 @@ class QazoCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 0,
       margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 12.h),
@@ -40,7 +39,9 @@ class QazoCardWidget extends StatelessWidget {
                 onTap: decrement,
                 borderRadius: BorderRadius.circular(100.r),
                 child: CircleAvatar(
-                  backgroundColor: circleAvatarColor,
+                  backgroundColor: context.isDark
+                      ? circleAvatarBlackColor
+                      : circleAvatarColor,
                   child: const Center(
                       child: Text(
                     '-',

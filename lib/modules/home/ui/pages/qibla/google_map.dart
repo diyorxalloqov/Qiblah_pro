@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:qiblah_pro/core/constants/keys.dart';
+import 'package:qiblah_pro/core/db/shared_preferences.dart';
 
 class SmallGoogleMap extends StatefulWidget {
   const SmallGoogleMap({super.key});
@@ -17,6 +18,9 @@ class MapSampleState extends State<SmallGoogleMap> {
       Completer<GoogleMapController>();
   PolylinePoints polylinePoints = PolylinePoints();
 
+  double longitude = StorageRepository.getDouble(Keys.longitude);
+  double latitude = StorageRepository.getDouble(Keys.latitude);
+
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(41.311081, 69.240562),
     zoom: 14.4746,
@@ -28,60 +32,22 @@ class MapSampleState extends State<SmallGoogleMap> {
   //     tilt: 59.440717697143555,
   //     zoom: 19.151926040649414);
 
-  Location location = Location();
   Map<MarkerId, Marker> markers = {};
-  late bool _serviceEnabled;
 
-  late PermissionStatus _permissionGranted;
-
-  late LocationData _locationData;
   List<LatLng> polylineCoordinates = [];
   Map<PolylineId, Polyline> polylines = {};
-
-  void getMyLocation() async {
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    _locationData = await location.getLocation();
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: LatLng(_locationData.latitude!, _locationData.longitude!),
-            zoom: 19),
-      ),
-    );
-    _addMarkers(LatLng(_locationData.latitude!, _locationData.longitude!),
-        "My Location");
-  }
 
   void _addMarkers(LatLng point, String markerName) {
     // Define marker properties
     final MarkerId markerId = MarkerId(markerName);
     final Marker marker = Marker(
-      markerId: markerId,
-      position: point,
-      infoWindow: InfoWindow(
-        title: markerName,
-        snippet: 'Marker Snippet',
-      ),
-      onTap: (){
-
-      }
-    );
+        markerId: markerId,
+        position: point,
+        infoWindow: InfoWindow(
+          title: markerName,
+          snippet: 'Marker Snippet',
+        ),
+        onTap: () {});
 
     setState(() {
       markers[markerId] = marker;
@@ -90,14 +56,12 @@ class MapSampleState extends State<SmallGoogleMap> {
 
   @override
   void initState() {
-    getMyLocation();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
@@ -110,13 +74,11 @@ class MapSampleState extends State<SmallGoogleMap> {
         onTap: (point) {
           _addMarkers(point, "Destination");
           _drawPolyline(
-              initialPoint:
-                  LatLng(_locationData.latitude!, _locationData.longitude!),
+              initialPoint: LatLng(latitude, longitude),
               destinationPoint: point);
         },
         polylines: Set<Polyline>.of(polylines.values),
       ),
-      
     );
   }
 

@@ -59,72 +59,73 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        width: double.infinity,
-        height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 520.h,
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HighText(text: 'keling_tanishib_olamiz:'.tr()),
-            SpaceHeight(height: 20.h),
-            SmallText(text: 'ismingiz_nima'.tr()),
-            Form(
-              key: _key,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.h),
-                child: TextFormField(
-                  onTap: () {
-                    setState(() {
-                      _isKeyboardAppear = true;
-                    });
-                  },
-                  focusNode: _focusNode,
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    filled: true,
-                    hintText: 'ismingizni_yozing'.tr(),
-                    hintStyle: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontWeight: AppFontWeight.w_400,
-                      color: textFormFieldHintColor,
-                    ),
-                    fillColor: textFormFieldFillColor,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Colors.white70,
+    return PopScope(
+      onPopInvoked: (didPop) {
+        _isKeyboardAppear = false;
+        _isTextFieldFocused = false;
+      },
+      child: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 520.h,
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HighText(text: 'keling_tanishib_olamiz:'.tr()),
+              SpaceHeight(height: 20.h),
+              SmallText(text: 'ismingiz_nima'.tr()),
+              Form(
+                key: _key,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.h),
+                  child: TextFormField(
+                    onTap: () {
+                      setState(() {
+                        _isKeyboardAppear = true;
+                      });
+                    },
+                    focusNode: _focusNode,
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      hintText: 'ismingizni_yozing'.tr(),
+                      hintStyle: TextStyle(
+                        fontSize: AppSizes.size_16,
+                        fontWeight: AppFontWeight.w_400,
+                        color: textFormFieldHintColor,
                       ),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 1,
-                        color: Colors.white70,
+                      fillColor: context.isDark
+                          ? textFormFieldFillColorBlack
+                          : textFormFieldFillColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      borderRadius: BorderRadius.circular(12.r),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
                     ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Iltimos ismingizni kiriting';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Iltimos ismingizni kiriting';
-                    }
-                    return null;
-                  },
                 ),
               ),
-            ),
-            SmallText(text: 'jins_promt'.tr()),
-            const SpaceHeight(),
-            Row(
-              children: [
-                Wrap(
-                  alignment: WrapAlignment.start,
-                  spacing: 8.0,
-                  runSpacing: 4.0,
+              SmallText(text: 'jins_promt'.tr()),
+              const SpaceHeight(),
+              SizedBox(
+                height: 60.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(2, (index) {
                     return ChoiceChip(
+                      backgroundColor:
+                          context.isDark ? jinsBlackColor : jinsColor,
                       label: SizedBox(
                         height: 39.h,
                         width: 140.w,
@@ -133,11 +134,14 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(_icons[index]),
+                            const SpaceWidth(),
                             Text(
                               _titles[index].tr(),
                               style: TextStyle(
                                   fontSize: AppSizes.size_16,
-                                  color: highTextColor,
+                                  color: context.isDark
+                                      ? highTextColorWhite
+                                      : highTextColor,
                                   fontWeight: AppFontWeight.w_500),
                             ),
                           ],
@@ -147,7 +151,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                           ? BorderSide(color: primaryColor, width: 1)
                           : BorderSide.none,
                       showCheckmark: false,
-                      backgroundColor: bottomSheetBackgroundColor,
+                      // backgroundColor: bottomSheetBackgroundColor,
                       selectedColor: primaryColor.withOpacity(0.2),
                       disabledColor: textFormFieldHintColor,
                       onSelected: (value) {
@@ -165,50 +169,50 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                     );
                   }),
                 ),
-              ],
-            ),
-            const SpaceHeight(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.h),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_key.currentState!.validate()) {
-                      print(isMan);
-                      context.read<OnBoardingBloc>().add(UserDataEvent(
-                          name: _nameController.text, isMan: isMan));
-                      Navigator.pop(context);
-                      widget.pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryColor,
-                    fixedSize: Size(double.infinity, 50.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox.shrink(),
-                      Text(
-                        'btn_davom_etish'.tr(),
-                        style: AppfontFamily.inter.copyWith(
-                            fontSize: AppSizes.size_16,
-                            color: buttonNameColor,
-                            fontWeight: AppFontWeight.w_600),
+              ),
+              const SpaceHeight(),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.h),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_key.currentState!.validate()) {
+                        print(isMan);
+                        context.read<OnBoardingBloc>().add(UserDataEvent(
+                            name: _nameController.text, isMan: isMan ? 0 : 1));
+                        Navigator.pop(context);
+                        widget.pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      fixedSize: Size(double.infinity, 50.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
-                      SvgPicture.asset(AppIcon.arrowRight),
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox.shrink(),
+                        Text(
+                          'btn_davom_etish'.tr(),
+                          style: AppfontFamily.inter.copyWith(
+                              fontSize: AppSizes.size_16,
+                              color: buttonNameColor,
+                              fontWeight: AppFontWeight.w_600),
+                        ),
+                        SvgPicture.asset(AppIcon.arrowRight),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -21,23 +21,21 @@ class CurrentMonthNamozTimes extends NamozTimeEvent {
 }
 
 class ScheduleNotificationEvent extends NamozTimeEvent {
-  final NamozEnum namoz; 
+  final NamozEnum namoz;
   const ScheduleNotificationEvent({required this.namoz});
   @override
   // TODO: implement props
   List<Object> get props => [namoz];
 }
 
-// class LoadSettings extends NamozTimeEvent {
-//   @override
-//   List<Object> get props => [];
-// }
+class LoadSettings extends NamozTimeEvent {
+  @override
+  List<Object> get props => [];
+}
 
-// class ChangeSettings extends NamozTimeEvent {
-//   final dynamic newValue;
-//   const ChangeSettings({required this.newValue});
-//   @override
-//   List<Object> get props => [newValue];
-// }
-
-
+class ChangeSettings extends NamozTimeEvent {
+  final dynamic newValue;
+  const ChangeSettings({required this.newValue});
+  @override
+  List<Object> get props => [newValue];
+}

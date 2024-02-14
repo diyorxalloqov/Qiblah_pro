@@ -14,11 +14,9 @@ class GetNamesEvent extends NamesEvent {
   List<Object> get props => [];
 }
 
-class PlayNameEvent extends NamesEvent {
-  final bool isPlaying;
-  final String url;
-  const PlayNameEvent({required this.isPlaying, required this.url});
+class GetNamesFromApiEvent extends NamesEvent {
   @override
   // TODO: implement props
-  List<Object> get props => [isPlaying, url];
+  List<Object> get props => [];
 }
+

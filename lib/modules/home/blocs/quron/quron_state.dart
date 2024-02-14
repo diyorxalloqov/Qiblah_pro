@@ -3,14 +3,13 @@ part of 'quron_bloc.dart';
 class QuronState extends Equatable {
   final ActionStatus status;
   final String error;
-  final List audiosList;
-  final bool isPlaying;
+  final QuronModel? quronModel;
 
-  const QuronState(
-      {this.audiosList = const [],
-      this.error = '',
-      this.isPlaying = false,
-      this.status = ActionStatus.isInitial});
+  const QuronState({
+    this.error = '',
+    this.quronModel,
+    this.status = ActionStatus.isInitial,
+  });
 
   QuronState copyWith(
       {ActionStatus? status,
@@ -18,12 +17,11 @@ class QuronState extends Equatable {
       bool? isPlaying,
       List? audiosList}) {
     return QuronState(
-        error: error ?? this.error,
-        status: status ?? this.status,
-        isPlaying: isPlaying ?? this.isPlaying,
-        audiosList: audiosList ?? this.audiosList);
+      error: error ?? this.error,
+      status: status ?? this.status,
+    );
   }
 
   @override
-  List<Object?> get props => [status, error, audiosList, isPlaying];
+  List<Object?> get props => [status, error];
 }

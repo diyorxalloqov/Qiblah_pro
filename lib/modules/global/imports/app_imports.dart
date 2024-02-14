@@ -27,7 +27,7 @@ export 'package:qiblah_pro/core/constants/app/app_sizes.dart';
 export 'package:qiblah_pro/core/constants/keys.dart';
 export 'package:qiblah_pro/core/db/shared_preferences.dart';
 export 'package:qiblah_pro/core/router/app_routes.dart';
-export 'package:qiblah_pro/core/router/models/arguments.dart';
+export 'package:qiblah_pro/core/router/args/arguments.dart';
 export 'package:qiblah_pro/core/singletons/dio.dart';
 export 'package:qiblah_pro/core/theme/app_theme.dart';
 export 'package:qiblah_pro/modules/app.dart';
@@ -42,7 +42,9 @@ export 'package:qiblah_pro/modules/global/widgets/medium_text.dart';
 export 'package:qiblah_pro/modules/global/widgets/small_text.dart';
 export 'package:qiblah_pro/modules/home/blocs/names/names_bloc.dart';
 export 'package:qiblah_pro/modules/home/models/names_model.dart';
+export 'package:qiblah_pro/modules/home/models/qibla_model.dart';
 export 'package:qiblah_pro/modules/home/service/names_service.dart';
+export 'package:qiblah_pro/modules/home/service/quron_service.dart';
 export 'package:qiblah_pro/modules/home/ui/home_page.dart';
 export 'package:qiblah_pro/modules/home/ui/pages/GOD_names/99names.dart';
 export 'package:qiblah_pro/modules/home/ui/pages/home_detail_page.dart';
@@ -75,4 +77,16 @@ export 'package:qiblah_pro/utils/enums.dart';
 export 'package:qiblah_pro/utils/extension/size.dart';
 export 'package:qiblah_pro/utils/spacer.dart';
 export 'package:sqflite/sqflite.dart';
+export 'package:qiblah_pro/core/config/network_exeptions.dart';
+export 'package:qiblah_pro/core/constants/api/app_urls.dart';
+export 'package:qiblah_pro/core/db/zikr_db_service.dart';
+export 'package:qiblah_pro/core/singletons/service_locator.dart';
+export 'package:qiblah_pro/modules/global/widgets/loading_screen.dart';
+export 'package:audio_session/audio_session.dart';
+export 'package:just_audio/just_audio.dart';
+export 'package:qiblah_pro/modules/home/blocs/zikr/zikr_bloc.dart';
+export 'package:qiblah_pro/modules/home/ui/widgets/player_icon_widget.dart';
+export 'package:qiblah_pro/utils/extension/theme.dart';
+
+
 

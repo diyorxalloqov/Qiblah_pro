@@ -4,6 +4,7 @@ import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
 import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
 import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class TaqvimPage extends StatefulWidget {
   const TaqvimPage({super.key});
@@ -48,47 +49,39 @@ class _TaqvimPageState extends State<TaqvimPage> {
             shrinkWrap: true,
             children: [
               Container(
-                height: 220.h,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  image: DecorationImage(
-                      image: AssetImage(AppImages.taqvim_back),
-                      fit: BoxFit.cover),
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    color: context.isDark ? homeBlackMainColor : Colors.white,
+                    image: context.isDark
+                        ? null
+                        : const DecorationImage(
+                            image: AssetImage(AppImages.taqvim_back),
+                            fit: BoxFit.cover),
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(12.r),
+                        bottomLeft: Radius.circular(12.r))),
                 child: SafeArea(
                   child: Column(
                     children: [
                       const SpaceHeight(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          IconButton(
-                              onPressed: () => Navigator.pop(context),
+                      customAppbar(context, "namoz_taqvimi".tr(),
+                          icon3: IconButton(
+                              onPressed: () {},
                               icon: Container(
                                 width: 28,
                                 height: 28,
+                                margin: const EdgeInsets.only(right: 10),
                                 decoration: ShapeDecoration(
-                                  color: const Color(0xFFF4F7FA),
+                                  color: Colors.white.withOpacity(0.1),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)),
                                 ),
-                                child: SvgPicture.asset(AppIcon.arrowLeft),
-                              )),
-                          const SpaceWidth(),
-                          Text(
-                            "namoz_taqvimi".tr(),
-                            style: TextStyle(
-                              fontSize: AppSizes.size_18,
-                              fontFamily: AppfontFamily.comforta.fontFamily,
-                              fontWeight: AppFontWeight.w_700,
-                            ),
-                          ),
-                          const SpaceWidth(),
-                          IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(AppIcon.share, width: 30))
-                        ],
-                      ),
+                                child: SvgPicture.asset(AppIcon.share,
+                                    width: 30,
+                                    color: context.isDark
+                                        ? const Color(0xffB5B9BC)
+                                        : null),
+                              ))),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -149,14 +142,16 @@ class _TaqvimPageState extends State<TaqvimPage> {
               const SpaceHeight(),
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: context.isDark ? homeBlackMainColor : Colors.white,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12.r),
                         topRight: Radius.circular(12.r))),
                 child: Table(
                   border: TableBorder.symmetric(
                       outside: BorderSide.none,
-                      inside: BorderSide(color: tableColor, width: 1)),
+                      inside: context.isDark
+                          ? BorderSide.none
+                          : BorderSide(color: tableColor, width: 1)),
                   children: List.generate(state.currentMonthTimes.length + 1,
                       (colIndex) {
                     if (colIndex == 0) {
@@ -193,8 +188,11 @@ class _TaqvimPageState extends State<TaqvimPage> {
                     ];
                     return TableRow(
                       decoration: BoxDecoration(
-                        color:
-                            colIndex % 2 == 0 ? const Color(0xffF4F8FA) : null,
+                        color: colIndex % 2 == 0
+                            ? context.isDark
+                                ? const Color(0xff232C37)
+                                : const Color(0xffF4F8FA)
+                            : null,
                       ),
                       children: List.generate(_names.length, (rowIndex) {
                         if (rowIndex == 0) {

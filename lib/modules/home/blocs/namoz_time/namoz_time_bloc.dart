@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:adhan/adhan.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
+import 'package:qiblah_pro/modules/home/models/time_calculation_model.dart';
 import 'package:qiblah_pro/modules/home/service/namoz_time_service.dart';
 import 'package:qiblah_pro/modules/home/service/notification_service.dart';
 
@@ -87,67 +89,68 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
           title: 'Xufton',
           date: state.dailyTimes!.xufton.time,
           id: 5);
+    } else if (event.namoz == NamozEnum.all) {
+      await services.setNotification(
+          body: 'Bomdod vaqti kirdi',
+          title: 'Bomdod',
+          date: state.dailyTimes!.bomdod.time,
+          id: 0);
+      await services.setNotification(
+          body: 'Bomdod vaqti chiqdi',
+          title: 'Quyosh',
+          date: state.dailyTimes!.quyosh.time,
+          id: 1);
+      await services.setNotification(
+          body: 'Peshin vaqti kirdi',
+          title: 'Peshin',
+          date: state.dailyTimes!.peshin.time,
+          id: 2);
+      await services.setNotification(
+          body: 'Asr vaqti kirdi',
+          title: 'Asr',
+          date: state.dailyTimes!.asr.time,
+          id: 3);
+      await services.setNotification(
+          body: 'Shom vaqti kirdi',
+          title: 'Shom',
+          date: state.dailyTimes!.shom.time,
+          id: 4);
+      await services.setNotification(
+          body: 'Xufton vaqti kirdi',
+          title: 'Xufton',
+          date: state.dailyTimes!.xufton.time,
+          id: 5);
     }
-    await services.setNotification(
-        body: 'Bomdod vaqti kirdi',
-        title: 'Bomdod',
-        date: state.dailyTimes!.bomdod.time,
-        id: 0);
-    await services.setNotification(
-        body: 'Bomdod vaqti chiqdi',
-        title: 'Quyosh',
-        date: state.dailyTimes!.quyosh.time,
-        id: 1);
-    await services.setNotification(
-        body: 'Peshin vaqti kirdi',
-        title: 'Peshin',
-        date: state.dailyTimes!.peshin.time,
-        id: 2);
-    await services.setNotification(
-        body: 'Asr vaqti kirdi',
-        title: 'Asr',
-        date: state.dailyTimes!.asr.time,
-        id: 3);
-    await services.setNotification(
-        body: 'Shom vaqti kirdi',
-        title: 'Shom',
-        date: state.dailyTimes!.shom.time,
-        id: 4);
-    await services.setNotification(
-        body: 'Xufton vaqti kirdi',
-        title: 'Xufton',
-        date: state.dailyTimes!.xufton.time,
-        id: 5);
   }
 
   //unused for now
 
   ///// TODO settings is not used in ui if need to ui using namoz time type and madhab -- ui ga boglanmagan kerak bo'lsa boglab qoyamiz
 
-  // FutureOr<void> _namozSettings(
-  //     LoadSettings event, Emitter<NamozTimeState> emit) {
-  //   NamozTimeCalculation timeCalculation =
-  //       _namozTimeService.getChosenCalculationMethod();
-  //   Madhab madhab = _namozTimeService.getChosenMadhab();
-  //   HighLatitudeRule rule = _namozTimeService.getChosenHighLatitudeRule();
-  //   emit(state.copyWith(chosenCalculationMethod: timeCalculation));
-  //   emit(state.copyWith(chosenMadhab: madhab));
-  //   emit(state.copyWith(chosenHighLatitudeRule: rule));
+  FutureOr<void> _namozSettings(
+      LoadSettings event, Emitter<NamozTimeState> emit) {
+    NamozTimeCalculation timeCalculation =
+        _namozTimeService.getChosenCalculationMethod();
+    Madhab madhab = _namozTimeService.getChosenMadhab();
+    HighLatitudeRule rule = _namozTimeService.getChosenHighLatitudeRule();
+    emit(state.copyWith(
+        chosenCalculationMethod: timeCalculation,
+        chosenMadhab: madhab,
+        chosenHighLatitudeRule: rule));
+    // Re-calculates the time to show correct prayer times
+    add(TodayNamozTimes());
+    // add(CurrentWeekNamozTimes());
+  }
 
-  //   // Re-calculates the time to show correct prayer times
-  //   // add(TodayNamozTimes());
-  //   // add(CurrentWeekNamozTimes());
-  // }
-
-  // FutureOr<void> _changeNamozSettings(
-  //     ChangeSettings event, Emitter<NamozTimeState> emit) async {
-  //   if (event.newValue is PrayerCalculationMethod) {
-  //     await _namozTimeService.setChosenCalculationMethod(event.newValue);
-  //   } else if (event.newValue is Madhab) {
-  //     await _namozTimeService.setMadhab(event.newValue);
-  //   } else if (event.newValue is HighLatitudeRule) {
-  //     await _namozTimeService.setHighLatitudeRule(event.newValue);
-  //   }
-  //   add(LoadSettings());
-  // }
+  FutureOr<void> _changeNamozSettings(
+      ChangeSettings event, Emitter<NamozTimeState> emit) async {
+    if (event.newValue is PrayerCalculationMethod) {
+      await _namozTimeService.setChosenCalculationMethod(event.newValue);
+    } else if (event.newValue is Madhab) {
+      await _namozTimeService.setMadhab(event.newValue);
+    } else if (event.newValue is HighLatitudeRule) {
+      await _namozTimeService.setHighLatitudeRule(event.newValue);
+    }
+    add(LoadSettings());
+  }
 }

@@ -2,20 +2,17 @@ class UserModel {
   final int id;
   final String name;
   final String userLanguage;
-  final bool isMan;
+  final int isMan;
 
   UserModel(
-      {this.id = 0,
-      this.name = '',
-      this.isMan = false,
-      this.userLanguage = 'uz'});
+      {this.id = 0, this.name = '', this.isMan = 0, this.userLanguage = 'uz'});
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'userLanguage': userLanguage,
-      'isMan': isMan ? 1 : 0
+      'isMan': isMan
     };
   }
 
@@ -24,7 +21,7 @@ class UserModel {
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
       userLanguage: json['userLanguage'] ?? 'uz',
-      isMan: json['isMan'] == 0 ? true : false,
+      isMan: json['isMan'] ?? 0,
     );
   }
 }

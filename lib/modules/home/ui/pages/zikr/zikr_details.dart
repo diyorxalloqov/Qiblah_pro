@@ -35,7 +35,8 @@ class ZikrItem extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 20),
         padding: const EdgeInsets.symmetric(horizontal: 13),
         decoration: BoxDecoration(
-            color: containerColor, borderRadius: BorderRadius.circular(8)),
+            color: context.isDark ? containerBlackColor : containerColor,
+            borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -69,7 +70,11 @@ class ZikrItem extends StatelessWidget {
               children: [
                 const SizedBox(),
                 IconButton(
-                    onPressed: () {}, icon: SvgPicture.asset(AppIcon.bookmark))
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      AppIcon.bookmark,
+                      color: context.isDark ? Colors.white : null,
+                    ))
               ],
             )
           ],

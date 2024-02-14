@@ -15,13 +15,10 @@ class TimeCountDownCubit extends Cubit<TimeCountDownState> {
     DateTime? nextPrayerTime = await _namozTimeService.getNextPrayerTime();
     if (nextPrayerTime == null) {
       // TODO mark so prayer time is not shown;
-      print('object');
       return null;
     }
     _updateTime(nextPrayerTime);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      print(nextPrayerTime);
-
       _updateTime(nextPrayerTime);
     });
   }

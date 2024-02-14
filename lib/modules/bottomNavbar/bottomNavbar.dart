@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({Key? key}) : super(key: key);
@@ -22,8 +23,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           color: Colors.grey,
           fontWeight: AppFontWeight.w_400,
         ),
-        backgroundColor: Colors.white,
-        fixedColor: Colors.black,
+        fixedColor: context.isDark ? Colors.white : Colors.black,
         selectedLabelStyle: TextStyle(
           color: highTextColor,
           fontWeight: AppFontWeight.w_600,

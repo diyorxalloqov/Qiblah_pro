@@ -16,4 +16,20 @@ extension FormattedCountdown on Duration {
 
     return '$hours:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
+
+  String getFormattedCountdownHour() {
+    int hours = inHours;
+    // if (hours > 0) {
+    //   return '$hours:';
+    // }
+
+    // return '';
+    return "$hours";
+  }
+
+  String getFormattedCountdownMinute() {
+    int minutes = inMinutes % 60;
+
+    return minutes.toString().padLeft(2, '0');
+  }
 }

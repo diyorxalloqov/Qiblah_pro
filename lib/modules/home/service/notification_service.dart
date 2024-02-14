@@ -14,7 +14,7 @@ class NotificationServices {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> init() async {
+  Future<bool> init() async {
     final String timeZoneName = await FlutterTimezone.getLocalTimezone();
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(timeZoneName));
@@ -40,6 +40,7 @@ class NotificationServices {
         .then((value) {
       log("Notification status: $value ");
     });
+    return true;
   }
 
   Future<void> testNotification() async {

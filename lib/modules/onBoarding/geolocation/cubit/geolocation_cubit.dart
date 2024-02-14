@@ -148,6 +148,7 @@ class GeolocationCubit extends Cubit<GeolocationState> {
 
   void searchRegionByTitle(String region) async {
     print('request keett');
+    emit(state.copyWith(status: ActionStatus.isLoading));
 
     // TODO rename foundAddress into a more meaningful name to explain that these are results when user searched for a region
     try {
@@ -168,12 +169,14 @@ class GeolocationCubit extends Cubit<GeolocationState> {
             isPrecise: false));
       }
       _searchResults = results;
+      emit(state.copyWith(
+          status: ActionStatus.isSuccess, positionList: results));
     } on NoResultFoundException {
       // TODO catch also network failure exception
       _searchResults = List.empty();
-    } finally {
-      emit(state.copyWith());
+      emit(state.copyWith(status: ActionStatus.isError));
     }
+    print(state.status);
   }
 
   Future<PositionInfo?> getChosenLocation() async =>

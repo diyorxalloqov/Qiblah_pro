@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 showLocationBottomSheet(BuildContext c) {
   showModalBottomSheet(
@@ -14,7 +15,6 @@ showLocationBottomSheet(BuildContext c) {
 }
 
 class LocationBottomSheet extends StatefulWidget {
-  // final GeolocationCubit geolocationCubit;
   const LocationBottomSheet({Key? key}) : super(key: key);
 
   @override
@@ -50,7 +50,9 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 25.h),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.isDark
+                    ? bottomSheetBackgroundBlackColor
+                    : bottomSheetBackgroundColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24.r),
                   topRight: Radius.circular(24.r),
@@ -58,46 +60,60 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
               ),
               child: MediumText(text: 'manzilni_qidirish'.tr()),
             ),
+            const SpaceHeight(),
             Container(
               height: context.height * .7,
-              color: bottomSheetBackgroundColor,
+              color: context.isDark
+                  ? bottomSheetBackgroundBlackColor
+                  : bottomSheetBackgroundColor,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: _controller,
-                      keyboardType: TextInputType.text,
-                      autocorrect: false,
-                      onChanged: (v) => searchRegion(v),
-                      decoration: InputDecoration(
-                          fillColor: Colors.white,
+                        controller: _controller,
+                        keyboardType: TextInputType.text,
+                        autocorrect: false,
+                        onChanged: (v) {
+                          if (v.isEmpty) {
+                            state.positionList.clear();
+                            setState(() {});
+                          }
+                          return searchRegion(v);
+                        },
+                        decoration: InputDecoration(
+                          fillColor: context.isDark
+                              ? textFormFieldFillColorBlack
+                              : textFormFieldFillColor,
                           filled: true,
                           prefixIcon: Icon(
                             Icons.search,
-                            color: smallTextColor,
+                            color: context.isDark
+                                ? const Color(0xffB5B9BC)
+                                : const Color(0xff6D7379),
                           ),
                           hintText: 'manzil'.tr(),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0.5)),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15.r),
-                              borderSide: const BorderSide(
-                                  color: Colors.grey, width: 0.5))),
-                    ),
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        )),
                     const SpaceHeight(),
                     if (context.read<GeolocationCubit>().searchResults == null)
-                      const SizedBox(),
+                      const Center(child: CircularProgressIndicator.adaptive()),
                     Expanded(
                         child: context
                                 .read<GeolocationCubit>()
                                 .searchResults!
                                 .isEmpty
                             ? Center(
-                                child:
-                                    Text("Hech qanday natija topilmadi".tr()),
+                                child: Text(state.status == ActionStatus.isError
+                                    ? "Hech qanday natija topilmadi".tr()
+                                    : ''),
                               )
                             : ListView.builder(
                                 itemCount: context
@@ -106,9 +122,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                     ?.length,
                                 padding: const EdgeInsets.all(10.0),
                                 itemBuilder: (context, index) {
-                                  var placemark = context
-                                      .read<GeolocationCubit>()
-                                      .searchResults![index];
+                                  var placemark = state.positionList[index];
                                   return Column(
                                     children: [
                                       InkWell(
@@ -116,15 +130,10 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                           context
                                               .read<GeolocationCubit>()
                                               .saveLocationChoice(placemark);
-                                          print(placemark.latitude);
-                                          print(placemark.longitude);
                                           context
                                               .read<NamozTimeBloc>()
                                               .add(TodayNamozTimes());
-                                          context
-                                              .read<GeolocationCubit>()
-                                              .searchResults
-                                              ?.clear();
+                                          state.positionList.clear();
                                           setState(() {});
                                           Navigator.pop(context);
                                           _controller.clear();

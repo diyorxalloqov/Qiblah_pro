@@ -6,6 +6,7 @@ class DioSettings {
     connectTimeout: const Duration(seconds: 35),
     receiveTimeout: const Duration(seconds: 35),
     contentType: 'application/json',
+    
     validateStatus: (status) =>
         status != null && status >= 100 && status <= 599,
     // headers: {
@@ -17,8 +18,7 @@ class DioSettings {
   BaseOptions get dioBaseOptions => _dioBaseOptions;
 
   Dio get dio {
-    var dio1 = Dio(_dioBaseOptions)
-      ..interceptors.add(InterceptorsWrapper(
+    var dio1 = Dio(_dioBaseOptions)..interceptors.add(InterceptorsWrapper(
         // onError: (DioException e, ErrorInterceptorHandler handler) async {
         //   print('Interceptor OnError');
         //   if (e.response?.statusCode == 401) {
@@ -56,7 +56,7 @@ class DioSettings {
         //   // Modify response here if needed
         //   handler.next(response);
         // },
-      ));
+        ));
     return dio1;
   }
 }

@@ -1,5 +1,5 @@
 class AppImages {
-  static const String appLogo = 'assets/images/app_logo.png';
+  static const String appLogo = 'assets/images/appLogo.png';
   static const String splash = 'assets/images/splash.png';
   static const String person = 'assets/images/person.png';
   static const String notification = 'assets/images/notification.png';
@@ -17,4 +17,6 @@ class AppImages {
   static const String kerakli_duolar = 'assets/images/kerakli_duolar.png';
   static const String tanlangan_zkir = 'assets/images/tanlangan_zikrlar.png';
   static const String tungi_zikr = 'assets/images/tungi_zikrlar.png';
+  static const String qibla_direction = 'assets/images/qibla_direction.png';
+
 }

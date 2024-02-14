@@ -35,6 +35,7 @@ class AppIcon {
   static const String location1 = 'assets/icons/location1.svg';
   static const String person1 = 'assets/icons/person1.svg';
   static const String cancel = 'assets/icons/cancel.svg';
+  static const String cancelBlack = 'assets/icons/cancel_black.svg';
   static const String calendar = 'assets/icons/calendar.svg';
   static const String edit = 'assets/icons/edit.svg';
   static const String volume = 'assets/icons/volume.svg';
@@ -54,11 +55,7 @@ class AppIcon {
   static const String tasbeh = 'assets/icons/tasbeh.svg';
   static const String vibration = 'assets/icons/vibration.svg';
   static const String refresh = 'assets/icons/refresh.svg';
-  static const String count = 'assets/icons/33_count.svg';
   static const String pause = 'assets/icons/pause.svg';
   static const String line = 'assets/icons/line.svg';
-
-
-
-
+  static const String appLogo = 'assets/icons/appLogo.svg';
 }

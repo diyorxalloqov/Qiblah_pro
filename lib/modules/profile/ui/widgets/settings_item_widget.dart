@@ -16,17 +16,21 @@ class SettingsItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      leading: SvgPicture.asset(icon, width: 24, color: smallTextColor),
+      leading: SvgPicture.asset(icon,
+          width: 24,
+          color:
+              context.isDark ? Colors.white.withOpacity(0.5) : smallTextColor),
       title: Text(
         title,
-        style: const TextStyle(
-          color: Color(0xFF293138),
+        style: TextStyle(
+          color: context.isDark ? Colors.white : Colors.black,
           fontSize: AppSizes.size_16,
           fontWeight: AppFontWeight.w_500,
         ),
       ),
       subtitle: SmallText(text: subtitle),
-      trailing: const Icon(Icons.keyboard_arrow_right),
+      trailing:
+          const Icon(Icons.keyboard_arrow_right, color: Color(0xff6D7379)),
     );
   }
 }

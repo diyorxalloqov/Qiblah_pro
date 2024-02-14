@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class SuralarlarPage extends StatelessWidget {
   const SuralarlarPage({super.key});
@@ -24,7 +25,7 @@ class CardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardColor,
+      // color: cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -58,6 +59,7 @@ class CardItem extends StatelessWidget {
         title: Text(
           'Al - Fotixa',
           style: TextStyle(
+            color: context.isDark ? Colors.white : Colors.black,
             fontSize: AppSizes.size_16,
             fontFamily: AppfontFamily.inter.fontFamily,
             fontWeight: AppFontWeight.w_500,
@@ -66,7 +68,7 @@ class CardItem extends StatelessWidget {
         subtitle: Text(
           'Lorem ipsum, 234 oyat',
           style: TextStyle(
-              color: smallTextColor,
+              color: context.isDark ? const Color(0xffE3E7EA) : smallTextColor,
               fontSize: AppSizes.size_12,
               fontFamily: AppfontFamily.inter.fontFamily,
               fontWeight: AppFontWeight.w_400),
@@ -74,7 +76,7 @@ class CardItem extends StatelessWidget {
         trailing: Text(
           'الفاتحة',
           style: TextStyle(
-            color: arabicTextColor,
+            color: context.isDark ? const Color(0xffE3E7EA) : arabicTextColor,
             fontSize: AppSizes.size_24,
             fontFamily: AppfontFamily.inter.fontFamily,
             fontWeight: AppFontWeight.w_500,

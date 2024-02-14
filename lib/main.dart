@@ -2,79 +2,100 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qiblah_pro/core/singletons/service_locator.dart';
 import 'package:qiblah_pro/modules/app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Hive.initFlutter();
-  // HiveDBService.registerAdapters();
   await setupLocator();
-  final SharedPreferences sharedPreferences =
-      await SharedPreferences.getInstance();
 
   runApp(EasyLocalization(
       saveLocale: true,
       startLocale: const Locale("uz"),
       supportedLocales: const [Locale("uz"), Locale("ru")],
       path: "lib/core/lang",
-      child: App(pref: sharedPreferences)));
+      child: const App()));
 }
 
 
-
-
-// import 'package:country_state_city_pro/country_state_city_pro.dart';
+// import 'package:audio_session/audio_session.dart';
 // import 'package:flutter/material.dart';
+// import 'package:just_audio/just_audio.dart';
 
-// void main() {
-//   runApp(MyApp());
+// void main() => runApp(const MyApp());
+
+// class MyApp extends StatefulWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   MyAppState createState() => MyAppState();
 // }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+// class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+//   final _player = AudioPlayer();
+
+//   @override
+//   void initState() {
+//     super.initState();
+
+//     _init();
+//   }
+
+//   Future<void> _init() async {
+//     final session = await AudioSession.instance;
+//     await session.configure(const AudioSessionConfiguration.speech());
+//     _player.playbackEventStream.listen((event) {},
+//         onError: (Object e, StackTrace stackTrace) {
+//       print('STREAM ERROR $e');
+//     });
+//     try {
+//       await _player.setAudioSource(AudioSource.uri(
+//           Uri.parse("https://qibla.onrender.com/files/audio/names0.mp3")));
+//     } catch (e) {
+//       print("Error loading audio source: $e");
+//     }
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   TextEditingController country = TextEditingController();
-//   TextEditingController state = TextEditingController();
-//   TextEditingController city = TextEditingController();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Country->State->City'),
-//       ),
-//       body: Padding(
-//           padding: EdgeInsets.all(15.0),
-//           child: Column(
-//             children: [
-//               CountryStateCityPicker(
-//                   country: country,
-//                   state: state,
-//                   city: city,
-//                   dialogColor: Colors.grey.shade200,
-//                   textFieldDecoration: InputDecoration(
-//                       fillColor: Colors.blueGrey.shade100,
-//                       filled: true,
-//                       suffixIcon: const Icon(Icons.arrow_downward_rounded),
-//                       border: const OutlineInputBorder(
-//                           borderSide: BorderSide.none))),
-//               SizedBox(height: 20),
-//               Text("${country.text}, ${state.text}, ${city.text}")
-//             ],
-//           )),
+//       home: Scaffold(
+//         body: SafeArea(
+      //     child: StreamBuilder<PlayerState>(
+      //       stream: _player.playerStateStream,
+      //       builder: (context, snapshot) {
+      //         final playerState = snapshot.data;
+      //         final processingState = playerState?.processingState;
+      //         final playing = playerState?.playing;
+      //         if (processingState == ProcessingState.loading ||
+      //             processingState == ProcessingState.buffering) {
+      //           return Container(
+      //             margin: const EdgeInsets.all(8.0),
+      //             width: 64.0,
+      //             height: 64.0,
+      //             child: const CircularProgressIndicator(),
+      //           );
+      //         } else if (playing != true) {
+                // return IconButton(
+                //   icon: const Icon(Icons.play_arrow),
+                //   iconSize: 64.0,
+                //   onPressed: _player.play,
+                // );
+      //         } else if (processingState != ProcessingState.completed) {
+      //           return IconButton(
+      //             icon: const Icon(Icons.pause),
+      //             iconSize: 64.0,
+      //             onPressed: _player.pause,
+      //           );
+      //         } else {
+      //           return IconButton(
+      //             icon: const Icon(Icons.replay),
+      //             iconSize: 64.0,
+      //             onPressed: () => _player.seek(Duration.zero),
+      //           );
+      //         }
+      //       },
+      //     ),
+      //   ),
+      // ),
 //     );
 //   }
 // }

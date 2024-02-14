@@ -27,4 +27,5 @@ enum PrayerCalculationMethod {
   tehran,
 }
 
-enum NamozEnum { bomdod, quyosh, peshin, asr, shom, xufton }
+enum NamozEnum { bomdod, quyosh, peshin, asr, shom, xufton, all }
+

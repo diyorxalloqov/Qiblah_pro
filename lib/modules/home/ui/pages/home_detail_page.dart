@@ -1,7 +1,37 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
-class AllFunctionPage extends StatelessWidget {
+class AllFunctionPage extends StatefulWidget {
   const AllFunctionPage({super.key});
+
+  @override
+  State<AllFunctionPage> createState() => _AllFunctionPageState();
+}
+
+class _AllFunctionPageState extends State<AllFunctionPage> {
+  final List<String> _names = const [
+    "Qur'on",
+    "Qibla",
+    "Qazo counter",
+    "Zikr",
+    "99 games"
+  ];
+
+  final List<String> _icons = const [
+    AppIcon.quron,
+    AppIcon.qibla,
+    AppIcon.qazo_counter,
+    AppIcon.zikr,
+    AppIcon.Godnames
+  ];
+
+  final List<String> _itemPages = const [
+    'quron',
+    'qibla',
+    'qazo',
+    'zikr',
+    'names'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -9,47 +39,54 @@ class AllFunctionPage extends StatelessWidget {
       appBar: customAppbar(context, "barcha_funksiyalar".tr()),
       body: Column(
         children: [
-          SpaceHeight(height: 12.h),
           Expanded(
+            flex: 4,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18),
+              margin: EdgeInsets.only(top: 12.h),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                color: Colors.white,
-              ),
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: context.isDark ? containerBlackColor : containerColor),
               child: GridView.builder(
-                  itemCount: 20,
+                  itemCount: 5,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 28.w,
-                      mainAxisSpacing: 18.h,
-                      crossAxisCount: 4),
+                      mainAxisSpacing: 18.h, crossAxisCount: 4),
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 60.r,
-                          width: 60.r,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: smallTextColor.withOpacity(0.1), width: 1),
-                            color: Colors.red,
+                    return InkWell(
+                      onTap: () =>
+                          Navigator.pushNamed(context, _itemPages[index]),
+                      borderRadius: BorderRadius.circular(50.r),
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.symmetric(horizontal: 14),
+                            decoration: ShapeDecoration(
+                              color: context.isDark
+                                  ? xizmatlarItemBlack
+                                  : xizmatlarItem,
+                              shape: const OvalBorder(
+                                  side: BorderSide(
+                                      color: Colors.black, width: 0.1)),
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                _icons[index],
+                                color: context.isDark
+                                    ? const Color(0xff6D7379)
+                                    : null,
+                              ),
+                            ),
                           ),
-                        ),
-                        Text('data')
-                      ],
+                          SizedBox(height: 5.h),
+                          Text(_names[index])
+                        ],
+                      ),
                     );
                   }),
             ),
           ),
-          // Expanded(
-          //     child: GridView.builder(
-          //         itemCount: 20,
-          //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //             crossAxisCount: 4),
-          //         itemBuilder: (context, index) {
-          //           return CircleAvatar();
-          //         }))
+          const Spacer(flex: 7),
         ],
       ),
     );

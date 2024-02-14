@@ -21,7 +21,7 @@ class NotificationPermissionEvent extends OnBoardingEvent {
 
 class UserDataEvent extends OnBoardingEvent {
   final String name;
-  final bool isMan;
+  final int isMan;
   UserDataEvent({required this.name, required this.isMan});
 
   @override

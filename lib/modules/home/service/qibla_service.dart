@@ -12,6 +12,9 @@ class QiblaService {
     var offset = getOffsetFromNorth(latitude, longitude);
     var heading = compassEvent.heading ?? 0.0;
     final qiblah = heading + (360 - offset);
+    print(qiblah);
+    print(heading);
+    print(offset);
 
     return DirectionInfo(qiblah, heading, offset);
   }

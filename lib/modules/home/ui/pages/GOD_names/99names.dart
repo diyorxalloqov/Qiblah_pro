@@ -1,6 +1,6 @@
+import 'dart:async';
+
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/names/names_bloc.dart';
-import 'package:qiblah_pro/modules/home/ui/widgets/shimmer/names_shimmer.dart';
 
 class NamesPage extends StatefulWidget {
   const NamesPage({super.key});
@@ -18,26 +18,41 @@ class _NamesPageState extends State<NamesPage> {
   }
 
   @override
+  void dispose() {
+    namesBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(context, 'names'.tr()),
       body: BlocProvider.value(
         value: namesBloc,
-        child: BlocBuilder<NamesBloc, NamesState>(
-          builder: (context, state) {
-            if (state.status == ActionStatus.isLoading) {
-              return const NamesShimmer();
-            }
-            if (state.status == ActionStatus.isSuccess) {
-              return ListView.builder(
-                  itemCount: state.namesModel!.data!.length,
-                  itemBuilder: (context, index) => CardItem1(
-                      index: index, namesBloc: namesBloc, state: state));
-            }
-            return Center(
-              child: Text(state.error),
-            );
+        child: RefreshIndicator.adaptive(
+          color: primaryColor.withOpacity(0.4),
+          onRefresh: () {
+            final completer = Completer<void>();
+            namesBloc.add(GetNamesEvent());
+            completer.complete();
+            return completer.future;
           },
+          child: BlocBuilder<NamesBloc, NamesState>(
+            builder: (context, state) {
+              if (state.status == ActionStatus.isLoading) {
+                return const LoadingPage();
+              }
+              if (state.status == ActionStatus.isSuccess) {
+                return ListView.builder(
+                    itemCount: state.namesModel.length,
+                    itemBuilder: (context, index) => CardItem1(
+                        index: index, namesBloc: namesBloc, state: state));
+              }
+              return Center(
+                child: Text(state.error),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -57,7 +72,6 @@ class CardItem1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -86,15 +100,16 @@ class CardItem1 extends StatelessWidget {
           )),
         ),
         title: Text(
-          state.namesModel?.data?[index].title.toString() ?? '',
+          state.namesModel[index].title.toString(),
           style: TextStyle(
             fontSize: AppSizes.size_16,
+            color: context.isDark ? Colors.white : Colors.black,
             fontFamily: AppfontFamily.inter.fontFamily,
             fontWeight: AppFontWeight.w_500,
           ),
         ),
         subtitle: Text(
-          state.namesModel?.data?[index].translation.toString() ?? '',
+          state.namesModel[index].translation.toString(),
           style: TextStyle(
               color: smallTextColor,
               fontSize: AppSizes.size_12,
@@ -102,9 +117,9 @@ class CardItem1 extends StatelessWidget {
               fontWeight: AppFontWeight.w_400),
         ),
         trailing: Text(
-          state.namesModel?.data?[index].nameArabic.toString() ?? '',
+          state.namesModel[index].nameArabic.toString(),
           style: TextStyle(
-            color: arabicTextColor,
+            color: context.isDark ? arabicWhiteTextColor : arabicTextColor,
             fontSize: AppSizes.size_24,
             fontFamily: AppfontFamily.inter.fontFamily,
             fontWeight: AppFontWeight.w_500,

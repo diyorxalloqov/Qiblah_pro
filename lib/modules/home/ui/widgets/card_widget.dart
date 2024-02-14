@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
@@ -8,11 +9,11 @@ class CardWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: context.height * 0.3,
           width: context.width * 0.85,
-          padding: const EdgeInsets.all(18.0),
+          padding: EdgeInsets.all(18.0),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12.r)),
+              color: context.isDark ? homeBlackMainColor : Colors.white,
+              borderRadius: BorderRadius.circular(12.r)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -51,9 +52,14 @@ class CardWidget extends StatelessWidget {
                     radius: 30.r,
                     child: CircleAvatar(
                       radius: 30.r,
-                      backgroundColor: circleAvatarColor,
+                      backgroundColor: context.isDark
+                          ? circleAvatarBlackColor
+                          : circleAvatarColor,
                       child: Center(
-                        child: SvgPicture.asset(AppIcon.bookmark),
+                        child: SvgPicture.asset(AppIcon.bookmark,
+                            color: context.isDark
+                                ? const Color(0xffB5B9BC)
+                                : null),
                       ),
                     ),
                   ),
@@ -63,9 +69,14 @@ class CardWidget extends StatelessWidget {
                     radius: 30.r,
                     child: CircleAvatar(
                       radius: 30.r,
-                      backgroundColor: circleAvatarColor,
+                      backgroundColor: context.isDark
+                          ? circleAvatarBlackColor
+                          : circleAvatarColor,
                       child: Center(
-                        child: SvgPicture.asset(AppIcon.share),
+                        child: SvgPicture.asset(AppIcon.share,
+                            color: context.isDark
+                                ? const Color(0xffB5B9BC)
+                                : null),
                       ),
                     ),
                   ),

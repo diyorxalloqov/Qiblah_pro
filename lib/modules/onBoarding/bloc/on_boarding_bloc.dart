@@ -2,7 +2,7 @@ import 'dart:async';
 
 // import 'package:location/location.dart' hide PermissionStatus;
 import 'package:permission_handler/permission_handler.dart' hide ServiceStatus;
-import 'package:qiblah_pro/core/db/db_service.dart';
+import 'package:qiblah_pro/core/db/user_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 part 'on_boarding_event.dart';
@@ -15,8 +15,8 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
     on<UserDataEvent>(_userdata);
   }
 
+  final UserDBService _userDBService = UserDBService();
   late PermissionStatus _notPermission;
-  final DBService _dbService = DBService();
 
   var lang = const FlutterSecureStorage().read(key: Keys.lang);
 
@@ -42,6 +42,7 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
       // Request permission only if it is denied or permanently denied
       await Permission.notification.request();
       _notPermission = await Permission.notification.status;
+      emit(state.copyWith(isGarantedNotification: true));
       print('${Permission.notification} status notification');
     }
 
@@ -57,7 +58,7 @@ class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
 
   FutureOr<void> _userdata(UserDataEvent event, Emitter<OnBoardingState> emit) {
     try {
-      _dbService
+      _userDBService
           .insertUserdata(UserModel(isMan: event.isMan, name: event.name));
       print('user data is saving');
     } on DatabaseException catch (e) {

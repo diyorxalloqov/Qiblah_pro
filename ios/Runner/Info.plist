@@ -50,5 +50,12 @@
 		<true />
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true />
+		<!-- Location permission descriptions -->
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>$(QIBLAH_PRO) needs Location access for "prayer times get and where to pisition"!</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
 	</dict>
 </plist>

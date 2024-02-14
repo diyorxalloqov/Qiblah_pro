@@ -2,6 +2,7 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/juzlar.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/suralar.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/tanlanganlar.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class QuronPage extends StatefulWidget {
   const QuronPage({super.key});
@@ -33,7 +34,8 @@ class _QuronPageState extends State<QuronPage> with TickerProviderStateMixin {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
               ),
-              child: SvgPicture.asset(AppIcon.arrowLeft),
+              child: SvgPicture.asset(AppIcon.arrowLeft,
+                  color: context.isDark ? const Color(0xffB5B9BC) : null),
             )),
         centerTitle: true,
         title: Text(
@@ -48,8 +50,9 @@ class _QuronPageState extends State<QuronPage> with TickerProviderStateMixin {
             indicatorWeight: 4,
             dividerColor: Colors.transparent,
             indicatorSize: TabBarIndicatorSize.label,
-            labelColor: Colors.black,
-            unselectedLabelColor: smallTextColor,
+            labelColor: context.isDark ? Colors.white : Colors.black,
+            unselectedLabelColor:
+                context.isDark ? Colors.white54 : smallTextColor,
             controller: _tabController,
             labelStyle: TextStyle(
                 fontSize: AppSizes.size_14,

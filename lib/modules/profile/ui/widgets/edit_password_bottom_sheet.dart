@@ -98,7 +98,9 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 25.h),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: context.isDark
+                ? bottomSheetBackgroundBlackColor
+                : bottomSheetBackgroundColor,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(24.r),
               topRight: Radius.circular(24.r),
@@ -106,11 +108,14 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
           ),
           child: MediumText(text: 'parolni_ozgartirish'.tr()),
         ),
+        const SpaceHeight(),
         Container(
           height: _isKeyboardAppear || _isTextFieldFocused
               ? context.height
               : context.height * 0.6,
-          color: bottomSheetBackgroundColor,
+          color: context.isDark
+              ? bottomSheetBackgroundBlackColor
+              : bottomSheetBackgroundColor,
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,14 +137,21 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: oldpasswordVisibile
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: textFormFieldFillColor,
                     filled: true,
+                    fillColor: context.isDark
+                        ? textFormFieldFillColorBlack
+                        : Colors.white,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide(
-                            color: smallTextColor.withOpacity(0.3), width: 1)),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     hintStyle: TextStyle(
                       fontSize: AppSizes.size_16,
@@ -183,14 +195,21 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: newpassconfirmVisible
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: textFormFieldFillColor,
                     filled: true,
+                    fillColor: context.isDark
+                        ? textFormFieldFillColorBlack
+                        : Colors.white,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide(
-                            color: smallTextColor.withOpacity(0.3), width: 1)),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     hintStyle: TextStyle(
                       fontSize: AppSizes.size_16,
@@ -232,14 +251,21 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
                             icon: confirmpassconfirmVisible
                                 ? const Icon(Icons.visibility)
                                 : const Icon(Icons.visibility_off))),
-                    fillColor: textFormFieldFillColor,
                     filled: true,
+                    fillColor: context.isDark
+                        ? textFormFieldFillColorBlack
+                        : Colors.white,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.r),
-                        borderSide: BorderSide(
-                            color: smallTextColor.withOpacity(0.3), width: 1)),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: context.isDark
+                          ? BorderSide.none
+                          : const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     hintStyle: TextStyle(
                       fontSize: AppSizes.size_16,

@@ -2,7 +2,7 @@
 // import 'package:path_provider/path_provider.dart';
 // import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
-// class HiveDBService {
+// class HiveUserDBService {
 //   Box<PositionInfo>? positionBox; // Use 'late' to initialize later
 
 //   static void registerAdapters() {

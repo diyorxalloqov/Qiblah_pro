@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:qiblah_pro/core/constants/api/app_urls.dart';
 import 'package:qiblah_pro/core/singletons/service_locator.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/global/model/quron_model.dart';
+import 'package:qiblah_pro/modules/home/models/quron_model.dart';
 
 class QuronService {
   final Dio client = serviceLocator<DioSettings>().dio;

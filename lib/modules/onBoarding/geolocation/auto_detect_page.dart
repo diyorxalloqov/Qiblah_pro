@@ -1,5 +1,6 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
+import 'package:qiblah_pro/modules/onBoarding/presentation/widgets/on_boarding_location_bottomsheet.dart';
 
 class AutoChoiceLocation extends StatefulWidget {
   final PageController pageController;
@@ -163,7 +164,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
           children: [
             const SizedBox.shrink(),
             Text(
-              "Gps o'chiq Yoqish",
+              "gps_ochiq_yoqish".tr(),
               style: AppfontFamily.inter.copyWith(
                 fontSize: AppSizes.size_16,
                 color: buttonNameColor,
@@ -187,7 +188,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
           children: [
             const SizedBox.shrink(),
             Text(
-              "Gps o'chiq Yoqish",
+              "gps_ruxsat_berish".tr(),
               style: AppfontFamily.inter.copyWith(
                 fontSize: AppSizes.size_16,
                 color: buttonNameColor,
@@ -211,7 +212,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
           children: [
             const SizedBox.shrink(),
             Text(
-              "Gpsga ruxsat berish",
+              "gps_ochiq_yoqish".tr(),
               style: TextStyle(
                 fontSize: AppSizes.size_16,
                 fontFamily: AppfontFamily.inter.fontFamily,
@@ -237,7 +238,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
         children: [
           const SizedBox.shrink(),
           Text(
-            "Aniqlanmadi",
+            "aniqlanmadi".tr(),
             style: TextStyle(
               fontSize: AppSizes.size_16,
               fontFamily: AppfontFamily.inter.fontFamily,
@@ -256,6 +257,6 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
 
   void _navigateToManualChooser(BuildContext context) {
     /// bottom sheet bilan user tanlashi kerak
-    showLocationBottomSheet(context);
+    showLocationBottomSheetOnBoarding(context, widget.pageController);
   }
 }

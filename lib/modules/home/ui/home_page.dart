@@ -1,5 +1,13 @@
+import 'dart:async';
+
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
+import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_cubit.dart';
+import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_state.dart';
 import 'package:qiblah_pro/modules/home/ui/widgets/card_widget.dart';
+import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
+import 'package:qiblah_pro/utils/date_utils.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String date = '';
+  late String _currentTime;
 
   final List<String> _names = const [
     "Qur'on",
@@ -35,16 +43,42 @@ class _HomePageState extends State<HomePage> {
     'names'
   ];
 
+  late TimeCountDownCubit timeCountDownCubit;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<NamozTimeBloc>().add(TodayNamozTimes());
+    timeCountDownCubit = TimeCountDownCubit();
+    _updateCurrentTime();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateCurrentTime();
+    });
+  }
+
+  @override
+  void dispose() {
+    timeCountDownCubit.close();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _updateCurrentTime() {
+    setState(() {
+      _currentTime = '${DateTime.now().hour.toString().padLeft(2, '0')}:'
+          '${DateTime.now().minute.toString().padLeft(2, '0')}';
+    });
+  }
+
   @override
   build(BuildContext context) {
-    DateTime.now().minute >= 10
-        ? date = "${DateTime.now().minute}"
-        : '0${DateTime.now().minute}';
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppBar(
+            scrolledUnderElevation: 0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(12.r),
@@ -65,12 +99,15 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
             margin: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
+                color: context.isDark ? homeBlackMainColor : null,
                 borderRadius: BorderRadius.circular(12.r),
-                gradient: LinearGradient(colors: [
-                  smallTextColor.withOpacity(0.15),
-                  const Color(0xff7CD722).withOpacity(0.25),
-                  const Color(0xff0A9D4E).withOpacity(0.2)
-                ])),
+                gradient: context.isDark
+                    ? null
+                    : LinearGradient(colors: [
+                        smallTextColor.withOpacity(0.15),
+                        const Color(0xff7CD722).withOpacity(0.25),
+                        const Color(0xff0A9D4E).withOpacity(0.2)
+                      ])),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,25 +115,37 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${DateTime.now().hour.toString()}:$date",
+                      _currentTime,
                       style: TextStyle(
                         fontSize: AppSizes.size_24,
-                        color: highTextColor,
+                        color: context.isDark ? Colors.white : highTextColor,
                         fontWeight: AppFontWeight.w_700,
                       ),
                     ),
                     const SpaceHeight(),
-                    SizedBox(
-                      width: 150.w,
-                      child: Text(
-                        "${("asr").tr()} 1 ${("soat").tr()}, 32 ${("daqiqadan_song").tr()}",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: const TextStyle(
-                          color: Color(0xFF6D7379),
-                          fontSize: AppSizes.size_12,
-                          fontWeight: AppFontWeight.w_400,
-                        ),
+                    BlocProvider.value(
+                      value: timeCountDownCubit,
+                      child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                        builder: (context, state) {
+                          return SizedBox(
+                            width: 150.w,
+                            child: BlocBuilder<TimeCountDownCubit,
+                                TimeCountDownState>(
+                              builder: (context, state1) {
+                                return Text(
+                                  currentNamozTime(state, state1),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                    color: Color(0xFF6D7379),
+                                    fontSize: AppSizes.size_12,
+                                    fontWeight: AppFontWeight.w_400,
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ),
                     const SpaceHeight(),
@@ -110,6 +159,7 @@ class _HomePageState extends State<HomePage> {
                             "barchasini_korish".tr(),
                             style: TextStyle(
                                 color: primaryColor,
+                                fontFamily: AppfontFamily.inter.fontFamily,
                                 fontSize: AppSizes.size_14,
                                 fontWeight: AppFontWeight.w_700),
                           ),
@@ -126,14 +176,36 @@ class _HomePageState extends State<HomePage> {
                     const Spacer(),
                     Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                          EdgeInsets.only(right: 10.w, left: 10.w, top: 6.h),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE3F6DC).withOpacity(0.3),
+                        color: context.isDark
+                            ? const Color(0xff232C37)
+                            : const Color(0xFFE3F6DC).withOpacity(0.3),
                         borderRadius: BorderRadius.circular(50.r),
                       ),
                       child: Row(
                         children: [
-                          SmallText(text: 'Toshkent'),
+                          FutureBuilder(
+                              future: context
+                                  .read<GeolocationCubit>()
+                                  .getChosenLocation(),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  snapshot.data?.region.toString() ??
+                                      'not found',
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    color: context.isDark
+                                        ? const Color(0xffB5B9BC)
+                                        : const Color(0xff6D7379),
+                                    fontSize: AppSizes.size_16,
+                                    fontFamily: AppfontFamily.inter.fontFamily,
+                                    fontWeight: AppFontWeight.w_400,
+                                  ),
+                                );
+                              }),
                           const SpaceWidth(),
                           SvgPicture.asset(AppIcon.location)
                         ],
@@ -146,10 +218,10 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            height: context.height * 0.23,
+            height: context.height * 0.2,
             padding: EdgeInsets.only(bottom: 18.h, top: 18.h, left: 12.w),
             decoration: ShapeDecoration(
-              color: Colors.white,
+              color: context.isDark ? homeBlackMainColor : Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
             ),
@@ -161,8 +233,9 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       "bizning_xizmatlar".tr(),
                       style: TextStyle(
-                          color: highTextColor,
+                          color: context.isDark ? Colors.white : highTextColor,
                           fontSize: AppSizes.size_16,
+                          fontFamily: AppfontFamily.comforta.fontFamily,
                           fontWeight: AppFontWeight.w_700),
                     ),
                     InkWell(
@@ -173,6 +246,7 @@ class _HomePageState extends State<HomePage> {
                             "barchasini_korish".tr(),
                             style: TextStyle(
                                 color: primaryColor,
+                                fontFamily: AppfontFamily.inter.fontFamily,
                                 fontSize: AppSizes.size_14,
                                 fontWeight: AppFontWeight.w_700),
                           ),
@@ -202,13 +276,18 @@ class _HomePageState extends State<HomePage> {
                                   Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: ShapeDecoration(
-                                      color: xixmatlarItem,
+                                      color: context.isDark
+                                          ? xizmatlarItemBlack
+                                          : xizmatlarItem,
                                       shape: const OvalBorder(
                                           side: BorderSide(
                                               color: Colors.black, width: 0.1)),
                                     ),
                                     child: Center(
-                                      child: SvgPicture.asset(_icons[index]),
+                                      child: SvgPicture.asset(_icons[index],
+                                          color: context.isDark
+                                              ? const Color(0xff6D7379)
+                                              : null),
                                     ),
                                   ),
                                   SizedBox(height: 5.h),
@@ -236,7 +315,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Column(
                 children: [
-                  SpaceHeight(height: context.height * 0.15),
+                  SpaceHeight(height: 130.h),
                   Column(
                     children: List.generate(
                         11 + 1,
@@ -247,9 +326,11 @@ class _HomePageState extends State<HomePage> {
                                   Container(
                                     height: 18,
                                     width: 18,
-                                    decoration: const ShapeDecoration(
-                                        color: Color(0xffD1F3E1),
-                                        shape: OvalBorder()),
+                                    decoration: ShapeDecoration(
+                                        color: context.isDark
+                                            ? primaryColor
+                                            : const Color(0xffD1F3E1),
+                                        shape: const OvalBorder()),
                                   ),
                                   Dash(
                                     dashThickness: 2,
@@ -274,11 +355,10 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             if (index == 0)
-                              InkWell(
+                              GestureDetector(
                                 onTap: () {
                                   Navigator.pushNamed(context, 'newsDetail');
                                 },
-                                borderRadius: BorderRadius.circular(12.r),
                                 child: Container(
                                   margin: EdgeInsets.only(
                                       bottom: context.bottom + 10),
@@ -286,7 +366,9 @@ class _HomePageState extends State<HomePage> {
                                   width: context.width * 0.85,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(12.r),
-                                      color: Colors.grey),
+                                      color: context.isDark
+                                          ? homeBlackMainColor
+                                          : Colors.grey),
                                 ),
                               ),
                             const CardWidget(),
@@ -298,5 +380,29 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  String currentNamozTime(NamozTimeState state, TimeCountDownState state1) {
+    String hour = state1.durationUntilNextPrayer != Duration.zero
+        ? state1.durationUntilNextPrayer.getFormattedCountdownHour()
+        : '';
+    String minute = state1.durationUntilNextPrayer != Duration.zero
+        ? state1.durationUntilNextPrayer.getFormattedCountdownMinute()
+        : '';
+    if (state.dailyTimes!.bomdod.isCurrent) {
+      return "${'quyosh'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    } else if (state.dailyTimes!.quyosh.isCurrent) {
+      return "${'peshin'.tr()} $hour ${('soat'.tr())}  $minute ${("daqiqadan_song").tr()}";
+    } else if (state.dailyTimes!.peshin.isCurrent) {
+      return "${'asr'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    } else if (state.dailyTimes!.asr.isCurrent) {
+      return "${'shom'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    } else if (state.dailyTimes!.shom.isCurrent) {
+      return "${'xufton'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    } else if (state.dailyTimes!.xufton.isCurrent) {
+      return "${'bomdod'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    } else {
+      return "${'bomdod'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    }
   }
 }

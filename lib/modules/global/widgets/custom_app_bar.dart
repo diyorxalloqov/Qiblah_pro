@@ -1,9 +1,11 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 PreferredSizeWidget customAppbar(BuildContext context, String title,
     {String? icon1,
     VoidCallback? onTap1,
     String? icon2,
+    Widget? icon3,
     VoidCallback? onTap2}) {
   return AppBar(
     scrolledUnderElevation: 0,
@@ -17,7 +19,8 @@ PreferredSizeWidget customAppbar(BuildContext context, String title,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          child: SvgPicture.asset(AppIcon.arrowLeft),
+          child: SvgPicture.asset(AppIcon.arrowLeft,
+              color: context.isDark ? const Color(0xffB5B9BC) : null),
         )),
     centerTitle: true,
     title: Text(
@@ -29,11 +32,18 @@ PreferredSizeWidget customAppbar(BuildContext context, String title,
     ),
     actions: [
       icon1 != null
-          ? IconButton(onPressed: onTap1, icon: SvgPicture.asset(icon1))
+          ? IconButton(
+              onPressed: onTap1,
+              icon: SvgPicture.asset(icon1,
+                  color: context.isDark ? Colors.white : null))
           : const SizedBox.shrink(),
       icon2 != null
-          ? IconButton(onPressed: onTap2, icon: SvgPicture.asset(icon2))
-          : const SizedBox.shrink()
+          ? IconButton(
+              onPressed: onTap2,
+              icon: SvgPicture.asset(icon2,
+                  color: context.isDark ? Colors.white : null))
+          : const SizedBox.shrink(),
+      icon3 ?? const SizedBox.shrink(),
     ],
   );
 }

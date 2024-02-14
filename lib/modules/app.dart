@@ -1,13 +1,11 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class App extends StatelessWidget {
-  final SharedPreferences pref;
-  const App({Key? key, required this.pref}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +53,7 @@ class App extends StatelessWidget {
                   ],
                   child: MaterialApp(
                     debugShowCheckedModeBanner: false,
+                    darkTheme: AppTheme().darkMode,
                     localizationsDelegates: context.localizationDelegates,
                     supportedLocales: context.supportedLocales,
                     locale: context.locale,

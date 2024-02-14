@@ -3,7 +3,7 @@ import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/names_details_page.da
 import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/tasbeh_name_page.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_details_pages/juzlar_details_page.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/zikr/tasbeh.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr_details.dart';
 
 class RouteList {
   static final RouteList _generate = RouteList._init();
@@ -62,7 +62,8 @@ class RouteList {
       case 'tasbehPage':
         return _navigate(const TasbehPage());
       case 'tasbehNamePage':
-        return _navigate(const TasbehNamePage());
+        return _navigate(TasbehNamePage(
+            namesDetailsArgument: settings.arguments as NamesDetailsArgument));
     }
     return null;
   }

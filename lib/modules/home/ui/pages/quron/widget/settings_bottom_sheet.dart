@@ -3,6 +3,7 @@ import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ekran.d
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/korsatish.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ovoz.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/umumiy.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 showSettingBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -34,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage>
     return Container(
         height: context.height * 0.5,
         decoration: BoxDecoration(
-            color: bottomSheetBackgroundColor,
+            color: context.isDark ? homeBackColor : bottomSheetBackgroundColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(24.r),
                 topRight: Radius.circular(24.r))),
@@ -43,14 +44,13 @@ class _SettingsPageState extends State<SettingsPage>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: double.infinity,
-              // padding: EdgeInsets.symmetric(horizontal: 12.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.isDark
+                    ? bottomSheetBackgroundBlackColor
+                    : bottomSheetBackgroundColor,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24.r),
-                  topRight: Radius.circular(24.r),
-                ),
+                    topLeft: Radius.circular(24.r),
+                    topRight: Radius.circular(24.r)),
               ),
               child: Column(
                 children: [
@@ -67,7 +67,9 @@ class _SettingsPageState extends State<SettingsPage>
                         height: 4,
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: ShapeDecoration(
-                          color: const Color(0xFFE3E6EA),
+                          color: context.isDark
+                              ? const Color(0xff232C37)
+                              : const Color(0xffE3E7EA),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(650),
                           ),
@@ -82,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage>
                       indicatorWeight: 4,
                       dividerColor: Colors.transparent,
                       indicatorSize: TabBarIndicatorSize.label,
-                      labelColor: Colors.black,
+                      labelColor: context.isDark ? Colors.white : Colors.black,
                       unselectedLabelColor: smallTextColor,
                       controller: _tabController,
                       labelStyle: TextStyle(
@@ -90,18 +92,10 @@ class _SettingsPageState extends State<SettingsPage>
                           fontFamily: AppfontFamily.inter.fontFamily,
                           fontWeight: AppFontWeight.w_600),
                       tabs: [
-                        Tab(
-                          text: 'ekran'.tr(),
-                        ),
-                        Tab(
-                          text: 'umumiy'.tr(),
-                        ),
-                        Tab(
-                          text: 'korsatish'.tr(),
-                        ),
-                        Tab(
-                          text: 'ovoz'.tr(),
-                        ),
+                        Tab(text: 'ekran'.tr()),
+                        Tab(text: 'umumiy'.tr()),
+                        Tab(text: 'korsatish'.tr()),
+                        Tab(text: 'ovoz'.tr()),
                       ]),
                 ],
               ),

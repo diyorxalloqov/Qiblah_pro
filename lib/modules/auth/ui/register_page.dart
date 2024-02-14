@@ -2,6 +2,7 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -54,25 +55,48 @@ class _RegisterPageState extends State<RegisterPage> {
     super.initState();
   }
 
-  final FlCountryCodePicker countryPicker = const FlCountryCodePicker();
   String dialCode = '+998';
 
   @override
   Widget build(BuildContext context) {
+    final FlCountryCodePicker countryPicker = FlCountryCodePicker(
+      searchBarDecoration: InputDecoration(
+        filled: true,
+        hintText: 'davlatni_tanlang'.tr(),
+        hintStyle: TextStyle(
+          fontSize: AppSizes.size_16,
+          fontWeight: AppFontWeight.w_400,
+          color: textFormFieldHintColor,
+        ),
+        fillColor: context.isDark
+            ? textFormFieldFillColorBlack
+            : textFormFieldFillColor,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
     return Scaffold(
+      backgroundColor: context.isDark ? const Color(0xff153125) : null,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 32.h),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                  Colors.green.shade100,
-                  Colors.lightGreen.shade50,
-                  Colors.green.shade50
-                ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-                child: Row(
+          child: Container(
+            padding: EdgeInsets.only(top: 32.h),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: context.isDark
+                        ? loginRegisterBlackGradient
+                        : loginRegisterGradient,
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft)),
+            child: Column(
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -86,227 +110,297 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     CircleAvatar(
                         radius: 88.r,
-                        backgroundColor: Colors.white,
-                        child: Center(child: Image.asset(AppImages.appLogo))),
+                        backgroundColor: context.isDark
+                            ? const Color(0xff232C37)
+                            : Colors.white,
+                        child: Center(
+                          child: SvgPicture.asset(AppIcon.appLogo, width: 50),
+                        )),
                     GestureDetector(
                         onTap: () => Navigator.pushNamedAndRemoveUntil(
                             context, 'bottomNavbar', (route) => false),
-                        child: SvgPicture.asset(AppIcon.cancel))
+                        child: SvgPicture.asset(context.isDark
+                            ? AppIcon.cancelBlack
+                            : AppIcon.cancel))
                   ],
                 ),
-              ),
-              Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-                height: context.height * 0.7,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(18),
-                      topRight: Radius.circular(18)),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HighText(text: 'royxatdan_otish'.tr()),
-                      const SpaceHeight(),
-                      Text(
-                        "royxatdan_otish_promt".tr(),
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: AppfontFamily.inter.fontFamily,
-                          fontWeight: FontWeight.w400,
-                        ),
+                SpaceHeight(height: 40.h),
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 12.w, vertical: 20.h),
+                      decoration: BoxDecoration(
+                        color: context.isDark
+                            ? bottomSheetBackgroundBlackColor
+                            : bottomSheetBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(18),
+                            topRight: Radius.circular(18)),
                       ),
-                      SpaceHeight(height: 25.h),
-                      SmallText(text: 'telefon_raqam'.tr()),
-                      const SpaceHeight(),
-                      Form(
-                        key: _key,
+                      child: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextFormField(
-                              controller: _phoneController,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [
-                                MaskTextInputFormatter(
-                                  mask: '+000 00 000 00 00',
-                                  filter: {'0': RegExp(r'[0-9]')},
-                                )
-                              ],
-                              decoration: InputDecoration(
-                                filled: true,
-                                prefixIcon: TextButton(
-                                    onPressed: () async {
-                                      final picked = await countryPicker
-                                          .showPicker(context: context);
-                                      dialCode = picked?.dialCode ?? '+998';
-                                      setState(() {});
-                                    },
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              HighText(text: 'royxatdan_otish'.tr()),
+                              const SpaceHeight(),
+                              SmallText(text: "royxatdan_otish_promt".tr()),
+                              SpaceHeight(height: 25.h),
+                              SmallText(text: 'telefon_raqam'.tr()),
+                              const SpaceHeight(),
+                              Form(
+                                key: _key,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TextFormField(
+                                      controller: _phoneController,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        // MaskTextInputFormatter(
+                                        //   mask: '+000 00 000 00 00',
+                                        //   filter: {'0': RegExp(r'[0-9]')},
+                                        // )
+                                      ],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: context.isDark
+                                            ? textFormFieldFillColorBlack
+                                            : const Color(0xffE3E7EA),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: context.isDark
+                                              ? BorderSide.none
+                                              : const BorderSide(
+                                                  color: Colors.grey, width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: context.isDark
+                                              ? BorderSide.none
+                                              : const BorderSide(
+                                                  color: Colors.grey, width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        prefixIcon: TextButton(
+                                            onPressed: () async {
+                                              final picked = await countryPicker
+                                                  .showPicker(
+                                                context: context,
+                                                backgroundColor: context.isDark
+                                                    ? bottomSheetBackgroundBlackColor
+                                                    : bottomSheetBackgroundColor,
+                                              );
+                                              dialCode =
+                                                  picked?.dialCode ?? '+998';
+                                              setState(() {});
+                                            },
+                                            child: Text(
+                                              dialCode,
+                                              style: TextStyle(
+                                                  color: context.isDark
+                                                      ? Colors.white
+                                                      : Colors.black),
+                                            )),
+                                        hintText: 'telefon_raqam'.tr(),
+                                        hintStyle: TextStyle(
+                                          fontSize: AppSizes.size_16,
+                                          fontWeight: AppFontWeight.w_400,
+                                          color: textFormFieldHintColor,
+                                        ),
+                                      ),
+                                    ),
+                                    SpaceHeight(height: 15.h),
+                                    SmallText(text: 'parol'.tr()),
+                                    const SpaceHeight(),
+                                    TextFormField(
+                                      focusNode: _focusNode,
+                                      controller: _passwordController,
+                                      obscureText: passwordVisibile,
+                                      obscuringCharacter: "*",
+                                      decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: context.isDark
+                                              ? textFormFieldFillColorBlack
+                                              : const Color(0xffE3E7EA),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: context.isDark
+                                                ? BorderSide.none
+                                                : const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: context.isDark
+                                                ? BorderSide.none
+                                                : const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          suffixIcon: Visibility(
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    passwordVisibile =
+                                                        !passwordVisibile;
+                                                    setState(() {});
+                                                  },
+                                                  icon: passwordVisibile
+                                                      ? const Icon(
+                                                          Icons.visibility_off)
+                                                      : const Icon(
+                                                          Icons.visibility))),
+                                          hintStyle: TextStyle(
+                                            fontSize: AppSizes.size_16,
+                                            fontWeight: AppFontWeight.w_400,
+                                            color: textFormFieldHintColor,
+                                          ),
+                                          hintText: "Password"),
+                                      validator: (value) {
+                                        String? passwordError =
+                                            validatePassword(value);
+                                        // if (value == null) {
+                                        //   return "Iltimos bo'sh qoldirmang";
+                                        // } else if (value.length < 4) {
+                                        //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                                        // } else if (passwordError != null) {
+                                        //   return passwordError;
+                                        // } else if (value.length > 16) {
+                                        //   return "Parol yaroqsiz";
+                                        // } else {
+                                        //   return null;
+                                        // }
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SpaceHeight(height: 15.h),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    // await StorageRepository.deleteBool(
+                                    //     Keys.isOnboarding);
+                                    Navigator.pushNamedAndRemoveUntil(context,
+                                        'bottomNavbar', (route) => false);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      fixedSize: Size(double.infinity, 50.h),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.r))),
+                                  child: Center(
                                     child: Text(
-                                      dialCode,
-                                      style:
-                                          const TextStyle(color: Colors.black),
-                                    )),
-                                hintText: 'telefon_raqam'.tr(),
-                                hintStyle: TextStyle(
-                                  fontSize: AppSizes.size_16,
-                                  fontWeight: AppFontWeight.w_400,
-                                  color: textFormFieldHintColor,
-                                ),
-                                fillColor: textFormFieldFillColor,
-                                border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    style: BorderStyle.solid,
-                                    width: 0.5,
+                                      "royxatdan_otish".tr(),
+                                      style: TextStyle(
+                                          color: buttonNameColor,
+                                          fontFamily:
+                                              AppfontFamily.inter.fontFamily,
+                                          fontSize: AppSizes.size_16,
+                                          fontWeight: AppFontWeight.w_600),
+                                    ),
+                                  )),
+                              const SpaceHeight(),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'profilingiz_bormi'.tr(),
+                                      style: TextStyle(
+                                        color: context.isDark
+                                            ? Colors.white
+                                            : const Color(0xFF1D2124),
+                                        fontSize: AppSizes.size_16,
+                                        fontWeight: AppFontWeight.w_600,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () =>
+                                          Navigator.pushNamed(context, 'login'),
+                                      child: Text(
+                                        'kirish'.tr(),
+                                        style: TextStyle(
+                                          color: primaryColor,
+                                          fontSize: AppSizes.size_16,
+                                          fontWeight: AppFontWeight.w_600,
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                              Row(
+                                children: [
+                                  const Expanded(child: Divider()),
+                                  const SpaceWidth(),
+                                  const SpaceWidth(),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 7.h),
+                                    child: Center(
+                                        child: SmallText(
+                                            text: 'orqali_kirish'.tr())),
                                   ),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
+                                  const SpaceWidth(),
+                                  const SpaceWidth(),
+                                  const Expanded(child: Divider())
+                                ],
                               ),
-                            ),
-                            SpaceHeight(height: 15.h),
-                            SmallText(text: 'parol'.tr()),
-                            const SpaceHeight(),
-                            TextFormField(
-                              focusNode: _focusNode,
-                              controller: _passwordController,
-                              obscureText: passwordVisibile,
-                              obscuringCharacter: "*",
-                              decoration: InputDecoration(
-                                  suffixIcon: Visibility(
-                                      child: IconButton(
-                                          onPressed: () {
-                                            passwordVisibile =
-                                                !passwordVisibile;
-                                            setState(() {});
-                                          },
-                                          icon: passwordVisibile
-                                              ? const Icon(Icons.visibility_off)
-                                              : const Icon(Icons.visibility))),
-                                  fillColor: textFormFieldFillColor,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  // GestureDetector(
+                                  //   onTap: () {},
+                                  //   child: CircleAvatar(
+                                  //       backgroundColor: anotherSignInColor,
+                                  //       child: SvgPicture.asset(AppIcon.facebook)),
+                                  // ),
+                                  const SizedBox(),
+                                  GestureDetector(
+                                    onTap: () => _googleSignIn(context),
+                                    child: CircleAvatar(
+                                        backgroundColor: anotherSignInColor,
+                                        child:
+                                            SvgPicture.asset(AppIcon.google)),
                                   ),
-                                  hintStyle: TextStyle(
-                                    fontSize: AppSizes.size_16,
-                                    fontWeight: AppFontWeight.w_400,
-                                    color: textFormFieldHintColor,
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: CircleAvatar(
+                                        backgroundColor: anotherSignInColor,
+                                        child:
+                                            SvgPicture.asset(AppIcon.yandex)),
                                   ),
-                                  hintText: "Password"),
-                              validator: (value) {
-                                String? passwordError = validatePassword(value);
-                                // if (value == null) {
-                                //   return "Iltimos bo'sh qoldirmang";
-                                // } else if (value.length < 4) {
-                                //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                                // } else if (passwordError != null) {
-                                //   return passwordError;
-                                // } else if (value.length > 16) {
-                                //   return "Parol yaroqsiz";
-                                // } else {
-                                //   return null;
-                                // }
-                              },
-                            )
-                          ],
-                        ),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: CircleAvatar(
+                                        backgroundColor: anotherSignInColor,
+                                        child:
+                                            SvgPicture.asset(AppIcon.telegram)),
+                                  ),
+                                  Platform.isIOS
+                                      ? GestureDetector(
+                                          onTap: () async {},
+                                          child: CircleAvatar(
+                                              backgroundColor:
+                                                  anotherSignInColor,
+                                              child: SvgPicture.asset(
+                                                  AppIcon.apple)),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                              const SpaceHeight(),
+                              const SpaceHeight()
+                            ]),
                       ),
-                      SpaceHeight(height: 15.h),
-                      ElevatedButton(
-                          onPressed: () async {
-                            // await StorageRepository.deleteBool(
-                            //     Keys.isOnboarding);
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, 'bottomNavbar', (route) => false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryColor,
-                              fixedSize: Size(double.infinity, 50.h),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.r))),
-                          child: Center(
-                            child: Text(
-                              "royxatdan_otish".tr(),
-                              style: TextStyle(
-                                  color: buttonNameColor,
-                                  fontFamily: AppfontFamily.inter.fontFamily,
-                                  fontSize: AppSizes.size_16,
-                                  fontWeight: AppFontWeight.w_600),
-                            ),
-                          )),
-                      const SpaceHeight(),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'profilingiz_bormi'.tr(),
-                              style: const TextStyle(
-                                color: Color(0xFF1D2124),
-                                fontSize: AppSizes.size_16,
-                                fontWeight: AppFontWeight.w_600,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, 'login'),
-                              child: Text(
-                                'kirish'.tr(),
-                                style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: AppSizes.size_16,
-                                  fontWeight: AppFontWeight.w_600,
-                                ),
-                              ),
-                            ),
-                          ]),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 7.h),
-                        child: Center(
-                            child: SmallText(text: 'orqali_kirish'.tr())),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          // GestureDetector(
-                          //   onTap: () {},
-                          //   child: CircleAvatar(
-                          //       backgroundColor: anotherSignInColor,
-                          //       child: SvgPicture.asset(AppIcon.facebook)),
-                          // ),
-                          const SizedBox(),
-                          GestureDetector(
-                            onTap: () => _googleSignIn(context),
-                            child: CircleAvatar(
-                                backgroundColor: anotherSignInColor,
-                                child: SvgPicture.asset(AppIcon.google)),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                                backgroundColor: anotherSignInColor,
-                                child: SvgPicture.asset(AppIcon.yandex)),
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: CircleAvatar(
-                                backgroundColor: anotherSignInColor,
-                                child: SvgPicture.asset(AppIcon.telegram)),
-                          ),
-                          Platform.isIOS
-                              ? GestureDetector(
-                                  onTap: () async {},
-                                  child: CircleAvatar(
-                                      backgroundColor: anotherSignInColor,
-                                      child: SvgPicture.asset(AppIcon.apple)),
-                                )
-                              : const SizedBox(),
-                        ],
-                      )
-                    ]),
-              ),
-            ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

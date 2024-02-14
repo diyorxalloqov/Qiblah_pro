@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class TanlanganlarPage extends StatelessWidget {
   const TanlanganlarPage({super.key});
@@ -33,7 +34,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
           Text(
             'Al baqara',
             style: TextStyle(
-              color: Colors.black,
+              color: context.isDark ? Colors.white : Colors.black,
               fontSize: AppSizes.size_16,
               fontFamily: AppfontFamily.comforta.fontFamily,
               fontWeight: AppFontWeight.w_700,
@@ -42,7 +43,9 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
           const SpaceHeight(),
           Container(
             decoration: BoxDecoration(
-                color: tanlanganlarItemColor,
+                color: context.isDark
+                    ? tanlanganlarItemBlackColor
+                    : tanlanganlarItemColor,
                 borderRadius: BorderRadius.circular(12.r)),
             child: Column(
               children: [
@@ -58,7 +61,9 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                           Text(
                             ' الفاتحةالفاتحة',
                             style: TextStyle(
-                              color: arabicTextColor,
+                              color: context.isDark
+                                  ? arabicWhiteTextColor
+                                  : arabicTextColor,
                               fontSize: AppSizes.arabicTextSize,
                               fontFamily: AppfontFamily.inter.fontFamily,
                               fontWeight: AppFontWeight.arabicFontWeight,
@@ -70,6 +75,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                         '1. Aliflammeem',
                         style: TextStyle(
                           fontSize: 16,
+                          color: context.isDark ? Colors.white : Colors.black,
                           fontStyle: FontStyle.italic,
                           fontFamily: AppfontFamily.inter.fontFamily,
                           fontWeight: FontWeight.w500,
@@ -91,8 +97,10 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                 isShowing
                     ? Column(
                         children: [
-                          const Divider(
-                              color: Color(0xFFF4F7FA),
+                          Divider(
+                              color: context.isDark
+                                  ? circleAvatarBlackColor
+                                  : const Color(0xFFF4F7FA),
                               endIndent: 10,
                               indent: 10),
                           Row(
@@ -103,9 +111,14 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
-                                  backgroundColor: Color(0xFFF4F7FA),
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : const Color(0xFFF4F7FA),
                                   child: Center(
-                                    child: SvgPicture.asset(AppIcon.check),
+                                    child: SvgPicture.asset(AppIcon.check,
+                                        color: context.isDark
+                                            ? const Color(0xffB5B9BC)
+                                            : null),
                                   ),
                                 ),
                               ),
@@ -113,9 +126,14 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
-                                  backgroundColor: Color(0xFFF4F7FA),
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : const Color(0xFFF4F7FA),
                                   child: Center(
-                                    child: SvgPicture.asset(AppIcon.bookmark),
+                                    child: SvgPicture.asset(AppIcon.bookmark,
+                                        color: context.isDark
+                                            ? const Color(0xffB5B9BC)
+                                            : null),
                                   ),
                                 ),
                               ),
@@ -123,9 +141,14 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
-                                  backgroundColor: Color(0xFFF4F7FA),
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : const Color(0xFFF4F7FA),
                                   child: Center(
-                                    child: SvgPicture.asset(AppIcon.share),
+                                    child: SvgPicture.asset(AppIcon.share,
+                                        color: context.isDark
+                                            ? const Color(0xffB5B9BC)
+                                            : null),
                                   ),
                                 ),
                               ),
@@ -133,10 +156,14 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
-                                  backgroundColor: primaryColor,
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : primaryColor,
                                   child: Center(
-                                    child: SvgPicture.asset(AppIcon.play),
-                                  ),
+                                      child: SvgPicture.asset(AppIcon.play,
+                                          color: context.isDark
+                                              ? const Color(0xffB5B9BC)
+                                              : null)),
                                 ),
                               ),
                               const SpaceWidth(),
@@ -157,14 +184,18 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(12.r),
                           bottomRight: Radius.circular(12.r)),
-                      color: primaryColor.withOpacity(0.15),
+                      color: context.isDark
+                          ? const Color(0xff232C37)
+                          : primaryColor.withOpacity(0.15),
                     ),
                     child: Center(
                       child: Icon(
                           isShowing
                               ? Icons.keyboard_arrow_up_rounded
                               : Icons.keyboard_arrow_down_rounded,
-                          color: primaryColor),
+                          color: context.isDark
+                              ? const Color(0xff6D7379)
+                              : primaryColor),
                     ),
                   ),
                 )

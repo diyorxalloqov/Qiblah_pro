@@ -5,16 +5,16 @@ class NamozTimeState extends Equatable {
   final DailyPrayerTimes? dailyTimes;
   // final List<DailyPrayerTimes> currentWeekTimes;
   final List<DailyPrayerTimes> currentMonthTimes;
-  // final NamozTimeCalculation? chosenCalculationMethod;
-  // final Madhab? chosenMadhab;
-  // final HighLatitudeRule? chosenHighLatitudeRule;
+  final NamozTimeCalculation? chosenCalculationMethod;
+  final Madhab? chosenMadhab;
+  final HighLatitudeRule? chosenHighLatitudeRule;
 
   const NamozTimeState({
     this.error = '',
     this.dailyTimes,
-    // this.chosenCalculationMethod,
-    // this.chosenHighLatitudeRule,
-    // this.chosenMadhab,
+    this.chosenCalculationMethod,
+    this.chosenHighLatitudeRule,
+    this.chosenMadhab,
     this.currentMonthTimes = const [],
     // this.currentWeekTimes = const []
   });
@@ -22,20 +22,20 @@ class NamozTimeState extends Equatable {
   NamozTimeState copyWith({
     String? error,
     List<DailyPrayerTimes>? currentMonthTimes,
-    // NamozTimeCalculation? chosenCalculationMethod,
-    // Madhab? chosenMadhab,
-    // HighLatitudeRule? chosenHighLatitudeRule,
+    NamozTimeCalculation? chosenCalculationMethod,
+    Madhab? chosenMadhab,
+    HighLatitudeRule? chosenHighLatitudeRule,
     DailyPrayerTimes? dailyTimes,
     // List<DailyPrayerTimes>? currentWeekTimes
   }) {
     return NamozTimeState(
       error: error ?? this.error,
       // currentWeekTimes: currentWeekTimes ?? this.currentWeekTimes,
-      // chosenCalculationMethod:
-      // chosenCalculationMethod ?? this.chosenCalculationMethod,
-      // chosenHighLatitudeRule:
-      // chosenHighLatitudeRule ?? this.chosenHighLatitudeRule,
-      // chosenMadhab: chosenMadhab ?? this.chosenMadhab,
+      chosenCalculationMethod:
+      chosenCalculationMethod ?? this.chosenCalculationMethod,
+      chosenHighLatitudeRule:
+      chosenHighLatitudeRule ?? this.chosenHighLatitudeRule,
+      chosenMadhab: chosenMadhab ?? this.chosenMadhab,
       currentMonthTimes: currentMonthTimes ?? this.currentMonthTimes,
       dailyTimes: dailyTimes,
     );
@@ -47,8 +47,8 @@ class NamozTimeState extends Equatable {
         dailyTimes,
         currentMonthTimes,
         // currentWeekTimes,
-        // chosenCalculationMethod,
-        // chosenHighLatitudeRule,
-        // chosenMadhab,
+        chosenCalculationMethod,
+        chosenHighLatitudeRule,
+        chosenMadhab,
       ];
 }

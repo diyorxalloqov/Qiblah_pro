@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class LocationPageWidget extends StatelessWidget {
   final VoidCallback onTap;
@@ -13,16 +14,12 @@ class LocationPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xffE2F5DE),
-          Color(0xffDEF2E5),
-          Color(0xffECFAE1),
-        ],
-      )),
+              begin: context.isDark ? Alignment.topRight : Alignment.centerLeft,
+              end:
+                  context.isDark ? Alignment.bottomLeft : Alignment.bottomRight,
+              colors: context.isDark ? onBoardingBlack : onBoardingColor)),
       child: Column(
         children: [
           Center(child: Image.asset(AppImages.location)),
@@ -33,8 +30,10 @@ class LocationPageWidget extends StatelessWidget {
                 maxHeight: 530.h,
                 minHeight: 400.h),
             padding: EdgeInsets.only(left: 12.w, right: 12.w, top: 30.h),
-            decoration: const BoxDecoration(
-                color: Colors.white,
+            decoration: BoxDecoration(
+                color: context.isDark
+                    ? bottomSheetBackgroundBlackColor
+                    : bottomSheetBackgroundColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(18),
                     topRight: Radius.circular(18))),

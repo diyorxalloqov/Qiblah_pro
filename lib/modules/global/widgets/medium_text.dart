@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class MediumText extends StatelessWidget {
   final String text;
@@ -14,7 +15,7 @@ class MediumText extends StatelessWidget {
           fontSize: AppSizes.size_18,
           fontFamily: AppfontFamily.comforta.fontFamily,
           fontWeight: AppFontWeight.w_700,
-          color: highTextColor),
+          color: context.isDark ? mediumTextWhiteColor : mediumTextColor),
     );
   }
 }

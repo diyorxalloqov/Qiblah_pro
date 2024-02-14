@@ -1,5 +1,5 @@
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/global/widgets/custom_app_bar.dart';
 
 class EditProfilePage extends StatefulWidget {
   final ProfileBloc profileBloc;
@@ -22,8 +22,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
   }
 
+  String dialCode = '+998';
+
   @override
   Widget build(BuildContext context) {
+    final FlCountryCodePicker countryPicker = FlCountryCodePicker(
+        searchBarDecoration: InputDecoration(
+      filled: true,
+      hintText: 'davlatni_tanlang'.tr(),
+      hintStyle: TextStyle(
+        fontSize: AppSizes.size_16,
+        fontWeight: AppFontWeight.w_400,
+        color: textFormFieldHintColor,
+      ),
+      fillColor:
+          context.isDark ? textFormFieldFillColorBlack : textFormFieldFillColor,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+    ));
     return Scaffold(
         appBar: customAppbar(
           context,
@@ -99,20 +121,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontWeight: AppFontWeight.w_400,
                             color: textFormFieldHintColor,
                           ),
-                          fillColor: Colors.white,
+                          fillColor: context.isDark
+                              ? textFormFieldFillColorBlack
+                              : Colors.white,
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Colors.white70,
-                            ),
-                            borderRadius: BorderRadius.circular(12.r),
+                            borderSide: context.isDark
+                                ? BorderSide.none
+                                : const BorderSide(
+                                    color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                           border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              width: 1,
-                              color: Colors.white70,
-                            ),
-                            borderRadius: BorderRadius.circular(12.r),
+                            borderSide: context.isDark
+                                ? BorderSide.none
+                                : const BorderSide(
+                                    color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
                       ),
@@ -127,10 +151,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           controller: _phoneController,
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            MaskTextInputFormatter(
-                              mask: '+000 00 000 00 00',
-                              filter: {'0': RegExp(r'[0-9]')},
-                            )
+                            // MaskTextInputFormatter(
+                            //   mask: '+000 00 000 00 00',
+                            //   filter: {'0': RegExp(r'[0-9]')},
+                            // )
                           ],
                           decoration: InputDecoration(
                             filled: true,
@@ -140,16 +164,40 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               fontWeight: AppFontWeight.w_400,
                               color: textFormFieldHintColor,
                             ),
-                            fillColor: Colors.white,
+                            prefixIcon: TextButton(
+                                onPressed: () async {
+                                  final picked = await countryPicker.showPicker(
+                                    context: context,
+                                    backgroundColor: context.isDark
+                                        ? bottomSheetBackgroundBlackColor
+                                        : bottomSheetBackgroundColor,
+                                  );
+                                  dialCode = picked?.dialCode ?? '+998';
+                                  setState(() {});
+                                },
+                                child: Text(
+                                  dialCode,
+                                  style: TextStyle(
+                                      color: context.isDark
+                                          ? Colors.white
+                                          : Colors.black),
+                                )),
+                            fillColor: context.isDark
+                                ? textFormFieldFillColorBlack
+                                : Colors.white,
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  width: 1, color: Colors.white70),
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: context.isDark
+                                  ? BorderSide.none
+                                  : const BorderSide(
+                                      color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
                             ),
                             border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 0.5, color: highTextColor),
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderSide: context.isDark
+                                  ? BorderSide.none
+                                  : const BorderSide(
+                                      color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(12.0),
                             ),
                           ),
                         ),
@@ -172,7 +220,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       _titles[index].tr(),
                                       style: TextStyle(
                                           fontSize: AppSizes.size_16,
-                                          color: highTextColor,
+                                          color: context.isDark
+                                              ? Colors.white
+                                              : Colors.black,
                                           fontWeight: AppFontWeight.w_500),
                                     ),
                                   ],
@@ -182,8 +232,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   ? BorderSide(color: primaryColor, width: 1)
                                   : BorderSide.none,
                               showCheckmark: false,
-                              backgroundColor: Colors.white,
-                              selectedColor: primaryColor.withOpacity(0.2),
+                              backgroundColor:
+                                  context.isDark ? jinsBlackColor : jinsColor,
+                              selectedColor: context.isDark
+                                  ? jinsBlackColor
+                                  : primaryColor.withOpacity(0.2),
                               disabledColor: textFormFieldHintColor,
                               onSelected: (value) {
                                 print(value);

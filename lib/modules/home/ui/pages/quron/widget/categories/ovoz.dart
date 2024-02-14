@@ -14,7 +14,9 @@ class _EkranState extends State<Ovoz> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-      color: Colors.white,
+      color:  context.isDark
+                ? homeBlackMainColor
+                : bottomSheetBackgroundColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
