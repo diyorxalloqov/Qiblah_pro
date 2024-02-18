@@ -5,6 +5,7 @@ class AppImages {
   static const String notification = 'assets/images/notification.png';
   static const String location = 'assets/images/location.png';
   static const String joynamoz = 'assets/images/joynamoz.png';
+
   static const String tahorat = 'assets/images/tahorat.png';
   static const String jamoat = 'assets/images/jamoat.png';
   static const String mistake = 'assets/images/mistake.png';

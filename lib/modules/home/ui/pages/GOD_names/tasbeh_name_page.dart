@@ -114,7 +114,9 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                         value: ZikrBloc.tasbehSizes.indexOf(size),
                         child: Text(
                           size.toString(),
-                          style: const TextStyle(color: Colors.black),
+                          style: TextStyle(
+                              color:
+                                  context.isDark ? Colors.white : Colors.black),
                         ),
                       );
                     }).toList();

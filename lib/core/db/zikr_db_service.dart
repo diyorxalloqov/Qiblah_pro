@@ -9,7 +9,14 @@ class ZikrDBSevice {
 
   ZikrDBSevice._internal();
 
-  static String namesTable = 'zikr';
+  static String geZikrTable() {
+    final lang = StorageRepository.getString(Keys.lang);
+    print(lang);
+    return lang == 'uz' ? zikrTableUzb : zikrTableRus;
+  }
+
+  static String zikrTableRus = 'zikrRus';
+  static String zikrTableUzb = "zikrUzb";
 
   static Database? _database;
 
@@ -32,16 +39,24 @@ class ZikrDBSevice {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    await db.execute("DROP TABLE IF EXISTS $namesTable");
+    await db.execute("DROP TABLE IF EXISTS $zikrTableUzb");
+    await db.execute("DROP TABLE IF EXISTS $zikrTableRus");
+
     await db.execute(
-      'CREATE TABLE $namesTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $zikrTableUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+    );
+    await db.execute(
+      'CREATE TABLE $zikrTableRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
     // user
     await db.execute(
-      'CREATE TABLE $namesTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $zikrTableUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+    );
+    await db.execute(
+      'CREATE TABLE $zikrTableRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
     );
   }
 
@@ -51,7 +66,7 @@ class ZikrDBSevice {
     final db = await _namesDBService.database;
     try {
       await db.insert(
-        namesTable,
+        geZikrTable(),
         {
           "category_name": zikrModel.categoryName,
           "category_lang": zikrModel.categoryLang,
@@ -62,12 +77,12 @@ class ZikrDBSevice {
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
-    print("${namesTable.length} names table length from insert");
+    print("${geZikrTable().length} names table length from insert");
   }
 
   Future<List<ZikrModel>?> getZikrs() async {
     final db = await _namesDBService.database;
-    final List<Map<String, dynamic>> maps = await db.query(namesTable);
+    final List<Map<String, dynamic>> maps = await db.query(geZikrTable());
     print("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
       return ZikrModel(
@@ -80,7 +95,7 @@ class ZikrDBSevice {
 
   Future<void> clearDatabase() async {
     final db = await _namesDBService.database;
-    await db.delete(namesTable);
+    await db.delete(geZikrTable());
     print('db cleared successfully');
   }
 }

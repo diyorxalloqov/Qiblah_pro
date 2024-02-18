@@ -1,4 +1,7 @@
+import 'package:adhan/adhan.dart';
+import 'package:qiblah_pro/core/db/user_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/profile/ui/widgets/namoz_settings_widget.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/settings_item_widget.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -11,10 +14,11 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool isPremium = false;
   late ProfileBloc profileBloc;
-  int selectedChipIndex = 0;
+  int? selectedChipIndex;
   final List<String> _titles = const ['ayol', "erkak"];
   final List<String> _icons = const [AppIcon.woman, AppIcon.man];
   String selectedLang = '';
+  bool _onChanged = false;
 
   @override
   void initState() {
@@ -23,21 +27,30 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Access MediaQuery here
+    _onChanged = MediaQuery.of(context).platformBrightness == Brightness.dark;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).platformBrightness == Brightness.dark);
-    bool _onChanged =
-        MediaQuery.of(context).platformBrightness == Brightness.dark;
-    print(_onChanged);
+    // print(MediaQuery.of(context).platformBrightness == Brightness.dark);
+    // bool _onChanged = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.system
+    //     ? MediaQuery.of(context).platformBrightness == Brightness.dark
+    //     : AdaptiveTheme.of(context).mode ==
+    //         AdaptiveThemeMode
+    //             .dark; // AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
+    // // MediaQuery.of(context).platformBrightness == Brightness.dark;
+    // print(_onChanged);
 
     return BlocProvider(
       create: (context) => profileBloc,
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) {
-          print(state.userModel?.id);
-          print(state.userModel?.isMan);
+          selectedChipIndex = state.userModel?.isMan == 0 ? 1 : 0;
           print(state.userModel?.name);
           print(state.userModel?.userLanguage);
-          // selectedChipIndex = state.userModel!.isMan;
           return Scaffold(
             body: SafeArea(
               child: SingleChildScrollView(
@@ -58,25 +71,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ? profileBlackGradient
                                           : profileGradient)),
                             ),
-                            BottomAppBar(
-                                notchMargin: 8.0,
-                                height: context.height * 0.3,
-                                color: context.isDark
-                                    ? containerBlackColor
-                                    : containerColor,
-                                clipBehavior: Clip.antiAlias,
-                                shape: const CircularNotchedRectangle(),
-                                elevation: 0,
+                            Container(
+                                decoration: BoxDecoration(
+                                    color: context.isDark
+                                        ? containerBlackColor
+                                        : containerColor,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.r),
+                                        topRight: Radius.circular(20.r))),
                                 child: Column(
                                   children: [
                                     const SizedBox(width: double.infinity),
                                     SpaceHeight(height: context.height * 0.022),
-                                    const Text(
-                                      'Eshonov Fakhriyor',
-                                      style: TextStyle(
-                                        fontSize: 22,
-                                        fontWeight: AppFontWeight.w_700,
-                                      ),
+                                    Text(
+                                      state.userModel?.name ?? '',
+                                      style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: AppFontWeight.w_700),
                                     ),
                                     const SpaceHeight(),
                                     Row(
@@ -128,9 +139,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                           ),
                                         )),
-                                    const SpaceHeight(),
                                     Container(
                                       width: double.infinity,
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 12.w, vertical: 15.h),
                                       height: context.height * 0.078,
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5.h, horizontal: 18.w),
@@ -248,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           )
                                         ],
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ))
                           ],
@@ -355,20 +367,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               : Colors.white,
                                                     ),
                                                     child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          selectedLang = 'uz';
-                                                          context.setLocale(
-                                                              const Locale(
-                                                                  'uz'));
-
-                                                          context
-                                                              .read<
-                                                                  OnBoardingBloc>()
-                                                              .add(ChangeLanguageEvent(
-                                                                  selectedLang));
-                                                        });
+                                                      onTap: () async {
+                                                        selectedLang = 'uz';
+                                                        context.setLocale(
+                                                            const Locale('uz'));
+                                                        await StorageRepository
+                                                            .putString(
+                                                                Keys.lang,
+                                                                'uz');
+                                                        await UserDBService()
+                                                            .insertUserdata(
+                                                                UserModel(
+                                                                    userLanguage:
+                                                                        'uz'));
                                                         Navigator.pop(context);
+                                                        setState(() {});
                                                       },
                                                       child: Text(
                                                         "O'zbekcha",
@@ -413,21 +426,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               : Colors.white,
                                                     ),
                                                     child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          selectedLang = 'ru';
-                                                          context.setLocale(
-                                                              const Locale(
-                                                                  'ru'));
-                                                          context
-                                                              .read<
-                                                                  OnBoardingBloc>()
-                                                              .add(ChangeLanguageEvent(
-                                                                  selectedLang));
-
-                                                          Navigator.pop(
-                                                              context);
-                                                        });
+                                                      onTap: () async {
+                                                        selectedLang = 'ru';
+                                                        context.setLocale(
+                                                            const Locale('ru'));
+                                                        await StorageRepository
+                                                            .putString(
+                                                                Keys.lang,
+                                                                'ru');
+                                                        await UserDBService()
+                                                            .insertUserdata(
+                                                                UserModel(
+                                                                    userLanguage:
+                                                                        'ru'));
+                                                        Navigator.pop(context);
+                                                        setState(() {});
                                                       },
                                                       child: Text(
                                                         "Kirilcha",
@@ -456,7 +469,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ],
                                         )),
                                 title: 'ilova_tili'.tr(),
-                                subtitle: "O’zbekcha",
+                                subtitleWidget: SmallText(
+                                    text: selectedLang.isEmpty
+                                        ? StorageRepository.getString(
+                                                    Keys.lang) ==
+                                                'ru'
+                                            ? 'kirilcha'.tr()
+                                            : 'ozbekcha'.tr()
+                                        : selectedLang == 'uz'
+                                            ? 'ozbekcha'.tr()
+                                            : 'kirilcha'.tr()),
                                 icon: AppIcon.globe),
                             ListTile(
                                 leading: SvgPicture.asset(AppIcon.moon,
@@ -498,14 +520,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onChanged: (value) {
                                     setState(() {
                                       _onChanged = value;
+                                      _onChanged
+                                          ? AdaptiveTheme.of(context).setDark()
+                                          : AdaptiveTheme.of(context)
+                                              .setLight();
                                     });
-                                    final newBrightness = value
-                                        ? Brightness.dark
-                                        : Brightness.light;
-                                    AdaptiveTheme.of(context).setThemeMode(
-                                        newBrightness == Brightness.dark
-                                            ? AdaptiveThemeMode.dark
-                                            : AdaptiveThemeMode.light);
                                   },
                                 )),
                             SettingsItemWidget(
@@ -513,7 +532,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                       context,
                                     ),
                                 title: 'manzil'.tr(),
-                                subtitle: "O’zbekcha",
+                                subtitleWidget: FutureBuilder(
+                                    future: context
+                                        .read<GeolocationCubit>()
+                                        .getChosenLocation(),
+                                    builder: (context, snapshot) {
+                                      return Text(
+                                        snapshot.data?.region.toString() ??
+                                            'not found',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                          color: context.isDark
+                                              ? const Color(0xffB5B9BC)
+                                              : const Color(0xff6D7379),
+                                          fontSize: AppSizes.size_16,
+                                          fontFamily:
+                                              AppfontFamily.inter.fontFamily,
+                                          fontWeight: AppFontWeight.w_400,
+                                        ),
+                                      );
+                                    }),
                                 icon: AppIcon.location)
                           ]),
                     ),
@@ -522,8 +561,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: 12.w, vertical: 15.h),
-                      height: context.height * 0.42,
-                      width: double.infinity,
                       decoration: BoxDecoration(
                         color: context.isDark
                             ? containerBlackColor
@@ -600,21 +637,57 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }),
                               ),
                             ),
-                            SettingsItemWidget(
-                                onTap: () {},
-                                title: 'Namoz_vaqtlari_manbasi'.tr(),
-                                subtitle: "O’zbekiston Loremlar idorasi",
-                                icon: AppIcon.globe),
-                            SettingsItemWidget(
-                                onTap: () {},
-                                title: 'Namoz_vaqtlari_manbasi'.tr(),
-                                subtitle: "O’zbekiston Loremlar idorasi",
-                                icon: AppIcon.globe),
-                            SettingsItemWidget(
-                                onTap: () {},
-                                title: 'Asr_hisoblash_uslubi'.tr(),
-                                subtitle: "hanafiy".tr(),
-                                icon: AppIcon.globe)
+                            BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                              builder: (context, state) {
+                                return Column(
+                                  children: [
+                                    SettingsItemWidget(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return const NamozSettingsWidget(
+                                                    choices:
+                                                        PrayerCalculationMethod
+                                                            .values);
+                                              });
+                                        },
+                                        title: 'hisoblash_usuli'.tr(),
+                                        subtitle: state.chosenCalculationMethod
+                                                ?.title ??
+                                            'hisoblash_usuli'.tr(),
+                                        icon: AppIcon.timeChanger),
+                                    SettingsItemWidget(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return const NamozSettingsWidget(
+                                                    choices: Madhab.values);
+                                              });
+                                        },
+                                        title: 'madhab'.tr(),
+                                        subtitle: state.chosenMadhab.name,
+                                        icon: AppIcon.timeChanger),
+                                    SettingsItemWidget(
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return const NamozSettingsWidget(
+                                                    choices: HighLatitudeRule
+                                                        .values);
+                                              });
+                                        },
+                                        title: 'Asr_hisoblash_uslubi'.tr(),
+                                        subtitle:
+                                            state.chosenHighLatitudeRule.name,
+                                        icon: AppIcon.timeChanger),
+                                  ],
+                                );
+                              },
+                            ),
+                            const SpaceHeight()
                           ]),
                     ),
                   ],
@@ -625,15 +698,5 @@ class _ProfilePageState extends State<ProfilePage> {
         },
       ),
     );
-  }
-
-  bool setupSystemDark() {
-    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
-      print(true);
-      return true;
-    } else {
-      print(false);
-      return false;
-    }
   }
 }

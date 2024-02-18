@@ -10,28 +10,12 @@ part 'on_boarding_state.dart';
 
 class OnBoardingBloc extends Bloc<OnBoardingEvent, OnBoardingState> {
   OnBoardingBloc() : super(const OnBoardingState()) {
-    on<ChangeLanguageEvent>(_changeLanguage);
     on<NotificationPermissionEvent>(_permissionNotification);
     on<UserDataEvent>(_userdata);
   }
 
   final UserDBService _userDBService = UserDBService();
   late PermissionStatus _notPermission;
-
-  var lang = const FlutterSecureStorage().read(key: Keys.lang);
-
-  FutureOr<void> _changeLanguage(
-      ChangeLanguageEvent event, Emitter<OnBoardingState> emit) async {
-    if (await lang != null || lang.toString().isNotEmpty) {
-      print('isnot empty');
-      emit(state.copyWith(language: lang.toString()));
-    } else {
-      print('isempty');
-      await const FlutterSecureStorage()
-          .write(key: Keys.lang, value: event.selectedLanguageCode);
-      emit(state.copyWith(language: event.selectedLanguageCode));
-    }
-  }
 
   FutureOr<void> _permissionNotification(
       NotificationPermissionEvent event, Emitter<OnBoardingState> emit) async {

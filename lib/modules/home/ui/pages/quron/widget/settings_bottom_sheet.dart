@@ -3,7 +3,6 @@ import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ekran.d
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/korsatish.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ovoz.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/umumiy.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 showSettingBottomSheet(BuildContext context) {
   showModalBottomSheet(

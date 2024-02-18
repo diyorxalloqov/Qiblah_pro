@@ -29,30 +29,40 @@ class _NamesPageState extends State<NamesPage> {
       appBar: customAppbar(context, 'names'.tr()),
       body: BlocProvider.value(
         value: namesBloc,
-        child: RefreshIndicator.adaptive(
-          color: primaryColor.withOpacity(0.4),
-          onRefresh: () {
-            final completer = Completer<void>();
-            namesBloc.add(GetNamesEvent());
-            completer.complete();
-            return completer.future;
-          },
-          child: BlocBuilder<NamesBloc, NamesState>(
-            builder: (context, state) {
-              if (state.status == ActionStatus.isLoading) {
-                return const LoadingPage();
-              }
-              if (state.status == ActionStatus.isSuccess) {
-                return ListView.builder(
+        child: BlocBuilder<NamesBloc, NamesState>(
+          builder: (context, state) {
+            print(state.status);
+            if (state.status == ActionStatus.isLoading) {
+              return const LoadingPage();
+            }
+            if (state.status == ActionStatus.isSuccess) {
+              return RefreshIndicator.adaptive(
+                onRefresh: () {
+                  final completer = Completer<void>();
+                  namesBloc.add(GetNamesEvent());
+                  completer.complete();
+                  return completer.future;
+                },
+                child: ListView.builder(
                     itemCount: state.namesModel.length,
                     itemBuilder: (context, index) => CardItem1(
-                        index: index, namesBloc: namesBloc, state: state));
-              }
-              return Center(
-                child: Text(state.error),
+                        index: index, namesBloc: namesBloc, state: state)),
               );
-            },
-          ),
+            }
+            return RefreshIndicator.adaptive(
+                onRefresh: () {
+                  final completer = Completer<void>();
+                  namesBloc.add(GetNamesFromApiEvent());
+                  completer.complete();
+                  return completer.future;
+                },
+                child: ListView(
+                  children: [
+                    SizedBox(height: context.height * 0.3),
+                    Center(child: Text(state.error)),
+                  ],
+                ));
+          },
         ),
       ),
     );

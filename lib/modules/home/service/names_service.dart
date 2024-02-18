@@ -8,12 +8,17 @@ class NamesService {
   Future<Either<String, List<NamesData>>> getNames() async {
     try {
       print('response is trying to');
-      Response response = await client.get("${AppUrls.names}uzbek");
+      Response response = await client.get(AppUrls.names, queryParameters: {
+        'lang':
+            StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
+      });
       print(response.statusCode);
+      print(response.data);
       if (response.statusCode == 200) {
         List<NamesData> dataList = (response.data['data'] as List)
             .map((e) => NamesData.fromJson(e))
             .toList();
+        print(response.realUri);
         for (var myData in dataList) {
           await _namesDbService.insertNames(myData);
         }

@@ -1,12 +1,12 @@
+import 'package:qiblah_pro/core/constants/api/server.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class DioSettings {
   final BaseOptions _dioBaseOptions = BaseOptions(
-    // baseUrl: AppUrls.baseUrl,
+    baseUrl: Server.server,
     connectTimeout: const Duration(seconds: 35),
     receiveTimeout: const Duration(seconds: 35),
     contentType: 'application/json',
-    
     validateStatus: (status) =>
         status != null && status >= 100 && status <= 599,
     // headers: {
@@ -18,6 +18,7 @@ class DioSettings {
   BaseOptions get dioBaseOptions => _dioBaseOptions;
 
   Dio get dio {
+    print(StorageRepository.getString(Keys.lang) == 'ru');
     var dio1 = Dio(_dioBaseOptions)..interceptors.add(InterceptorsWrapper(
         // onError: (DioException e, ErrorInterceptorHandler handler) async {
         //   print('Interceptor OnError');

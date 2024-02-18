@@ -66,6 +66,11 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
       },
       child: SingleChildScrollView(
         child: Container(
+          decoration: BoxDecoration(
+              color: context.isDark ? containerBlackColor : containerColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18.r),
+                  topRight: Radius.circular(18.r))),
           width: double.infinity,
           height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 520.h,
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
@@ -99,7 +104,9 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                           ? textFormFieldFillColorBlack
                           : textFormFieldFillColor,
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       border: OutlineInputBorder(

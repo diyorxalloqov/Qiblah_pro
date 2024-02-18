@@ -1,12 +1,4 @@
-import 'package:hijri/hijri_calendar.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_cubit.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_state.dart';
-import 'package:qiblah_pro/modules/home/ui/widgets/time_item_widget.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-import 'package:qiblah_pro/utils/date_utils.dart';
-import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
 
 class TimePage extends StatefulWidget {
   const TimePage({super.key});
@@ -206,7 +198,11 @@ class _TimePageState extends State<TimePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context
+                                        .read<NamozTimeBloc>()
+                                        .add(PreviousDayNamozTimeEvent());
+                                  },
                                   icon: SvgPicture.asset(AppIcon.arrowLeft,
                                       color: iconButtonColor)),
                               const SpaceWidth(),
@@ -237,7 +233,11 @@ class _TimePageState extends State<TimePage> {
                               ),
                               const SpaceWidth(),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context
+                                        .read<NamozTimeBloc>()
+                                        .add(NextDayNamozTimeEvent());
+                                  },
                                   icon: SvgPicture.asset(AppIcon.arrowRight1,
                                       color: iconButtonColor))
                             ],

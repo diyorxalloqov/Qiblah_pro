@@ -1,13 +1,6 @@
 import 'dart:async';
 
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_cubit.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_state.dart';
-import 'package:qiblah_pro/modules/home/ui/widgets/card_widget.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-import 'package:qiblah_pro/utils/date_utils.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -389,20 +382,24 @@ class _HomePageState extends State<HomePage> {
     String minute = state1.durationUntilNextPrayer != Duration.zero
         ? state1.durationUntilNextPrayer.getFormattedCountdownMinute()
         : '';
-    if (state.dailyTimes!.bomdod.isCurrent) {
-      return "${'quyosh'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
-    } else if (state.dailyTimes!.quyosh.isCurrent) {
-      return "${'peshin'.tr()} $hour ${('soat'.tr())}  $minute ${("daqiqadan_song").tr()}";
-    } else if (state.dailyTimes!.peshin.isCurrent) {
-      return "${'asr'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
-    } else if (state.dailyTimes!.asr.isCurrent) {
-      return "${'shom'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
-    } else if (state.dailyTimes!.shom.isCurrent) {
-      return "${'xufton'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
-    } else if (state.dailyTimes!.xufton.isCurrent) {
-      return "${'bomdod'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+    if (state.dailyTimes != null) {
+      if (state.dailyTimes!.bomdod.isCurrent) {
+        return "${'quyosh'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else if (state.dailyTimes!.quyosh.isCurrent) {
+        return "${'peshin'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else if (state.dailyTimes!.peshin.isCurrent) {
+        return "${'asr'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else if (state.dailyTimes!.asr.isCurrent) {
+        return "${'shom'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else if (state.dailyTimes!.shom.isCurrent) {
+        return "${'xufton'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else if (state.dailyTimes!.xufton.isCurrent) {
+        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      } else {
+        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+      }
     } else {
-      return "${'bomdod'.tr()} $hour ${("soat").tr()}, $minute ${("daqiqadan_song").tr()}";
+      return '';
     }
   }
 }

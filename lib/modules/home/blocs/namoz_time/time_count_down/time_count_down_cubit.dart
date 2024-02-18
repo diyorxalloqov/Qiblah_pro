@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/home/blocs/namoz_time/time_count_down/time_count_down_state.dart';
 import 'package:qiblah_pro/modules/home/service/namoz_time_service.dart';
 
 class TimeCountDownCubit extends Cubit<TimeCountDownState> {
   TimeCountDownCubit() : super(const TimeCountDownState()) {
     _startCoundDown();
+    _timer = Timer(Duration.zero, () {});
   }
   final NamozTimeService _namozTimeService = NamozTimeService();
   late Timer _timer;
@@ -17,9 +19,16 @@ class TimeCountDownCubit extends Cubit<TimeCountDownState> {
       // TODO mark so prayer time is not shown;
       return null;
     }
+
+    // if () {
+    // }
+
     _updateTime(nextPrayerTime);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateTime(nextPrayerTime);
+      TodayNamozTimes();
+
+      /// adding this
     });
   }
 

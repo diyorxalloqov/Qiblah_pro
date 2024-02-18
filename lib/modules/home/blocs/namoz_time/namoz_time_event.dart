@@ -39,3 +39,15 @@ class ChangeSettings extends NamozTimeEvent {
   @override
   List<Object> get props => [newValue];
 }
+
+class NextDayNamozTimeEvent extends NamozTimeEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class PreviousDayNamozTimeEvent extends NamozTimeEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

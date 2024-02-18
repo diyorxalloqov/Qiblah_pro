@@ -8,7 +8,10 @@ class ZikrService {
   Future<Either<String, List<ZikrModel>>> getCategories() async {
     try {
       print('response is trying to');
-      Response response = await client.get("${AppUrls.zikrNames}uzbek");
+      Response response = await client.get(AppUrls.zikrNames, queryParameters: {
+        'lang':
+            StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
+      });
       print(response.statusCode);
       if (response.statusCode == 200) {
         List<ZikrModel> dataList = (response.data['data'] as List)

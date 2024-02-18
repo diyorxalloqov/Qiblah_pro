@@ -26,7 +26,9 @@ class NamozPage extends StatelessWidget {
             margin: EdgeInsets.all(12.0.sp),
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 26.h),
             decoration: BoxDecoration(
-                color: const Color(0xFFF4EBD8),
+                color: context.isDark
+                    ? containerBlackColor
+                    : const Color(0xFFF4EBD8),
                 borderRadius: BorderRadius.circular(16.r),
                 image: const DecorationImage(
                     image: AssetImage(AppImages.joynamoz),
@@ -39,8 +41,11 @@ class NamozPage extends StatelessWidget {
                     "namoz_oqishni_organish".tr(),
                     overflow: TextOverflow.clip,
                     maxLines: 2,
-                    style: const TextStyle(
-                      color: Color(0xFF615745),
+                    style: TextStyle(
+                      color: context.isDark
+                          ? Colors.white
+                          : const Color(0xFF615745),
+                      fontFamily: AppfontFamily.comforta.fontFamily,
                       fontSize: AppSizes.size_16,
                       fontWeight: AppFontWeight.w_700,
                     ),
@@ -60,7 +65,9 @@ class NamozPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 12.0.sp),
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 26.h),
             decoration: BoxDecoration(
-                color: const Color(0xFFD0EAF8),
+                color: context.isDark
+                    ? containerBlackColor
+                    : const Color(0xFFD0EAF8),
                 borderRadius: BorderRadius.circular(16.r),
                 image: const DecorationImage(
                     image: AssetImage(AppImages.tahorat),
@@ -73,8 +80,11 @@ class NamozPage extends StatelessWidget {
                     "tahorat_olishni_organish".tr(),
                     overflow: TextOverflow.clip,
                     maxLines: 2,
-                    style: const TextStyle(
-                      color: Color(0xFF615745),
+                    style: TextStyle(
+                      color: context.isDark
+                          ? Colors.white
+                          : const Color(0xFF615745),
+                      fontFamily: AppfontFamily.comforta.fontFamily,
                       fontSize: AppSizes.size_16,
                       fontWeight: AppFontWeight.w_700,
                     ),
@@ -98,7 +108,9 @@ class NamozPage extends StatelessWidget {
                     EdgeInsets.symmetric(horizontal: 12.0.sp, vertical: 12.h),
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 26.h),
                 decoration: BoxDecoration(
-                    color: const Color(0xFFFDE3E3),
+                    color: context.isDark
+                        ? containerBlackColor
+                        : const Color(0xFFFDE3E3),
                     borderRadius: BorderRadius.circular(16.r),
                     image: const DecorationImage(
                         image: AssetImage(AppImages.mistake),
@@ -107,8 +119,10 @@ class NamozPage extends StatelessWidget {
                   "namozdagi_hatoliklar".tr(),
                   overflow: TextOverflow.clip,
                   maxLines: 2,
-                  style: const TextStyle(
-                    color: Color(0xFF615745),
+                  style: TextStyle(
+                    color:
+                        context.isDark ? Colors.white : const Color(0xFF615745),
+                    fontFamily: AppfontFamily.comforta.fontFamily,
                     fontSize: AppSizes.size_16,
                     fontWeight: AppFontWeight.w_700,
                   ),
@@ -123,7 +137,9 @@ class NamozPage extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 12.0.sp),
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 26.h),
                 decoration: BoxDecoration(
-                    color: const Color(0xFFF5E5E0),
+                    color: context.isDark
+                        ? containerBlackColor
+                        : const Color(0xFFF5E5E0),
                     borderRadius: BorderRadius.circular(16.r),
                     image: const DecorationImage(
                         image: AssetImage(AppImages.book),
@@ -132,8 +148,10 @@ class NamozPage extends StatelessWidget {
                   "qoshimchalar".tr(),
                   overflow: TextOverflow.clip,
                   maxLines: 2,
-                  style: const TextStyle(
-                    color: Color(0xFF615745),
+                  style: TextStyle(
+                    color:
+                        context.isDark ? Colors.white : const Color(0xFF615745),
+                    fontFamily: AppfontFamily.comforta.fontFamily,
                     fontSize: AppSizes.size_16,
                     fontWeight: AppFontWeight.w_700,
                   ),
@@ -150,7 +168,9 @@ class NamozPage extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 12.0.sp),
             padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 26.h),
             decoration: BoxDecoration(
-                color: const Color(0xFFF7EFEB),
+                color: context.isDark
+                    ? containerBlackColor
+                    : const Color(0xFFF7EFEB),
                 borderRadius: BorderRadius.circular(16.r),
                 image: const DecorationImage(
                     image: AssetImage(AppImages.jamoat),
@@ -159,8 +179,9 @@ class NamozPage extends StatelessWidget {
               "jamoat_namozi".tr(),
               overflow: TextOverflow.clip,
               maxLines: 2,
-              style: const TextStyle(
-                color: Color(0xFF615745),
+              style: TextStyle(
+                color: context.isDark ? Colors.white : const Color(0xFF615745),
+                fontFamily: AppfontFamily.comforta.fontFamily,
                 fontSize: AppSizes.size_16,
                 fontWeight: AppFontWeight.w_700,
               ),

@@ -1,6 +1,4 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -18,6 +16,7 @@ class App extends StatelessWidget {
                     BlocProvider(create: (context) => UserBloc()),
                     BlocProvider(create: (context) => GeolocationCubit()),
                     BlocProvider(create: (context) => NamozTimeBloc()),
+                    BlocProvider(create: (context) => QuronBloc()),
                   ],
                   child: CupertinoApp(
                     debugShowCheckedModeBanner: false,
@@ -50,6 +49,7 @@ class App extends StatelessWidget {
                     BlocProvider(create: (context) => UserBloc()),
                     BlocProvider(create: (context) => GeolocationCubit()),
                     BlocProvider(create: (context) => NamozTimeBloc()),
+                    BlocProvider(create: (context) => QuronBloc()),
                   ],
                   child: MaterialApp(
                     debugShowCheckedModeBanner: false,

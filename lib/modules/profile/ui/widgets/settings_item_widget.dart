@@ -3,13 +3,15 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 class SettingsItemWidget extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final String icon;
+  final Widget? subtitleWidget;
   const SettingsItemWidget(
       {super.key,
       required this.onTap,
       required this.title,
-      required this.subtitle,
+      this.subtitleWidget,
+      this.subtitle,
       required this.icon});
 
   @override
@@ -28,7 +30,7 @@ class SettingsItemWidget extends StatelessWidget {
           fontWeight: AppFontWeight.w_500,
         ),
       ),
-      subtitle: SmallText(text: subtitle),
+      subtitle: subtitleWidget ?? SmallText(text: subtitle ?? ''),
       trailing:
           const Icon(Icons.keyboard_arrow_right, color: Color(0xff6D7379)),
     );

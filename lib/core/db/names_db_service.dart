@@ -8,7 +8,14 @@ class NamesDbService {
 
   NamesDbService._internal();
 
-  static String namesTable = 'names';
+  static String getNamesTable() {
+    final lang = StorageRepository.getString(Keys.lang);
+    print(lang);
+    return lang == 'uz' ? namesTableUzb : namesTableRus;
+  }
+
+  static String namesTableRus = 'namesRus';
+  static String namesTableUzb = "namesUzb";
 
   static Database? _database;
 
@@ -24,33 +31,41 @@ class NamesDbService {
     return await openDatabase(
       path,
       onCreate: _onCreate,
-      version: 2,
+      version: 1,
       onUpgrade: _onUpgrade,
       onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
     );
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    await db.execute("DROP TABLE IF EXISTS $namesTable");
+    await db.execute("DROP TABLE IF EXISTS $namesTableUzb");
+    await db.execute("DROP TABLE IF EXISTS $namesTableRus");
     await db.execute(
-      'CREATE TABLE $namesTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT,name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
+      'CREATE TABLE $namesTableUzb (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
+    );
+    await db.execute(
+      'CREATE TABLE $namesTableRus (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
+    print(getNamesTable());
     // user
     await db.execute(
-      'CREATE TABLE $namesTable(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
+      'CREATE TABLE $namesTableUzb (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
+    );
+    await db.execute(
+      'CREATE TABLE $namesTableRus (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
     );
   }
 
   /// user
-
   Future<void> insertNames(NamesData namesModel) async {
     final db = await _namesDBService.database;
+
     try {
       await db.insert(
-        namesTable,
+        getNamesTable(),
         {
           "name_arabic": namesModel.nameArabic,
           "title": namesModel.title,
@@ -58,32 +73,57 @@ class NamesDbService {
           "translation": namesModel.translation,
           "name_audio_link": namesModel.nameAudioLink
         },
-        conflictAlgorithm: ConflictAlgorithm.replace
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
-    print("${namesTable.length} names table length from insert");
+    print("${getNamesTable()} names table length from insert");
   }
 
   Future<List<NamesData>?> getNames() async {
     final db = await _namesDBService.database;
-    // await clearDatabase();
-    final List<Map<String, dynamic>> maps = await db.query(namesTable);
+    final List<Map<String, dynamic>> maps = await db.query(getNamesTable());
     print("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
       return NamesData(
-          nameArabic: maps[i]['name_arabic'],
-          title: maps[i]['title'],
-          description: maps[i]['description'],
-          translation: maps[i]['translation'],
-          nameAudioLink: maps[i]['name_audio_link']);
+        nameArabic: maps[i]['name_arabic'],
+        title: maps[i]['title'],
+        description: maps[i]['description'],
+        translation: maps[i]['translation'],
+        nameAudioLink: maps[i]['name_audio_link'],
+        nameId: maps[i]['id'].toString(),
+      );
     });
+  }
+
+  Future<void> updateNames(NamesData namesModel) async {
+    final db = await _namesDBService.database;
+
+    /* 
+    
+    serverdan kegan version bilan tekshirish kerak
+
+     */
+
+    await db.update(
+      getNamesTable(),
+      {
+        "name_arabic": namesModel.nameArabic,
+        "title": namesModel.title,
+        "description": namesModel.description,
+        "translation": namesModel.translation,
+        "name_audio_link": namesModel.nameAudioLink
+      },
+      where: 'id = ?',
+      whereArgs: [namesModel.nameId],
+    );
   }
 
   Future<void> clearDatabase() async {
     final db = await _namesDBService.database;
-    await db.delete(namesTable);
+    await db.delete(namesTableRus);
+    await db.delete(namesTableUzb);
     print('db cleared successfully');
   }
 }

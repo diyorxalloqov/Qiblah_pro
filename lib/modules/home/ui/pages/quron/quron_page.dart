@@ -2,7 +2,6 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/juzlar.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/suralar.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/tanlanganlar.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class QuronPage extends StatefulWidget {
   const QuronPage({super.key});

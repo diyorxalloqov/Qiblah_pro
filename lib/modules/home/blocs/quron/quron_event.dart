@@ -8,14 +8,36 @@ abstract class QuronEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class QuronSurahGetEvent extends QuronEvent {
+class SurahGetFromApi extends QuronEvent {
   final int pageItem;
   final int limit;
-  final String lang;
 
-  const QuronSurahGetEvent(
-      {required this.pageItem, required this.lang, required this.limit});
+  const SurahGetFromApi({required this.pageItem, required this.limit});
   @override
   // TODO: implement props
-  List<Object> get props => [pageItem, lang, limit];
+  List<Object> get props => [pageItem, limit];
+}
+
+class QuronSurahGetEvent extends QuronEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class SizeChangerEvent extends QuronEvent {
+  final double? quronSize;
+  final double? textSize;
+  const SizeChangerEvent({this.quronSize, this.textSize});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [quronSize!, textSize!];
+}
+
+class GetOyatFromDB extends QuronEvent {
+  final int index;
+  const GetOyatFromDB({required this.index});
+  @override
+  // TODO: implement props
+  List<Object> get props => [index];
 }

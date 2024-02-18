@@ -1,31 +1,66 @@
-import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
+import 'dart:async';
 
-class SuralarlarPage extends StatelessWidget {
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+
+class SuralarlarPage extends StatefulWidget {
   const SuralarlarPage({super.key});
 
   @override
+  State<SuralarlarPage> createState() => _SuralarlarPageState();
+}
+
+class _SuralarlarPageState extends State<SuralarlarPage> {
+  @override
+  void initState() {
+    context.read<QuronBloc>().add(QuronSurahGetEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: 114,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return const CardItem(index: 1);
-          } else {
-            return CardItem(index: index + 1);
-          }
-        });
+    return BlocBuilder<QuronBloc, QuronState>(
+      builder: (context, state) {
+        if (state.status == ActionStatus.isLoading) {
+          return const LoadingPage();
+        } else if (state.status == ActionStatus.isSuccess) {
+          return ListView.builder(
+              itemCount: state.quronModel.length,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return CardItem(index: 1, quronState: state);
+                } else {
+                  return CardItem(index: index + 1, quronState: state);
+                }
+              });
+        }
+        return RefreshIndicator.adaptive(
+            onRefresh: () {
+              final completer = Completer<void>();
+              context
+                  .read<QuronBloc>()
+                  .add(const SurahGetFromApi(pageItem: 1, limit: 114));
+              completer.complete();
+              return completer.future;
+            },
+            child: ListView(
+              children: [
+                SizedBox(height: context.height * 0.3),
+                Center(child: Text(state.error)),
+              ],
+            ));
+      },
+    );
   }
 }
 
 class CardItem extends StatelessWidget {
   final int index;
-  const CardItem({super.key, required this.index});
+  final QuronState quronState;
+  const CardItem({super.key, required this.index, required this.quronState});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      // color: cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -33,9 +68,11 @@ class CardItem extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: () {
+          context.read<QuronBloc>().add(GetOyatFromDB(index: index));
           Navigator.pushNamed(context, 'suralarDetails',
               arguments: SuralarDetailsPageArguments(
-                  suraName: 'Al-Fotixa', index: index, suradata: 'suradata'));
+                  suraName: quronState.quronModel[index - 1].name ?? '',
+                  index: index));
         },
         leading: Container(
           width: 28,
@@ -57,7 +94,7 @@ class CardItem extends StatelessWidget {
           )),
         ),
         title: Text(
-          'Al - Fotixa',
+          quronState.quronModel[index - 1].name ?? '',
           style: TextStyle(
             color: context.isDark ? Colors.white : Colors.black,
             fontSize: AppSizes.size_16,
@@ -66,7 +103,7 @@ class CardItem extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          'Lorem ipsum, 234 oyat',
+          '${quronState.quronModel[index - 1].suraVerseCount ?? ''} ${('oyat').tr()}',
           style: TextStyle(
               color: context.isDark ? const Color(0xffE3E7EA) : smallTextColor,
               fontSize: AppSizes.size_12,
@@ -74,7 +111,7 @@ class CardItem extends StatelessWidget {
               fontWeight: AppFontWeight.w_400),
         ),
         trailing: Text(
-          'الفاتحة',
+          quronState.quronModel[index - 1].suraNameArabic ?? '',
           style: TextStyle(
             color: context.isDark ? const Color(0xffE3E7EA) : arabicTextColor,
             fontSize: AppSizes.size_24,

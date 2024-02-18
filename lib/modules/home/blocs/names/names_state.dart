@@ -11,11 +11,7 @@ class NamesState extends Equatable {
       this.status = ActionStatus.isInitial});
 
   NamesState copyWith(
-      {List<NamesData>? namesModel,
-      ActionStatus? status,
-      String? error,
-      bool? isPlaying,
-      List? audiosList}) {
+      {List<NamesData>? namesModel, ActionStatus? status, String? error}) {
     return NamesState(
       namesModel: namesModel ?? this.namesModel,
       error: error ?? this.error,

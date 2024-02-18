@@ -1,7 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/home/service/notification_service.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -334,15 +332,15 @@ class _OnBoardingState extends State<OnBoarding> {
                                                                       onTap:
                                                                           () {
                                                                         setState(
-                                                                            () {
+                                                                            () async {
                                                                           selectedLang =
                                                                               'uz';
                                                                           context
                                                                               .setLocale(const Locale('uz'));
 
-                                                                          context
-                                                                              .read<OnBoardingBloc>()
-                                                                              .add(ChangeLanguageEvent(selectedLang));
+                                                                          await StorageRepository.putString(
+                                                                              Keys.lang,
+                                                                              selectedLang);
                                                                         });
                                                                         Navigator.pop(
                                                                             context);
@@ -396,15 +394,14 @@ class _OnBoardingState extends State<OnBoarding> {
                                                                       onTap:
                                                                           () {
                                                                         setState(
-                                                                            () {
+                                                                            () async {
                                                                           selectedLang =
                                                                               'ru';
                                                                           context
                                                                               .setLocale(const Locale('ru'));
-                                                                          context
-                                                                              .read<OnBoardingBloc>()
-                                                                              .add(ChangeLanguageEvent(selectedLang));
-
+                                                                          await StorageRepository.putString(
+                                                                              Keys.lang,
+                                                                              selectedLang);
                                                                           Navigator.pop(
                                                                               context);
                                                                         });

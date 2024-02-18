@@ -8,6 +8,24 @@ import 'package:qiblah_pro/utils/enums.dart';
 import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
 
 class NamozTimeService {
+ 
+
+  Future<List<DailyPrayerTimes>> calculatePrayerTimesForPreviousMonth() async {
+    DateTime currentDate = DateTime.now();
+    DateTime startDate = DateTime(currentDate.year, currentDate.month - 1, 1);
+    DateTime endDate = DateTime(currentDate.year, currentDate.month, 0);
+
+    return await calculatePrayerTimesInRange(startDate, endDate);
+  }
+
+  Future<List<DailyPrayerTimes>> calculatePrayerTimesForNextMonth() async {
+    DateTime currentDate = DateTime.now();
+    DateTime startDate = DateTime(currentDate.year, currentDate.month + 1, 1);
+    DateTime endDate = DateTime(currentDate.year, currentDate.month + 2, 0);
+
+    return await calculatePrayerTimesInRange(startDate, endDate);
+  }
+
   Future<List<DailyPrayerTimes>> calculatePrayerTimesInRange(
       DateTime from, DateTime until) async {
     var list = <DailyPrayerTimes>[];
@@ -34,17 +52,17 @@ class NamozTimeService {
       startDate = startDate.add(const Duration(days: 1));
     }
 
-    print(list.first.asr.time);
-    print(list.length);
-    print(list.first.bomdod.time);
+    // print(list.first.asr.time);
+    // print(list.length);
+    // print(list.first.bomdod.time);
 
     return list;
   }
 
   Future<DailyPrayerTimes> calculatePrayerTimes(DateTime dateTime) async {
     var location = await LocationChooserService().getChosenLocation();
-    print(location.latitude);
-    print(location.longitude);
+    // print(location.latitude);
+    // print(location.longitude);
 
     if (location == null) {
       throw ArgumentError();
@@ -62,7 +80,7 @@ class NamozTimeService {
     if (location == null) {
       throw ArgumentError();
     }
-    print(location);
+    // print(location);
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();

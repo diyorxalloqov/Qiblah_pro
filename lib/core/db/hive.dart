@@ -6,7 +6,7 @@
 //   Box<PositionInfo>? positionBox; // Use 'late' to initialize later
 
 //   static void registerAdapters() {
-//     Hive.registerAdapter(PositionInfoAdapter());
+//     // Hive.registerAdapter(PositionInfoAdapter());
 //   }
 
 //   Future<void> openBox() async {
