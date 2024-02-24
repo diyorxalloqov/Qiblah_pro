@@ -68,7 +68,7 @@ class _ZikrPageState extends State<ZikrPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 180.h,
+                      height: 190.h,
                       child: Column(
                         children: [
                           Expanded(

@@ -8,12 +8,17 @@ class QuronState extends Equatable {
   final List<QuronModel> quronModel;
   final double? quronSize;
   final List<OyatModel> oyatModel;
+  final List<OyatModel> oyatModelSavedReaded;
+
   final double? textSize;
+  final QuronShowingTextEnum? textEnum;
 
   const QuronState(
       {this.error = '',
+      this.oyatModelSavedReaded = const [],
       this.status1 = ActionStatus.isInitial,
       this.quronModel = const [],
+      this.textEnum,
       this.quronSize,
       this.oyatModel = const [],
       this.textSize,
@@ -25,7 +30,9 @@ class QuronState extends Equatable {
       double? quronSize,
       ActionStatus? status1,
       double? textSize,
+      QuronShowingTextEnum? textEnum,
       List<OyatModel>? oyatModel,
+      List<OyatModel>? oyatModelSavedReaded,
       List<QuronModel>? quronModel}) {
     return QuronState(
         error: error ?? this.error,
@@ -33,11 +40,21 @@ class QuronState extends Equatable {
         quronSize: quronSize ?? this.quronSize,
         textSize: textSize ?? this.textSize,
         oyatModel: oyatModel ?? this.oyatModel,
+        oyatModelSavedReaded: oyatModelSavedReaded ?? this.oyatModelSavedReaded,
         status: status ?? this.status,
+        textEnum: textEnum ?? this.textEnum,
         quronModel: quronModel ?? this.quronModel);
   }
 
   @override
-  List<Object?> get props =>
-      [status, error, quronModel, oyatModel, quronSize, textSize];
+  List<Object?> get props => [
+        status,
+        error,
+        quronModel,
+        oyatModel,
+        quronSize,
+        oyatModelSavedReaded,
+        textSize,
+        textEnum
+      ];
 }

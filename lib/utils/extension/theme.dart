@@ -1,8 +1,9 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 extension ThemesData on BuildContext {
-  bool get isDark => Theme.of(this).brightness == Brightness.dark;
-  bool get isLight => Theme.of(this).brightness == Brightness.light;
+  bool get isDark => Platform.isIOS
+      ? CupertinoTheme.of(this).brightness == Brightness.dark
+      : Theme.of(this).brightness == Brightness.dark;
 }
 
     // SchedulerBinding.instance.platformDispatcher.platformBrightness;

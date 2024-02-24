@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppBar(
+            centerTitle: false,
             scrolledUnderElevation: 0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -81,14 +82,16 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 SizedBox(height: 5.h),
-                MediumText(text: '${('assalom_alekum').tr()}, Sherzod!'),
+                MediumText(
+                    text:
+                        '${('assalom_alekum').tr()} ${StorageRepository.getString(Keys.name)}'),
                 SizedBox(height: 5.h),
                 SmallText(text: "ibodatlaringiz_qabul_bolsin".tr())
               ],
             ),
           ),
           Container(
-            height: 150.h,
+            constraints: BoxConstraints(maxHeight: 145.h, minHeight: 128.h),
             padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
             margin: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
@@ -211,8 +214,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            height: context.height * 0.2,
-            padding: EdgeInsets.only(bottom: 18.h, top: 18.h, left: 12.w),
+            constraints: BoxConstraints(maxHeight: 180.h, minHeight: 161.h),
+            padding:
+                EdgeInsets.only(bottom: 18.h, top: 18.h, right: 12, left: 12.w),
             decoration: ShapeDecoration(
               color: context.isDark ? homeBlackMainColor : Colors.white,
               shape: RoundedRectangleBorder(
@@ -328,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                                   Dash(
                                     dashThickness: 2,
                                     direction: Axis.vertical,
-                                    length: 230,
+                                    length: context.height * 0.29,
                                     /*  */
                                     dashBorderRadius: 10,
                                     dashLength: 10,
@@ -382,21 +386,22 @@ class _HomePageState extends State<HomePage> {
     String minute = state1.durationUntilNextPrayer != Duration.zero
         ? state1.durationUntilNextPrayer.getFormattedCountdownMinute()
         : '';
+    print(hour);
     if (state.dailyTimes != null) {
       if (state.dailyTimes!.bomdod.isCurrent) {
-        return "${'quyosh'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'quyosh'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else if (state.dailyTimes!.quyosh.isCurrent) {
-        return "${'peshin'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'peshin'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else if (state.dailyTimes!.peshin.isCurrent) {
-        return "${'asr'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'asr'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else if (state.dailyTimes!.asr.isCurrent) {
-        return "${'shom'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'shom'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else if (state.dailyTimes!.shom.isCurrent) {
-        return "${'xufton'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'xufton'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else if (state.dailyTimes!.xufton.isCurrent) {
-        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
       } else {
-        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' ? ('soat'.tr()) : ''} $minute ${("daqiqadan_song").tr()}";
+        return 'bomdod'.tr();
       }
     } else {
       return '';

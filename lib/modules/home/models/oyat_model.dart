@@ -10,10 +10,14 @@ class OyatModel {
   String? meaning;
   String? verseCreateAt;
   int? id;
+  bool? isReaded;
+  bool? isSaved;
 
   OyatModel({
     this.verseId,
     this.id,
+    this.isReaded,
+    this.isSaved,
     this.suraNumber,
     this.verseNumber,
     this.juzNumber,
@@ -30,6 +34,8 @@ class OyatModel {
         id = json['id'],
         suraNumber = json['sura_number'],
         verseNumber = json['verse_number'],
+        isReaded = json['isReaded'],
+        isSaved = json['isSaved'],
         juzNumber = json['juz_number'],
         suraId = json['sura_id'],
         verseArabic = json['verse_arabic'],
@@ -44,6 +50,8 @@ class OyatModel {
     data['verse_number'] = verseNumber;
     data['juz_number'] = juzNumber;
     data['sura_id'] = suraId;
+    data['isReaded'] = isReaded;
+    data['isSaved'] = isSaved;
     data['verse_arabic'] = verseArabic;
     data['text'] = text;
     data['meaning'] = meaning;

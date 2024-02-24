@@ -1,5 +1,4 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
 import 'package:qiblah_pro/modules/onBoarding/presentation/widgets/on_boarding_location_bottomsheet.dart';
 
 class AutoChoiceLocation extends StatefulWidget {
@@ -42,18 +41,16 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
     return BlocProvider.value(
       value: geolocationCubit,
       child: Scaffold(
-          body: SingleChildScrollView(
-        child: BlocBuilder<GeolocationCubit, GeolocationState>(
-          bloc: geolocationCubit,
-          builder: (context, state) {
-            return findAprWidgetByLocationInfo(geolocationCubit);
-          },
-        ),
-      )),
+          body: BlocBuilder<GeolocationCubit, GeolocationState>(
+            bloc: geolocationCubit,
+            builder: (context, state) {
+              return findAprWidgetByLocationInfo(geolocationCubit);
+            },
+          )),
     );
   }
 
-  findAprWidgetByLocationInfo(GeolocationCubit cubit) {
+ Widget findAprWidgetByLocationInfo(GeolocationCubit cubit) {
     switch (cubit.locationInfo.locationStatus) {
       case LocationStatusEnum.failed:
         return failedCase(cubit);
@@ -78,29 +75,6 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
     }
   }
 
-  // Widget determinedLocation(GeolocationCubit cubit) {
-  //   print("${cubit.locationInfo.position?.isPrecise} isprecise snapshot");
-  //   print("${cubit.locationInfo.position?.country} country snapshot");
-  //   print("${cubit.locationInfo.position?.latitude} latitude");
-  //   print("${cubit.locationInfo.position?.region} region");
-  //   print("${cubit.locationInfo.position?.longitude} longtit");
-  //   return FutureBuilder(
-  //     future: cubit.getChosenLocation(),
-  //     builder: (context, snapshot) {
-  //       print('${snapshot.data} snapshot data not coming');
-  //       print('${snapshot.connectionState}  not status');
-  //       print('${snapshot.error}  error');
-  //       print('${snapshot.stackTrace}  stack trace');
-
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         // Data is available, process it
-  //         print("${snapshot.data} snapshot data is");
-  //         cubit.saveLocationChoice(snapshot.data);
-  //       }
-  //       return const SizedBox.shrink();
-  //     },
-  //   );
-  // }
   Widget determinedLocation(GeolocationCubit cubit) {
     cubit.addAddressInfo(cubit.locationInfo.position).then((data) {
       print('$data snapshot data');

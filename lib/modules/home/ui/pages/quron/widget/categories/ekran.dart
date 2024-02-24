@@ -8,7 +8,6 @@ class Ekran extends StatefulWidget {
 }
 
 class _EkranState extends State<Ekran> {
-  bool isDarkMode = false;
   double _quronValue = 0.0;
   double _matnValue = 0.0;
   @override
@@ -40,13 +39,24 @@ class _EkranState extends State<Ekran> {
                 ),
               ),
               Switch.adaptive(
-                  value: isDarkMode,
-                  activeTrackColor: primaryColor,
-                  inactiveTrackColor: Colors.white,
-                  onChanged: (v) {
-                    isDarkMode = v;
-                    setState(() {});
-                  })
+                activeTrackColor: primaryColor,
+                inactiveTrackColor: Colors.white,
+                activeColor: Colors.white,
+                value: Platform.isIOS
+                    ? CupertinoAdaptiveTheme.of(context).mode.isDark
+                    : AdaptiveTheme.of(context).mode.isDark,
+                onChanged: (value) {
+                  if (value) {
+                    Platform.isIOS
+                        ? CupertinoAdaptiveTheme.of(context).setDark()
+                        : AdaptiveTheme.of(context).setDark();
+                  } else {
+                    Platform.isIOS
+                        ? CupertinoAdaptiveTheme.of(context).setLight()
+                        : AdaptiveTheme.of(context).setLight();
+                  }
+                },
+              )
             ],
           ),
           const SpaceHeight(),

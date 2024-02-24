@@ -84,20 +84,20 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: context.isDark ? const Color(0xff153125) : null,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(top: 32.h),
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: context.isDark
-                        ? loginRegisterBlackGradient
-                        : loginRegisterGradient,
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft)),
+        child: Container(
+          padding: EdgeInsets.only(top: 30.h),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: context.isDark
+                      ? loginRegisterBlackGradient
+                      : loginRegisterGradient,
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft)),
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 SizedBox(
-                  height: context.height * 0.26,
+                  height: context.height * 0.25,
                   child: Column(
                     children: [
                       Row(
@@ -151,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           HighText(text: 'royxatdan_otish'.tr()),
                           const SpaceHeight(),
                           SmallText(text: "royxatdan_otish_promt".tr()),
-                          SpaceHeight(height: 25.h),
+                          SpaceHeight(height: 20.h),
                           SmallText(text: 'telefon_raqam'.tr()),
                           const SpaceHeight(),
                           Form(
@@ -241,7 +241,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             : const BorderSide(
                                                 color: Colors.grey, width: 1),
                                         borderRadius:
-                                            BorderRadius.circular(12.0),
+                                            BorderRadius.circular(12.0.r),
                                       ),
                                       suffixIcon: Visibility(
                                           child: IconButton(
@@ -388,7 +388,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           ),
                           const SpaceHeight(),
-                          const SpaceHeight()
                         ]),
                   ),
                 ),
@@ -492,23 +491,7 @@ class _RegisterPageState extends State<RegisterPage> {
 //     // }
 //   }
 
-//   Future<void> _handleFacebookLogin(BuildContext context) async {
-//     try {
-//       LoginResult accessToken = await FacebookAuth.instance.login();
 
-//       // Check if the login was successful
-//       if (accessToken != null) {
-//         print('Facebook Auth Token: ${accessToken.accessToken}');
-//         // Handle successful registration
-//       } else {
-//         print('Facebook Login Failed');
-//         // Handle error
-//       }
-//     } catch (error) {
-//       print('Facebook Login Error: $error');
-//       // Handle error
-//     }
-//   }
 
 //   Future<void> _handleAppleSignIn(BuildContext context) async {
 //     // try {

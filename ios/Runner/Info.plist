@@ -57,5 +57,7 @@
 		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
+		<key>GMSApiKey</key>
+		<string>AIzaSyBay6Nv53J-zanMHUf2Jt-bu63P3fgtr-k</string>
 	</dict>
 </plist>

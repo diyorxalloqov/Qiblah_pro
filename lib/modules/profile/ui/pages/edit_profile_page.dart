@@ -11,18 +11,21 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _phoneController;
+  late TextEditingController _nameController;
 
-  int selectedChipIndex = 0;
+  int selectedChipIndex = StorageRepository.getBool(Keys.isMan) ? 1 : 0;
   final List<String> _titles = const ['ayol', "erkak"];
   final List<String> _icons = const [AppIcon.woman, AppIcon.man];
 
   @override
   void initState() {
     _phoneController = TextEditingController();
+    _nameController = TextEditingController();
     super.initState();
   }
 
   String dialCode = '+998';
+  bool isMan = true;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,58 @@ class _EditProfilePageState extends State<EditProfilePage> {
           context,
           "profilni_tahrirlash".tr(),
           icon1: AppIcon.logout,
-          onTap1: () {},
+          onTap1: () {
+            showAdaptiveDialog(
+                context: context,
+                builder: (context) => AlertDialog.adaptive(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'chiqish'.tr(),
+                            style: TextStyle(
+                                fontFamily: AppfontFamily.comforta.fontFamily,
+                                fontSize: AppSizes.size_18,
+                                fontWeight: AppFontWeight.w_700),
+                          ),
+                          SpaceHeight(height: context.height * 0.05),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () => Navigator.maybePop(context),
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                    fixedSize: Size(100.w, 30.h),
+                                  ),
+                                  child: Text(
+                                    'yoq'.tr(),
+                                    style: TextStyle(
+                                        color: context.isDark
+                                            ? Colors.white
+                                            : Colors.black),
+                                  )),
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12.r),
+                                      ),
+                                      fixedSize: Size(100.w, 30.h),
+                                      backgroundColor: primaryColor),
+                                  child: Text(
+                                    'ha'.tr(),
+                                    style: const TextStyle(color: Colors.white),
+                                  ))
+                            ],
+                          )
+                        ],
+                      ),
+                    ));
+          },
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -90,7 +144,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         Color(0xFF21AE62)
                                       ],
                                     ),
-                                    shape: OvalBorder(),
+                                    shape: const OvalBorder(),
                                   ),
                                   child: const Icon(Icons.person_rounded,
                                       color: Colors.white, size: 42)),
@@ -113,6 +167,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10.h),
                       child: TextFormField(
+                        controller: _nameController,
                         decoration: InputDecoration(
                           filled: true,
                           hintText: 'ismingizni_yozing'.tr(),
@@ -202,56 +257,57 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ),
                         SpaceHeight(height: 24.h),
-                        Wrap(
-                          alignment: WrapAlignment.start,
-                          spacing: 8.0,
-                          runSpacing: 4.0,
-                          children: List.generate(2, (index) {
-                            return ChoiceChip(
-                              label: SizedBox(
-                                height: 40.h,
-                                width: 150.w,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(_icons[index]),
-                                    Text(
-                                      _titles[index].tr(),
-                                      style: TextStyle(
-                                          fontSize: AppSizes.size_16,
-                                          color: context.isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontWeight: AppFontWeight.w_500),
-                                    ),
-                                  ],
+                        SizedBox(
+                          height: 60.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: List.generate(2, (index) {
+                              return ChoiceChip(
+                                backgroundColor: context.isDark
+                                    ? jinsBlackColor
+                                    : Colors.white,
+                                label: SizedBox(
+                                  height: 45.h,
+                                  width: 130.w,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(_icons[index]),
+                                      const SpaceWidth(),
+                                      Text(
+                                        _titles[index].tr(),
+                                        style: TextStyle(
+                                            fontSize: AppSizes.size_16,
+                                            color: context.isDark
+                                                ? highTextColorWhite
+                                                : highTextColor,
+                                            fontWeight: AppFontWeight.w_500),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              side: selectedChipIndex == index
-                                  ? BorderSide(color: primaryColor, width: 1)
-                                  : BorderSide.none,
-                              showCheckmark: false,
-                              backgroundColor:
-                                  context.isDark ? jinsBlackColor : jinsColor,
-                              selectedColor: context.isDark
-                                  ? jinsBlackColor
-                                  : primaryColor.withOpacity(0.2),
-                              disabledColor: textFormFieldHintColor,
-                              onSelected: (value) {
-                                print(value);
-                                setState(() {
-                                  print(selectedChipIndex);
-                                  print(index);
-
-                                  if (value) {
-                                    selectedChipIndex = index;
-                                  }
-                                });
-                              },
-                              selected: selectedChipIndex == index,
-                            );
-                          }),
+                                side: selectedChipIndex == index
+                                    ? BorderSide(color: primaryColor, width: 1)
+                                    : BorderSide.none,
+                                showCheckmark: false,
+                                selectedColor: primaryColor.withOpacity(0.2),
+                                disabledColor: textFormFieldHintColor,
+                                onSelected: (value) {
+                                  print(value);
+                                  index == 0 ? isMan = false : isMan = true;
+                                  setState(() {
+                                    if (value) {
+                                      selectedChipIndex = index;
+                                    } else {
+                                      selectedChipIndex = -1;
+                                    }
+                                  });
+                                },
+                                selected: selectedChipIndex == index,
+                              );
+                            }),
+                          ),
                         ),
                         SpaceHeight(height: 20.h),
                         InkWell(
@@ -281,9 +337,84 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           ),
                         ),
                         const SpaceHeight(),
+                        const SpaceHeight(),
                         Center(
                           child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showAdaptiveDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog.adaptive(
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                'ochirish'.tr(),
+                                                style: TextStyle(
+                                                    fontFamily: AppfontFamily
+                                                        .comforta.fontFamily,
+                                                    fontSize: AppSizes.size_18,
+                                                    fontWeight:
+                                                        AppFontWeight.w_700),
+                                              ),
+                                              SpaceHeight(
+                                                  height:
+                                                      context.height * 0.05),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  ElevatedButton(
+                                                      onPressed: () =>
+                                                          Navigator.maybePop(
+                                                              context),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.r),
+                                                        ),
+                                                        fixedSize:
+                                                            Size(100.w, 30.h),
+                                                      ),
+                                                      child: Text(
+                                                        'yoq'.tr(),
+                                                        style: TextStyle(
+                                                            color: context
+                                                                    .isDark
+                                                                ? Colors.white
+                                                                : Colors.black),
+                                                      )),
+                                                  ElevatedButton(
+                                                      onPressed: () {},
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12.r),
+                                                              ),
+                                                              fixedSize: Size(
+                                                                  100.w, 30.h),
+                                                              backgroundColor:
+                                                                  primaryColor),
+                                                      child: Text(
+                                                        'ha'.tr(),
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ))
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ));
+                              },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -299,9 +430,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   )
                                 ],
                               )),
-                        )
+                        ),
+                        SpaceHeight(height: 15.h),
+                        ElevatedButton(
+                          onPressed: () async {
+                            await StorageRepository.putBool(Keys.isMan, isMan);
+                            await StorageRepository.putString(
+                                Keys.name, _nameController.text);
+                            Navigator.pop(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            fixedSize: Size(double.infinity, 50.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'saqlash'.tr(),
+                              style: const TextStyle(
+                                fontSize: AppSizes.size_16,
+                                color: Colors.white,
+                                fontWeight: AppFontWeight.w_600,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ])),
         ));
   }

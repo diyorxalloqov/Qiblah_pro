@@ -39,19 +39,38 @@ class GeolocationCubit extends Cubit<GeolocationState> {
       return;
     }
 
-    LocationPermission permission =
-        await _geolocationManager.isPermissionGranted();
-    if (permission == LocationPermission.denied) {
-      permission = await _geolocationManager.requestPermissions();
+    //// Android
+
+    if (Platform.isAndroid) {
+      LocationPermission permission =
+          await _geolocationManager.isPermissionGranted();
       if (permission == LocationPermission.denied) {
-        _updateLocationStatus(LocationStatusEnum.denied);
-        return;
+        permission = await _geolocationManager.requestPermissions();
+        if (permission == LocationPermission.denied) {
+          _updateLocationStatus(LocationStatusEnum.denied);
+          return;
+        }
       }
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      _updateLocationStatus(LocationStatusEnum.deniedForever);
-      return;
+    ///
+
+    // Location permission handling for iOS
+    if (Platform.isIOS) {
+      try {
+        LocationPermission permission =
+            await _geolocationManager.isPermissionGranted();
+        if (permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever) {
+          // Handle permission denied scenario for iOS
+          await _geolocationManager.askToPermitInSettings();
+          return;
+        }
+      } on PermissionRequestInProgressException catch (e) {
+        print(e.message);
+        // Handle permission request already in progress for iOS
+        return;
+      }
     }
 
     var isPrecise = (await _geolocationManager.getAccuracy()) ==
@@ -91,6 +110,12 @@ class GeolocationCubit extends Cubit<GeolocationState> {
   void askToGivePermissionsInSettings() async {
     waitForPermission();
     await determineLocation();
+    if (Platform.isIOS &&
+        (_locationInfo.locationStatus == LocationStatusEnum.denied ||
+            _locationInfo.locationStatus == LocationStatusEnum.deniedForever)) {
+      await _geolocationManager.askToPermitInSettings();
+      return;
+    }
     switch (_locationInfo.locationStatus) {
       case LocationStatusEnum.denied:
         await _geolocationManager.askToPermitInSettings();

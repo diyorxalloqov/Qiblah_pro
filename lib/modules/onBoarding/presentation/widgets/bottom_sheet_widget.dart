@@ -134,10 +134,10 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                       backgroundColor:
                           context.isDark ? jinsBlackColor : jinsColor,
                       label: SizedBox(
-                        height: 39.h,
-                        width: 140.w,
+                        height: 45.h,
+                        width: 130.w,
                         child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                          mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(_icons[index]),
@@ -183,11 +183,13 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_key.currentState!.validate()) {
                         print(isMan);
-                        context.read<OnBoardingBloc>().add(UserDataEvent(
-                            name: _nameController.text, isMan: isMan ? 0 : 1));
+                        await StorageRepository.putString(
+                            Keys.name, _nameController.text);
+                        await StorageRepository.putBool(Keys.isMan, isMan);
+
                         Navigator.pop(context);
                         widget.pageController.nextPage(
                             duration: const Duration(milliseconds: 300),

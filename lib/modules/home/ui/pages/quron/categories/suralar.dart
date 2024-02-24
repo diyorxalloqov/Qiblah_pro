@@ -68,9 +68,16 @@ class CardItem extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: () {
+          print("$index tapped index is");
           context.read<QuronBloc>().add(GetOyatFromDB(index: index));
+          context
+              .read<QuronBloc>()
+              .add(GetSavedAndReadedItem(oyatNumber: index));
+          /// bug has
           Navigator.pushNamed(context, 'suralarDetails',
               arguments: SuralarDetailsPageArguments(
+                  suraVerseCount:
+                      quronState.quronModel[index - 1].suraVerseCount ?? 0,
                   suraName: quronState.quronModel[index - 1].name ?? '',
                   index: index));
         },

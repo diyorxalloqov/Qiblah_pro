@@ -72,8 +72,8 @@ List<Color> loginRegisterBlackGradient = const [
 ];
 
 List<Color> profileGradient = [
-  Colors.green.shade100,
   Colors.lightGreen.shade50,
+  Colors.green.shade50,
   Colors.green.shade50
 ];
 List<Color> profileBlackGradient = const [

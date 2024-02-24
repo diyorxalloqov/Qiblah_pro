@@ -1,6 +1,6 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/names_details_page.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/GOD_names/tasbeh_name_page.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/names/names_details_page.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/names/tasbeh_name_page.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_details_pages/juzlar_details_page.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/zikr/tasbeh.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr_details.dart';

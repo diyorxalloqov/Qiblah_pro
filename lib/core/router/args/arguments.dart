@@ -8,8 +8,12 @@ class OtpPageArguments {
 
 class SuralarDetailsPageArguments {
   final String suraName;
+  final int suraVerseCount;
   final int index;
-  SuralarDetailsPageArguments({required this.suraName, required this.index});
+  SuralarDetailsPageArguments(
+      {required this.suraName,
+      required this.suraVerseCount,
+      required this.index});
 }
 
 class JuzlarDetailsArgument {

@@ -4,17 +4,14 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/blocs/qibla/qibla_cubit.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/qibla/google_map.dart';
 
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-
 class QiblaPage extends StatefulWidget {
   const QiblaPage({super.key});
 
   @override
-  State<QiblaPage> createState() => _AutomaticPositionChooserRouteState();
+  State<QiblaPage> createState() => _QiblaPageState();
 }
 
-class _AutomaticPositionChooserRouteState extends State<QiblaPage>
-    with WidgetsBindingObserver {
+class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   late GeolocationCubit geolocationCubit;
   late QiblaCubit qiblaCubit;
 
@@ -293,7 +290,8 @@ class _AutomaticPositionChooserRouteState extends State<QiblaPage>
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(24.r)),
+              color: context.isDark ? const Color(0xff232C37) : Colors.white,
+              borderRadius: BorderRadius.circular(24.r)),
           child: Column(
             children: [
               Text(
@@ -329,7 +327,13 @@ class _AutomaticPositionChooserRouteState extends State<QiblaPage>
 
   Widget waitingForLocation(LocationInfo locationInfo) {
     // TODO alohida metod o'rniga button loading spinnerga aylanishinini ko'rsatish
-    return Center(child: CircularProgressIndicator.adaptive());
+    return Center(
+      child: CircularProgressIndicator.adaptive(
+        valueColor: AlwaysStoppedAnimation<Color>(primaryColor.withOpacity(0.2)),
+        strokeWidth: 13,
+        strokeAlign: 2,
+      ),
+    );
   }
 
   Widget gpsDisabled(GeolocationCubit cubit) {

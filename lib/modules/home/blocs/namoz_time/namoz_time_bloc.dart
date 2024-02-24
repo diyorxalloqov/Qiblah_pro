@@ -32,14 +32,16 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   FutureOr<void> _getTodayTimes(
       TodayNamozTimes event, Emitter<NamozTimeState> emit) async {
+    emit(state.copyWith(status: ActionStatus.isLoading));
     try {
       DailyPrayerTimes todayPrayerTimes =
           await _namozTimeService.calculatePrayerTimes(DateTime.now());
       print(todayPrayerTimes.bomdod.time);
-      emit(state.copyWith(dailyTimes: todayPrayerTimes));
+      emit(state.copyWith(
+          dailyTimes: todayPrayerTimes, status: ActionStatus.isSuccess));
     } on ArgumentError catch (e) {
       print(e.message);
-      emit(state.copyWith(error: 'error $e'));
+      emit(state.copyWith(error: 'error $e', status: ActionStatus.isError));
     }
   }
 
@@ -268,10 +270,13 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   FutureOr<void> _nextDayTime(
       NextDayNamozTimeEvent event, Emitter<NamozTimeState> emit) async {
+    emit(state.copyWith(status: ActionStatus.isLoading));
+
     try {
       List<DailyPrayerTimes> nextDayTimes =
           await _namozTimeService.calculatePrayerTimesForNextMonth();
       print(nextDayTimes.first.peshin);
+      add(TodayNamozTimes());
       emit(state.copyWith(currentMonthTimes: nextDayTimes));
     } on ArgumentError catch (e) {
       print(e.message);
@@ -281,10 +286,13 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   FutureOr<void> _previousDayTime(
       PreviousDayNamozTimeEvent event, Emitter<NamozTimeState> emit) async {
+    emit(state.copyWith(status: ActionStatus.isLoading));
+
     try {
       List<DailyPrayerTimes> previousDayTimes =
           await _namozTimeService.calculatePrayerTimesForPreviousMonth();
       print(previousDayTimes.first.bomdod);
+      add(TodayNamozTimes());
 
       emit(state.copyWith(currentMonthTimes: previousDayTimes));
     } on ArgumentError catch (e) {

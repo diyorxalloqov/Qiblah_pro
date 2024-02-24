@@ -41,3 +41,43 @@ class GetOyatFromDB extends QuronEvent {
   // TODO: implement props
   List<Object> get props => [index];
 }
+
+class GetOyatFromApi extends QuronEvent {
+  final int index;
+  const GetOyatFromApi({required this.index});
+  @override
+  // TODO: implement props
+  List<Object> get props => [index];
+}
+
+class ShowingTextEvent extends QuronEvent {
+  final QuronShowingTextEnum text;
+  const ShowingTextEvent({required this.text});
+  @override
+  // TODO: implement props
+  List<Object> get props => [text];
+}
+
+class IsSavedItemEvent extends QuronEvent {
+  final bool isSaved;
+  const IsSavedItemEvent({required this.isSaved});
+  @override
+  // TODO: implement props
+  List<Object> get props => [isSaved];
+}
+
+class IsReadedItemEvent extends QuronEvent {
+  final bool isReaded;
+  const IsReadedItemEvent({required this.isReaded});
+  @override
+  // TODO: implement props
+  List<Object> get props => [isReaded];
+}
+
+class GetSavedAndReadedItem extends QuronEvent {
+  final int oyatNumber;
+  const GetSavedAndReadedItem({required this.oyatNumber});
+  @override
+  // TODO: implement props
+  List<Object> get props => [oyatNumber];
+}

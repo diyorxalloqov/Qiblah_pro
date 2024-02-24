@@ -1,5 +1,4 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class CardWidget extends StatelessWidget {
   const CardWidget({super.key});
@@ -10,7 +9,7 @@ class CardWidget extends StatelessWidget {
       children: [
         Container(
           width: context.width * 0.85,
-          padding: EdgeInsets.all(18.0),
+          padding: const EdgeInsets.all(18.0),
           decoration: BoxDecoration(
               color: context.isDark ? homeBlackMainColor : Colors.white,
               borderRadius: BorderRadius.circular(12.r)),

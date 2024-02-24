@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:qiblah_pro/core/db/quron_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/oyat_model.dart';
@@ -18,6 +16,11 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     add(QuronSurahGetEvent());
     on<SizeChangerEvent>(_changeSize);
     on<GetOyatFromDB>(_getOyatDb);
+    on<GetOyatFromApi>(_getOyatsApi);
+    on<ShowingTextEvent>(_showingText);
+    on<IsSavedItemEvent>(_isSavedItem);
+    on<IsReadedItemEvent>(_isReadedItem);
+    on<GetSavedAndReadedItem>(_savedReadedItems);
   }
   final QuronService _quronService = QuronService();
   final QuronDBService _quronDBService = QuronDBService();
@@ -55,73 +58,76 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     emit(state.copyWith(quronSize: event.quronSize, textSize: event.textSize));
   }
 
-  // FutureOr<void> _getOyatDb(
-  //     GetOyatFromDB event, Emitter<QuronState> emit) async {
-  //   // List<OyatModel>? dataFromDb =
-  //   //     await _quronDBService.getOyatById(event.index);
-  //   Either<String, List<OyatModel>> res =
-  //       await _quronService.getOyatbyIndex(event.index);
-  //   print("${state.oyatModel[event.index].suraId.toString()} oyat suraId");
-
-  //   if (/* event.index - 1 == dataFromDb[event.index-1].suraId */ 1 != 1) {
-  //     print('SALOM TRUE');
-  //     try {
-  //       print('oyat db isnot empty');
-  //       // emit(state.copyWith(oyatModel: dataFromDb));
-  //     } on DatabaseException catch (e) {
-  //       emit(state.copyWith(status: ActionStatus.isError, error: e.toString()));
-  //     }
-  //   } else {
-  //     print('oyat db is empty');
-  //     res.fold(
-  //         (l) => emit(state.copyWith(status: ActionStatus.isError, error: l)),
-  //         (r) => emit(
-  //             state.copyWith(status: ActionStatus.isSuccess, oyatModel: r)));
-  //   }
-  // }
-
   FutureOr<void> _getOyatDb(
       GetOyatFromDB event, Emitter<QuronState> emit) async {
+    emit(state.copyWith(status1: ActionStatus.isLoading));
+
+    List<OyatModel>? dataFromDb =
+        await _quronDBService.getOyatById(event.index);
+
+    if (dataFromDb != null && dataFromDb.isNotEmpty) {
+      emit(state.copyWith(
+          oyatModel: dataFromDb, status1: ActionStatus.isSuccess));
+    } else if (dataFromDb == null || dataFromDb.isEmpty) {
+      add(GetOyatFromApi(index: event.index));
+    } else {
+      add(GetOyatFromApi(index: event.index));
+    }
+  }
+
+  FutureOr<void> _getOyatsApi(
+      GetOyatFromApi event, Emitter<QuronState> emit) async {
+    emit(state.copyWith(status1: ActionStatus.isLoading));
+
+    Either<String, List<OyatModel>> res =
+        await _quronService.getOyatbyIndex(event.index);
+
+    res.fold(
+        (l) => emit(state.copyWith(status1: ActionStatus.isError, error: l)),
+        (r) => emit(
+            state.copyWith(status1: ActionStatus.isSuccess, oyatModel: r)));
+  }
+
+  FutureOr<void> _showingText(
+      ShowingTextEvent event, Emitter<QuronState> emit) {
+    if (event.text == QuronShowingTextEnum.arabic) {
+      emit(state.copyWith(textEnum: QuronShowingTextEnum.arabic));
+    } else if (event.text == QuronShowingTextEnum.meaning) {
+      emit(state.copyWith(textEnum: QuronShowingTextEnum.meaning));
+    } else if (event.text == QuronShowingTextEnum.reading) {
+      emit(state.copyWith(textEnum: QuronShowingTextEnum.reading));
+    }
+  }
+
+  Future<FutureOr<void>> _isSavedItem(
+      IsSavedItemEvent event, Emitter<QuronState> emit) async {
     try {
-      File file = await DefaultCacheManager().getSingleFile(
-          "https://qibla.onrender.com/api/v1/verses/list/${event.index}?lang=uzbek");
-          print("$file FILLLLLLLLLLLLLLLLLLLLLLLLLLELELELELELELE");
-      if (file.path.isEmpty) {
-        emit(state.copyWith(
-            error: 'Iltimos internetingizni tekshiring',
-            status1: ActionStatus.isError));
-      }
+      await _quronDBService.insertReadedSaved(isSaved: event.isSaved);
+    } on DatabaseException catch (e) {
+      print(e.result);
+      print('databse exeption in bloc');
+    }
+  }
 
-print('${file.absolute} ');
-      if (file.existsSync()) {
-        String cachedData = await file.readAsString();
+  FutureOr<void> _isReadedItem(
+      IsReadedItemEvent event, Emitter<QuronState> emit) async {
+    try {
+      await _quronDBService.insertReadedSaved(isReaded: event.isReaded);
+    } on DatabaseException catch (e) {
+      print(e.result);
+      print('databse exeption in bloc');
+    }
+  }
 
-        Map<String, dynamic> decodedData = json.decode(cachedData);
-
-        if (decodedData.containsKey("data") && decodedData["data"] is List) {
-          List<OyatModel> dataList = (decodedData["data"] as List)
-              .map((e) => OyatModel.fromJson(e))
-              .toList();
-
-          emit(state.copyWith(
-              status1: ActionStatus.isSuccess, oyatModel: dataList));
-        } else {
-          emit(state.copyWith(
-              status1: ActionStatus.isError,
-              error: "Data is not in the expected format"));
-        }
-      } else {
-        Either<String, List<OyatModel>> res =
-            await _quronService.getOyatbyIndex(event.index);
-
-        res.fold(
-          (l) => emit(state.copyWith(status1: ActionStatus.isError, error: l)),
-          (r) => emit(
-              state.copyWith(status1: ActionStatus.isSuccess, oyatModel: r)),
-        );
-      }
-    } catch (e) {
-      emit(state.copyWith(status1: ActionStatus.isError, error: e.toString()));
+  Future<FutureOr<void>> _savedReadedItems(
+      GetSavedAndReadedItem event, Emitter<QuronState> emit) async {
+    try {
+      List<OyatModel>? data =
+          await _quronDBService.getReadedSavedById(event.oyatNumber);
+      emit(state.copyWith(oyatModelSavedReaded: data));
+    } on DatabaseException catch (e) {
+      print(e.result);
+      print('databse exeption in bloc');
     }
   }
 }

@@ -4,7 +4,7 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 showLocationBottomSheet(BuildContext c) {
   showModalBottomSheet(
-    isDismissible: false,
+    isDismissible: true,
     context: c,
     isScrollControlled: true,
     builder: (c) => const LocationBottomSheet(),
@@ -110,21 +110,15 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                           )),
                       const SpaceHeight(),
                       if (context.read<GeolocationCubit>().searchResults ==
-                          null)
+                              null ||
+                          state.status == ActionStatus.isLoading)
                         const Center(
                             child: CircularProgressIndicator.adaptive()),
                       Expanded(
-                          child: context
-                                  .read<GeolocationCubit>()
-                                  .searchResults!
-                                  .isEmpty
+                          child: state.status == ActionStatus.isError
                               ? Center(
-                                  child: state.status == ActionStatus.isError
-                                      ? Text(
-                                          "Hech qanday natija topilmadi".tr())
-                                      : const CircularProgressIndicator
-                                          .adaptive(),
-                                )
+                                  child:
+                                      Text("Hech qanday natija topilmadi".tr()))
                               : ListView.builder(
                                   itemCount: context
                                       .read<GeolocationCubit>()
@@ -206,105 +200,8 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
 
   void searchRegion(String text) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    _debounce = Timer(const Duration(milliseconds: 200), () {
       context.read<GeolocationCubit>().searchRegionByTitle(_controller.text);
     });
   }
 }
-
-
-
-// import 'dart:async';
-
-// import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-// import 'package:qiblah_pro/modules/onBoarding/geolocation/geolocation/geolocation_cubit.dart';
-
-// class UserInputLocationPage extends StatefulWidget {
-//   final GeolocationCubit geolocationCubit;
-//   const UserInputLocationPage({super.key, required this.geolocationCubit});
-
-//   @override
-//   State<UserInputLocationPage> createState() =>
-//       _ManualPositionChooserRouteState();
-// }
-
-// class _ManualPositionChooserRouteState extends State<UserInputLocationPage> {
-//   final TextEditingController _regionController = TextEditingController();
-
-//   Timer? _debounce;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     _debounce?.cancel();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: BlocBuilder<GeolocationCubit, GeolocationState>(
-//         bloc: widget.geolocationCubit,
-//         builder: (context, state) {
-//           return Column(
-//             children: [
-//               const SizedBox(height: 100),
-//               TextField(
-//                 autocorrect: false,
-//                 controller: _regionController,
-//                 keyboardType: TextInputType.text,
-//                 onChanged: (text) {
-//                   searchRegion(widget.geolocationCubit, text);
-//                 },
-//               ),
-//               SizedBox(
-//                 height: 250,
-//                 child: resultList(widget.geolocationCubit),
-//               ),
-//             ],
-//           );
-//         },
-//       ),
-//     );
-//   }
-
-//   Widget resultList(GeolocationCubit geolocationCubit) {
-//     if (geolocationCubit.searchResults == null) {
-//       return const SizedBox();
-//     }
-
-//     if (geolocationCubit.searchResults!.isEmpty) {
-//       return Text('no regions were found');
-//     }
-
-//     return ListView.builder(
-//       itemCount: geolocationCubit.searchResults?.length,
-//       itemBuilder: (context, index) {
-//         var placemark = geolocationCubit.searchResults![index];
-//         return ListTile(
-//           title: Text(placemark.region!),
-//           subtitle: Text(placemark.country!),
-//           onTap: () {
-//             geolocationCubit.saveLocationChoice(placemark);
-//             _navigateToPrayerTimes(context);
-//           },
-//         );
-//       },
-//     );
-//   }
-
-//   void _navigateToPrayerTimes(BuildContext context) {
-//     // context.replace(TodayPrayerTimesRoute.route);
-//   }
-
-//   void searchRegion(GeolocationCubit geolocationCubit, String text) {
-//     if (_debounce?.isActive ?? false) _debounce?.cancel();
-//     _debounce = Timer(const Duration(milliseconds: 500), () {
-//       geolocationCubit.searchRegionByTitle(_regionController.text);
-//     });
-//   }
-// }

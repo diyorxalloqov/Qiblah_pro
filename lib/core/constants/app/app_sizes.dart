@@ -9,6 +9,8 @@ class AppSizes {
   static const double size_14 = 14;
   static const double size_12 = 12;
   static const double size_10 = 10;
+  static const double size_22 = 22;
+  static const double size_30 = 30;
   static const double arabicTextSize = 32;
 
 }

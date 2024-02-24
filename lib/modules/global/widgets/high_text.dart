@@ -1,5 +1,4 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class HighText extends StatelessWidget {
   final String text;

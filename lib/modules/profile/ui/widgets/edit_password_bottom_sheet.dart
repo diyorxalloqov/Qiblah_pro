@@ -111,207 +111,209 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
         const SpaceHeight(),
         Container(
           height: _isKeyboardAppear || _isTextFieldFocused
-              ? context.height
-              : context.height * 0.6,
+              ? context.height*0.85
+              : null,
           color: context.isDark
               ? bottomSheetBackgroundBlackColor
               : bottomSheetBackgroundColor,
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SmallText(text: 'eski_parolni_kiriting'.tr()),
-              const SpaceHeight(),
-              TextFormField(
-                focusNode: _focusNode,
-                controller: _oldPasswordController,
-                obscureText: oldpasswordVisibile,
-                obscuringCharacter: "*",
-                decoration: InputDecoration(
-                    suffixIcon: Visibility(
-                        child: IconButton(
-                            onPressed: () {
-                              oldpasswordVisibile = !oldpasswordVisibile;
-                              setState(() {});
-                            },
-                            icon: oldpasswordVisibile
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off))),
-                    filled: true,
-                    fillColor: context.isDark
-                        ? textFormFieldFillColorBlack
-                        : Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontWeight: AppFontWeight.w_400,
-                      color: textFormFieldHintColor,
-                    ),
-                    hintText: "eski_parolni_kiriting".tr()),
-                validator: (value) {
-                  String? passwordError = validatePassword(value);
-                  // if (value == null) {
-                  //   return "Iltimos bo'sh qoldirmang";
-                  // } else if (value.length < 4) {
-                  //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                  // } else if (passwordError != null) {
-                  //   return passwordError;
-                  // } else if (value.length > 16) {
-                  //   return "Parol yaroqsiz";
-                  // } else {
-                  //   return null;
-                  // }
-                },
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                child: const Divider(),
-              ),
-              SmallText(text: 'yangi_parolni_kiriting'.tr()),
-              const SpaceHeight(),
-              TextFormField(
-                focusNode: _focusNode,
-                controller: _newpasswordController,
-                obscureText: newpassconfirmVisible,
-                obscuringCharacter: "*",
-                decoration: InputDecoration(
-                    suffixIcon: Visibility(
-                        child: IconButton(
-                            onPressed: () {
-                              newpassconfirmVisible = !newpassconfirmVisible;
-                              setState(() {});
-                            },
-                            icon: newpassconfirmVisible
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off))),
-                    filled: true,
-                    fillColor: context.isDark
-                        ? textFormFieldFillColorBlack
-                        : Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontWeight: AppFontWeight.w_400,
-                      color: textFormFieldHintColor,
-                    ),
-                    hintText: "yangi_parolni_kiriting".tr()),
-                validator: (value) {
-                  String? passwordError = validatePassword(value);
-                  // if (value == null) {
-                  //   return "Iltimos bo'sh qoldirmang";
-                  // } else if (value.length < 4) {
-                  //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                  // } else if (passwordError != null) {
-                  //   return passwordError;
-                  // } else if (value.length > 16) {
-                  //   return "Parol yaroqsiz";
-                  // } else {
-                  //   return null;
-                  // }
-                },
-              ),
-              SpaceHeight(height: 23.h),
-              SmallText(text: 'yangi_parolni_takrorlang'.tr()),
-              const SpaceHeight(),
-              TextFormField(
-                focusNode: _focusNode,
-                controller: _confirmNewpasswordController,
-                obscureText: confirmpassconfirmVisible,
-                obscuringCharacter: "*",
-                decoration: InputDecoration(
-                    suffixIcon: Visibility(
-                        child: IconButton(
-                            onPressed: () {
-                              confirmpassconfirmVisible =
-                                  !confirmpassconfirmVisible;
-                              setState(() {});
-                            },
-                            icon: confirmpassconfirmVisible
-                                ? const Icon(Icons.visibility)
-                                : const Icon(Icons.visibility_off))),
-                    filled: true,
-                    fillColor: context.isDark
-                        ? textFormFieldFillColorBlack
-                        : Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: context.isDark
-                          ? BorderSide.none
-                          : const BorderSide(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    hintStyle: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontWeight: AppFontWeight.w_400,
-                      color: textFormFieldHintColor,
-                    ),
-                    hintText: "yangi_parolni_takrorlang".tr()),
-                validator: (value) {
-                  String? passwordError = validatePassword(value);
-                  // if (value == null) {
-                  //   return "Iltimos bo'sh qoldirmang";
-                  // } else if (value.length < 4) {
-                  //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                  // } else if (passwordError != null) {
-                  //   return passwordError;
-                  // } else if (value.length > 16) {
-                  //   return "Parol yaroqsiz";
-                  // } else {
-                  //   return null;
-                  // }
-                },
-              ),
-              SpaceHeight(height: 23.h),
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  fixedSize: Size(double.infinity, 50.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SmallText(text: 'eski_parolni_kiriting'.tr()),
+                const SpaceHeight(),
+                TextFormField(
+                  focusNode: _focusNode,
+                  controller: _oldPasswordController,
+                  obscureText: oldpasswordVisibile,
+                  obscuringCharacter: "*",
+                  decoration: InputDecoration(
+                      suffixIcon: Visibility(
+                          child: IconButton(
+                              onPressed: () {
+                                oldpasswordVisibile = !oldpasswordVisibile;
+                                setState(() {});
+                              },
+                              icon: oldpasswordVisibile
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off))),
+                      filled: true,
+                      fillColor: context.isDark
+                          ? textFormFieldFillColorBlack
+                          : Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: AppSizes.size_16,
+                        fontWeight: AppFontWeight.w_400,
+                        color: textFormFieldHintColor,
+                      ),
+                      hintText: "eski_parolni_kiriting".tr()),
+                  validator: (value) {
+                    String? passwordError = validatePassword(value);
+                    // if (value == null) {
+                    //   return "Iltimos bo'sh qoldirmang";
+                    // } else if (value.length < 4) {
+                    //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                    // } else if (passwordError != null) {
+                    //   return passwordError;
+                    // } else if (value.length > 16) {
+                    //   return "Parol yaroqsiz";
+                    // } else {
+                    //   return null;
+                    // }
+                  },
                 ),
-                child: Center(
-                  child: Text(
-                    'saqlash'.tr(),
-                    style: const TextStyle(
-                      fontSize: AppSizes.size_16,
-                      color: Colors.white,
-                      fontWeight: AppFontWeight.w_600,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  child: const Divider(),
+                ),
+                SmallText(text: 'yangi_parolni_kiriting'.tr()),
+                const SpaceHeight(),
+                TextFormField(
+                  focusNode: _focusNode,
+                  controller: _newpasswordController,
+                  obscureText: newpassconfirmVisible,
+                  obscuringCharacter: "*",
+                  decoration: InputDecoration(
+                      suffixIcon: Visibility(
+                          child: IconButton(
+                              onPressed: () {
+                                newpassconfirmVisible = !newpassconfirmVisible;
+                                setState(() {});
+                              },
+                              icon: newpassconfirmVisible
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off))),
+                      filled: true,
+                      fillColor: context.isDark
+                          ? textFormFieldFillColorBlack
+                          : Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: AppSizes.size_16,
+                        fontWeight: AppFontWeight.w_400,
+                        color: textFormFieldHintColor,
+                      ),
+                      hintText: "yangi_parolni_kiriting".tr()),
+                  validator: (value) {
+                    String? passwordError = validatePassword(value);
+                    // if (value == null) {
+                    //   return "Iltimos bo'sh qoldirmang";
+                    // } else if (value.length < 4) {
+                    //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                    // } else if (passwordError != null) {
+                    //   return passwordError;
+                    // } else if (value.length > 16) {
+                    //   return "Parol yaroqsiz";
+                    // } else {
+                    //   return null;
+                    // }
+                  },
+                ),
+                SpaceHeight(height: 23.h),
+                SmallText(text: 'yangi_parolni_takrorlang'.tr()),
+                const SpaceHeight(),
+                TextFormField(
+                  focusNode: _focusNode,
+                  controller: _confirmNewpasswordController,
+                  obscureText: confirmpassconfirmVisible,
+                  obscuringCharacter: "*",
+                  decoration: InputDecoration(
+                      suffixIcon: Visibility(
+                          child: IconButton(
+                              onPressed: () {
+                                confirmpassconfirmVisible =
+                                    !confirmpassconfirmVisible;
+                                setState(() {});
+                              },
+                              icon: confirmpassconfirmVisible
+                                  ? const Icon(Icons.visibility)
+                                  : const Icon(Icons.visibility_off))),
+                      filled: true,
+                      fillColor: context.isDark
+                          ? textFormFieldFillColorBlack
+                          : Colors.white,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: AppSizes.size_16,
+                        fontWeight: AppFontWeight.w_400,
+                        color: textFormFieldHintColor,
+                      ),
+                      hintText: "yangi_parolni_takrorlang".tr()),
+                  validator: (value) {
+                    String? passwordError = validatePassword(value);
+                    // if (value == null) {
+                    //   return "Iltimos bo'sh qoldirmang";
+                    // } else if (value.length < 4) {
+                    //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                    // } else if (passwordError != null) {
+                    //   return passwordError;
+                    // } else if (value.length > 16) {
+                    //   return "Parol yaroqsiz";
+                    // } else {
+                    //   return null;
+                    // }
+                  },
+                ),
+                SpaceHeight(height: 23.h),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    fixedSize: Size(double.infinity, 50.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
+                  child: Center(
+                    child: Text(
+                      'saqlash'.tr(),
+                      style: const TextStyle(
+                        fontSize: AppSizes.size_16,
+                        color: Colors.white,
+                        fontWeight: AppFontWeight.w_600,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         )
       ],

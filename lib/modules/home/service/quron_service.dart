@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:qiblah_pro/core/db/quron_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/oyat_model.dart';
@@ -49,11 +48,11 @@ class QuronService {
             .map((e) => OyatModel.fromJson(e))
             .toList();
 
-        File file = await DefaultCacheManager()
-            .getSingleFile("${AppUrls.oyatById}/$index/");
+        for (var element in dataList) {
+          await QuronDBService().insertOyatList(element);
+        }
 
         print(dataList);
-        print("$file FILE IS THIS");
         return right(dataList);
       } else {
         print(response.statusMessage);
