@@ -200,7 +200,7 @@
 
 // class _TanlanganlarItemState extends State<TanlanganlarItem> {
 //   bool isShowing = false;
-//   bool isKnown = false;
+//   bool isReaded = false;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -218,7 +218,7 @@
 //                 borderRadius: BorderRadius.circular(12.r)),
 //             child: Column(
 //               children: [
-//                 isKnown
+//                 isReaded
 //                     ? Container(
 //                         height: 5.h,
 //                         decoration: BoxDecoration(
@@ -295,7 +295,7 @@
 //                               const SpaceWidth(),
 //                               InkWell(
 //                                 onTap: () {
-//                                   isKnown = !isKnown;
+//                                   isReaded = !isReaded;
 //                                   setState(() {});
 //                                 },
 //                                 borderRadius: BorderRadius.circular(100.r),
@@ -446,7 +446,7 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
                   setState(() {});
                 },
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'qididsh'.tr(),
                   contentPadding: const EdgeInsets.symmetric(
                     vertical: 10,
                     horizontal: 12,
@@ -522,7 +522,7 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
               child: Text(state.error),
             );
           }
-          return SizedBox.shrink();
+          return const SizedBox.shrink();
         },
       ),
       bottomNavigationBar: BlocBuilder<QuronBloc, QuronState>(
@@ -620,12 +620,12 @@ class TanlanganlarItem extends StatefulWidget {
   final int index;
   final QuronState state;
   final TextEditingController controller;
-  const TanlanganlarItem({
-    Key? key,
-    required this.state,
-    required this.controller,
-    required this.index,
-  }) : super(key: key);
+  const TanlanganlarItem(
+      {Key? key,
+      required this.state,
+      required this.controller,
+      required this.index})
+      : super(key: key);
 
   @override
   State<TanlanganlarItem> createState() => _TanlanganlarItemState();
@@ -633,8 +633,18 @@ class TanlanganlarItem extends StatefulWidget {
 
 class _TanlanganlarItemState extends State<TanlanganlarItem> {
   bool isShowing = false;
-  bool isKnown = false;
+  bool isReaded = false;
   bool isSaved = false;
+
+  @override
+  void initState() {
+    isReaded = widget.state.oyatModel[widget.index].isReaded ?? isReaded;
+    isSaved = widget.state.oyatModel[widget.index].isSaved ?? isSaved;
+    print("$isSaved SALOM");
+    print("$isReaded ssaaaaaaaaaaalllllloooommmm");
+    print("${widget.index} index item coming");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -653,7 +663,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
             ),
             child: Column(
               children: [
-                isKnown
+                isReaded
                     ? Container(
                         height: 5.h,
                         decoration: BoxDecoration(
@@ -741,11 +751,17 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                 children: [
                                   const SpaceWidth(),
                                   InkWell(
-                                    onTap: () {
-                                      isKnown = !isKnown;
+                                    onTap: () async {
+                                      // Toggle the isReaded property
+                                      isReaded = !isReaded;
                                       setState(() {});
+                                      // Trigger the event to update the database
                                       context.read<QuronBloc>().add(
-                                          IsReadedItemEvent(isReaded: isKnown));
+                                          SavedAndReadedItemEvent(
+                                              isReaded: isReaded,
+                                              isSaved: isSaved));
+
+                                      print(isReaded);
                                     },
                                     borderRadius: BorderRadius.circular(100.r),
                                     child: CircleAvatar(
@@ -763,11 +779,17 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                     ),
                                   ),
                                   InkWell(
-                                    onTap: () {
+                                    onTap: () async {
+                                      // Toggle the isSaved property
                                       isSaved = !isSaved;
                                       setState(() {});
+                                      // Trigger the event to update the database
                                       context.read<QuronBloc>().add(
-                                          IsSavedItemEvent(isSaved: isSaved));
+                                          SavedAndReadedItemEvent(
+                                              isSaved: isSaved,
+                                              isReaded: isReaded));
+
+                                      print(isSaved);
                                     },
                                     borderRadius: BorderRadius.circular(100.r),
                                     child: CircleAvatar(

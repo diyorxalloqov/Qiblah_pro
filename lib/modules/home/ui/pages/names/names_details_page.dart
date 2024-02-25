@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class NamesDetailsPage extends StatefulWidget {
@@ -10,14 +12,11 @@ class NamesDetailsPage extends StatefulWidget {
 
 class _NamesDetailsPageState extends State<NamesDetailsPage>
     with WidgetsBindingObserver {
-  final AudioPlayer player = AudioPlayer();
+  final AudioPlayer player =
+      AudioPlayer(); // audio downloadni tasbehga qo'shish
   String error = '';
-
-  @override
-  void initState() {
-    _init();
-    super.initState();
-  }
+  String exeption = '';
+  bool isDownloading = false;
 
   @override
   void dispose() {
@@ -36,25 +35,61 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
   }
 
   Future<void> _init() async {
-    String url = widget.namesDetailsArgument.namesBloc.state
+    final String url = widget.namesDetailsArgument.namesBloc.state
         .namesModel[widget.namesDetailsArgument.index].nameAudioLink
         .toString();
-    print(
-        "${widget.namesDetailsArgument.index + 1} INDEX OF SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.speech());
-    player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
-      print('STREAM ERROR $e');
-    });
+    final String localFilePath = await _getLocalFilePath();
+    final bool fileExists = await File(localFilePath).exists();
+
     try {
-      await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+      if (!fileExists) {
+        setState(() {
+          isDownloading = true;
+        });
+        await _downloadAudio(url, localFilePath);
+        setState(() {
+          isDownloading = false;
+        });
+      }
+      // Set the audio source to the local file path
+      await player.setFilePath(localFilePath);
     } catch (e) {
-      print("Error loading audio source: $e");
-      error = 'Iltimos internetingizni tekshiring';
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error)));
+      print('Error initializing audio: $e');
+      setState(() {
+        error = 'Audio yuklashda xatolik';
+      });
+      try {
+        final Response response =
+            await Dio(BaseOptions(connectTimeout: const Duration(seconds: 5)))
+                .get("https://www.google.com/");
+        if (response.statusCode == 200) {
+          error = '';
+          setState(() {});
+          print("hello");
+          await _downloadAudio(url, localFilePath);
+        } else {
+          error = "Iltimos internetingizni tekshiring";
+        }
+      } on Exception catch (e) {
+        print('exeption');
+      }
     }
+  }
+
+  Future<void> _downloadAudio(String url, String savePath) async {
+    final Dio client = serviceLocator<DioSettings>().dio;
+    try {
+      final Response response = await client.download(url, savePath);
+      print('Downloaded audio: $response');
+    } on DioException catch (e) {
+      print('Error downloading audio: $e');
+      exeption = NetworkExeptionResponse(e).messageForUser;
+    }
+  }
+
+  Future<String> _getLocalFilePath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/audio_${widget.namesDetailsArgument.index}.mp3';
   }
 
   @override
@@ -134,28 +169,42 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
                           final playerState = snapshot.data;
                           final processingState = playerState?.processingState;
                           final playing = playerState?.playing;
+                          print('Processing State: $processingState');
+                          print('Is Playing: $playing');
                           if (processingState == ProcessingState.loading ||
-                              processingState == ProcessingState.buffering) {
-                            if (error.isNotEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content: Text(error)));
-                            }
-                            return PlayerIcon(
-                              backColor: primaryColor,
-                              icon: const CircularProgressIndicator.adaptive(
-                                  valueColor:
-                                      AlwaysStoppedAnimation(Colors.white)),
-                              onTap: () {},
+                              processingState == ProcessingState.buffering ||
+                              isDownloading) {
+                            return CircleAvatar(
+                              radius: 25.r,
+                              backgroundColor: primaryColor,
+                              child: const CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
                             );
                           } else if (playing != true || error.isNotEmpty) {
                             return PlayerIcon(
                               backColor: primaryColor,
                               icon: SvgPicture.asset(AppIcon.play),
-                              onTap: () {
-                                player.play();
+                              onTap: () async {
                                 if (error.isNotEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(error)));
+                                  await _init();
+                                  Connectivity()
+                                      .onConnectivityChanged
+                                      .listen((ConnectivityResult result) {
+                                    if (result != ConnectivityResult.none) {
+                                      print('connectivity result');
+                                      setState(() {
+                                        error = '';
+                                        player.stop();
+                                      });
+                                    }
+                                  });
+                                } else {
+                                  await _init();
+                                  await player.play();
                                 }
                               },
                             );
@@ -164,24 +213,26 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
                             return PlayerIcon(
                               backColor: primaryColor.withOpacity(0.2),
                               icon: SvgPicture.asset(AppIcon.pause),
-                              onTap: () {
+                              onTap: () async {
                                 player.pause();
                                 if (error.isNotEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(error)));
+                                    SnackBar(content: Text(error)),
+                                  );
                                 }
                               },
                             );
                           } else {
                             return PlayerIcon(
-                                backColor: primaryColor,
-                                icon: const Icon(Icons.replay,
-                                    color: Colors.white),
-                                onTap: () {
-                                  if (error.isEmpty) {
-                                    player.seek(Duration.zero);
-                                  }
-                                });
+                              backColor: primaryColor,
+                              icon:
+                                  const Icon(Icons.replay, color: Colors.white),
+                              onTap: () {
+                                if (error.isEmpty) {
+                                  player.seek(Duration.zero);
+                                }
+                              },
+                            );
                           }
                         },
                       ),

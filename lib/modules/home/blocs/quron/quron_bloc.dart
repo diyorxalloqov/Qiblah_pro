@@ -18,9 +18,7 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     on<GetOyatFromDB>(_getOyatDb);
     on<GetOyatFromApi>(_getOyatsApi);
     on<ShowingTextEvent>(_showingText);
-    on<IsSavedItemEvent>(_isSavedItem);
-    on<IsReadedItemEvent>(_isReadedItem);
-    on<GetSavedAndReadedItem>(_savedReadedItems);
+    on<SavedAndReadedItemEvent>(_isSavedAndReaded);
   }
   final QuronService _quronService = QuronService();
   final QuronDBService _quronDBService = QuronDBService();
@@ -68,6 +66,8 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     if (dataFromDb != null && dataFromDb.isNotEmpty) {
       emit(state.copyWith(
           oyatModel: dataFromDb, status1: ActionStatus.isSuccess));
+      print("${dataFromDb[event.index].isReaded} AAAAAAAAAASASASAAAAAAAAAA");
+      print("${dataFromDb[event.index].isSaved} SAVEDSAVED");
     } else if (dataFromDb == null || dataFromDb.isEmpty) {
       add(GetOyatFromApi(index: event.index));
     } else {
@@ -99,32 +99,14 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     }
   }
 
-  Future<FutureOr<void>> _isSavedItem(
-      IsSavedItemEvent event, Emitter<QuronState> emit) async {
+  Future<FutureOr<void>> _isSavedAndReaded(
+      SavedAndReadedItemEvent event, Emitter<QuronState> emit) async {
     try {
-      await _quronDBService.insertReadedSaved(isSaved: event.isSaved);
-    } on DatabaseException catch (e) {
-      print(e.result);
-      print('databse exeption in bloc');
-    }
-  }
-
-  FutureOr<void> _isReadedItem(
-      IsReadedItemEvent event, Emitter<QuronState> emit) async {
-    try {
-      await _quronDBService.insertReadedSaved(isReaded: event.isReaded);
-    } on DatabaseException catch (e) {
-      print(e.result);
-      print('databse exeption in bloc');
-    }
-  }
-
-  Future<FutureOr<void>> _savedReadedItems(
-      GetSavedAndReadedItem event, Emitter<QuronState> emit) async {
-    try {
-      List<OyatModel>? data =
-          await _quronDBService.getReadedSavedById(event.oyatNumber);
-      emit(state.copyWith(oyatModelSavedReaded: data));
+      await _quronDBService.insertOyatList(
+          OyatModel(isReaded: event.isReaded, isSaved: event.isSaved));
+      emit(state.copyWith());
+      print("${event.isSaved} SSSSSSSSSSSSSSSSSSSSSSSAVED BLOC");
+      print("${event.isReaded} RRRRRRRRRRRRRRRRRRREADED BLOC");
     } on DatabaseException catch (e) {
       print(e.result);
       print('databse exeption in bloc');

@@ -70,10 +70,6 @@ class CardItem extends StatelessWidget {
         onTap: () {
           print("$index tapped index is");
           context.read<QuronBloc>().add(GetOyatFromDB(index: index));
-          context
-              .read<QuronBloc>()
-              .add(GetSavedAndReadedItem(oyatNumber: index));
-          /// bug has
           Navigator.pushNamed(context, 'suralarDetails',
               arguments: SuralarDetailsPageArguments(
                   suraVerseCount:

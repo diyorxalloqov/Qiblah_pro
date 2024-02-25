@@ -8,7 +8,6 @@ class OyatModel {
   String? verseArabic;
   String? text;
   String? meaning;
-  String? verseCreateAt;
   int? id;
   bool? isReaded;
   bool? isSaved;
@@ -26,7 +25,6 @@ class OyatModel {
     this.verseArabic,
     this.text,
     this.meaning,
-    this.verseCreateAt,
   });
 
   OyatModel.fromJson(Map<String, dynamic> json)
@@ -34,14 +32,13 @@ class OyatModel {
         id = json['id'],
         suraNumber = json['sura_number'],
         verseNumber = json['verse_number'],
-        isReaded = json['isReaded'],
-        isSaved = json['isSaved'],
+        isReaded = json['isReaded'] == 1,
+        isSaved = json['isSaved'] == 1,
         juzNumber = json['juz_number'],
         suraId = json['sura_id'],
         verseArabic = json['verse_arabic'],
         text = json['text'],
-        meaning = json['meaning'],
-        verseCreateAt = json['verse_create_at'];
+        meaning = json['meaning'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -50,12 +47,11 @@ class OyatModel {
     data['verse_number'] = verseNumber;
     data['juz_number'] = juzNumber;
     data['sura_id'] = suraId;
-    data['isReaded'] = isReaded;
-    data['isSaved'] = isSaved;
+    data['isReaded'] = isReaded != null ? (isReaded! ? 1 : 0) : 0;
+    data['isSaved'] = isSaved != null ? (isSaved! ? 1 : 0) : 0;
     data['verse_arabic'] = verseArabic;
     data['text'] = text;
     data['meaning'] = meaning;
-    data['verse_create_at'] = verseCreateAt;
     return data;
   }
 }
