@@ -12,8 +12,7 @@ class NamesDetailsPage extends StatefulWidget {
 
 class _NamesDetailsPageState extends State<NamesDetailsPage>
     with WidgetsBindingObserver {
-  final AudioPlayer player =
-      AudioPlayer(); // audio downloadni tasbehga qo'shish
+  final AudioPlayer player = AudioPlayer();
   String error = '';
   String exeption = '';
   bool isDownloading = false;
@@ -58,21 +57,6 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
       setState(() {
         error = 'Audio yuklashda xatolik';
       });
-      try {
-        final Response response =
-            await Dio(BaseOptions(connectTimeout: const Duration(seconds: 5)))
-                .get("https://www.google.com/");
-        if (response.statusCode == 200) {
-          error = '';
-          setState(() {});
-          print("hello");
-          await _downloadAudio(url, localFilePath);
-        } else {
-          error = "Iltimos internetingizni tekshiring";
-        }
-      } on Exception catch (e) {
-        print('exeption');
-      }
     }
   }
 

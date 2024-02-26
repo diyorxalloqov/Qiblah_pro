@@ -256,6 +256,15 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
     // add(CurrentWeekNamozTimes());
   }
 
+////////////////////////////
+
+  ////  uida list ichida oyni vaqtlarini page viewda qilish kerak
+  ///
+  ///
+  ///
+  ///
+  ///
+
   FutureOr<void> _changeNamozSettings(
       ChangeSettings event, Emitter<NamozTimeState> emit) async {
     if (event.newValue is PrayerCalculationMethod) {

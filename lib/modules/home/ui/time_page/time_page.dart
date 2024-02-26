@@ -22,6 +22,12 @@ class _TimePageState extends State<TimePage> {
   String day = '';
   int _currentDay = 0;
 
+  /////
+
+  ////  uida list ichida oyni vaqtlarini page viewda qilish kerak
+
+//////
+
   @override
   void initState() {
     _timeCountDownCubit = TimeCountDownCubit();

@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class TasbehNamePage extends StatefulWidget {
@@ -17,6 +19,8 @@ class _TasbehNamePageState extends State<TasbehNamePage>
   bool isVibration = false;
   final AudioPlayer player = AudioPlayer();
   String error = '';
+  String exeption = '';
+  bool isDownloading = false;
 
   @override
   void initState() {
@@ -42,24 +46,46 @@ class _TasbehNamePageState extends State<TasbehNamePage>
   }
 
   Future<void> _init() async {
-    String url = widget.namesDetailsArgument.namesBloc.state
+    final String url = widget.namesDetailsArgument.namesBloc.state
         .namesModel[widget.namesDetailsArgument.index].nameAudioLink
         .toString();
-    final session = await AudioSession.instance;
-    await session.configure(const AudioSessionConfiguration.speech());
-    player.playbackEventStream.listen((event) {},
-        onError: (Object e, StackTrace stackTrace) {
-      print('STREAM ERROR $e');
-    });
+    final String localFilePath = await _getLocalFilePath();
+    final bool fileExists = await File(localFilePath).exists();
+
     try {
-      await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
+      if (!fileExists) {
+        setState(() {
+          isDownloading = true;
+        });
+        await _downloadAudio(url, localFilePath);
+        setState(() {
+          isDownloading = false;
+        });
+      }
+      // Set the audio source to the local file path
+      await player.setFilePath(localFilePath);
     } catch (e) {
-      print("Error loading audio source: $e");
-      error = 'Iltimos internetingizni tekshiring';
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error)));
+      print('Error initializing audio: $e');
+      setState(() {
+        error = 'Audio yuklashda xatolik';
+      });
     }
+  }
+
+  Future<void> _downloadAudio(String url, String savePath) async {
+    final Dio client = serviceLocator<DioSettings>().dio;
+    try {
+      final Response response = await client.download(url, savePath);
+      print('Downloaded audio: $response');
+    } on DioException catch (e) {
+      print('Error downloading audio: $e');
+      exeption = NetworkExeptionResponse(e).messageForUser;
+    }
+  }
+
+  Future<String> _getLocalFilePath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/audio_${widget.namesDetailsArgument.index}.mp3';
   }
 
   @override
@@ -215,23 +241,45 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                               final processingState =
                                   playerState?.processingState;
                               final playing = playerState?.playing;
+                              print('Processing State: $processingState');
+                              print('Is Playing: $playing');
                               if (processingState == ProcessingState.loading ||
                                   processingState ==
-                                      ProcessingState.buffering) {
-                                return PlayerIcon(
-                                  backColor: primaryColor,
-                                  icon:
-                                      const CircularProgressIndicator.adaptive(
-                                          valueColor: AlwaysStoppedAnimation(
-                                              Colors.white)),
-                                  onTap: () {},
+                                      ProcessingState.buffering ||
+                                  isDownloading) {
+                                return CircleAvatar(
+                                  radius: 25.r,
+                                  backgroundColor: primaryColor,
+                                  child: const CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  ),
                                 );
                               } else if (playing != true || error.isNotEmpty) {
                                 return PlayerIcon(
                                   backColor: primaryColor,
                                   icon: SvgPicture.asset(AppIcon.play),
-                                  onTap: () {
-                                    player.play();
+                                  onTap: () async {
+                                    if (error.isNotEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              SnackBar(content: Text(error)));
+                                      await _init();
+                                      Connectivity()
+                                          .onConnectivityChanged
+                                          .listen((ConnectivityResult result) {
+                                        if (result != ConnectivityResult.none) {
+                                          print('connectivity result');
+                                          setState(() {
+                                            error = '';
+                                            player.stop();
+                                          });
+                                        }
+                                      });
+                                    } else {
+                                      await _init();
+                                      await player.play();
+                                    }
                                   },
                                 );
                               } else if (processingState ==
@@ -241,20 +289,27 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                 return PlayerIcon(
                                   backColor: primaryColor.withOpacity(0.2),
                                   icon: SvgPicture.asset(AppIcon.pause),
-                                  onTap: () {
+                                  onTap: () async {
                                     player.pause();
+                                    if (error.isNotEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(content: Text(error)),
+                                      );
+                                    }
                                   },
                                 );
                               } else {
                                 return PlayerIcon(
-                                    backColor: primaryColor,
-                                    icon: const Icon(Icons.replay,
-                                        color: Colors.white),
-                                    onTap: () {
-                                      if (error.isEmpty) {
-                                        player.seek(Duration.zero);
-                                      }
-                                    });
+                                  backColor: primaryColor,
+                                  icon: const Icon(Icons.replay,
+                                      color: Colors.white),
+                                  onTap: () {
+                                    if (error.isEmpty) {
+                                      player.seek(Duration.zero);
+                                    }
+                                  },
+                                );
                               }
                             },
                           ),
@@ -317,7 +372,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             zikrBloc.add(IncrementZikr(index: index));
                             setState(() {});
                             if (_isTap) {
-                              Future.delayed(const Duration(milliseconds: 300),
+                              Future.delayed(const Duration(milliseconds: 250),
                                   () {
                                 _isTap = false;
                                 setState(() {});
@@ -336,7 +391,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                   primaryColor,
                                   primaryColor.withOpacity(0.8),
                                   primaryColor
-                                ],
+                                ], 
                               ),
                               boxShadow: _isTap
                                   ? [
