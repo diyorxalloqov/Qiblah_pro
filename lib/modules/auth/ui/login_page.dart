@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String dialCode = '+998';
+  String countryCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -95,41 +96,38 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: context.height * 0.25,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
-                            ],
-                          ),
-                          CircleAvatar(
-                              radius: 88.r,
-                              backgroundColor: context.isDark
-                                  ? const Color(0xff232C37)
-                                  : Colors.white,
-                              child: Center(
-                                child: SvgPicture.asset(AppIcon.appLogo,
-                                    width: 50),
-                              )),
-                          GestureDetector(
-                              onTap: () => Navigator.pushNamedAndRemoveUntil(
-                                  context, 'bottomNavbar', (route) => false),
-                              child: SvgPicture.asset(context.isDark
-                                  ? AppIcon.cancelBlack
-                                  : AppIcon.cancel))
-                        ],
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Row(
+                          children: [
+                            SpaceWidth(),
+                            SpaceWidth(),
+                            SpaceWidth(),
+                            SpaceWidth(),
+                          ],
+                        ),
+                        CircleAvatar(
+                            radius: 88.r,
+                            backgroundColor: context.isDark
+                                ? const Color(0xff232C37)
+                                : Colors.white,
+                            child: Center(
+                              child: SvgPicture.asset(AppIcon.appLogo,
+                                  width: 50),
+                            )),
+                        GestureDetector(
+                            onTap: () => Navigator.pushNamedAndRemoveUntil(
+                                context, 'bottomNavbar', (route) => false),
+                            child: SvgPicture.asset(context.isDark
+                                ? AppIcon.cancelBlack
+                                : AppIcon.cancel))
+                      ],
+                    ),
+                  ],
                 ),
                 Container(
                   height: context.height * 0.74,
@@ -162,10 +160,10 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _phoneController,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
-                                    // MaskTextInputFormatter(
-                                    //   mask: '+000 00 000 00 00',
-                                    //   filter: {'0': RegExp(r'[0-9]')},
-                                    // )
+                                    MaskTextInputFormatter(
+                                      mask: '+000 00 000 00 00',
+                                      filter: {'0': RegExp(r'[0-9]')},
+                                    )
                                   ],
                                   decoration: InputDecoration(
                                     filled: true,
@@ -195,6 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 ? bottomSheetBackgroundBlackColor
                                                 : bottomSheetBackgroundColor,
                                           );
+                                          countryCode = picked?.code ?? 'UZ';
                                           dialCode = picked?.dialCode ?? '+998';
                                           setState(() {});
                                         },

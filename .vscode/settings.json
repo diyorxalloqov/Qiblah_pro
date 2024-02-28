@@ -1,5 +1,6 @@
 {
     "java.project.sourcePaths": [
         "lib/modules/global/onBoarding/pages"
-    ]
+    ],
+    "cmake.sourceDirectory": "/home/diyor/Impack_/qiblah_pro/linux"
 }

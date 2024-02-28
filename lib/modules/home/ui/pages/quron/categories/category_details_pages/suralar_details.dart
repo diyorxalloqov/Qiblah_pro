@@ -91,7 +91,7 @@
 //                   padding:
 //                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
 //                   itemBuilder: (context, index) {
-//                     return TanlanganlarItem(index: index, state: state);
+//                     return SuralarDetailsItem(index: index, state: state);
 //                   }),
 //             );
 //           } else if (state.status1 == ActionStatus.isError) {
@@ -189,16 +189,16 @@
 //   }
 // }
 
-// class TanlanganlarItem extends StatefulWidget {
+// class SuralarDetailsItem extends StatefulWidget {
 //   final int index;
 //   final QuronState state;
-//   const TanlanganlarItem({super.key, required this.state, required this.index});
+//   const SuralarDetailsItem({super.key, required this.state, required this.index});
 
 //   @override
-//   State<TanlanganlarItem> createState() => _TanlanganlarItemState();
+//   State<SuralarDetailsItem> createState() => _TanlanganlarItemState();
 // }
 
-// class _TanlanganlarItemState extends State<TanlanganlarItem> {
+// class _TanlanganlarItemState extends State<SuralarDetailsItem> {
 //   bool isShowing = false;
 //   bool isReaded = false;
 
@@ -507,7 +507,7 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
                       item.verseArabic!.toLowerCase().contains(searchText) ||
                       item.text!.toLowerCase().contains(searchText) ||
                       item.meaning!.toLowerCase().contains(searchText)) {
-                    return TanlanganlarItem(
+                    return SuralarDetailsItem(
                         index: index,
                         state: state,
                         controller: _searchController);
@@ -616,11 +616,11 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
   }
 }
 
-class TanlanganlarItem extends StatefulWidget {
+class SuralarDetailsItem extends StatefulWidget {
   final int index;
   final QuronState state;
   final TextEditingController controller;
-  const TanlanganlarItem(
+  const SuralarDetailsItem(
       {Key? key,
       required this.state,
       required this.controller,
@@ -628,22 +628,30 @@ class TanlanganlarItem extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<TanlanganlarItem> createState() => _TanlanganlarItemState();
+  State<SuralarDetailsItem> createState() => _TanlanganlarItemState();
 }
 
-class _TanlanganlarItemState extends State<TanlanganlarItem> {
+class _TanlanganlarItemState extends State<SuralarDetailsItem> {
   bool isShowing = false;
   bool isReaded = false;
   bool isSaved = false;
 
   @override
   void initState() {
-    isReaded = widget.state.oyatModel[widget.index].isReaded ?? isReaded;
-    isSaved = widget.state.oyatModel[widget.index].isSaved ?? isSaved;
+    super.initState();
+    // Ensure that the index is valid and oyatModel is not null
+    if (widget.index >= 0 && widget.index < widget.state.oyatModel.length) {
+      // Initialize isReaded and isSaved with default values or from the model
+      isReaded = widget.state.oyatModel[widget.index].isReaded ?? false;
+      isSaved = widget.state.oyatModel[widget.index].isSaved ?? false;
+    } else {
+      // Provide default values if the index or oyatModel is invalid
+      isReaded = false;
+      isSaved = false;
+    }
     print("$isSaved SALOM");
     print("$isReaded ssaaaaaaaaaaalllllloooommmm");
     print("${widget.index} index item coming");
-    super.initState();
   }
 
   @override
@@ -674,7 +682,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                           color: primaryColor,
                         ),
                       )
-                    : const SizedBox.shrink(),
+                    : SizedBox(height: 5.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
@@ -757,50 +765,50 @@ class _TanlanganlarItemState extends State<TanlanganlarItem> {
                                       setState(() {});
                                       // Trigger the event to update the database
                                       context.read<QuronBloc>().add(
-                                          SavedAndReadedItemEvent(
-                                              isReaded: isReaded,
-                                              isSaved: isSaved));
+                                          ReadedItemEvent(isReaded: isReaded));
 
                                       print(isReaded);
                                     },
                                     borderRadius: BorderRadius.circular(100.r),
                                     child: CircleAvatar(
-                                      backgroundColor: context.isDark
-                                          ? circleAvatarBlackColor
-                                          : const Color(0xFFF4F7FA),
+                                      backgroundColor: isReaded
+                                          ? primaryColor
+                                          : context.isDark
+                                              ? circleAvatarBlackColor
+                                              : const Color(0xFFF4F7FA),
                                       child: Center(
                                         child: SvgPicture.asset(
                                           AppIcon.check,
-                                          color: context.isDark
-                                              ? const Color(0xffB5B9BC)
-                                              : null,
+                                          color: isReaded
+                                              ? Colors.white
+                                              : context.isDark
+                                                  ? const Color(0xffB5B9BC)
+                                                  : null,
                                         ),
                                       ),
                                     ),
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      // Toggle the isSaved property
                                       isSaved = !isSaved;
                                       setState(() {});
-                                      // Trigger the event to update the database
                                       context.read<QuronBloc>().add(
-                                          SavedAndReadedItemEvent(
-                                              isSaved: isSaved,
-                                              isReaded: isReaded));
+                                          SavedItemEvent(isSaved: isSaved));
 
                                       print(isSaved);
                                     },
                                     borderRadius: BorderRadius.circular(100.r),
                                     child: CircleAvatar(
-                                      backgroundColor: context.isDark
-                                          ? circleAvatarBlackColor
-                                          : const Color(0xFFF4F7FA),
+                                      backgroundColor: isSaved
+                                          ? primaryColor
+                                          : context.isDark
+                                              ? circleAvatarBlackColor
+                                              : const Color(0xFFF4F7FA),
                                       child: Center(
                                         child: SvgPicture.asset(
                                           AppIcon.bookmark,
                                           color: isSaved
-                                              ? primaryColor
+                                              ? Colors.white
                                               : context.isDark
                                                   ? const Color(0xffB5B9BC)
                                                   : null,

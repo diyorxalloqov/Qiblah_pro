@@ -31,7 +31,7 @@ class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
             itemCount: 100,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             itemBuilder: (context, index) {
-              return const TanlanganlarItem();
+              return const JuzlarDetailsItem();
             }),
       ),
       bottomNavigationBar: BottomAppBar(
@@ -113,14 +113,14 @@ class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
   }
 }
 
-class TanlanganlarItem extends StatefulWidget {
-  const TanlanganlarItem({super.key});
+class JuzlarDetailsItem extends StatefulWidget {
+  const JuzlarDetailsItem({super.key});
 
   @override
-  State<TanlanganlarItem> createState() => _TanlanganlarItemState();
+  State<JuzlarDetailsItem> createState() => _TanlanganlarItemState();
 }
 
-class _TanlanganlarItemState extends State<TanlanganlarItem> {
+class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
   bool isShowing = false;
   bool isKnown = false;
 

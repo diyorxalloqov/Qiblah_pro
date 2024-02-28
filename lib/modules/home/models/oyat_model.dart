@@ -9,14 +9,14 @@ class OyatModel {
   String? text;
   String? meaning;
   int? id;
-  bool? isReaded;
-  bool? isSaved;
+  bool isReaded;
+  bool isSaved;
 
   OyatModel({
     this.verseId,
     this.id,
-    this.isReaded,
-    this.isSaved,
+    this.isReaded = false,
+    this.isSaved = false,
     this.suraNumber,
     this.verseNumber,
     this.juzNumber,
@@ -47,8 +47,8 @@ class OyatModel {
     data['verse_number'] = verseNumber;
     data['juz_number'] = juzNumber;
     data['sura_id'] = suraId;
-    data['isReaded'] = isReaded != null ? (isReaded! ? 1 : 0) : 0;
-    data['isSaved'] = isSaved != null ? (isSaved! ? 1 : 0) : 0;
+    data['isReaded'] = isReaded ? 1 : 0;
+    data['isSaved'] = isSaved ? 1 : 0;
     data['verse_arabic'] = verseArabic;
     data['text'] = text;
     data['meaning'] = meaning;

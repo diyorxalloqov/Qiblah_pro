@@ -159,12 +159,8 @@ class QuronDBService {
     final db = await _quronDBService.database;
 
     try {
-      await db.insert(
-        oyatTable,
-        oyatList.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-
+      await db.insert(oyatTable, oyatList.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
       print('Oyat list inserted successfully');
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
@@ -202,7 +198,6 @@ class QuronDBService {
       return null;
     }
   }
-
 
 /*
 

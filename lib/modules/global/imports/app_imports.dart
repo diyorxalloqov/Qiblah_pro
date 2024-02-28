@@ -65,8 +65,8 @@ export 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_detai
 export 'package:qiblah_pro/modules/home/ui/pages/quron/quron_page.dart';
 export 'package:qiblah_pro/modules/home/ui/pages/quron/widget/settings_bottom_sheet.dart';
 export 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr_page.dart';
-export 'package:qiblah_pro/modules/home/ui/time_page/taqvim_page.dart';
-export 'package:qiblah_pro/modules/home/ui/time_page/time_page.dart';
+export 'package:qiblah_pro/modules/home/ui/pages/time_page/taqvim_page.dart';
+export 'package:qiblah_pro/modules/home/ui/pages/time_page/time_page.dart';
 export 'package:qiblah_pro/modules/home/ui/widgets/card_widget.dart';
 export 'package:qiblah_pro/modules/home/ui/widgets/player_icon_widget.dart';
 export 'package:qiblah_pro/modules/namoz/ui/namoz_page.dart';

@@ -21,6 +21,8 @@ class _TimePageState extends State<TimePage> {
   late HijriCalendar _hijriToday;
   String day = '';
   int _currentDay = 0;
+  late PageController _pageController;
+  int _numberOfDaysToShow = 61;
 
   /////
 
@@ -31,6 +33,7 @@ class _TimePageState extends State<TimePage> {
   @override
   void initState() {
     _timeCountDownCubit = TimeCountDownCubit();
+    _pageController = PageController(initialPage: 30);
     context.read<NamozTimeBloc>().add(TodayNamozTimes());
     _displayedDate = DateTime.now();
     _hijriToday = HijriCalendar.now();
@@ -39,6 +42,7 @@ class _TimePageState extends State<TimePage> {
 
   @override
   void dispose() {
+    _pageController.dispose();
     _timeCountDownCubit.close();
     super.dispose();
   }
@@ -86,6 +90,7 @@ class _TimePageState extends State<TimePage> {
                             fit: BoxFit.cover)),
                     child: SafeArea(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const SpaceHeight(),
                           const SpaceHeight(),
@@ -192,9 +197,9 @@ class _TimePageState extends State<TimePage> {
                           GestureDetector(
                             onTap: () => showLocationBottomSheet(context),
                             child: Container(
-                              width: context.width * 0.38,
+                              margin: EdgeInsets.symmetric(horizontal: 100.w),
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 8.h),
+                                  horizontal: 10.w, vertical: 4.h),
                               decoration: BoxDecoration(
                                   color: Colors.white.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(50.r)),
@@ -230,7 +235,7 @@ class _TimePageState extends State<TimePage> {
                           ),
                           const Spacer(),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 30.w),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -252,6 +257,10 @@ class _TimePageState extends State<TimePage> {
                                             });
                                             context.read<NamozTimeBloc>().add(
                                                 PreviousDayNamozTimeEvent());
+                                            _pageController.previousPage(
+                                                duration: const Duration(
+                                                    milliseconds: 100),
+                                                curve: Curves.easeIn);
                                           }
                                         : null,
                                     icon: SvgPicture.asset(AppIcon.arrowLeft,
@@ -301,6 +310,10 @@ class _TimePageState extends State<TimePage> {
                                             context
                                                 .read<NamozTimeBloc>()
                                                 .add(NextDayNamozTimeEvent());
+                                            _pageController.nextPage(
+                                                duration:
+                                                    Duration(milliseconds: 200),
+                                                curve: Curves.easeIn);
                                           }
                                         : null,
                                     icon: SvgPicture.asset(AppIcon.arrowRight1,
@@ -309,177 +322,243 @@ class _TimePageState extends State<TimePage> {
                             ),
                           ),
                           SpaceHeight(height: 18.h),
-                          Container(
-                            height: 310.h,
-                            margin: EdgeInsets.symmetric(horizontal: 20.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(18.r),
-                              color: Colors.white.withOpacity(0.1),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: state.dailyTimes!.bomdod.isCurrent
-                                          ? const Color(0x1905FF2D)
-                                          : null,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(18.r),
-                                          topRight: Radius.circular(18.r))),
-                                  child: TimeItem(
-                                      namozName: 'bomdod'.tr(),
-                                      time:
-                                          state.dailyTimes!.bomdod.time.hhMM(),
-                                      icon: _isBomdod
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () async {
-                                        _isBomdod = !_isBomdod;
-                                        setState(() {});
+                          SizedBox(
+                            height: 330.h,
+                            child: PageView.builder(
+                                controller: _pageController,
+                                itemCount: _numberOfDaysToShow,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20.w),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(18.r),
+                                          color: Colors.white.withOpacity(0.1),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: state.dailyTimes!
+                                                          .bomdod.isCurrent
+                                                      ? const Color(0x1905FF2D)
+                                                      : null,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  18.r),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  18.r))),
+                                              child: TimeItem(
+                                                  namozName: 'bomdod'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.bomdod.time
+                                                      .hhMM(),
+                                                  icon: _isBomdod
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () async {
+                                                    _isBomdod = !_isBomdod;
+                                                    setState(() {});
 
-                                        _isBomdod
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.bomdod))
-                                            : null;
-                                      }),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  color: state.dailyTimes!.quyosh.isCurrent
-                                      ? const Color(0x1905FF2D)
-                                      : null,
-                                  child: TimeItem(
-                                      namozName: 'quyosh'.tr(),
-                                      time:
-                                          state.dailyTimes!.quyosh.time.hhMM(),
-                                      icon: _isQuyosh
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () {
-                                        _isQuyosh = !_isQuyosh;
-                                        setState(() {});
-                                        _isQuyosh
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.quyosh))
-                                            : null;
-                                      }),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  color: state.dailyTimes!.peshin.isCurrent
-                                      ? const Color(0x1905FF2D)
-                                      : null,
-                                  child: TimeItem(
-                                      namozName: 'peshin'.tr(),
-                                      time:
-                                          state.dailyTimes!.peshin.time.hhMM(),
-                                      icon: _isPeshin
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () {
-                                        _isPeshin = !_isPeshin;
-                                        setState(() {});
-                                        _isPeshin
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.peshin))
-                                            : null;
-                                      }),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  color: state.dailyTimes!.asr.isCurrent
-                                      ? const Color(0x1905FF2D)
-                                      : null,
-                                  child: TimeItem(
-                                      namozName: 'asr'.tr(),
-                                      time: state.dailyTimes!.asr.time.hhMM(),
-                                      icon: _isAsr
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () {
-                                        _isAsr = !_isAsr;
-                                        setState(() {});
-                                        _isAsr
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.asr))
-                                            : null;
-                                      }),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  color: state.dailyTimes!.shom.isCurrent
-                                      ? const Color(0x1905FF2D)
-                                      : null,
-                                  child: TimeItem(
-                                      namozName: 'shom'.tr(),
-                                      time: state.dailyTimes!.shom.time.hhMM(),
-                                      icon: _isShom
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () {
-                                        _isShom = !_isShom;
-                                        setState(() {});
-                                        _isShom
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.shom))
-                                            : null;
-                                      }),
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: state.dailyTimes!.xufton.isCurrent
-                                          ? const Color(0x1905FF2D)
-                                          : null,
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(18.r),
-                                          bottomRight: Radius.circular(18.r))),
-                                  child: TimeItem(
-                                      namozName: 'xufton'.tr(),
-                                      time:
-                                          state.dailyTimes!.xufton.time.hhMM(),
-                                      icon: _isXufton
-                                          ? SvgPicture.asset(AppIcon.volume)
-                                          : const Icon(
-                                              Icons.volume_off_outlined,
-                                              color: Colors.white),
-                                      volumeOnTap: () {
-                                        _isXufton = !_isXufton;
-                                        setState(() {});
-                                        _isXufton
-                                            ? context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.xufton))
-                                            : null;
-                                      }),
-                                ),
-                              ],
-                            ),
+                                                    _isBomdod
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .bomdod))
+                                                        : null;
+                                                  }),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              color: state.dailyTimes!.quyosh
+                                                      .isCurrent
+                                                  ? const Color(0x1905FF2D)
+                                                  : null,
+                                              child: TimeItem(
+                                                  namozName: 'quyosh'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.quyosh.time
+                                                      .hhMM(),
+                                                  icon: _isQuyosh
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () {
+                                                    _isQuyosh = !_isQuyosh;
+                                                    setState(() {});
+                                                    _isQuyosh
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .quyosh))
+                                                        : null;
+                                                  }),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              color: state.dailyTimes!.peshin
+                                                      .isCurrent
+                                                  ? const Color(0x1905FF2D)
+                                                  : null,
+                                              child: TimeItem(
+                                                  namozName: 'peshin'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.peshin.time
+                                                      .hhMM(),
+                                                  icon: _isPeshin
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () {
+                                                    _isPeshin = !_isPeshin;
+                                                    setState(() {});
+                                                    _isPeshin
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .peshin))
+                                                        : null;
+                                                  }),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              color: state
+                                                      .dailyTimes!.asr.isCurrent
+                                                  ? const Color(0x1905FF2D)
+                                                  : null,
+                                              child: TimeItem(
+                                                  namozName: 'asr'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.asr.time
+                                                      .hhMM(),
+                                                  icon: _isAsr
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () {
+                                                    _isAsr = !_isAsr;
+                                                    setState(() {});
+                                                    _isAsr
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .asr))
+                                                        : null;
+                                                  }),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              color: state.dailyTimes!.shom
+                                                      .isCurrent
+                                                  ? const Color(0x1905FF2D)
+                                                  : null,
+                                              child: TimeItem(
+                                                  namozName: 'shom'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.shom.time
+                                                      .hhMM(),
+                                                  icon: _isShom
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () {
+                                                    _isShom = !_isShom;
+                                                    setState(() {});
+                                                    _isShom
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .shom))
+                                                        : null;
+                                                  }),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(
+                                                  color: state.dailyTimes!
+                                                          .xufton.isCurrent
+                                                      ? const Color(0x1905FF2D)
+                                                      : null,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  18.r),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  18.r))),
+                                              child: TimeItem(
+                                                  namozName: 'xufton'.tr(),
+                                                  time: state
+                                                      .dailyTimes!.xufton.time
+                                                      .hhMM(),
+                                                  icon: _isXufton
+                                                      ? SvgPicture.asset(
+                                                          AppIcon.volume)
+                                                      : const Icon(
+                                                          Icons
+                                                              .volume_off_outlined,
+                                                          color: Colors.white),
+                                                  volumeOnTap: () {
+                                                    _isXufton = !_isXufton;
+                                                    setState(() {});
+                                                    _isXufton
+                                                        ? context
+                                                            .read<
+                                                                NamozTimeBloc>()
+                                                            .add(const ScheduleNotificationEvent(
+                                                                namoz: NamozEnum
+                                                                    .xufton))
+                                                        : null;
+                                                  }),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
                           ),
-                          SpaceHeight(height: context.bottom + 50)
                         ],
                       ),
                     ),
                   ),
                 );
               } else {
-                return Center(
+                return const Center(
                   child: Text("Error"),
                 );
               }

@@ -1,3 +1,4 @@
+import 'package:qiblah_pro/modules/auth/bloc/bloc/auth_bloc.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -28,6 +29,7 @@ class AndroidApp extends StatelessWidget {
               BlocProvider(create: (context) => GeolocationCubit()),
               BlocProvider(create: (context) => NamozTimeBloc()),
               BlocProvider(create: (context) => QuronBloc()),
+              BlocProvider(create: (context) => AuthBloc()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -66,6 +68,7 @@ class IosApp extends StatelessWidget {
                       BlocProvider(create: (context) => GeolocationCubit()),
                       BlocProvider(create: (context) => NamozTimeBloc()),
                       BlocProvider(create: (context) => QuronBloc()),
+                      BlocProvider(create: (context) => AuthBloc()),
                     ],
                     child: CupertinoApp(
                       debugShowCheckedModeBanner: false,
