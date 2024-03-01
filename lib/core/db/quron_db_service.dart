@@ -199,6 +199,29 @@ class QuronDBService {
     }
   }
 
+  Future<void> updateReadedAndSaved(int verseNumber,
+      {bool? isSaved, bool? isReaded}) async {
+    final db = await _quronDBService.database;
+    try {
+      if (isSaved != null) {
+        await db.update(oyatTable, {"isSaved": isSaved ? 1 : 0},
+            where: 'verse_number = ?',
+            whereArgs: [verseNumber],
+            conflictAlgorithm: ConflictAlgorithm.replace);
+        print('saved successfully');
+      }
+      if (isReaded != null) {
+        await db.update(oyatTable, {"isReaded": isReaded ? 1 : 0},
+            where: 'verse_number = ?',
+            whereArgs: [verseNumber],
+            conflictAlgorithm: ConflictAlgorithm.replace);
+        print('readed successfully');
+      }
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+    }
+  }
+
 /*
 
 Future<void> updateOyat(OyatModel oyatModel) async {

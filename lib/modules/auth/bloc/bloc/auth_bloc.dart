@@ -34,11 +34,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         userLatitude: StorageRepository.getDouble(Keys.latitude).toString(),
         userLongitude: StorageRepository.getDouble(Keys.longitude).toString(),
         notification: StorageRepository.getBool(Keys.notification),
-        notificationId: '0',
+        notificationId: '0', //left
         userName: StorageRepository.getString(Keys.name),
         userGender: StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
-        userExtraAuthId: '',
-        userSigninMethod: '',
+        userExtraAuthId: '',// left
+        userSigninMethod: '', // left
         userAppLang: StorageRepository.getString(Keys.lang),
         userCountryCode: event.countryCode,
         userPhoneNumber: event.phoneNumber,
@@ -79,7 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userLatitude: StorageRepository.getDouble(Keys.latitude).toString(),
       userLongitude: StorageRepository.getDouble(Keys.longitude).toString(),
       notification: StorageRepository.getBool(Keys.notification),
-      notificationId: '0',
+      notificationId: '0', //left
       userName: StorageRepository.getString(Keys.name),
       userGender: StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
       userAppLang: StorageRepository.getString(Keys.lang),

@@ -60,16 +60,18 @@ class ShowingTextEvent extends QuronEvent {
 
 class SavedItemEvent extends QuronEvent {
   final bool isSaved;
-  const SavedItemEvent({required this.isSaved});
+  final int verseNumber;
+  const SavedItemEvent({required this.isSaved, required this.verseNumber});
   @override
   // TODO: implement props
-  List<Object> get props => [isSaved];
+  List<Object> get props => [isSaved, verseNumber];
 }
 
 class ReadedItemEvent extends QuronEvent {
   final bool isReaded;
-  const ReadedItemEvent({required this.isReaded});
+  final int verseNumber;
+  const ReadedItemEvent({required this.isReaded, required this.verseNumber});
   @override
   // TODO: implement props
-  List<Object> get props => [isReaded];
+  List<Object> get props => [isReaded, verseNumber];
 }

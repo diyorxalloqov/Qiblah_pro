@@ -751,109 +751,113 @@ class _TanlanganlarItemState extends State<SuralarDetailsItem> {
                             endIndent: 10,
                             indent: 10,
                           ),
-                          BlocBuilder<QuronBloc, QuronState>(
-                            builder: (context, state) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  const SpaceWidth(),
-                                  InkWell(
-                                    onTap: () async {
-                                      // Toggle the isReaded property
-                                      isReaded = !isReaded;
-                                      setState(() {});
-                                      // Trigger the event to update the database
-                                      context.read<QuronBloc>().add(
-                                          ReadedItemEvent(isReaded: isReaded));
-
-                                      print(isReaded);
-                                    },
-                                    borderRadius: BorderRadius.circular(100.r),
-                                    child: CircleAvatar(
-                                      backgroundColor: isReaded
-                                          ? primaryColor
-                                          : context.isDark
-                                              ? circleAvatarBlackColor
-                                              : const Color(0xFFF4F7FA),
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          AppIcon.check,
-                                          color: isReaded
-                                              ? Colors.white
-                                              : context.isDark
-                                                  ? const Color(0xffB5B9BC)
-                                                  : null,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () async {
-                                      isSaved = !isSaved;
-                                      setState(() {});
-                                      context.read<QuronBloc>().add(
-                                          SavedItemEvent(isSaved: isSaved));
-
-                                      print(isSaved);
-                                    },
-                                    borderRadius: BorderRadius.circular(100.r),
-                                    child: CircleAvatar(
-                                      backgroundColor: isSaved
-                                          ? primaryColor
-                                          : context.isDark
-                                              ? circleAvatarBlackColor
-                                              : const Color(0xFFF4F7FA),
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          AppIcon.bookmark,
-                                          color: isSaved
-                                              ? Colors.white
-                                              : context.isDark
-                                                  ? const Color(0xffB5B9BC)
-                                                  : null,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () {},
-                                    borderRadius: BorderRadius.circular(100.r),
-                                    child: CircleAvatar(
-                                      backgroundColor: context.isDark
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              const SpaceWidth(),
+                              InkWell(
+                                onTap: () async {
+                                  // Toggle the isReaded property
+                                  isReaded = !isReaded;
+                                  setState(() {});
+                                  // Trigger the event to update the database
+                                  context.read<QuronBloc>().add(ReadedItemEvent(
+                                      isReaded: isReaded,
+                                      verseNumber: widget
+                                              .state
+                                              .oyatModel[widget.index]
+                                              .verseNumber ??
+                                          0));
+                                  print(isReaded);
+                                },
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: CircleAvatar(
+                                  backgroundColor: isReaded
+                                      ? primaryColor
+                                      : context.isDark
                                           ? circleAvatarBlackColor
                                           : const Color(0xFFF4F7FA),
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          AppIcon.share,
-                                          color: context.isDark
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      AppIcon.check,
+                                      color: isReaded
+                                          ? Colors.white
+                                          : context.isDark
                                               ? const Color(0xffB5B9BC)
                                               : null,
-                                        ),
-                                      ),
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {},
-                                    borderRadius: BorderRadius.circular(100.r),
-                                    child: CircleAvatar(
-                                      backgroundColor: context.isDark
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  isSaved = !isSaved;
+                                  setState(() {});
+                                  context.read<QuronBloc>().add(SavedItemEvent(
+                                      isSaved: isSaved,
+                                      verseNumber: widget
+                                              .state
+                                              .oyatModel[widget.index]
+                                              .verseNumber ??
+                                          0));
+
+                                  print(isSaved);
+                                },
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: CircleAvatar(
+                                  backgroundColor: isSaved
+                                      ? primaryColor
+                                      : context.isDark
                                           ? circleAvatarBlackColor
-                                          : primaryColor,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          AppIcon.play,
-                                          color: context.isDark
+                                          : const Color(0xFFF4F7FA),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      AppIcon.bookmark,
+                                      color: isSaved
+                                          ? Colors.white
+                                          : context.isDark
                                               ? const Color(0xffB5B9BC)
                                               : null,
-                                        ),
-                                      ),
                                     ),
                                   ),
-                                  const SpaceWidth(),
-                                ],
-                              );
-                            },
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: CircleAvatar(
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : const Color(0xFFF4F7FA),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      AppIcon.share,
+                                      color: context.isDark
+                                          ? const Color(0xffB5B9BC)
+                                          : null,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {},
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: CircleAvatar(
+                                  backgroundColor: context.isDark
+                                      ? circleAvatarBlackColor
+                                      : primaryColor,
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      AppIcon.play,
+                                      color: context.isDark
+                                          ? const Color(0xffB5B9BC)
+                                          : null,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SpaceWidth(),
+                            ],
                           ),
                           const SpaceHeight()
                         ],
