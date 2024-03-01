@@ -8,4 +8,5 @@ class AppUrls {
   static const register = '${Server.server}/api/v1/user/register';
   static const temporaryRegister =
       '${Server.server}/api/v1/user/register/temporaryuser';
+  static const login = '${Server.server}/api/v1//user/login/phone';
 }

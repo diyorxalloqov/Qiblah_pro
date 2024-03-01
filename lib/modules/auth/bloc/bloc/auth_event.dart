@@ -36,3 +36,12 @@ class RegisterTemporaryEvent extends AuthEvent {
   // TODO: implement props
   List<Object> get props => [countryCode, signInToken];
 }
+
+class LoginEvent extends AuthEvent {
+  final String phoneNumber;
+  final String password;
+  const LoginEvent({required this.password, required this.phoneNumber});
+  @override
+  // TODO: implement props
+  List<Object> get props => [password, phoneNumber];
+}

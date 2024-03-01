@@ -138,7 +138,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   context.read<AuthBloc>().add(
                                       RegisterTemporaryEvent(
                                           countryCode: countryCode,
-                                          signInToken: ''));
+                                          signInToken: ''));  
                                 },
                                 child: SvgPicture.asset(context.isDark
                                     ? AppIcon.cancelBlack
@@ -316,7 +316,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                     : null;
                                 if (state.status == ActionStatus.isError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(state.error)));
+                                      SnackBar(
+                                          backgroundColor: context.isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                          content: Text(state.error)));
                                 }
                               },
                               child: BlocBuilder<AuthBloc, AuthState>(
@@ -332,18 +336,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                                       _phoneController.text,
                                                   password: _passwordController
                                                       .text));
-
-                                          if (state.status ==
-                                              ActionStatus.isError) {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        context.isDark
-                                                            ? Colors.white
-                                                            : Colors.black,
-                                                    content:
-                                                        Text(state.error)));
-                                          }
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(

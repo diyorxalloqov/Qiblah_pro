@@ -9,7 +9,9 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   String routeName = StorageRepository.getBool(Keys.isOnboarding) == true
-      ? 'register'
+      ? StorageRepository.getString(Keys.token).isEmpty
+          ? 'register'
+          : 'bottomNavbar'
       : 'onBoarding';
 
   @override

@@ -2,6 +2,7 @@ class Keys {
   static const String lang = 'lang';
   static const String image = 'image';
   static const String isOnboarding = 'onBoarding';
+  static const String token = 'token';
   static const String bomdod = 'bomdod';
   static const String peshin = 'peshin';
   static const String asr = 'asr';
