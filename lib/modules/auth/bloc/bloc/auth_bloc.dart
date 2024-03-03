@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qiblah_pro/modules/auth/model/auth_model.dart';
 import 'package:qiblah_pro/modules/auth/service/auth_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:uuid/uuid.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -16,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterTemporaryEvent>(_temporaryRegister);
     on<LoginEvent>(_login);
   }
+
   final AuthService _authService = AuthService();
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -25,6 +27,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     AndroidDeviceInfo? androidInfo;
     IosDeviceInfo? iosInfo;
+
+    // var uuid = const Uuid();
+
+    // // Generate a v4 (random) UUID
+    // var id = uuid.v4();
+
+    // print('Generated UUID: $id');
+
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
     } else if (Platform.isIOS) {
@@ -37,7 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         notificationId: '0', //left
         userName: StorageRepository.getString(Keys.name),
         userGender: StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
-        userExtraAuthId: '',// left
+        userExtraAuthId: '', // left
         userSigninMethod: '', // left
         userAppLang: StorageRepository.getString(Keys.lang),
         userCountryCode: event.countryCode,

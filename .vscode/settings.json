@@ -1,6 +1,6 @@
 {
     "java.project.sourcePaths": [
-        "lib/modules/global/onBoarding/pages"
+        "lib/modules/namoz/model"
     ],
     "cmake.sourceDirectory": "/home/diyor/Impack_/qiblah_pro/linux"
 }

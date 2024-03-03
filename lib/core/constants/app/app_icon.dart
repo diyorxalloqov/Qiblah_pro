@@ -60,5 +60,10 @@ class AppIcon {
   static const String appLogo = 'assets/icons/appLogo.svg';
   static const String notification = 'assets/icons/notification.svg';
   static const String timeChanger = 'assets/icons/time_changer.svg';
+  static const String tahoratIcon = 'assets/icons/tahorat.svg';
+  static const String xatolik_icon = 'assets/icons/xatolik_icon.svg';
+  static const String qoshimchalar = 'assets/icons/qoshimchalar.svg';
+
+
 
 }

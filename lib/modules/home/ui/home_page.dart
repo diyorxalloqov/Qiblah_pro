@@ -90,127 +90,130 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Container(
-            constraints: BoxConstraints(maxHeight: 145.h, minHeight: 128.h),
-            padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
-            margin: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-                color: context.isDark ? homeBlackMainColor : null,
-                borderRadius: BorderRadius.circular(12.r),
-                gradient: context.isDark
-                    ? null
-                    : LinearGradient(colors: [
-                        smallTextColor.withOpacity(0.15),
-                        const Color(0xff7CD722).withOpacity(0.25),
-                        const Color(0xff0A9D4E).withOpacity(0.2)
-                      ])),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _currentTime,
-                      style: TextStyle(
-                        fontSize: AppSizes.size_24,
-                        color: context.isDark ? Colors.white : highTextColor,
-                        fontWeight: AppFontWeight.w_700,
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, 'TimePage'),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 145.h, minHeight: 128.h),
+              padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
+              margin: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                  color: context.isDark ? homeBlackMainColor : null,
+                  borderRadius: BorderRadius.circular(12.r),
+                  gradient: context.isDark
+                      ? null
+                      : LinearGradient(colors: [
+                          smallTextColor.withOpacity(0.15),
+                          const Color(0xff7CD722).withOpacity(0.25),
+                          const Color(0xff0A9D4E).withOpacity(0.2)
+                        ])),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _currentTime,
+                        style: TextStyle(
+                          fontSize: AppSizes.size_24,
+                          color: context.isDark ? Colors.white : highTextColor,
+                          fontWeight: AppFontWeight.w_700,
+                        ),
                       ),
-                    ),
-                    const SpaceHeight(),
-                    BlocProvider.value(
-                      value: timeCountDownCubit,
-                      child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
-                        builder: (context, state) {
-                          return SizedBox(
-                            width: 150.w,
-                            child: BlocBuilder<TimeCountDownCubit,
-                                TimeCountDownState>(
-                              builder: (context, state1) {
-                                return Text(
-                                  currentNamozTime(state, state1),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: const TextStyle(
-                                    color: Color(0xFF6D7379),
-                                    fontSize: AppSizes.size_12,
-                                    fontWeight: AppFontWeight.w_400,
-                                  ),
-                                );
-                              },
+                      const SpaceHeight(),
+                      BlocProvider.value(
+                        value: timeCountDownCubit,
+                        child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                          builder: (context, state) {
+                            return SizedBox(
+                              width: 150.w,
+                              child: BlocBuilder<TimeCountDownCubit,
+                                  TimeCountDownState>(
+                                builder: (context, state1) {
+                                  return Text(
+                                    currentNamozTime(state, state1),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                      color: Color(0xFF6D7379),
+                                      fontSize: AppSizes.size_12,
+                                      fontWeight: AppFontWeight.w_400,
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SpaceHeight(),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, 'TimePage'),
+                        child: Row(
+                          children: [
+                            Text(
+                              "barchasini_korish".tr(),
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontFamily: AppfontFamily.inter.fontFamily,
+                                  fontSize: AppSizes.size_14,
+                                  fontWeight: AppFontWeight.w_700),
                             ),
-                          );
-                        },
+                            const SpaceWidth(),
+                            SvgPicture.asset(AppIcon.arrowRight,
+                                color: primaryColor, width: 30.w)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Spacer(),
+                      Container(
+                        padding:
+                            EdgeInsets.only(right: 10.w, left: 10.w, top: 6.h),
+                        decoration: BoxDecoration(
+                          color: context.isDark
+                              ? const Color(0xff232C37)
+                              : const Color(0xFFE3F6DC).withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(50.r),
+                        ),
+                        child: Row(
+                          children: [
+                            FutureBuilder(
+                                future: context
+                                    .read<GeolocationCubit>()
+                                    .getChosenLocation(),
+                                builder: (context, snapshot) {
+                                  return Text(
+                                    snapshot.data?.region.toString() ??
+                                        'not found',
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: context.isDark
+                                          ? const Color(0xffB5B9BC)
+                                          : const Color(0xff6D7379),
+                                      fontSize: AppSizes.size_14,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
+                                      fontWeight: AppFontWeight.w_400,
+                                    ),
+                                  );
+                                }),
+                            const SpaceWidth(),
+                            SvgPicture.asset(AppIcon.location)
+                          ],
+                        ),
                       ),
-                    ),
-                    const SpaceHeight(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, 'TimePage');
-                      },
-                      child: Row(
-                        children: [
-                          Text(
-                            "barchasini_korish".tr(),
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontFamily: AppfontFamily.inter.fontFamily,
-                                fontSize: AppSizes.size_14,
-                                fontWeight: AppFontWeight.w_700),
-                          ),
-                          const SpaceWidth(),
-                          SvgPicture.asset(AppIcon.arrowRight,
-                              color: primaryColor, width: 30.w)
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Spacer(),
-                    Container(
-                      padding:
-                          EdgeInsets.only(right: 10.w, left: 10.w, top: 6.h),
-                      decoration: BoxDecoration(
-                        color: context.isDark
-                            ? const Color(0xff232C37)
-                            : const Color(0xFFE3F6DC).withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(50.r),
-                      ),
-                      child: Row(
-                        children: [
-                          FutureBuilder(
-                              future: context
-                                  .read<GeolocationCubit>()
-                                  .getChosenLocation(),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  snapshot.data?.region.toString() ??
-                                      'not found',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: context.isDark
-                                        ? const Color(0xffB5B9BC)
-                                        : const Color(0xff6D7379),
-                                    fontSize: AppSizes.size_16,
-                                    fontFamily: AppfontFamily.inter.fontFamily,
-                                    fontWeight: AppFontWeight.w_400,
-                                  ),
-                                );
-                              }),
-                          const SpaceWidth(),
-                          SvgPicture.asset(AppIcon.location)
-                        ],
-                      ),
-                    ),
-                    SvgPicture.asset(AppIcon.moshid, width: 100.w),
-                  ],
-                )
-              ],
+                      SvgPicture.asset(AppIcon.moshid, width: 100.w),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
           Container(

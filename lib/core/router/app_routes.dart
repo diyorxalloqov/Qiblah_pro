@@ -1,9 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/names/names_details_page.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/names/tasbeh_name_page.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/quron/categories/category_details_pages/juzlar_details_page.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/zikr/tasbeh.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/zikr/zikr_details.dart';
+import 'package:qiblah_pro/modules/namoz/model/namoz_model.dart';
 
 class RouteList {
   static final RouteList _generate = RouteList._init();
@@ -31,9 +27,20 @@ class RouteList {
       case 'newsDetail':
         return _navigate(const NewsDetailPage());
       case 'learnNamozPage':
-        return _navigate(const LearnNamoz());
-      case 'namozSectionScreen':
-        return _navigate(const NamozSectionScreen());
+        return _navigate(LearnNamoz(
+            categoryItem: settings.arguments as List<CategoryItems>));
+      case 'jamoatNamozi':
+        return _navigate(JamoatNamozi(
+            categoryItem: settings.arguments as List<CategoryItems>));
+      case 'tahorat':
+        return _navigate(LearnTahorat(
+            categoryItem: settings.arguments as List<CategoryItems>));
+      case 'mistakes':
+        return _navigate(
+            Mistakes(categoryItem: settings.arguments as List<CategoryItems>));
+      case 'qoshimchalar':
+        return _navigate(Qoshimchalar(
+            categoryItem: settings.arguments as List<CategoryItems>));
       case 'TimePage':
         return _navigate(const TimePage());
       case 'taqvimPage':

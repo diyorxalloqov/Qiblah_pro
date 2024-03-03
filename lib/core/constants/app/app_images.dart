@@ -19,5 +19,7 @@ class AppImages {
   static const String tanlangan_zkir = 'assets/images/tanlangan_zikrlar.png';
   static const String tungi_zikr = 'assets/images/tungi_zikrlar.png';
   static const String qibla_direction = 'assets/images/qibla_direction.png';
+  static const String qoshimchalar ='assets/images/qoshimchalar.png';
+
 
 }
