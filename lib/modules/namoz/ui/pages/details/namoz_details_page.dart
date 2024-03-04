@@ -24,7 +24,8 @@ class NamozDetailsPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => WebViewScreenWidget(
-                              html: items[index].contentPath.toString(),
+                              currentIndex:
+                                  index, // items[index].contentPath.toString(),
                               title: appBarName,
                               items: items)));
                 });

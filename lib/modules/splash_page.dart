@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
           child: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(AppImages.splash), fit: BoxFit.cover)),
+                image: AssetImage(AppImages.appLogo), fit: BoxFit.cover)),
       )),
     );
   }

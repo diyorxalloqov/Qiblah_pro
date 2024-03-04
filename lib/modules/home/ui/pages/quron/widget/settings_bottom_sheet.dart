@@ -5,7 +5,7 @@ import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ovoz.da
 
 showSettingBottomSheet(BuildContext context) {
   showModalBottomSheet(
-      isDismissible: false,
+      isDismissible: true,
       isScrollControlled: true,
       context: context,
       builder: (context) => const SettingsPage());
@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage>
     return Container(
         height: context.height * 0.55,
         decoration: BoxDecoration(
-            color: context.isDark ? homeBackColor : bottomSheetBackgroundColor,
+            color: context.isDark ? homeBackColor : scaffoldColor,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(24.r),
                 topRight: Radius.circular(24.r))),
