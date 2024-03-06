@@ -11,7 +11,6 @@ export 'package:flutter/material.dart' hide RefreshCallback;
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_dash/flutter_dash.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
-export 'package:flutter_secure_storage/flutter_secure_storage.dart';
 export 'package:flutter_share/flutter_share.dart';
 export 'package:flutter_svg/svg.dart';
 export 'package:get_it/get_it.dart';

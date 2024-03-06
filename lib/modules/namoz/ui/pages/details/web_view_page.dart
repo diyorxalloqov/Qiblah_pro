@@ -31,7 +31,7 @@ class _WebViewScreenWidgetState extends State<WebViewScreenWidget> {
   late PageController _pageController;
   late int _currentPage;
   late Set<Factory<OneSequenceGestureRecognizer>> _gestureRecognizers;
-  double fontSize = 10.0;
+  double fontSize = 20.0;
 
   @override
   void initState() {
@@ -214,7 +214,7 @@ class _WebViewScreenWidgetState extends State<WebViewScreenWidget> {
                                                 ),
                                                 Slider(
                                                     value: fontSize,
-                                                    min: 10,
+                                                    min: 20,
                                                     max: 60,
                                                     divisions: 10,
                                                     activeColor: primaryColor,

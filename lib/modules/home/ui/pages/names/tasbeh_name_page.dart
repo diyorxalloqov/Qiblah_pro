@@ -25,7 +25,6 @@ class _TasbehNamePageState extends State<TasbehNamePage>
   @override
   void initState() {
     zikrBloc = ZikrBloc();
-    _init();
     super.initState();
   }
 
@@ -391,7 +390,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                   primaryColor,
                                   primaryColor.withOpacity(0.8),
                                   primaryColor
-                                ], 
+                                ],
                               ),
                               boxShadow: _isTap
                                   ? [

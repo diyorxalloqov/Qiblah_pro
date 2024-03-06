@@ -9,4 +9,11 @@ class AppUrls {
   static const temporaryRegister =
       '${Server.server}/api/v1/user/register/temporaryuser';
   static const login = '${Server.server}/api/v1//user/login/phone';
+  static const putImage = '${Server.server}/api/v1/user/edit/avatar';
+  static const changeContact = '${Server.server}/api/v1/user/edit/contact';
+  static const changeName = '${Server.server}/api/v1/user/edit/name';
+  static const changeLocation = '${Server.server}/api/v1/user/edit/location';
+  static const changePremium = '${Server.server}/api/v1/user/edit/premium';
+  static const changeLang = '${Server.server}/api/v1/user/edit/applang';
+  static const deleteAccaunt = '${Server.server}/api/v1/user/delete';
 }

@@ -1,4 +1,4 @@
-import 'package:qiblah_pro/modules/auth/bloc/bloc/auth_bloc.dart';
+import 'package:qiblah_pro/modules/auth/bloc/auth_bloc.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

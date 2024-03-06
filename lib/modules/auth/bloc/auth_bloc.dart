@@ -28,12 +28,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AndroidDeviceInfo? androidInfo;
     IosDeviceInfo? iosInfo;
 
-    // var uuid = const Uuid();
-
-    // // Generate a v4 (random) UUID
-    // var id = uuid.v4();
-
-    // print('Generated UUID: $id');
+    Uuid uuid = const Uuid();
+    String id = uuid.v4();
+    print('Generated UUID: $id');
 
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
@@ -47,15 +44,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         notificationId: '0', //left
         userName: StorageRepository.getString(Keys.name),
         userGender: StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
-        userExtraAuthId: '', // left
-        userSigninMethod: '', // left
+        userExtraAuthId: '',
+        userSigninMethod: 'AuthWithPhone',
         userAppLang: StorageRepository.getString(Keys.lang),
         userCountryCode: event.countryCode,
         userPhoneNumber: event.phoneNumber,
         userEmail: event.userEmail,
         userPassword: event.password,
         userRegion: StorageRepository.getString(Keys.region),
-        userToken: event.signInToken,
+        userToken: id,
         userOs: Platform.isAndroid ? 'Android' : 'Ios',
         userAppVersion: packageInfo.version.replaceAll('.0', ''),
         userOsVersion: Platform.isAndroid
@@ -69,6 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (r) async {
       emit(state.copyWith(status: ActionStatus.isSuccess, authModel: r));
       await StorageRepository.putString(Keys.token, r.token ?? '');
+      await StorageRepository.putString(Keys.userId, r.data?.userId ?? '');
     });
   }
 
@@ -79,6 +77,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     AndroidDeviceInfo? androidInfo;
     IosDeviceInfo? iosInfo;
+
+    Uuid uuid = const Uuid();
+    String id = uuid.v4();
+    print('Generated UUID: $id');
+
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
     } else if (Platform.isIOS) {
@@ -95,7 +98,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       userAppLang: StorageRepository.getString(Keys.lang),
       userCountryCode: event.countryCode,
       userRegion: StorageRepository.getString(Keys.region),
-      userToken: event.signInToken,
+      userToken: id,
       userOs: Platform.isAndroid ? 'Android' : 'Ios',
       userAppVersion: packageInfo.version.replaceAll('.0', ''),
       userOsVersion: Platform.isAndroid
@@ -109,12 +112,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (r) async {
       emit(state.copyWith(status1: ActionStatus.isSuccess, authModel: r));
       await StorageRepository.putString(Keys.token, r.token ?? '');
+      await StorageRepository.putBool(Keys.isTemporaryUser, true);
     });
   }
 
   Future<FutureOr<void>> _login(
       LoginEvent event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status2: ActionStatus.isLoading));
+
+    Uuid uuid = const Uuid();
+    String id = uuid.v4();
+    print('Generated UUID: $id');
+
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Either<String, AuthModel> res = await _authService.login(
         UserData(
@@ -122,13 +131,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           userPassword: event.password,
           userAppVersion: packageInfo.version.replaceAll('.0', ''),
         ),
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsImlhdCI6MTcwOTI3MTkyMn0.AzzosqwL_f05horApv7LE2Qg_m4EIkUCXHVYcy40aaE');
+        StorageRepository.getString(Keys.token).isEmpty
+            ? id
+            : StorageRepository.getString(Keys.token));
     res.fold(
         (l) =>
             emit(state.copyWith(loginerror: l, status2: ActionStatus.isError)),
         (r) async {
       emit(state.copyWith(status2: ActionStatus.isSuccess));
+      await StorageRepository.putString(Keys.userId, r.data?.userId ?? '');
       await StorageRepository.putString(Keys.token, r.token ?? '');
+      await StorageRepository.putString(Keys.password, event.password);
+      await StorageRepository.putString(Keys.phone, event.phoneNumber);
     });
   }
 }

@@ -3,6 +3,10 @@ class Keys {
   static const String image = 'image';
   static const String isOnboarding = 'onBoarding';
   static const String token = 'token';
+  static const String locationStatus = 'locationStatus';
+  static const String userId = 'user_id';
+  static const String phone = 'phone_number';
+  static const String password = 'password';
   static const String bomdod = 'bomdod';
   static const String peshin = 'peshin';
   static const String asr = 'asr';
@@ -19,4 +23,5 @@ class Keys {
   static const String isMan = 'isMan';
   static const String name = 'name';
   static const String notification = 'notification';
+  static const String isTemporaryUser = 'temporaryUser';
 }

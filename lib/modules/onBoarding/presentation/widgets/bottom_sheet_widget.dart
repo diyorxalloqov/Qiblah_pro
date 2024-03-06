@@ -72,12 +72,20 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                   topLeft: Radius.circular(18.r),
                   topRight: Radius.circular(18.r))),
           width: double.infinity,
-          height: _isKeyboardAppear || _isTextFieldFocused ? 750.h : 520.h,
+          height: _isKeyboardAppear || _isTextFieldFocused ? 700.h : 500.h,
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HighText(text: 'keling_tanishib_olamiz:'.tr()),
+              Text(
+                'keling_tanishib_olamiz:'.tr(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppfontFamily.comforta.copyWith(
+                    fontSize: AppSizes.size_24,
+                    fontWeight: AppFontWeight.w_700,
+                    color: context.isDark ? highTextWhiteColor : highTextColor),
+              ),
               SpaceHeight(height: 20.h),
               SmallText(text: 'ismingiz_nima'.tr()),
               Form(

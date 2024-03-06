@@ -111,7 +111,7 @@ class _EditPasswordBottomSheetState extends State<EditPasswordBottomSheet>
         const SpaceHeight(),
         Container(
           height: _isKeyboardAppear || _isTextFieldFocused
-              ? context.height*0.85
+              ? context.height * 0.85
               : null,
           color: context.isDark
               ? bottomSheetBackgroundBlackColor

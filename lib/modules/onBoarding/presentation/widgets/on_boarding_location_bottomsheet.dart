@@ -1,14 +1,10 @@
 import 'dart:async';
-
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 showLocationBottomSheetOnBoarding(
     BuildContext c, PageController pageController) {
   showModalBottomSheet(
-    isDismissible: false,
+    isDismissible: true,
     context: c,
     isScrollControlled: true,
     builder: (c) => LocationBottomSheet1(pageController: pageController),
@@ -165,6 +161,9 @@ class _LocationBottomSheetState extends State<LocationBottomSheet1> {
                                       children: [
                                         InkWell(
                                           onTap: () {
+                                            // storage ga location ni statusini yozish kerak
+                                            // StorageRepository.putInt(
+                                            //     Keys.locationStatus, 2);
                                             context
                                                 .read<GeolocationCubit>()
                                                 .saveLocationChoice(placemark);

@@ -1,7 +1,7 @@
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:qiblah_pro/modules/auth/bloc/bloc/auth_bloc.dart';
+import 'package:qiblah_pro/modules/auth/bloc/auth_bloc.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class LoginPage extends StatefulWidget {
@@ -61,6 +61,14 @@ class _RegisterPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final FlCountryCodePicker countryPicker = FlCountryCodePicker(
+      title: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          'davlatni_tanlang'.tr(),
+          style: const TextStyle(
+              fontSize: AppSizes.size_20, fontWeight: AppFontWeight.w_500),
+        ),
+      ),
       searchBarDecoration: InputDecoration(
         filled: true,
         hintText: 'davlatni_tanlang'.tr(),
@@ -137,8 +145,7 @@ class _RegisterPageState extends State<LoginPage> {
                                 onTap: () {
                                   context.read<AuthBloc>().add(
                                       RegisterTemporaryEvent(
-                                          countryCode: countryCode,
-                                          signInToken: ''));
+                                          countryCode: countryCode));
                                 },
                                 child: SvgPicture.asset(context.isDark
                                     ? AppIcon.cancelBlack

@@ -13,11 +13,11 @@ class _HomePageState extends State<HomePage> {
   late String _currentTime;
 
   final List<String> _names = const [
-    "Qur'on",
-    "Qibla",
-    "Qazo counter",
-    "Zikr",
-    "99 games"
+    "quron",
+    "ficha_qibla",
+    "ficha_qazo",
+    "ficha_zikr",
+    "ficha_99_names"
   ];
 
   final List<String> _icons = const [
@@ -291,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   SizedBox(height: 5.h),
-                                  Text(_names[index])
+                                  Text(_names[index].tr())
                                 ],
                               ),
                             ),

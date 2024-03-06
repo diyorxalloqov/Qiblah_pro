@@ -13,28 +13,23 @@ class RegisterEvent extends AuthEvent {
   final String phoneNumber;
   final String password;
   final String userEmail;
-  final String signInToken;
 
   const RegisterEvent(this.userEmail,
       {required this.countryCode,
       required this.phoneNumber,
-      required this.signInToken,
       required this.password});
   @override
   // TODO: implement props
-  List<Object> get props =>
-      [countryCode, userEmail, signInToken, phoneNumber, password];
+  List<Object> get props => [countryCode, userEmail, phoneNumber, password];
 }
 
 class RegisterTemporaryEvent extends AuthEvent {
   final String countryCode;
-  final String signInToken;
-  const RegisterTemporaryEvent(
-      {required this.countryCode, required this.signInToken});
+  const RegisterTemporaryEvent({required this.countryCode});
 
   @override
   // TODO: implement props
-  List<Object> get props => [countryCode, signInToken];
+  List<Object> get props => [countryCode];
 }
 
 class LoginEvent extends AuthEvent {

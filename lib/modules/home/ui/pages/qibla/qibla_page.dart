@@ -43,7 +43,7 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
     return BlocProvider.value(
       value: qiblaCubit,
       child: Scaffold(
-          appBar: customAppbar(context, 'qibla'.tr()),
+          appBar: customAppbar(context, 'ficha_qibla'.tr()),
           body: Column(
             children: [
               Expanded(

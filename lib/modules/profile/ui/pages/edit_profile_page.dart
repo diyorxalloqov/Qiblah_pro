@@ -9,7 +9,8 @@ class EditProfilePage extends StatefulWidget {
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends State<EditProfilePage>
+    with WidgetsBindingObserver {
   late TextEditingController _phoneController;
   late TextEditingController _nameController;
 
@@ -18,9 +19,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final List<String> _icons = const [AppIcon.woman, AppIcon.man];
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
   void initState() {
     _phoneController = TextEditingController();
     _nameController = TextEditingController();
+    widget.profileBloc.add(GetUserdataForEdit());
+
     super.initState();
   }
 
@@ -88,7 +97,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             : Colors.black),
                                   )),
                               ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    widget.profileBloc.add(LogoutEvent());
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius:
@@ -107,359 +120,411 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ));
           },
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => showAdaptiveDialog(
-                          context: context,
-                          builder: (context) => ImagePickerWidget(
-                                imageOntap: () {
-                                  widget.profileBloc.add(const GetimageEvent());
-                                  Navigator.pop(context);
-                                },
-                                profileBloc: widget.profileBloc,
-                              )),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                  width: 100.r,
-                                  height: 100.r,
-                                  decoration: ShapeDecoration(
-                                    image: DecorationImage(
-                                        image: FileImage(File(widget
-                                            .profileBloc.state.imagePath))),
-                                    gradient: const LinearGradient(
-                                      begin: Alignment(-0.07, -1.00),
-                                      end: Alignment(0.07, 1),
-                                      colors: [
-                                        Color(0xFF0A9C4D),
-                                        Color(0xFF1DC369),
-                                        Color(0xFF21AE62)
-                                      ],
-                                    ),
-                                    shape: const OvalBorder(),
-                                  ),
-                                  child: const Icon(Icons.person_rounded,
-                                      color: Colors.white, size: 42)),
-                              Positioned(
-                                  top: 30,
-                                  left: 65,
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10.r),
-                                          color: Colors.white),
-                                      child: SvgPicture.asset(AppIcon.camera))),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SpaceHeight(height: 20.h),
-                    SmallText(text: 'ismingiz_nima'.tr()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      child: TextFormField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          filled: true,
-                          hintText: 'ismingizni_yozing'.tr(),
-                          hintStyle: TextStyle(
-                            fontSize: AppSizes.size_16,
-                            fontWeight: AppFontWeight.w_400,
-                            color: textFormFieldHintColor,
-                          ),
-                          fillColor: context.isDark
-                              ? textFormFieldFillColorBlack
-                              : Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: context.isDark
-                                ? BorderSide.none
-                                : const BorderSide(
-                                    color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: context.isDark
-                                ? BorderSide.none
-                                : const BorderSide(
-                                    color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SpaceHeight(height: 25.h),
-                    SmallText(text: 'telefon_raqamingiz'.tr()),
-                    const SpaceHeight(),
-                    Column(
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          bloc: widget.profileBloc,
+          builder: (context, state) {
+            _nameController.text = state.userData?.userName ?? '';
+            _phoneController.text = state.userData?.userPhoneNumber ?? '';
+            // if (state.status) {
+            //   return ErrorOutput(message: state.message);
+            // }
+            // if (state is ProfileLoaded) {
+            print("${state.imagePath} UI");
+            return SingleChildScrollView(
+              child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
+                  child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFormField(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            // MaskTextInputFormatter(
-                            //   mask: '+000 00 000 00 00',
-                            //   filter: {'0': RegExp(r'[0-9]')},
-                            // )
-                          ],
-                          decoration: InputDecoration(
-                            filled: true,
-                            hintText: 'telefon_raqam'.tr(),
-                            hintStyle: TextStyle(
-                              fontSize: AppSizes.size_16,
-                              fontWeight: AppFontWeight.w_400,
-                              color: textFormFieldHintColor,
-                            ),
-                            prefixIcon: TextButton(
-                                onPressed: () async {
-                                  final picked = await countryPicker.showPicker(
-                                    context: context,
-                                    backgroundColor: context.isDark
-                                        ? bottomSheetBackgroundBlackColor
-                                        : bottomSheetBackgroundColor,
-                                  );
-                                  dialCode = picked?.dialCode ?? '+998';
-                                  setState(() {});
-                                },
-                                child: Text(
-                                  dialCode,
-                                  style: TextStyle(
-                                      color: context.isDark
-                                          ? Colors.white
-                                          : Colors.black),
-                                )),
-                            fillColor: context.isDark
-                                ? textFormFieldFillColorBlack
-                                : Colors.white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: context.isDark
-                                  ? BorderSide.none
-                                  : const BorderSide(
-                                      color: Colors.grey, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: context.isDark
-                                  ? BorderSide.none
-                                  : const BorderSide(
-                                      color: Colors.grey, width: 1),
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                          ),
-                        ),
-                        SpaceHeight(height: 24.h),
-                        SizedBox(
-                          height: 60.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(2, (index) {
-                              return ChoiceChip(
-                                backgroundColor: context.isDark
-                                    ? jinsBlackColor
-                                    : Colors.white,
-                                label: SizedBox(
-                                  height: 45.h,
-                                  width: 130.w,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(_icons[index]),
-                                      const SpaceWidth(),
-                                      Text(
-                                        _titles[index].tr(),
-                                        style: TextStyle(
-                                            fontSize: AppSizes.size_16,
-                                            color: context.isDark
-                                                ? highTextColorWhite
-                                                : highTextColor,
-                                            fontWeight: AppFontWeight.w_500),
+                        GestureDetector(
+                          onTap: () => showAdaptiveDialog(
+                              context: context,
+                              builder: (context) => ImagePickerWidget(
+                                  profileBloc: widget.profileBloc)),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                Container(
+                                    width: 100.r,
+                                    height: 100.r,
+                                    decoration: ShapeDecoration(
+                                      image: state.imagePath.isEmpty
+                                          ? null
+                                          : DecorationImage(
+                                              image: FileImage(
+                                                  File(state.imagePath)),
+                                              fit: BoxFit.cover),
+                                      gradient: const LinearGradient(
+                                        begin: Alignment(-0.07, -1.00),
+                                        end: Alignment(0.07, 1),
+                                        colors: [
+                                          Color(0xFF0A9C4D),
+                                          Color(0xFF1DC369),
+                                          Color(0xFF21AE62)
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                side: selectedChipIndex == index
-                                    ? BorderSide(color: primaryColor, width: 1)
-                                    : BorderSide.none,
-                                showCheckmark: false,
-                                selectedColor: primaryColor.withOpacity(0.2),
-                                disabledColor: textFormFieldHintColor,
-                                onSelected: (value) {
-                                  print(value);
-                                  index == 0 ? isMan = false : isMan = true;
-                                  setState(() {
-                                    if (value) {
-                                      selectedChipIndex = index;
-                                    } else {
-                                      selectedChipIndex = -1;
-                                    }
-                                  });
-                                },
-                                selected: selectedChipIndex == index,
-                              );
-                            }),
+                                      shape: const OvalBorder(),
+                                    ),
+                                    child: state.imagePath.isNotEmpty
+                                        ? const SizedBox.shrink()
+                                        : const Icon(Icons.person_rounded,
+                                            color: Colors.white, size: 42)),
+                                Container(
+                                    padding: const EdgeInsets.all(2.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.r),
+                                        color: context.isDark
+                                            ? Colors.black
+                                            : Colors.white),
+                                    child: SvgPicture.asset(
+                                        state.imagePath.isEmpty
+                                            ? AppIcon.camera
+                                            : AppIcon.edit,
+                                        color: state.imagePath.isNotEmpty
+                                            ? context.isDark
+                                                ? Colors.white
+                                                : Colors.black
+                                            : null)),
+                              ],
+                            ),
                           ),
                         ),
                         SpaceHeight(height: 20.h),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (c) =>
-                                    const EditPasswordBottomSheet());
-                          },
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Container(
-                            height: context.height * 0.07,
-                            decoration: BoxDecoration(
-                                color: smallTextColor.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12.r)),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(AppIcon.key),
-                                  const SpaceWidth(),
-                                  MediumText(text: "parolni_ozgartirish".tr())
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SpaceHeight(),
-                        const SpaceHeight(),
-                        Center(
-                          child: TextButton(
-                              onPressed: () {
-                                showAdaptiveDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog.adaptive(
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                'ochirish'.tr(),
-                                                style: TextStyle(
-                                                    fontFamily: AppfontFamily
-                                                        .comforta.fontFamily,
-                                                    fontSize: AppSizes.size_18,
-                                                    fontWeight:
-                                                        AppFontWeight.w_700),
-                                              ),
-                                              SpaceHeight(
-                                                  height:
-                                                      context.height * 0.05),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  ElevatedButton(
-                                                      onPressed: () =>
-                                                          Navigator.maybePop(
-                                                              context),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      12.r),
-                                                        ),
-                                                        fixedSize:
-                                                            Size(100.w, 30.h),
-                                                      ),
-                                                      child: Text(
-                                                        'yoq'.tr(),
-                                                        style: TextStyle(
-                                                            color: context
-                                                                    .isDark
-                                                                ? Colors.white
-                                                                : Colors.black),
-                                                      )),
-                                                  ElevatedButton(
-                                                      onPressed: () {},
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12.r),
-                                                              ),
-                                                              fixedSize: Size(
-                                                                  100.w, 30.h),
-                                                              backgroundColor:
-                                                                  primaryColor),
-                                                      child: Text(
-                                                        'ha'.tr(),
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ))
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ));
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset(AppIcon.user),
-                                  const SpaceWidth(),
-                                  Text(
-                                    'akkauntni_o’chirish'.tr(),
-                                    style: const TextStyle(
-                                      color: Color(0xFFFF0000),
-                                      fontSize: AppSizes.size_16,
-                                      fontWeight: AppFontWeight.w_600,
-                                    ),
-                                  )
-                                ],
-                              )),
-                        ),
-                        SpaceHeight(height: 15.h),
-                        ElevatedButton(
-                          onPressed: () async {
-                            await StorageRepository.putBool(Keys.isMan, isMan);
-                            await StorageRepository.putString(
-                                Keys.name, _nameController.text);
-                            Navigator.pop(context);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: primaryColor,
-                            fixedSize: Size(double.infinity, 50.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.r),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'saqlash'.tr(),
-                              style: const TextStyle(
+                        SmallText(text: 'ismingiz_nima'.tr()),
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                          child: TextFormField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              filled: true,
+                              hintText: 'ismingizni_yozing'.tr(),
+                              hintStyle: TextStyle(
                                 fontSize: AppSizes.size_16,
-                                color: Colors.white,
-                                fontWeight: AppFontWeight.w_600,
+                                fontWeight: AppFontWeight.w_400,
+                                color: textFormFieldHintColor,
+                              ),
+                              fillColor: context.isDark
+                                  ? textFormFieldFillColorBlack
+                                  : Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: context.isDark
+                                    ? BorderSide.none
+                                    : const BorderSide(
+                                        color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: context.isDark
+                                    ? BorderSide.none
+                                    : const BorderSide(
+                                        color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ])),
+                        SpaceHeight(height: 25.h),
+                        SmallText(text: 'telefon_raqamingiz'.tr()),
+                        const SpaceHeight(),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _phoneController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                // MaskTextInputFormatter(
+                                //   mask: '+000 00 000 00 00',
+                                //   filter: {'0': RegExp(r'[0-9]')},
+                                // )
+                              ],
+                              decoration: InputDecoration(
+                                filled: true,
+                                hintText: 'telefon_raqam'.tr(),
+                                hintStyle: TextStyle(
+                                  fontSize: AppSizes.size_16,
+                                  fontWeight: AppFontWeight.w_400,
+                                  color: textFormFieldHintColor,
+                                ),
+                                prefixIcon: TextButton(
+                                    onPressed: () async {
+                                      final picked =
+                                          await countryPicker.showPicker(
+                                        context: context,
+                                        backgroundColor: context.isDark
+                                            ? bottomSheetBackgroundBlackColor
+                                            : bottomSheetBackgroundColor,
+                                      );
+                                      dialCode = picked?.dialCode ?? '+998';
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      dialCode,
+                                      style: TextStyle(
+                                          color: context.isDark
+                                              ? Colors.white
+                                              : Colors.black),
+                                    )),
+                                fillColor: context.isDark
+                                    ? textFormFieldFillColorBlack
+                                    : Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: context.isDark
+                                      ? BorderSide.none
+                                      : const BorderSide(
+                                          color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: context.isDark
+                                      ? BorderSide.none
+                                      : const BorderSide(
+                                          color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                              ),
+                            ),
+                            SpaceHeight(height: 24.h),
+                            SizedBox(
+                              height: 60.h,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: List.generate(2, (index) {
+                                  return ChoiceChip(
+                                    backgroundColor: context.isDark
+                                        ? jinsBlackColor
+                                        : Colors.white,
+                                    label: SizedBox(
+                                      height: 45.h,
+                                      width: 130.w,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SvgPicture.asset(_icons[index]),
+                                          const SpaceWidth(),
+                                          Text(
+                                            _titles[index].tr(),
+                                            style: TextStyle(
+                                                fontSize: AppSizes.size_16,
+                                                color: context.isDark
+                                                    ? highTextColorWhite
+                                                    : highTextColor,
+                                                fontWeight:
+                                                    AppFontWeight.w_500),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    side: selectedChipIndex == index
+                                        ? BorderSide(
+                                            color: primaryColor, width: 1)
+                                        : BorderSide.none,
+                                    showCheckmark: false,
+                                    selectedColor:
+                                        primaryColor.withOpacity(0.2),
+                                    disabledColor: textFormFieldHintColor,
+                                    onSelected: (value) {
+                                      print(value);
+                                      index == 0 ? isMan = false : isMan = true;
+                                      setState(() {
+                                        if (value) {
+                                          selectedChipIndex = index;
+                                        } else {
+                                          selectedChipIndex = -1;
+                                        }
+                                      });
+                                    },
+                                    selected: selectedChipIndex == index,
+                                  );
+                                }),
+                              ),
+                            ),
+                            SpaceHeight(height: 20.h),
+                            InkWell(
+                              onTap: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (c) =>
+                                        const EditPasswordBottomSheet());
+                              },
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Container(
+                                height: context.height * 0.07,
+                                decoration: BoxDecoration(
+                                    color: smallTextColor.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(12.r)),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(AppIcon.key,
+                                          color: context.isDark
+                                              ? Colors.white54
+                                              : null),
+                                      const SpaceWidth(),
+                                      MediumText(
+                                          text: "parolni_ozgartirish".tr())
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SpaceHeight(),
+                            const SpaceHeight(),
+                            Center(
+                              child: TextButton(
+                                  onPressed: () {
+                                    showAdaptiveDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            AlertDialog.adaptive(
+                                              content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    'ochirish'.tr(),
+                                                    style: TextStyle(
+                                                        fontFamily:
+                                                            AppfontFamily
+                                                                .comforta
+                                                                .fontFamily,
+                                                        fontSize:
+                                                            AppSizes.size_18,
+                                                        fontWeight:
+                                                            AppFontWeight
+                                                                .w_700),
+                                                  ),
+                                                  SpaceHeight(
+                                                      height: context.height *
+                                                          0.05),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          onPressed: () =>
+                                                              Navigator
+                                                                  .maybePop(
+                                                                      context),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12.r),
+                                                            ),
+                                                            fixedSize: Size(
+                                                                100.w, 30.h),
+                                                          ),
+                                                          child: Text(
+                                                            'yoq'.tr(),
+                                                            style: TextStyle(
+                                                                color: context
+                                                                        .isDark
+                                                                    ? Colors
+                                                                        .white
+                                                                    : Colors
+                                                                        .black),
+                                                          )),
+                                                      ElevatedButton(
+                                                          onPressed: () {
+                                                            widget.profileBloc.add(
+                                                                DeleteAccauntEvent());
+                                                            Navigator.pop(
+                                                                context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            12.r),
+                                                                  ),
+                                                                  fixedSize:
+                                                                      Size(
+                                                                          100.w,
+                                                                          30.h),
+                                                                  backgroundColor:
+                                                                      primaryColor),
+                                                          child: Text(
+                                                            'ha'.tr(),
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                          ))
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ));
+                                  },
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SvgPicture.asset(AppIcon.user),
+                                      const SpaceWidth(),
+                                      Text(
+                                        'akkauntni_o’chirish'.tr(),
+                                        style: const TextStyle(
+                                          color: Color(0xFFFF0000),
+                                          fontSize: AppSizes.size_16,
+                                          fontWeight: AppFontWeight.w_600,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            SpaceHeight(height: 15.h),
+                            ElevatedButton(
+                              onPressed: () {
+                                widget.profileBloc.add(ChangeUserDataEvent(
+                                    name: _nameController.text,
+                                    gender: selectedChipIndex == 1
+                                        ? 'erkak'
+                                        : 'ayol',
+                                    phone: _phoneController.text));
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                fixedSize: Size(double.infinity, 50.h),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'saqlash'.tr(),
+                                  style: const TextStyle(
+                                    fontSize: AppSizes.size_16,
+                                    color: Colors.white,
+                                    fontWeight: AppFontWeight.w_600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ])),
+            );
+            // }
+            // return Loading();
+          },
         ));
   }
 }

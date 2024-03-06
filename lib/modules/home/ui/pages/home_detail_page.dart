@@ -9,11 +9,11 @@ class AllFunctionPage extends StatefulWidget {
 
 class _AllFunctionPageState extends State<AllFunctionPage> {
   final List<String> _names = const [
-    "Qur'on",
-    "Qibla",
-    "Qazo counter",
-    "Zikr",
-    "99 games"
+    "quron",
+    "ficha_qibla",
+    "ficha_qazo",
+    "ficha_zikr",
+    "ficha_99_names"
   ];
 
   final List<String> _icons = const [
@@ -49,7 +49,9 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
               child: GridView.builder(
                   itemCount: 5,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 18.h, crossAxisCount: 4),
+                      childAspectRatio: 7.8 / 9,
+                      mainAxisSpacing: 18.h,
+                      crossAxisCount: 4),
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () =>
@@ -69,23 +71,21 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
                                       color: Colors.black, width: 0.1)),
                             ),
                             child: Center(
-                              child: SvgPicture.asset(
-                                _icons[index],
-                                color: context.isDark
-                                    ? const Color(0xff6D7379)
-                                    : null,
-                              ),
+                              child: SvgPicture.asset(_icons[index],
+                                  color: context.isDark
+                                      ? const Color(0xff6D7379)
+                                      : null),
                             ),
                           ),
                           SizedBox(height: 5.h),
-                          Text(_names[index])
+                          Text(_names[index].tr(), textAlign: TextAlign.center)
                         ],
                       ),
                     );
                   }),
             ),
           ),
-          const Spacer(flex: 7),
+          const Spacer(flex: 6)
         ],
       ),
     );

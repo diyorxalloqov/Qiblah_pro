@@ -1,5 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/namoz/bloc/bloc/namoz_bloc.dart';
+import 'package:qiblah_pro/modules/namoz/bloc/namoz_bloc.dart';
 
 class NamozPage extends StatefulWidget {
   const NamozPage({super.key});
@@ -144,8 +144,9 @@ class _NamozPageState extends State<NamozPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: () =>
-                                Navigator.pushNamed(context, 'mistakes', arguments: state.namozModel[3].categoryItems),
+                            onTap: () => Navigator.pushNamed(
+                                context, 'mistakes',
+                                arguments: state.namozModel[3].categoryItems),
                             child: Container(
                               height: 141.h,
                               width: 170.w,
@@ -175,8 +176,9 @@ class _NamozPageState extends State<NamozPage> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () =>
-                                Navigator.pushNamed(context, 'qoshimchalar', arguments: state.namozModel[4].categoryItems),
+                            onTap: () => Navigator.pushNamed(
+                                context, 'qoshimchalar',
+                                arguments: state.namozModel[4].categoryItems),
                             child: Container(
                               height: 141.h,
                               width: 170.w,
@@ -208,8 +210,9 @@ class _NamozPageState extends State<NamozPage> {
                         ],
                       ),
                       GestureDetector(
-                        onTap: () =>
-                            Navigator.pushNamed(context, 'jamoatNamozi', arguments: state.namozModel[5].categoryItems),
+                        onTap: () => Navigator.pushNamed(
+                            context, 'jamoatNamozi',
+                            arguments: state.namozModel[5].categoryItems),
                         child: Container(
                           height: 141.h,
                           width: 170.w,
