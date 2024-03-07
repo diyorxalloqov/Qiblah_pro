@@ -266,7 +266,8 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: EdgeInsets.only(left: 18.w),
+                            padding: EdgeInsets.only(
+                                left: index == 4 ? 10.w : 20.w, right: 5.w),
                             child: InkWell(
                               onTap: () => Navigator.pushNamed(
                                   context, _itemPages[index]),
@@ -285,6 +286,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Center(
                                       child: SvgPicture.asset(_icons[index],
+                                          width: 40,
                                           color: context.isDark
                                               ? const Color(0xff6D7379)
                                               : null),

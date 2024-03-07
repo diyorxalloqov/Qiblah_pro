@@ -10,8 +10,33 @@ class NamesDetailsPage extends StatefulWidget {
   State<NamesDetailsPage> createState() => _NamesDetailsPageState();
 }
 
-class _NamesDetailsPageState extends State<NamesDetailsPage>
-    with WidgetsBindingObserver {
+class _NamesDetailsPageState extends State<NamesDetailsPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: customAppbar(context, 'ficha_99_names'.tr()),
+        body: ListView.builder(
+            itemCount:
+                widget.namesDetailsArgument.namesBloc.state.namesModel.length,
+            itemBuilder: (context, index) {
+              return SS(
+                  index: index,
+                  namesDetailsArgument: widget.namesDetailsArgument);
+            }));
+  }
+}
+
+class SS extends StatefulWidget {
+  final NamesDetailsArgument namesDetailsArgument;
+  final int index;
+  const SS(
+      {super.key, required this.index, required this.namesDetailsArgument});
+
+  @override
+  State<SS> createState() => _SSState();
+}
+
+class _SSState extends State<SS> with WidgetsBindingObserver {
   final AudioPlayer player = AudioPlayer();
   String error = '';
   String exeption = '';
@@ -33,9 +58,9 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
     }
   }
 
-  Future<void> _init() async {
-    final String url = widget.namesDetailsArgument.namesBloc.state
-        .namesModel[widget.namesDetailsArgument.index].nameAudioLink
+  Future<void> _init(int index) async {
+    final String url = widget
+        .namesDetailsArgument.namesBloc.state.namesModel[index].nameAudioLink
         .toString();
     final String localFilePath = await _getLocalFilePath();
     final bool fileExists = await File(localFilePath).exists();
@@ -73,160 +98,178 @@ class _NamesDetailsPageState extends State<NamesDetailsPage>
 
   Future<String> _getLocalFilePath() async {
     final directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/audio_${widget.namesDetailsArgument.index}.mp3';
+    return '${directory.path}/audio_${widget.index}.mp3';
   }
 
   @override
   Widget build(BuildContext context) {
-    NamesBloc bloc = widget.namesDetailsArgument.namesBloc;
-    NamesData data = bloc.state.namesModel[widget.namesDetailsArgument.index];
-    return Scaffold(
-        appBar: customAppbar(context, 'name'.tr()),
-        body: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(12.0),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-              decoration: BoxDecoration(
-                  color: context.isDark ? containerBlackColor : containerColor,
-                  borderRadius: BorderRadius.circular(12.r)),
-              child: Column(
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+          decoration: BoxDecoration(
+              color: context.isDark ? containerBlackColor : containerColor,
+              borderRadius: BorderRadius.circular(12.r)),
+          child: Column(
+            children: [
+              const SpaceHeight(),
+              Text(
+                widget.namesDetailsArgument.namesBloc.state
+                    .namesModel[widget.index].nameArabic
+                    .toString(),
+                style: TextStyle(
+                    fontFamily: AppfontFamily.inter.fontFamily,
+                    fontSize: AppSizes.size_24,
+                    fontWeight: AppFontWeight.w_500),
+              ),
+              const SpaceHeight(),
+              Text(
+                widget.namesDetailsArgument.namesBloc.state
+                    .namesModel[widget.index].title
+                    .toString(),
+                style: TextStyle(
+                    fontFamily: AppfontFamily.inter.fontFamily,
+                    fontSize: AppSizes.size_16,
+                    fontWeight: AppFontWeight.w_500),
+              ),
+              const SpaceHeight(),
+              SmallText(
+                  text: widget.namesDetailsArgument.namesBloc.state
+                      .namesModel[widget.index].translation
+                      .toString()),
+              const SpaceHeight(),
+              Text(
+                widget.namesDetailsArgument.namesBloc.state
+                    .namesModel[widget.index].description
+                    .toString(),
+                style: TextStyle(
+                  fontSize: AppSizes.size_14,
+                  color: smallTextColor,
+                  fontFamily: AppfontFamily.inter.fontFamily,
+                  fontWeight: AppFontWeight.w_500,
+                ),
+              ),
+              const SpaceHeight(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SpaceHeight(),
-                  HighText(text: data.nameArabic.toString()),
-                  const SpaceHeight(),
-                  MediumText(text: data.title.toString()),
-                  const SpaceHeight(),
-                  SmallText(text: data.translation.toString()),
-                  const SpaceHeight(),
-                  Text(
-                    data.description.toString(),
-                    style: TextStyle(
-                      fontSize: AppSizes.size_14,
-                      color: smallTextColor,
-                      fontFamily: AppfontFamily.inter.fontFamily,
-                      fontWeight: AppFontWeight.w_500,
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, 'tasbehNamePage',
+                          arguments: NamesDetailsArgument(
+                              namesBloc: widget.namesDetailsArgument.namesBloc,
+                              index: widget.index));
+                    },
+                    radius: 25.r,
+                    child: CircleAvatar(
+                      radius: 25.r,
+                      backgroundColor: context.isDark
+                          ? circleAvatarBlackColor
+                          : circleAvatarColor,
+                      child: Center(
+                        child: SvgPicture.asset(AppIcon.tasbeh,
+                            color: context.isDark ? Colors.white : null),
+                      ),
                     ),
                   ),
-                  const SpaceHeight(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, 'tasbehNamePage',
-                              arguments: widget.namesDetailsArgument);
-                        },
-                        radius: 25.r,
-                        child: CircleAvatar(
-                          radius: 25.r,
-                          backgroundColor: context.isDark
-                              ? circleAvatarBlackColor
-                              : circleAvatarColor,
-                          child: Center(
-                            child: SvgPicture.asset(AppIcon.tasbeh,
-                                color: context.isDark ? Colors.white : null),
-                          ),
-                        ),
+                  SpaceWidth(width: 18.w),
+                  InkWell(
+                    onTap: () {
+                      FlutterShare.share(title: 'title');
+                    },
+                    radius: 25.r,
+                    child: CircleAvatar(
+                      radius: 25.r,
+                      backgroundColor: context.isDark
+                          ? circleAvatarBlackColor
+                          : circleAvatarColor,
+                      child: Center(
+                        child: SvgPicture.asset(AppIcon.share,
+                            color: context.isDark ? Colors.white : null),
                       ),
-                      SpaceWidth(width: 18.w),
-                      InkWell(
-                        onTap: () {
-                          FlutterShare.share(title: 'title');
-                        },
-                        radius: 25.r,
-                        child: CircleAvatar(
-                          radius: 25.r,
-                          backgroundColor: context.isDark
-                              ? circleAvatarBlackColor
-                              : circleAvatarColor,
-                          child: Center(
-                            child: SvgPicture.asset(AppIcon.share,
-                                color: context.isDark ? Colors.white : null),
-                          ),
-                        ),
-                      ),
-                      SpaceWidth(width: 18.w),
-                      StreamBuilder(
-                        stream: player.playerStateStream,
-                        builder: (context, snapshot) {
-                          final playerState = snapshot.data;
-                          final processingState = playerState?.processingState;
-                          final playing = playerState?.playing;
-                          print('Processing State: $processingState');
-                          print('Is Playing: $playing');
-                          if (processingState == ProcessingState.loading ||
-                              processingState == ProcessingState.buffering ||
-                              isDownloading) {
-                            return CircleAvatar(
-                              radius: 25.r,
-                              backgroundColor: primaryColor,
-                              child: const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            );
-                          } else if (playing != true || error.isNotEmpty) {
-                            return PlayerIcon(
-                              backColor: primaryColor,
-                              icon: SvgPicture.asset(AppIcon.play),
-                              onTap: () async {
-                                if (error.isNotEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(error)));
-                                  await _init();
-                                  Connectivity()
-                                      .onConnectivityChanged
-                                      .listen((ConnectivityResult result) {
-                                    if (result != ConnectivityResult.none) {
-                                      print('connectivity result');
-                                      setState(() {
-                                        error = '';
-                                        player.stop();
-                                      });
-                                    }
-                                  });
-                                } else {
-                                  await _init();
-                                  await player.play();
-                                }
-                              },
-                            );
-                          } else if (processingState == ProcessingState.ready ||
-                              processingState != ProcessingState.completed) {
-                            return PlayerIcon(
-                              backColor: primaryColor.withOpacity(0.2),
-                              icon: SvgPicture.asset(AppIcon.pause),
-                              onTap: () async {
-                                player.pause();
-                                if (error.isNotEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(error)),
-                                  );
-                                }
-                              },
-                            );
-                          } else {
-                            return PlayerIcon(
-                              backColor: primaryColor,
-                              icon:
-                                  const Icon(Icons.replay, color: Colors.white),
-                              onTap: () {
-                                if (error.isEmpty) {
-                                  player.seek(Duration.zero);
-                                }
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                  const SpaceHeight()
+                  SpaceWidth(width: 18.w),
+                  StreamBuilder(
+                    stream: player.playerStateStream,
+                    builder: (context, snapshot) {
+                      final playerState = snapshot.data;
+                      final processingState = playerState?.processingState;
+                      final playing = playerState?.playing;
+                      print('Processing State: $processingState');
+                      print('Is Playing: $playing');
+                      if (processingState == ProcessingState.loading ||
+                          processingState == ProcessingState.buffering ||
+                          isDownloading) {
+                        return CircleAvatar(
+                          radius: 25.r,
+                          backgroundColor: primaryColor,
+                          child: const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        );
+                      } else if (playing != true || error.isNotEmpty) {
+                        return PlayerIcon(
+                          backColor: primaryColor,
+                          icon: SvgPicture.asset(AppIcon.play),
+                          onTap: () async {
+                            if (error.isNotEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(content: Text(error)));
+                              await _init(widget.index);
+                              Connectivity()
+                                  .onConnectivityChanged
+                                  .listen((ConnectivityResult result) {
+                                if (result != ConnectivityResult.none) {
+                                  print('connectivity result');
+                                  setState(() {
+                                    error = '';
+                                    player.stop();
+                                  });
+                                }
+                              });
+                            } else {
+                              await _init(widget.index);
+                              await player.play();
+                            }
+                          },
+                        );
+                      } else if (processingState == ProcessingState.ready ||
+                          processingState != ProcessingState.completed) {
+                        return PlayerIcon(
+                          backColor: primaryColor.withOpacity(0.2),
+                          icon: SvgPicture.asset(AppIcon.pause),
+                          onTap: () async {
+                            player.pause();
+                            if (error.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(error)),
+                              );
+                            }
+                          },
+                        );
+                      } else {
+                        return PlayerIcon(
+                          backColor: primaryColor,
+                          icon: const Icon(Icons.replay, color: Colors.white),
+                          onTap: () {
+                            if (error.isEmpty) {
+                              player.seek(Duration.zero);
+                            }
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ],
               ),
-            ),
-          ],
-        ));
+              const SpaceHeight()
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

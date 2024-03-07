@@ -24,7 +24,8 @@ class AuthService {
       "user_token": userData.userToken,
       "user_app_version": userData.userAppVersion,
       "notification_id": userData.notificationId,
-      "notification": userData.notification
+      "notification": userData.notification,
+      "location_status": userData.locationStatus,
     };
     print(data);
     try {
@@ -63,7 +64,8 @@ class AuthService {
       "user_token": userData.userToken,
       "user_app_version": userData.userAppVersion,
       "notification_id": userData.notificationId,
-      "notification": userData.notification
+      "notification": userData.notification,
+      "location_status": userData.locationStatus
     };
     print(data);
     try {
@@ -87,8 +89,10 @@ class AuthService {
     }
   }
 
-  Future<Either<String, AuthModel>> login( // login tekshirish kerak
-      UserData userData, String token) async {
+  Future<Either<String, AuthModel>> login(
+      // login tekshirish kerak
+      UserData userData,
+      String token) async {
     Map<String, Object?> data = {
       "user_phone_number": userData.userPhoneNumber,
       "user_password": userData.userPassword,

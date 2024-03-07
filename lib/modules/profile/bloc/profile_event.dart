@@ -59,3 +59,24 @@ class LogoutEvent extends ProfileEvent {
   // TODO: implement props
   List<Object> get props => [];
 }
+
+class ChangePremiumEvent extends ProfileEvent {
+  final bool isPremium;
+  const ChangePremiumEvent({required this.isPremium});
+  @override
+  // TODO: implement props
+  List<Object> get props => [isPremium];
+}
+
+class ChangeAppLangEvent extends ProfileEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class ChangeLocationEvent extends ProfileEvent {
+  const ChangeLocationEvent();
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}

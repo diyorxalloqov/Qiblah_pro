@@ -1,8 +1,8 @@
 [
   {
-    "category_name": "Namoz o'qishni o'rganish",
+    "category_name": "Namoz o’qishni o’rganish",
     "gender": "erkak",
-    "description": "Namoz o'qishni o'rganing",
+    "description": "Erkaklar uchun batafsil besh mahal namoz",
     "title_color": "#615745",
     "description_color": "#9B9384",
     "image": "image.png",
@@ -746,7 +746,7 @@
   {
     "category_name": "Namoz o'qishni o'rganish",
     "gender": "ayol",
-    "description": "Lorem ipsum dolorset",
+    "description": "Ayollar uchun batafsil besh mahal namoz",
     "title_color": "#615745",
     "description_color": "#9B9384",
     "image": "image.png",
@@ -765,7 +765,7 @@
           },
           {
             "content_Path": "ayollarga_xos_2.html",
-            "name": "Ayollar sochralini yig'ishi haqida"
+            "name": "Ayollar sochlarini yig'ishi haqida"
           }
         ]
       },
@@ -1461,7 +1461,7 @@
   },
   {
     "category_name": "Tahorat olishni o'rganish",
-    "description": "Tahorat olishni o'rganing",
+    "description": "Barcha uchun batafsil poklanish ilmlari",
     "title_color": "#000000",
     "description_color": "#000000",
     "image": "image.png",

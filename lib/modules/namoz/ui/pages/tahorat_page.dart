@@ -23,7 +23,7 @@ class LearnTahorat extends StatelessWidget {
           children: List.generate(
               5,
               (index) => NamozCardWidget(
-                    icon: AppIcon.tahoratIcon,
+                    icon: SvgPicture.asset(AppIcon.tahoratIcon),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

@@ -42,15 +42,15 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
       value: geolocationCubit,
       child: Scaffold(
           body: BlocBuilder<GeolocationCubit, GeolocationState>(
-            bloc: geolocationCubit,
-            builder: (context, state) {
-              return findAprWidgetByLocationInfo(geolocationCubit);
-            },
-          )),
+        bloc: geolocationCubit,
+        builder: (context, state) {
+          return findAprWidgetByLocationInfo(geolocationCubit);
+        },
+      )),
     );
   }
 
- Widget findAprWidgetByLocationInfo(GeolocationCubit cubit) {
+  Widget findAprWidgetByLocationInfo(GeolocationCubit cubit) {
     switch (cubit.locationInfo.locationStatus) {
       case LocationStatusEnum.failed:
         return failedCase(cubit);
@@ -82,6 +82,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
       if (data != null) {
         // Data is available, process it
         print("$data snapshot data is");
+        StorageRepository.putString(Keys.locationStatus, '1');
         cubit.saveLocationChoice(data);
       }
     }).catchError((error) {

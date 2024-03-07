@@ -72,6 +72,7 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
                             ),
                             child: Center(
                               child: SvgPicture.asset(_icons[index],
+                                  width: 40,
                                   color: context.isDark
                                       ? const Color(0xff6D7379)
                                       : null),

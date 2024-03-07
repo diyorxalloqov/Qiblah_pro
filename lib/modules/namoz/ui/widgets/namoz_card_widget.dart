@@ -1,7 +1,7 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class NamozCardWidget extends StatelessWidget {
-  final String icon;
+  final Widget icon;
   final String title;
   final VoidCallback onTap;
   const NamozCardWidget(
@@ -20,7 +20,7 @@ class NamozCardWidget extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: onTap,
-        leading: SvgPicture.asset(icon),
+        leading: icon,
         title: Text(
           title,
           style: const TextStyle(

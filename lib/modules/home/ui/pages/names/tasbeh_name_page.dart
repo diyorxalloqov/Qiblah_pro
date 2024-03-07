@@ -113,7 +113,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                   )),
               centerTitle: true,
               title: Text(
-                'zikr'.tr(),
+                'ficha_zikr'.tr(),
                 style: TextStyle(
                     fontFamily: AppfontFamily.comforta.fontFamily,
                     fontWeight: AppFontWeight.w_700,
@@ -178,9 +178,21 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                   child: Column(
                     children: [
                       const SpaceHeight(),
-                      HighText(text: data.nameArabic.toString()),
+                      Text(
+                        data.nameArabic.toString(),
+                        style: TextStyle(
+                            fontFamily: AppfontFamily.inter.fontFamily,
+                            fontSize: AppSizes.size_24,
+                            fontWeight: AppFontWeight.w_500),
+                      ),
                       const SpaceHeight(),
-                      MediumText(text: data.title.toString()),
+                      Text(
+                        data.title.toString(),
+                        style: TextStyle(
+                            fontFamily: AppfontFamily.inter.fontFamily,
+                            fontSize: AppSizes.size_16,
+                            fontWeight: AppFontWeight.w_500),
+                      ),
                       const SpaceHeight(),
                       SmallText(text: data.translation.toString()),
                       const SpaceHeight(),

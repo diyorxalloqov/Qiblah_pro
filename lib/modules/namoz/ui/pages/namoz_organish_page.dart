@@ -10,7 +10,9 @@ class LearnNamoz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> _titles = [
-      'azon'.tr(),
+      StorageRepository.getBool(Keys.isMan)
+          ? 'azon'.tr()
+          : 'ayollar_ficha'.tr(),
       'bomdod'.tr(),
       '${'peshin'.tr()} ${'namozi'.tr()}',
       '${'asr'.tr()} ${'namozi'.tr()}',
@@ -35,7 +37,11 @@ class LearnNamoz extends StatelessWidget {
           children: List.generate(
               categoryItem.length,
               (index) => NamozCardWidget(
-                    icon: _icon[index],
+                    icon: !StorageRepository.getBool(Keys.isMan)
+                        ? index == 0
+                            ? Image.asset(AppImages.qoshimchalar, width: 30)
+                            : SvgPicture.asset(_icon[index])
+                        : SvgPicture.asset(_icon[index]),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

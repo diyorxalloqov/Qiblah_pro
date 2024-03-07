@@ -130,7 +130,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                     return Column(
                                       children: [
                                         InkWell(
-                                          onTap: () {
+                                          onTap: () async {
                                             context
                                                 .read<GeolocationCubit>()
                                                 .saveLocationChoice(placemark);
@@ -144,6 +144,8 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                             setState(() {});
                                             Navigator.pop(context);
                                             _controller.clear();
+                                            await StorageRepository.putString(
+                                                Keys.locationStatus, '2');
                                           },
                                           child: Row(
                                             children: [

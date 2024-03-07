@@ -92,7 +92,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         const SpaceHeight(),
                                         Text(
-                                          'royxatdan_otish_promt'.tr(),
+                                          StorageRepository.getBool(
+                                                  Keys.isTemporaryUser)
+                                              ? 'royxatdan_otish_promt'.tr()
+                                              : "",
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 3,
                                           textAlign: TextAlign.center,
@@ -125,7 +128,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         BorderRadius.circular(
                                                             12.r))),
                                             child: Text(
-                                              "royxatdan_otish".tr(),
+                                              StorageRepository.getBool(
+                                                      Keys.isTemporaryUser)
+                                                  ? "royxatdan_otish".tr()
+                                                  : 'tahrirlash'.tr(),
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: AppSizes.size_14,
@@ -352,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               SettingsItemWidget(
                                   onTap: () => showModalBottomSheet(
                                       context: context,
-                                      isDismissible: false,
+                                      isDismissible: true,
                                       isScrollControlled: true,
                                       builder: (c) => Column(
                                             mainAxisSize: MainAxisSize.min,

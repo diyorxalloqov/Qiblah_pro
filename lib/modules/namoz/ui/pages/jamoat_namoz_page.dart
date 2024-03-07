@@ -22,7 +22,7 @@ class JamoatNamozi extends StatelessWidget {
           children: List.generate(
               4,
               (index) => NamozCardWidget(
-                    icon: AppIcon.apple,
+                    icon: Image.asset(AppImages.jamoat,width: 30),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

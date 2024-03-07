@@ -7,8 +7,6 @@ class AppImages {
   static const String tahorat = 'assets/images/tahorat.png';
   static const String jamoat = 'assets/images/jamoat.png';
   static const String mistake = 'assets/images/mistake.png';
-  static const String book = 'assets/images/book.png';
-  static const String gradient = 'assets/images/gradient.png';
   static const String taqvim_back = 'assets/images/taqvim_back.png';
   static const String allohdan_sorash = 'assets/images/allohdan_sorash.png';
   static const String asmaul_husna = 'assets/images/asmaul_husna.png';
@@ -17,7 +15,5 @@ class AppImages {
   static const String tanlangan_zkir = 'assets/images/tanlangan_zikrlar.png';
   static const String tungi_zikr = 'assets/images/tungi_zikrlar.png';
   static const String qibla_direction = 'assets/images/qibla_direction.png';
-  static const String qoshimchalar ='assets/images/qoshimchalar.png';
-
-
+  static const String qoshimchalar = 'assets/images/qoshimchalar.png';
 }

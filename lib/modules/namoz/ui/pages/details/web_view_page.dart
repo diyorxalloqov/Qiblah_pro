@@ -246,7 +246,6 @@ class _WebViewScreenWidgetState extends State<WebViewScreenWidget> {
         body: PageView.builder(
           controller: _pageController,
           itemCount: widget.items.length,
-          scrollDirection: Axis.horizontal,
           onPageChanged: (value) async {
             setState(() {
               _currentWebView = WebViewWidget(

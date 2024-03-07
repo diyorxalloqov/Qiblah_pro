@@ -26,7 +26,7 @@ class _NamesPageState extends State<NamesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppbar(context, 'names'.tr()),
+      appBar: customAppbar(context, 'ficha_99_names'.tr()),
       body: BlocProvider.value(
         value: namesBloc,
         child: BlocBuilder<NamesBloc, NamesState>(

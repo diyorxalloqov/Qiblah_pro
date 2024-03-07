@@ -25,7 +25,7 @@ class Mistakes extends StatelessWidget {
           children: List.generate(
               8,
               (index) => NamozCardWidget(
-                    icon: AppIcon.xatolik_icon,
+                    icon: SvgPicture.asset(AppIcon.xatolik_icon),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(

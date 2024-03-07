@@ -52,35 +52,36 @@ class Data {
   String? userNotificationId;
   bool? userNotification;
   String? userCreateAt;
+  int? locationStatus;
 
-  Data({
-    this.userId,
-    this.userPhoneNumber,
-    this.userEmail,
-    this.userPassword,
-    this.userName,
-    this.userGender,
-    this.userSigninMethod,
-    this.userExtraAuthId,
-    this.userCountryCode,
-    this.userRegion,
-    this.userLocation,
-    this.userAppLang,
-    this.userPhoneModel,
-    this.userPhoneLang,
-    this.userOs,
-    this.userOsVersion,
-    this.userToken,
-    this.userComment,
-    this.userPremium,
-    this.userPremiumExpiresAt,
-    this.userImageLink,
-    this.userImageName,
-    this.userAppVersion,
-    this.userNotificationId,
-    this.userNotification,
-    this.userCreateAt,
-  });
+  Data(
+      {this.userId,
+      this.userPhoneNumber,
+      this.userEmail,
+      this.userPassword,
+      this.userName,
+      this.userGender,
+      this.userSigninMethod,
+      this.userExtraAuthId,
+      this.userCountryCode,
+      this.userRegion,
+      this.userLocation,
+      this.userAppLang,
+      this.userPhoneModel,
+      this.userPhoneLang,
+      this.userOs,
+      this.userOsVersion,
+      this.userToken,
+      this.userComment,
+      this.userPremium,
+      this.userPremiumExpiresAt,
+      this.userImageLink,
+      this.userImageName,
+      this.userAppVersion,
+      this.userNotificationId,
+      this.userNotification,
+      this.userCreateAt,
+      this.locationStatus});
 
   Data.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -118,6 +119,7 @@ class Data {
     userNotificationId = json['user_notification_id'];
     userNotification = json['user_notification'];
     userCreateAt = json['user_create_at'];
+    locationStatus = json['location_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +129,7 @@ class Data {
     data['user_email'] = userEmail;
     data['user_password'] = userPassword;
     data['user_name'] = userName;
+    data['location_status'] = locationStatus;
     data['user_gender'] = userGender;
     data['user_signin_method'] = userSigninMethod;
     data['user_extra_auth_id'] = userExtraAuthId;
@@ -172,6 +175,7 @@ class UserData {
   final String? userToken;
   final String? userAppVersion;
   final String? notificationId;
+  final int? locationStatus;
   final bool? notification;
 
   UserData({
@@ -183,6 +187,7 @@ class UserData {
     this.userSigninMethod,
     this.userExtraAuthId,
     this.userCountryCode,
+    this.locationStatus,
     this.userRegion,
     this.userLatitude,
     this.userLongitude,

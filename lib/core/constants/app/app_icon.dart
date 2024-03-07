@@ -51,7 +51,7 @@ class AppIcon {
   static const String check = 'assets/icons/check.svg';
   static const String search = 'assets/icons/search.svg';
   static const String filter = 'assets/icons/filter.svg';
-  static const String quron = 'assets/icons/quran.svg';
+  static const String quron = 'assets/icons/quron.svg';
   static const String tasbeh = 'assets/icons/tasbeh.svg';
   static const String vibration = 'assets/icons/vibration.svg';
   static const String refresh = 'assets/icons/refresh.svg';
@@ -62,7 +62,6 @@ class AppIcon {
   static const String timeChanger = 'assets/icons/time_changer.svg';
   static const String tahoratIcon = 'assets/icons/tahorat.svg';
   static const String xatolik_icon = 'assets/icons/xatolik_icon.svg';
-  static const String qoshimchalar = 'assets/icons/qoshimchalar.svg';
 
 
 

@@ -60,6 +60,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             : iosInfo?.systemVersion,
         userPhoneModel:
             Platform.isAndroid ? androidInfo?.model : iosInfo?.model,
+        locationStatus: StorageRepository.getString(Keys.locationStatus) == '1'
+            ? 1
+            : StorageRepository.getString(Keys.locationStatus) == '2'
+                ? 2
+                : 3,
         userPhoneLang: Platform.localeName ?? 'UZ'));
     res.fold(
         (l) => emit(state.copyWith(status: ActionStatus.isError, error: l)),
@@ -87,26 +92,34 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else if (Platform.isIOS) {
       iosInfo = await deviceInfo.iosInfo;
     }
-    Either<String, AuthModel> res =
-        await _authService.registerTemporary(UserData(
-      userLatitude: StorageRepository.getDouble(Keys.latitude).toString(),
-      userLongitude: StorageRepository.getDouble(Keys.longitude).toString(),
-      notification: StorageRepository.getBool(Keys.notification),
-      notificationId: '0', //left
-      userName: StorageRepository.getString(Keys.name),
-      userGender: StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
-      userAppLang: StorageRepository.getString(Keys.lang),
-      userCountryCode: event.countryCode,
-      userRegion: StorageRepository.getString(Keys.region),
-      userToken: id,
-      userOs: Platform.isAndroid ? 'Android' : 'Ios',
-      userAppVersion: packageInfo.version.replaceAll('.0', ''),
-      userOsVersion: Platform.isAndroid
-          ? androidInfo?.version.release
-          : iosInfo?.systemVersion,
-      userPhoneModel: Platform.isAndroid ? androidInfo?.model : iosInfo?.model,
-      userPhoneLang: Platform.localeName ?? 'UZ',
-    ));
+    Either<String, AuthModel> res = await _authService.registerTemporary(
+        UserData(
+            userLatitude: StorageRepository.getDouble(Keys.latitude).toString(),
+            userLongitude:
+                StorageRepository.getDouble(Keys.longitude).toString(),
+            notification: StorageRepository.getBool(Keys.notification),
+            notificationId: '0', //left
+            userName: StorageRepository.getString(Keys.name),
+            userGender:
+                StorageRepository.getBool(Keys.isMan) ? 'Erkak' : 'Ayol',
+            userAppLang: StorageRepository.getString(Keys.lang),
+            userCountryCode: event.countryCode,
+            userRegion: StorageRepository.getString(Keys.region),
+            userToken: id,
+            userOs: Platform.isAndroid ? 'Android' : 'Ios',
+            userAppVersion: packageInfo.version.replaceAll('.0', ''),
+            userOsVersion: Platform.isAndroid
+                ? androidInfo?.version.release
+                : iosInfo?.systemVersion,
+            userPhoneModel:
+                Platform.isAndroid ? androidInfo?.model : iosInfo?.model,
+            userPhoneLang: Platform.localeName ?? 'UZ',
+            locationStatus:
+                StorageRepository.getString(Keys.locationStatus) == '1'
+                    ? 1
+                    : StorageRepository.getString(Keys.locationStatus) == '2'
+                        ? 2
+                        : 3));
     res.fold(
         (l) => emit(state.copyWith(status1: ActionStatus.isError, error: l)),
         (r) async {

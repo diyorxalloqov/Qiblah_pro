@@ -11,7 +11,7 @@ class LoadingPage extends StatelessWidget {
         children: [
           Column(
             children: [
-              Image.asset(AppImages.book),
+              Image.asset(AppImages.qoshimchalar,width: 100),
               const SpaceHeight(),
               Text(
                 "loading_prop".tr(),

@@ -16,6 +16,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<DeleteAccauntEvent>(_deleteAccaunt);
     on<LogoutEvent>(_loggout);
     on<GetUserdataForEdit>(_getUserdataForEdit);
+    on<ChangePremiumEvent>(_changePremium);
+    on<ChangeAppLangEvent>(_changeLang);
+    on<ChangeLocationEvent>(_changeLocation);
   }
 
   final ProfileService _profileService = ProfileService();
@@ -42,8 +45,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  FutureOr<void> _getUserdataForEdit( // if image get showing profile and restart not showing //
-      GetUserdataForEdit event, Emitter<ProfileState> emit) {
+  FutureOr<void> _getUserdataForEdit(
+      // if image get showing profile and restart not showing //
+      GetUserdataForEdit event,
+      Emitter<ProfileState> emit) {
     emit(state.copyWith(
         imagePath: state.imagePath,
         userData: UserData(
@@ -99,11 +104,35 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<FutureOr<void>> _deleteAccaunt(
       DeleteAccauntEvent event, Emitter<ProfileState> emit) async {
     await StorageRepository.deleteString(Keys.token);
+    await StorageRepository.deleteBool(Keys.isOnboarding);
+    await StorageRepository.deleteString(Keys.phone);
+    await StorageRepository.deleteString(Keys.image);
+    await StorageRepository.deleteString(Keys.locationStatus);
+    await StorageRepository.deleteString(Keys.userId);
+    await StorageRepository.deleteString(Keys.password);
     await _profileService.deleteUser();
   }
 
   Future<FutureOr<void>> _loggout(
       LogoutEvent event, Emitter<ProfileState> emit) async {
     await StorageRepository.deleteString(Keys.token);
+    await StorageRepository.deleteString(Keys.phone);
+  }
+
+  Future<FutureOr<void>> _changePremium(
+      ChangePremiumEvent event, Emitter<ProfileState> emit) async {
+    await _profileService.changePremium(event.isPremium);
+  }
+
+  Future<FutureOr<void>> _changeLang(
+      ChangeAppLangEvent event, Emitter<ProfileState> emit) async {
+    await _profileService.changeAppLang();
+  }
+
+  Future<FutureOr<void>> _changeLocation(
+      ChangeLocationEvent event, Emitter<ProfileState> emit) async {
+    await _profileService
+        .changeLocation(UserData(userCountryCode: 'uz' // not correct
+            ));
   }
 }

@@ -27,7 +27,7 @@ class Qoshimchalar extends StatelessWidget {
           children: List.generate(
               8,
               (index) => NamozCardWidget(
-                    icon: AppIcon.qoshimchalar,
+                    icon: Image.asset(AppImages.qoshimchalar,width: 30),
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
