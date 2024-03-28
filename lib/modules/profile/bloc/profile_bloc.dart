@@ -117,6 +117,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       LogoutEvent event, Emitter<ProfileState> emit) async {
     await StorageRepository.deleteString(Keys.token);
     await StorageRepository.deleteString(Keys.phone);
+    await StorageRepository.deleteString(Keys.image);
+    await StorageRepository.deleteString(Keys.userId);
+    await StorageRepository.deleteString(Keys.password);
   }
 
   Future<FutureOr<void>> _changePremium(
@@ -126,7 +129,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<FutureOr<void>> _changeLang(
       ChangeAppLangEvent event, Emitter<ProfileState> emit) async {
-    await _profileService.changeAppLang();
+    await _profileService.changeAppLang(event.lang);
   }
 
   Future<FutureOr<void>> _changeLocation(

@@ -27,6 +27,7 @@ class SettingsItemWidget extends StatelessWidget {
         style: TextStyle(
           color: context.isDark ? Colors.white : Colors.black,
           fontSize: AppSizes.size_16,
+          fontFamily: AppfontFamily.inter.fontFamily,
           fontWeight: AppFontWeight.w_500,
         ),
       ),

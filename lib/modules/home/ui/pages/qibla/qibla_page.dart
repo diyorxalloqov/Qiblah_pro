@@ -18,7 +18,7 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   @override
   void initState() {
     qiblaCubit = QiblaCubit();
-    geolocationCubit = GeolocationCubit();
+    geolocationCubit = context.read<GeolocationCubit>();
     super.initState();
     geolocationCubit.requirePreciseLocation = false;
     WidgetsBinding.instance.addObserver(this);
@@ -42,40 +42,45 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: qiblaCubit,
-      child: Scaffold(
-          appBar: customAppbar(context, 'ficha_qibla'.tr()),
-          body: Column(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: context.height * 0.4,
-                  child: const SmallGoogleMap(),
-                ),
-              ),
-              SpaceHeight(height: context.height * 0.05),
-              Expanded(
-                child: BlocBuilder<GeolocationCubit, GeolocationState>(
-                  bloc: geolocationCubit,
-                  builder: (context, state) {
-                    return findAprWidgetByLocationInfo(geolocationCubit);
-                  },
-                ),
-              ),
-            ],
-          )),
+      child: BlocBuilder<QiblaCubit, QiblaState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: customAppbar(context, 'ficha_qibla'.tr()),
+              body: Column(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: context.height * 0.4,
+                      child: const SmallGoogleMap(),
+                    ),
+                  ),
+                  SpaceHeight(height: context.height * 0.05),
+                  Expanded(
+                    child: BlocBuilder<GeolocationCubit, GeolocationState>(
+                      bloc: geolocationCubit,
+                      builder: (context, state) {
+                        return findAprWidgetByLocationInfo(
+                            state, geolocationCubit);
+                      },
+                    ),
+                  ),
+                ],
+              ));
+        },
+      ),
     );
   }
 
-  findAprWidgetByLocationInfo(GeolocationCubit cubit) {
-    print(cubit.locationInfo.locationStatus);
-    switch (cubit.locationInfo.locationStatus) {
+  findAprWidgetByLocationInfo(GeolocationState state, GeolocationCubit cubit) {
+    print(state.locationStatusEnum);
+    switch (state.locationStatusEnum) {
       case LocationStatusEnum.failed:
         return failedCase(cubit);
       case LocationStatusEnum.notRequested:
         cubit.determineLocation();
         return notRequested(cubit);
       case LocationStatusEnum.waiting:
-        return waitingForLocation(cubit.locationInfo);
+        return waitingForLocation();
       case LocationStatusEnum.denied:
         return noPermission(cubit);
       case LocationStatusEnum.deniedForever:
@@ -90,18 +95,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   }
 
   Widget determinedLocation(GeolocationCubit cubit) {
-    cubit.addAddressInfo(cubit.locationInfo.position).then((data) {
-      print('$data snapshot data');
-
-      if (data != null) {
-        // Data is available, process it
-        print("$data snapshot data is");
-        cubit.saveLocationChoice(data);
-      }
-    }).catchError((error) {
-      print('Error: $error');
-    });
-
     // Return an empty SizedBox as a placeholder
     return _buildCompass();
   }
@@ -114,19 +107,13 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
           return Text('Error reading heading: ${snapshot.error}');
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
-
         double? direction = snapshot.data!.heading;
-
         // if direction is null, then device does not support this sensor
         // show error message
         if (direction == null) {
-          return const Center(
-            child: Text("Device does not have sensors !"),
-          );
+          return const Center(child: Text("Device does not have sensors !"));
         }
 
         return Column(
@@ -140,7 +127,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                           color: Colors.white,
                           border: Border.all(
                               color: Colors.grey.withOpacity(0.5), width: 1)),
@@ -166,26 +152,23 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                     'sizning_joylashuvingiz'.tr(),
                     style: TextStyle(
                         fontSize: AppSizes.size_14,
+                        color: context.isDark ? Colors.white : Colors.black,
                         fontFamily: AppfontFamily.comforta.fontFamily,
                         fontWeight: AppFontWeight.w_700),
                   ),
                   const SizedBox(height: 4),
-                  FutureBuilder(
-                      future:
-                          context.read<GeolocationCubit>().getChosenLocation(),
-                      builder: (context, snapshot) {
-                        return Text(
-                          snapshot.data?.region.toString() ?? 'not found',
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          style: TextStyle(
-                            fontSize: AppSizes.size_12,
-                            fontFamily: AppfontFamily.inter.fontFamily,
-                            fontWeight: AppFontWeight.w_400,
-                          ),
-                        );
-                      }),
+                  Text(
+                    StorageRepository.getString(Keys.region),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: AppSizes.size_12,
+                      color: context.isDark ? Colors.white : Colors.black,
+                      fontFamily: AppfontFamily.inter.fontFamily,
+                      fontWeight: AppFontWeight.w_400,
+                    ),
+                  )
                 ],
               ),
             ),
@@ -196,72 +179,30 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
     );
   }
 
-  // Widget locationAvailable(PositionInfo positionInfo) {
-  //   return BlocBuilder<QiblaCubit, QiblaState>(
-  //     builder: (context, state) {
-  //       return Column(children: [
-  //         _buildManualReader(),
-  //         Flexible(child: _buildCompass()),
-  //       ]);
-  //     },
-  //   );
-  // }
-
-  // Widget _buildManualReader() {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(16.0),
-  //     child: Row(
-  //       children: <Widget>[
-  //         ElevatedButton(
-  //           child: Text('Read Value'),
-  //           onPressed: () async {
-  //             final CompassEvent tmp = await FlutterCompass.events!.first;
-  //             setState(() {
-  //               _lastRead = tmp;
-  //               _lastReadAt = DateTime.now();
-  //             });
-  //           },
-  //         ),
-  //         Expanded(
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: <Widget>[
-  //                 Text(
-  //                   '$_lastRead',
-  //                   style: Theme.of(context).textTheme.bodySmall,
-  //                 ),
-  //                 Text(
-  //                   '$_lastReadAt',
-  //                   style: Theme.of(context).textTheme.bodySmall,
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget notPrecise(GeolocationCubit cubit) {
     // TODO compassni asosi, bor lekin strelkalari va qutb yozuvlari yo'q tasvir ko'rsatiladi
     // Yoki strelka tinimsiz bir yo'nalishda aylanaveradi yoki bir u tomonga bir bu tomonga aylanavarib aniq
     // topolmayotganini tushuntiradi
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-            'you choose approximate location, however we need precise location'),
-        ElevatedButton(
-            onPressed: () {
-              cubit.askToIncreaseAccuracy();
-            },
-            child: const Text('Increase accuracy')),
-      ],
-    );
+    return AlertDialog.adaptive(
+        title: TextButton(
+      onPressed: () {
+        cubit.askToIncreaseAccuracy();
+      },
+      child: Text('qibla_xatolik_xatol'.tr()),
+    ));
+    // Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: [
+    //     const Text(
+    //         'you choose approximate location, however we need precise location'),
+    //     ElevatedButton(
+    //         onPressed: () {
+    //           cubit.askToIncreaseAccuracy();
+    //         },
+    //         child: const Text('Increase accuracy')),
+    //   ],
+    // );
   }
 
   Widget notRequested(GeolocationCubit cubit) {
@@ -273,8 +214,8 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
-                  color: Colors.white,
+                  color:
+                      context.isDark ? const Color(0xff232C37) : Colors.white,
                   border: Border.all(
                       color: Colors.grey.withOpacity(0.5), width: 1)),
               child: Center(
@@ -299,24 +240,21 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                 style: TextStyle(
                     fontSize: AppSizes.size_14,
                     fontFamily: AppfontFamily.comforta.fontFamily,
+                    color: context.isDark ? Colors.white : Colors.black,
                     fontWeight: AppFontWeight.w_700),
               ),
               const SizedBox(height: 4),
-              FutureBuilder(
-                  future: context.read<GeolocationCubit>().getChosenLocation(),
-                  builder: (context, snapshot) {
-                    return Text(
-                      snapshot.data?.region.toString() ?? 'not found',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: AppSizes.size_12,
-                        fontFamily: AppfontFamily.inter.fontFamily,
-                        fontWeight: AppFontWeight.w_400,
-                      ),
-                    );
-                  }),
+              Text(
+                StorageRepository.getString(Keys.region),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                style: TextStyle(
+                    fontSize: AppSizes.size_12,
+                    color: context.isDark ? Colors.white : Colors.black,
+                    fontFamily: AppfontFamily.inter.fontFamily,
+                    fontWeight: AppFontWeight.w_400),
+              )
             ],
           ),
         ),
@@ -325,11 +263,12 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
     );
   }
 
-  Widget waitingForLocation(LocationInfo locationInfo) {
+  Widget waitingForLocation() {
     // TODO alohida metod o'rniga button loading spinnerga aylanishinini ko'rsatish
     return Center(
       child: CircularProgressIndicator.adaptive(
-        valueColor: AlwaysStoppedAnimation<Color>(primaryColor.withOpacity(0.2)),
+        valueColor:
+            AlwaysStoppedAnimation<Color>(primaryColor.withOpacity(0.2)),
         strokeWidth: 13,
         strokeAlign: 2,
       ),
@@ -346,7 +285,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   color: Colors.white,
                   border: Border.all(
                       color: Colors.grey.withOpacity(0.5), width: 1)),
@@ -365,7 +303,8 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(24.r)),
+                color: context.isDark ? const Color(0xff232C37) : Colors.white,
+                borderRadius: BorderRadius.circular(24.r)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -374,11 +313,13 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                   'iltimos_gps_yoqing'.tr(),
                   style: TextStyle(
                       fontSize: AppSizes.size_14,
+                      color: context.isDark ? Colors.white : Colors.black,
                       fontFamily: AppfontFamily.comforta.fontFamily,
                       fontWeight: AppFontWeight.w_700),
                 ),
                 const SpaceWidth(),
-                SvgPicture.asset(AppIcon.arrowRight, color: Colors.black)
+                SvgPicture.asset(AppIcon.arrowRight,
+                    color: context.isDark ? Colors.white : Colors.black)
               ],
             ),
           ),
@@ -398,7 +339,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   color: Colors.white,
                   border: Border.all(
                       color: Colors.grey.withOpacity(0.5), width: 1)),
@@ -417,7 +357,8 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(24.r)),
+                color: context.isDark ? const Color(0xff232C37) : Colors.white,
+                borderRadius: BorderRadius.circular(24.r)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -426,11 +367,13 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                   'gps_ruxsat_berish'.tr(),
                   style: TextStyle(
                       fontSize: AppSizes.size_14,
+                      color: context.isDark ? Colors.white : Colors.black,
                       fontFamily: AppfontFamily.comforta.fontFamily,
                       fontWeight: AppFontWeight.w_700),
                 ),
                 const SpaceWidth(),
-                SvgPicture.asset(AppIcon.arrowRight, color: Colors.black)
+                SvgPicture.asset(AppIcon.arrowRight,
+                    color: context.isDark ? Colors.white : Colors.black)
               ],
             ),
           ),
@@ -450,7 +393,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   color: Colors.white,
                   border: Border.all(
                       color: Colors.grey.withOpacity(0.5), width: 1)),
@@ -469,7 +411,8 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(24.r)),
+                color: context.isDark ? const Color(0xff232C37) : Colors.white,
+                borderRadius: BorderRadius.circular(24.r)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -478,11 +421,13 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                   'gps_ruxsat_berish'.tr(),
                   style: TextStyle(
                       fontSize: AppSizes.size_14,
+                      color: context.isDark ? Colors.white : Colors.black,
                       fontFamily: AppfontFamily.comforta.fontFamily,
                       fontWeight: AppFontWeight.w_700),
                 ),
                 const SpaceWidth(),
-                SvgPicture.asset(AppIcon.arrowRight, color: Colors.black)
+                SvgPicture.asset(AppIcon.arrowRight,
+                    color: context.isDark ? Colors.white : Colors.black)
               ],
             ),
           ),
@@ -503,7 +448,6 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  // color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                   color: Colors.white,
                   border: Border.all(
                       color: Colors.grey.withOpacity(0.5), width: 1)),
@@ -522,7 +466,8 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(24.r)),
+                color: context.isDark ? const Color(0xff232C37) : Colors.white,
+                borderRadius: BorderRadius.circular(24.r)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -531,11 +476,15 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                   'aniqlanmadi'.tr(),
                   style: TextStyle(
                       fontSize: AppSizes.size_14,
+                      color: context.isDark ? Colors.white : Colors.black,
                       fontFamily: AppfontFamily.comforta.fontFamily,
                       fontWeight: AppFontWeight.w_700),
                 ),
                 const SpaceWidth(),
-                SvgPicture.asset(AppIcon.arrowRight, color: Colors.black)
+                SvgPicture.asset(
+                  AppIcon.arrowRight,
+                  color: context.isDark ? Colors.white : Colors.black,
+                )
               ],
             ),
           ),

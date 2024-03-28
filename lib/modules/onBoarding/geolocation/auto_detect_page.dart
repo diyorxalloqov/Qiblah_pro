@@ -44,20 +44,21 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
           body: BlocBuilder<GeolocationCubit, GeolocationState>(
         bloc: geolocationCubit,
         builder: (context, state) {
-          return findAprWidgetByLocationInfo(geolocationCubit);
+          return findAprWidgetByLocationInfo(geolocationCubit, state);
         },
       )),
     );
   }
 
-  Widget findAprWidgetByLocationInfo(GeolocationCubit cubit) {
-    switch (cubit.locationInfo.locationStatus) {
+  Widget findAprWidgetByLocationInfo(
+      GeolocationCubit cubit, GeolocationState state) {
+    switch (state.locationStatusEnum) {
       case LocationStatusEnum.failed:
         return failedCase(cubit);
       case LocationStatusEnum.notRequested:
         return notRequested(cubit);
       case LocationStatusEnum.waiting:
-        return waitingForLocation(cubit.locationInfo);
+        return waitingForLocation();
       case LocationStatusEnum.denied:
         return noPermission(cubit);
       case LocationStatusEnum.deniedForever:
@@ -76,18 +77,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
   }
 
   Widget determinedLocation(GeolocationCubit cubit) {
-    cubit.addAddressInfo(cubit.locationInfo.position).then((data) {
-      print('$data snapshot data');
-
-      if (data != null) {
-        // Data is available, process it
-        print("$data snapshot data is");
-        StorageRepository.putString(Keys.locationStatus, '1');
-        cubit.saveLocationChoice(data);
-      }
-    }).catchError((error) {
-      print('Error: $error');
-    });
+    cubit.determineLocation();
 
     // Return an empty SizedBox as a placeholder
     return const SizedBox.shrink();
@@ -116,7 +106,7 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
         });
   }
 
-  Widget waitingForLocation(LocationInfo locationInfo) {
+  Widget waitingForLocation() {
     // TODO alohida metod o'rniga button loading spinnerga aylanishinini ko'rsatish
     return LocationPageWidget(
         onTap: () {},

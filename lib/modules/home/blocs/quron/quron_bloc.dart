@@ -12,8 +12,7 @@ part 'quron_state.dart';
 class QuronBloc extends Bloc<QuronEvent, QuronState> {
   QuronBloc() : super(const QuronState()) {
     on<SurahGetFromApi>(_getSurahFromApi);
-    on<QuronSurahGetEvent>(getSurah);
-    add(QuronSurahGetEvent());
+    on<QuronSurahGetEvent>(_getSurah);
     on<SizeChangerEvent>(_changeSize);
     on<GetOyatFromDB>(_getOyatDb);
     on<GetOyatFromApi>(_getOyatsApi);
@@ -21,6 +20,7 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
     on<SavedItemEvent>(_savedItem);
     on<ReadedItemEvent>(_readedItem);
   }
+
   final QuronService _quronService = QuronService();
   final QuronDBService _quronDBService = QuronDBService();
 
@@ -35,9 +35,10 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
             state.copyWith(status: ActionStatus.isSuccess, quronModel: r)));
   }
 
-  Future<FutureOr<void>> getSurah(
+  Future<FutureOr<void>> _getSurah(
       QuronSurahGetEvent event, Emitter<QuronState> emit) async {
     List<QuronModel>? dataFromDb = await _quronDBService.getQuron();
+    emit(state.copyWith(status: ActionStatus.isLoading));
 
     try {
       if (dataFromDb != null && dataFromDb.isNotEmpty) {
@@ -45,8 +46,6 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
             status: ActionStatus.isSuccess, quronModel: dataFromDb));
       } else {
         add(const SurahGetFromApi(pageItem: 1, limit: 114));
-        emit(state.copyWith(
-            status: ActionStatus.isError, error: 'Database is empty'));
       }
     } on DatabaseException catch (e) {
       emit(state.copyWith(error: e.toString(), status: ActionStatus.isError));
@@ -65,13 +64,20 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
         await _quronDBService.getOyatById(event.index);
 
     if (dataFromDb != null && dataFromDb.isNotEmpty) {
-      emit(state.copyWith(
-          oyatModel: dataFromDb, status1: ActionStatus.isSuccess));
-      print("${dataFromDb[event.index].isReaded} AAAAAAAAAASASASAAAAAAAAAA");
-      print("${dataFromDb[event.index].isSaved} SAVEDSAVED");
-    } else if (dataFromDb == null || dataFromDb.isEmpty) {
-      add(GetOyatFromApi(index: event.index));
+      // Check if any element in dataFromDb has the suraId equal to event.index
+      bool containsIndex =
+          dataFromDb.any((element) => element.suraId == event.index);
+
+      if (containsIndex) {
+        print("Data found in the database");
+        emit(state.copyWith(
+            oyatModel: dataFromDb, status1: ActionStatus.isSuccess));
+      } else {
+        print("Data not found in the database. Fetching from API...");
+        add(GetOyatFromApi(index: event.index));
+      }
     } else {
+      print('No data found in the database. Fetching from API...');
       add(GetOyatFromApi(index: event.index));
     }
   }
@@ -79,12 +85,10 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
   FutureOr<void> _getOyatsApi(
       GetOyatFromApi event, Emitter<QuronState> emit) async {
     emit(state.copyWith(status1: ActionStatus.isLoading));
-
     Either<String, List<OyatModel>> res =
         await _quronService.getOyatbyIndex(event.index);
-
     res.fold(
-        (l) => emit(state.copyWith(status1: ActionStatus.isError, error: l)),
+        (l) => emit(state.copyWith(status1: ActionStatus.isError, error1: l)),
         (r) => emit(
             state.copyWith(status1: ActionStatus.isSuccess, oyatModel: r)));
   }

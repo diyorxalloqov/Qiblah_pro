@@ -93,266 +93,291 @@ class _RegisterPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: context.isDark ? const Color(0xff153125) : null,
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(top: 30.h),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: context.isDark
-                      ? loginRegisterBlackGradient
-                      : loginRegisterGradient,
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Container(
+            height: context.height,
+            width: context.width,
+            padding: EdgeInsets.only(top: 30.h),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: context.isDark
+                        ? loginRegisterBlackGradient
+                        : loginRegisterGradient,
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft)),
             child: Column(
               children: [
-                SizedBox(
-                  height: context.height * 0.25,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      children: [
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                      ],
+                    ),
+                    CircleAvatar(
+                        radius: 61.r,
+                        backgroundColor: context.isDark
+                            ? const Color(0xff232C37)
+                            : Colors.white,
+                        child: Center(
+                          child: SvgPicture.asset(AppIcon.appLogo, width: 40.w),
+                        )),
+                    BlocListener<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                      if (state.status1 == ActionStatus.isSuccess) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, 'bottomNavbar', (route) => false);
+                      } else if (state.status1 == ActionStatus.isError) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(state.error)));
+                      }
+                    }, child: BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        return GestureDetector(
+                            onTap: () {
+                              context.read<AuthBloc>().add(
+                                  RegisterTemporaryEvent(
+                                      countryCode: countryCode));
+                            },
+                            child: state.status1 == ActionStatus.isLoading
+                                ? Container(
+                                    height: 24,
+                                    width: 24,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                        color: context.isDark
+                                            ? Colors.black
+                                            : Colors.white),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: CircularProgressIndicator.adaptive(
+                                          backgroundColor: Colors.blue),
+                                    ))
+                                : SvgPicture.asset(context.isDark
+                                    ? AppIcon.cancelBlack
+                                    : AppIcon.cancel));
+                      },
+                    ))
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 28.h),
+                  decoration: BoxDecoration(
+                    color: context.isDark
+                        ? bottomSheetBackgroundBlackColor
+                        : Colors.white,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(18),
+                        topRight: Radius.circular(18)),
+                  ),
                   child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HighText(text: 'kirish'.tr()),
+                        SpaceHeight(height: 10.h),
+                        SmallText(text: "kirish_promt".tr()),
+                        SpaceHeight(height: 20.h),
+                        SmallText(text: 'telefon_raqam'.tr()),
+                        const SpaceHeight(),
+                        Form(
+                          key: _key,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
+                              TextFormField(
+                                controller: _phoneController,
+                                keyboardType: TextInputType.number,
+                                // inputFormatters: [
+                                //   MaskTextInputFormatter(
+                                //     mask: '00 000 00 00',
+                                //     filter: {'0': RegExp(r'[0-9]')},
+                                //   )
+                                // ],
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: context.isDark
+                                      ? textFormFieldFillColorBlack
+                                      : const Color(0xffE3E7EA),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: wi(16)),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: context.isDark
+                                        ? BorderSide.none
+                                        : const BorderSide(
+                                            color: Color(0xffE3E7EA), width: 1),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  constraints:
+                                      BoxConstraints(maxHeight: he(48)),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: context.isDark
+                                        ? BorderSide.none
+                                        : const BorderSide(
+                                            color: Colors.grey, width: 1),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: context.isDark
+                                        ? BorderSide.none
+                                        : const BorderSide(
+                                            color: Colors.grey, width: 1),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  prefixIcon: TextButton(
+                                      onPressed: () async {
+                                        final picked =
+                                            await countryPicker.showPicker(
+                                          context: context,
+                                          backgroundColor: context.isDark
+                                              ? bottomSheetBackgroundBlackColor
+                                              : bottomSheetBackgroundColor,
+                                        );
+                                        dialCode = picked?.dialCode ?? '+998';
+                                        countryCode = picked?.code ?? 'UZ';
+                                        setState(() {});
+                                      },
+                                      child: Text(
+                                        dialCode,
+                                        style: TextStyle(
+                                            color: context.isDark
+                                                ? Colors.white
+                                                : Colors.black),
+                                      )),
+                                  hintText: 'telefon_raqam'.tr(),
+                                  hintStyle: TextStyle(
+                                    fontSize: he(AppSizes.size_16),
+                                    fontWeight: AppFontWeight.w_400,
+                                    color: textFormFieldHintColor,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return "Iltimos bo'sh qoldirmang";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SpaceHeight(height: 24.h),
+                              SmallText(text: 'parol'.tr()),
+                              const SpaceHeight(),
+                              TextFormField(
+                                focusNode: _focusNode,
+                                controller: _passwordController,
+                                obscureText: passwordVisibile,
+                                obscuringCharacter: "*",
+                                decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: context.isDark
+                                        ? textFormFieldFillColorBlack
+                                        : const Color(0xffE3E7EA),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: wi(16)),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: context.isDark
+                                          ? BorderSide.none
+                                          : const BorderSide(
+                                              color: Color(0xffE3E7EA),
+                                              width: 1),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    constraints:
+                                        BoxConstraints(maxHeight: he(48)),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: context.isDark
+                                          ? BorderSide.none
+                                          : const BorderSide(
+                                              color: Colors.grey, width: 1),
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: context.isDark
+                                          ? BorderSide.none
+                                          : const BorderSide(
+                                              color: Colors.grey, width: 1),
+                                      borderRadius:
+                                          BorderRadius.circular(12.0.r),
+                                    ),
+                                    suffixIcon: Visibility(
+                                        child: IconButton(
+                                            onPressed: () {
+                                              passwordVisibile =
+                                                  !passwordVisibile;
+                                              setState(() {});
+                                            },
+                                            icon: passwordVisibile
+                                                ? const Icon(
+                                                    Icons.visibility_off,
+                                                    color: Color(0xff6D7379))
+                                                : const Icon(Icons.visibility,
+                                                    color: Color(0xff6D7379)))),
+                                    hintStyle: TextStyle(
+                                      fontSize: he(AppSizes.size_16),
+                                      fontWeight: AppFontWeight.w_400,
+                                      color: textFormFieldHintColor,
+                                    ),
+                                    hintText: "Password"),
+                                validator: (value) {
+                                  // String? passwordError =
+                                  //     validatePassword(value);
+                                  if (value!.isEmpty) {
+                                    return "Iltimos bo'sh qoldirmang";
+                                  }
+                                  //  else if (value.length < 4) {
+                                  //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
+                                  // } else if (passwordError != null) {
+                                  //   return passwordError;
+                                  // } else if (value.length > 16) {
+                                  //   return "Parol yaroqsiz";
+
+                                  return null;
+                                },
+                              )
                             ],
                           ),
-                          CircleAvatar(
-                              radius: 88.r,
-                              backgroundColor: context.isDark
-                                  ? const Color(0xff232C37)
-                                  : Colors.white,
-                              child: Center(
-                                child: SvgPicture.asset(AppIcon.appLogo,
-                                    width: 50),
-                              )),
-                          BlocListener<AuthBloc, AuthState>(
-                            listener: (context, state) {
-                              if (state.status1 == ActionStatus.isSuccess) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, 'bottomNavbar', (route) => false);
-                              } else if (state.status1 ==
-                                  ActionStatus.isError) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(state.error)));
-                              }
-                            },
-                            child: GestureDetector(
-                                onTap: () {
-                                  context.read<AuthBloc>().add(
-                                      RegisterTemporaryEvent(
-                                          countryCode: countryCode));
-                                },
-                                child: SvgPicture.asset(context.isDark
-                                    ? AppIcon.cancelBlack
-                                    : AppIcon.cancel)),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 12.w, vertical: 20.h),
-                      decoration: BoxDecoration(
-                        color: context.isDark
-                            ? bottomSheetBackgroundBlackColor
-                            : bottomSheetBackgroundColor,
-                        borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(18),
-                            topRight: Radius.circular(18)),
-                      ),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HighText(text: 'kirish'.tr()),
-                            const SpaceHeight(),
-                            SmallText(text: "kirish_promt".tr()),
-                            SpaceHeight(height: 20.h),
-                            SmallText(text: 'telefon_raqam'.tr()),
-                            const SpaceHeight(),
-                            Form(
-                              key: _key,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextFormField(
-                                    controller: _phoneController,
-                                    keyboardType: TextInputType.number,
-                                    // inputFormatters: [
-                                    //   MaskTextInputFormatter(
-                                    //     mask: '00 000 00 00',
-                                    //     filter: {'0': RegExp(r'[0-9]')},
-                                    //   )
-                                    // ],
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: context.isDark
-                                          ? textFormFieldFillColorBlack
-                                          : const Color(0xffE3E7EA),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: context.isDark
-                                            ? BorderSide.none
-                                            : const BorderSide(
-                                                color: Colors.grey, width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: context.isDark
-                                            ? BorderSide.none
-                                            : const BorderSide(
-                                                color: Colors.grey, width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      prefixIcon: TextButton(
-                                          onPressed: () async {
-                                            final picked =
-                                                await countryPicker.showPicker(
-                                              context: context,
-                                              backgroundColor: context.isDark
-                                                  ? bottomSheetBackgroundBlackColor
-                                                  : bottomSheetBackgroundColor,
-                                            );
-                                            dialCode =
-                                                picked?.dialCode ?? '+998';
-                                            countryCode = picked?.code ?? 'UZ';
-                                            setState(() {});
-                                          },
-                                          child: Text(
-                                            dialCode,
-                                            style: TextStyle(
-                                                color: context.isDark
-                                                    ? Colors.white
-                                                    : Colors.black),
-                                          )),
-                                      hintText: 'telefon_raqam'.tr(),
-                                      hintStyle: TextStyle(
-                                        fontSize: AppSizes.size_16,
-                                        fontWeight: AppFontWeight.w_400,
-                                        color: textFormFieldHintColor,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Iltimos bo'sh qoldirmang";
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  SpaceHeight(height: 15.h),
-                                  SmallText(text: 'parol'.tr()),
-                                  const SpaceHeight(),
-                                  TextFormField(
-                                    focusNode: _focusNode,
-                                    controller: _passwordController,
-                                    obscureText: passwordVisibile,
-                                    obscuringCharacter: "*",
-                                    decoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: context.isDark
-                                            ? textFormFieldFillColorBlack
-                                            : const Color(0xffE3E7EA),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: context.isDark
-                                              ? BorderSide.none
-                                              : const BorderSide(
-                                                  color: Colors.grey, width: 1),
+                        ),
+                        SpaceHeight(height: 26.h),
+                        BlocListener<AuthBloc, AuthState>(
+                          listener: (context, state) {
+                            state.status2 == ActionStatus.isSuccess
+                                ? Navigator.pushNamedAndRemoveUntil(
+                                    context, 'bottomNavbar', (route) => false)
+                                : null;
+                            if (state.status2 == ActionStatus.isError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: context.isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      content: Text(state.loginerror)));
+                            }
+                          },
+                          child: BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) {
+                              return ElevatedButton(
+                                  onPressed: () async {
+                                    if (_key.currentState!.validate()) {
+                                      context.read<AuthBloc>().add(LoginEvent(
+                                          password: _passwordController.text,
+                                          phoneNumber: _phoneController.text));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: primaryColor,
+                                      fixedSize: Size(double.infinity, 50.h),
+                                      shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: context.isDark
-                                              ? BorderSide.none
-                                              : const BorderSide(
-                                                  color: Colors.grey, width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0.r),
-                                        ),
-                                        suffixIcon: Visibility(
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  passwordVisibile =
-                                                      !passwordVisibile;
-                                                  setState(() {});
-                                                },
-                                                icon: passwordVisibile
-                                                    ? const Icon(
-                                                        Icons.visibility_off)
-                                                    : const Icon(
-                                                        Icons.visibility))),
-                                        hintStyle: TextStyle(
-                                          fontSize: AppSizes.size_16,
-                                          fontWeight: AppFontWeight.w_400,
-                                          color: textFormFieldHintColor,
-                                        ),
-                                        hintText: "Password"),
-                                    validator: (value) {
-                                      // String? passwordError =
-                                      //     validatePassword(value);
-                                      if (value!.isEmpty) {
-                                        return "Iltimos bo'sh qoldirmang";
-                                      }
-                                      //  else if (value.length < 4) {
-                                      //   return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                                      // } else if (passwordError != null) {
-                                      //   return passwordError;
-                                      // } else if (value.length > 16) {
-                                      //   return "Parol yaroqsiz";
-
-                                      return null;
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
-                            SpaceHeight(height: 15.h),
-                            BlocListener<AuthBloc, AuthState>(
-                              listener: (context, state) {
-                                state.status2 == ActionStatus.isSuccess
-                                    ? Navigator.pushNamedAndRemoveUntil(context,
-                                        'bottomNavbar', (route) => false)
-                                    : null;
-                                if (state.status2 == ActionStatus.isError) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          backgroundColor: context.isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                          content: Text(state.loginerror)));
-                                }
-                              },
-                              child: BlocBuilder<AuthBloc, AuthState>(
-                                builder: (context, state) {
-                                  return ElevatedButton(
-                                      onPressed: () async {
-                                        if (_key.currentState!.validate()) {
-                                          context.read<AuthBloc>().add(
-                                              LoginEvent(
-                                                  password:
-                                                      _passwordController.text,
-                                                  phoneNumber:
-                                                      _phoneController.text));
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: primaryColor,
-                                          fixedSize:
-                                              Size(double.infinity, 50.h),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.r))),
-                                      child: Center(
-                                        child: state.status2 ==
-                                                ActionStatus.isLoading
+                                              BorderRadius.circular(12.r))),
+                                  child: Center(
+                                    child:
+                                        state.status2 == ActionStatus.isLoading
                                             ? const CircularProgressIndicator
                                                 .adaptive(
                                                 backgroundColor: Colors.white)
@@ -364,97 +389,94 @@ class _RegisterPageState extends State<LoginPage> {
                                                     fontSize: AppSizes.size_16,
                                                     fontWeight:
                                                         AppFontWeight.w_600)),
-                                      ));
-                                },
+                                  ));
+                            },
+                          ),
+                        ),
+                        SpaceHeight(height: 12.h),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'profilingiz_yoqmi'.tr(),
+                                style: TextStyle(
+                                  color: context.isDark
+                                      ? Colors.white
+                                      : const Color(0xFF1D2124),
+                                  fontSize: AppSizes.size_16,
+                                  fontWeight: AppFontWeight.w_600,
+                                ),
                               ),
-                            ),
-                            const SpaceHeight(),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'profilingiz_yoqmi'.tr(),
-                                    style: TextStyle(
-                                      color: context.isDark
-                                          ? Colors.white
-                                          : const Color(0xFF1D2124),
-                                      fontSize: AppSizes.size_16,
-                                      fontWeight: AppFontWeight.w_600,
-                                    ),
+                              GestureDetector(
+                                onTap: () =>
+                                    Navigator.pushNamed(context, 'register'),
+                                child: Text(
+                                  'kirish'.tr(),
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontSize: AppSizes.size_16,
+                                    fontWeight: AppFontWeight.w_600,
                                   ),
-                                  GestureDetector(
-                                    onTap: () => Navigator.pushNamed(
-                                        context, 'register'),
-                                    child: Text(
-                                      'kirish'.tr(),
-                                      style: TextStyle(
-                                        color: primaryColor,
-                                        fontSize: AppSizes.size_16,
-                                        fontWeight: AppFontWeight.w_600,
-                                      ),
-                                    ),
-                                  ),
-                                ]),
-                            Row(
-                              children: [
-                                const Expanded(child: Divider()),
-                                const SpaceWidth(),
-                                const SpaceWidth(),
-                                Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 7.h),
-                                    child: Center(
-                                        child: SmallText(
-                                            text: 'orqali_kirish'.tr()))),
-                                const SpaceWidth(),
-                                const SpaceWidth(),
-                                const Expanded(child: Divider())
-                              ],
+                                ),
+                              ),
+                            ]),
+                        SpaceHeight(height: 12.h),
+                        Row(
+                          children: [
+                            const Expanded(child: Divider()),
+                            const SpaceWidth(),
+                            const SpaceWidth(),
+                            Padding(
+                                padding: EdgeInsets.symmetric(vertical: 7.h),
+                                child: Center(
+                                    child:
+                                        SmallText(text: 'orqali_kirish'.tr()))),
+                            const SpaceWidth(),
+                            const SpaceWidth(),
+                            const Expanded(child: Divider())
+                          ],
+                        ),
+                        SpaceHeight(height: 12.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // GestureDetector(
+                            //   onTap: () {},
+                            //   child: CircleAvatar(
+                            //       backgroundColor: anotherSignInColor,
+                            //       child: SvgPicture.asset(AppIcon.facebook)),
+                            // ),
+                            const SizedBox(),
+                            GestureDetector(
+                              onTap: () => _googleSignIn(context),
+                              child: CircleAvatar(
+                                  backgroundColor: anotherSignInColor,
+                                  child: SvgPicture.asset(AppIcon.google)),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                // GestureDetector(
-                                //   onTap: () {},
-                                //   child: CircleAvatar(
-                                //       backgroundColor: anotherSignInColor,
-                                //       child: SvgPicture.asset(AppIcon.facebook)),
-                                // ),
-                                const SizedBox(),
-                                GestureDetector(
-                                  onTap: () => _googleSignIn(context),
-                                  child: CircleAvatar(
-                                      backgroundColor: anotherSignInColor,
-                                      child: SvgPicture.asset(AppIcon.google)),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: CircleAvatar(
-                                      backgroundColor: anotherSignInColor,
-                                      child: SvgPicture.asset(AppIcon.yandex)),
-                                ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: CircleAvatar(
-                                      backgroundColor: anotherSignInColor,
-                                      child:
-                                          SvgPicture.asset(AppIcon.telegram)),
-                                ),
-                                Platform.isIOS
-                                    ? GestureDetector(
-                                        onTap: () async {},
-                                        child: CircleAvatar(
-                                            backgroundColor: anotherSignInColor,
-                                            child: SvgPicture.asset(
-                                                AppIcon.apple)),
-                                      )
-                                    : const SizedBox(),
-                              ],
+                            GestureDetector(
+                              onTap: () {},
+                              child: CircleAvatar(
+                                  backgroundColor: anotherSignInColor,
+                                  child: SvgPicture.asset(AppIcon.yandex)),
                             ),
-                            const SpaceHeight(),
-                          ]),
-                    ),
-                  ],
+                            GestureDetector(
+                              onTap: () {},
+                              child: CircleAvatar(
+                                  backgroundColor: anotherSignInColor,
+                                  child: SvgPicture.asset(AppIcon.telegram)),
+                            ),
+                            Platform.isIOS
+                                ? GestureDetector(
+                                    onTap: () {},
+                                    child: CircleAvatar(
+                                        backgroundColor: anotherSignInColor,
+                                        child: SvgPicture.asset(AppIcon.apple)),
+                                  )
+                                : const SizedBox(),
+                          ],
+                        ),
+                        const SpaceHeight(),
+                      ]),
                 ),
               ],
             ),

@@ -206,28 +206,21 @@ class _TimePageState extends State<TimePage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  FutureBuilder(
-                                      future: context
-                                          .read<GeolocationCubit>()
-                                          .getChosenLocation(),
-                                      builder: (context, snapshot) {
-                                        return Expanded(
-                                          child: Text(
-                                            snapshot.data?.region.toString() ??
-                                                'not found',
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: AppSizes.size_16,
-                                              fontFamily: AppfontFamily
-                                                  .inter.fontFamily,
-                                              fontWeight: AppFontWeight.w_400,
-                                            ),
-                                          ),
-                                        );
-                                      }),
+                                  Expanded(
+                                    child: Text(
+                                      StorageRepository.getString(Keys.region),
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: AppSizes.size_16,
+                                        fontFamily:
+                                            AppfontFamily.inter.fontFamily,
+                                        fontWeight: AppFontWeight.w_400,
+                                      ),
+                                    ),
+                                  ),
                                   SvgPicture.asset(AppIcon.edit)
                                 ],
                               ),

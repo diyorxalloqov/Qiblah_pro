@@ -11,9 +11,10 @@ class SuralarlarPage extends StatefulWidget {
 
 class _SuralarlarPageState extends State<SuralarlarPage> {
   @override
-  void initState() {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Add the event only when the page is active
     context.read<QuronBloc>().add(QuronSurahGetEvent());
-    super.initState();
   }
 
   @override
@@ -69,13 +70,14 @@ class CardItem extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: () {
           print("$index tapped index is");
-          context.read<QuronBloc>().add(GetOyatFromDB(index: index));
+          // context.read<QuronBloc>().add(GetOyatFromDB(index: index));
           Navigator.pushNamed(context, 'suralarDetails',
               arguments: SuralarDetailsPageArguments(
                   suraVerseCount:
                       quronState.quronModel[index - 1].suraVerseCount ?? 0,
                   suraName: quronState.quronModel[index - 1].name ?? '',
-                  index: index));
+                  suraId: int.parse(
+                      quronState.quronModel[index - 1].suraId ?? '0')));
         },
         leading: Container(
           width: 28,

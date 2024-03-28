@@ -40,13 +40,6 @@ class ChangeUserDataEvent extends ProfileEvent {
   List<Object> get props => [name, gender, phone];
 }
 
-class ChangePasswordEvent extends ProfileEvent {
-  final String password;
-  const ChangePasswordEvent({required this.password});
-  @override
-  // TODO: implement props
-  List<Object> get props => [password];
-}
 
 class DeleteAccauntEvent extends ProfileEvent {
   @override
@@ -60,6 +53,16 @@ class LogoutEvent extends ProfileEvent {
   List<Object> get props => [];
 }
 
+
+class ChangeAppLangEvent extends ProfileEvent {
+  final String lang;
+  const ChangeAppLangEvent({required this.lang});
+  @override
+  // TODO: implement props
+  List<Object> get props => [lang];
+}
+
+///
 class ChangePremiumEvent extends ProfileEvent {
   final bool isPremium;
   const ChangePremiumEvent({required this.isPremium});
@@ -67,16 +70,17 @@ class ChangePremiumEvent extends ProfileEvent {
   // TODO: implement props
   List<Object> get props => [isPremium];
 }
-
-class ChangeAppLangEvent extends ProfileEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
-
 class ChangeLocationEvent extends ProfileEvent {
   const ChangeLocationEvent();
   @override
   // TODO: implement props
   List<Object> get props => [];
+}
+
+class ChangePasswordEvent extends ProfileEvent {
+  final String password;
+  const ChangePasswordEvent({required this.password});
+  @override
+  // TODO: implement props
+  List<Object> get props => [password];
 }

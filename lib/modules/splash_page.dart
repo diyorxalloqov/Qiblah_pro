@@ -25,11 +25,37 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.isDark ? const Color(0xff1E2125) : Colors.green,
       body: SafeArea(
           child: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(AppImages.appLogo), fit: BoxFit.cover)),
+                image: AssetImage(AppImages.splash_back), fit: BoxFit.cover)),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(AppIcon.appLogo, width: 90),
+              SizedBox(height: 20.h),
+              Text(
+                'Qiblah',
+                style: TextStyle(
+                    fontSize: AppSizes.size_24,
+                    fontWeight: AppFontWeight.w_600,
+                    fontFamily: AppfontFamily.comforta.fontFamily,
+                    color: Colors.white),
+              ),
+              SizedBox(height: 4.h),
+              Text(
+                "splash_desc".tr(),
+                style: TextStyle(
+                    fontSize: AppSizes.size_18,
+                    color: Colors.white,
+                    fontFamily: AppfontFamily.comforta.fontFamily),
+              )
+            ],
+          ),
+        ),
       )),
     );
   }

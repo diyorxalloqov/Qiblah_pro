@@ -12,11 +12,50 @@ class App extends StatelessWidget {
   }
 }
 
-class AndroidApp extends StatelessWidget {
+class AndroidApp extends StatefulWidget {
   const AndroidApp({super.key});
 
   @override
+  State<AndroidApp> createState() => _AndroidAppState();
+}
+
+class _AndroidAppState extends State<AndroidApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // Handle app resumed state
+        break;
+      case AppLifecycleState.inactive:
+        // Handle app inactive state
+        break;
+      case AppLifecycleState.paused:
+        // Handle app paused state
+        break;
+      case AppLifecycleState.detached:
+        // Handle app detached state
+        break;
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return AdaptiveTheme(
       initial: AdaptiveThemeMode.system,
       dark: AppTheme().darkMode,
@@ -50,11 +89,50 @@ class AndroidApp extends StatelessWidget {
   }
 }
 
-class IosApp extends StatelessWidget {
+class IosApp extends StatefulWidget {
   const IosApp({super.key});
 
   @override
+  State<IosApp> createState() => _IosAppState();
+}
+
+class _IosAppState extends State<IosApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // Handle app resumed state
+        break;
+      case AppLifecycleState.inactive:
+        // Handle app inactive state
+        break;
+      case AppLifecycleState.paused:
+        // Handle app paused state
+        break;
+      case AppLifecycleState.detached:
+        // Handle app detached state
+        break;
+      case AppLifecycleState.hidden:
+      // TODO: Handle this case.
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return CupertinoAdaptiveTheme(
         initial: AdaptiveThemeMode.system,
         dark: AppTheme().cupertinoDarkMode,

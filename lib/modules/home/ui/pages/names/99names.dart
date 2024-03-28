@@ -11,15 +11,19 @@ class NamesPage extends StatefulWidget {
 
 class _NamesPageState extends State<NamesPage> {
   late NamesBloc namesBloc;
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     namesBloc = NamesBloc();
+    _scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
     namesBloc.close();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -46,7 +50,10 @@ class _NamesPageState extends State<NamesPage> {
                 child: ListView.builder(
                     itemCount: state.namesModel.length,
                     itemBuilder: (context, index) => CardItem1(
-                        index: index, namesBloc: namesBloc, state: state)),
+                        index: index,
+                        namesBloc: namesBloc,
+                        scrollController: _scrollController,
+                        state: state)),
               );
             }
             return RefreshIndicator.adaptive(
@@ -73,9 +80,11 @@ class CardItem1 extends StatelessWidget {
   final int index;
   final NamesState state;
   final NamesBloc namesBloc;
+  final ScrollController scrollController;
   const CardItem1(
       {super.key,
       required this.index,
+      required this.scrollController,
       required this.namesBloc,
       required this.state});
 

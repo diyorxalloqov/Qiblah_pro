@@ -11,7 +11,7 @@ class SmallText extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       maxLines: 3,
       style: TextStyle(
-        fontSize: AppSizes.size_14,
+        fontSize: he(AppSizes.size_14),
         color: smallTextColor,
         fontFamily: AppfontFamily.inter.fontFamily,
         fontWeight: AppFontWeight.w_500,

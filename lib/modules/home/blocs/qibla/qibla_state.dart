@@ -1,16 +1,16 @@
 part of 'qibla_cubit.dart';
 
 class QiblaState extends Equatable {
-  final PositionInfo? positionInfo;
+  final ActionStatus status;
 
-  const QiblaState({this.positionInfo});
+  const QiblaState({this.status = ActionStatus.isInitial});
 
   QiblaState copyWith({
-    PositionInfo? positionInfo,
+    ActionStatus? status,
   }) {
-    return QiblaState(positionInfo: positionInfo ?? this.positionInfo);
+    return QiblaState(status: status ?? this.status);
   }
 
   @override
-  List<Object?> get props => [positionInfo];
+  List<Object?> get props => [status];
 }

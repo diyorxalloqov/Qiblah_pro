@@ -42,11 +42,11 @@ Color jinsColor = const Color(0xffF4F8FA);
 Color jinsBlackColor = const Color(0xff232C37);
 Color mainBlugreyColor = const Color(0xff232C37);
 List<Color> qazoDiagramColor = const [
-  Color(0xff9341E4),
+  Color(0xff0A9D4E),
   Color(0xffE4CA41),
-  Color(0xff41E4E4),
   Color(0xffE44141),
-  Color(0xff0A9D4E)
+  Color(0xff41E4E4),
+  Color(0xff9341E4)
 ];
 
 List<Color> onBoardingColor = const [

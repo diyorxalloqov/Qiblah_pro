@@ -91,13 +91,13 @@ class _OnBoardingState extends State<OnBoarding> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   HighText(text: _titles[index].tr()),
-                                  const SpaceHeight(),
+                                  SpaceHeight(height: 18.h),
                                   Text(_subtitles[index].tr(),
                                       style: AppfontFamily.inter.copyWith(
                                           color: smallTextColor,
-                                          fontSize: AppSizes.size_15,
+                                          fontSize: he(AppSizes.size_15),
                                           fontWeight: AppFontWeight.w_400)),
-                                  SpaceHeight(height: 25.h),
+                                  SpaceHeight(height: 18.h),
                                   _currentPage == 0
                                       ? Column(
                                           children: [
@@ -109,16 +109,17 @@ class _OnBoardingState extends State<OnBoarding> {
                                                         ? const Color(
                                                             0xff232C37)
                                                         : Colors.teal.shade100,
-                                                    radius: 20.r,
+                                                    radius: 14.r,
                                                     child: Icon(Icons.check,
-                                                        color: primaryColor)),
+                                                        color: primaryColor,
+                                                        size: 15.w)),
                                                 const SpaceWidth(),
                                                 Text(
-                                                  "highlight_text_1"
-                                                      .tr(),
+                                                  "highlight_text_1".tr(),
                                                   style: AppfontFamily.inter
                                                       .copyWith(
-                                                    fontSize: AppSizes.size_15,
+                                                    fontSize:
+                                                        he(AppSizes.size_15),
                                                     fontWeight:
                                                         AppFontWeight.w_500,
                                                   ),
@@ -133,19 +134,21 @@ class _OnBoardingState extends State<OnBoarding> {
                                                           .isDark
                                                       ? const Color(0xff232C37)
                                                       : Colors.teal.shade100,
-                                                  radius: 20.r,
+                                                  radius: 14.r,
                                                   child: Icon(Icons.check,
-                                                      color: primaryColor),
+                                                      color: primaryColor,
+                                                      size: 15.w),
                                                 ),
                                                 const SpaceWidth(),
                                                 Text(
                                                   "highlight_text_2".tr(),
                                                   style: AppfontFamily.inter
                                                       .copyWith(
-                                                    fontSize: AppSizes.size_15,
-                                                    fontWeight:
-                                                        AppFontWeight.w_500,
-                                                  ),
+                                                          fontSize: he(
+                                                              AppSizes.size_15),
+                                                          fontWeight:
+                                                              AppFontWeight
+                                                                  .w_500),
                                                 ),
                                               ],
                                             ),
@@ -157,16 +160,18 @@ class _OnBoardingState extends State<OnBoarding> {
                                                           .isDark
                                                       ? const Color(0xff232C37)
                                                       : Colors.teal.shade100,
-                                                  radius: 20.r,
+                                                  radius: 14.r,
                                                   child: Icon(Icons.check,
-                                                      color: primaryColor),
+                                                      color: primaryColor,
+                                                      size: 15.w),
                                                 ),
                                                 const SpaceWidth(),
                                                 Text(
                                                   "highlight_text_3".tr(),
                                                   style: AppfontFamily.inter
                                                       .copyWith(
-                                                    fontSize: AppSizes.size_15,
+                                                    fontSize:
+                                                        he(AppSizes.size_15),
                                                     fontWeight:
                                                         AppFontWeight.w_500,
                                                   ),
@@ -195,9 +200,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                         if (isPermissionGranted) {
                                           Navigator.of(context)
                                               .pushNamedAndRemoveUntil(
-                                            'register',
-                                            (route) => false,
-                                          );
+                                                  'register', (route) => false);
                                           context.read<NamozTimeBloc>().add(
                                                 const ScheduleNotificationEvent(
                                                     namoz: NamozEnum.all),
@@ -277,9 +280,10 @@ class _OnBoardingState extends State<OnBoarding> {
                                                 fontSize: AppSizes.size_16,
                                                 fontWeight:
                                                     AppFontWeight.w_600),
-                                          ))
+                                          )),
                                     ],
                                   ),
+                                  SizedBox(height: 12.h)
                                 ],
                               ),
                             ),

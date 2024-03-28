@@ -129,12 +129,12 @@ class ProfileService {
     }
   }
 
-  Future<Either<String, ProfileModel>> changeAppLang() async {
+  Future<Either<String, ProfileModel>> changeAppLang(String lang) async {
     try {
       Response response = await client.put(AppUrls.changeLang,
           data: {
             "user_id": StorageRepository.getString(Keys.userId),
-            "lang": StorageRepository.getString(Keys.lang)
+            "lang": lang
           },
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));

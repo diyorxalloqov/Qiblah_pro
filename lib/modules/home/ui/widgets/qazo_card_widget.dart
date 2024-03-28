@@ -4,6 +4,7 @@ class QazoCardWidget extends StatelessWidget {
   final String icon;
   final String title;
   final String qazoCount;
+  final Color color;
   final VoidCallback increment;
   final VoidCallback decrement;
 
@@ -11,20 +12,44 @@ class QazoCardWidget extends StatelessWidget {
       {super.key,
       required this.icon,
       required this.qazoCount,
+      required this.color,
       required this.title,
       required this.decrement,
       required this.increment});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      elevation: 0,
+    return Container(
+      height: he(52),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
+          color: context.isDark ? Colors.black : Colors.white),
       margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 12.h),
       child: ListTile(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-          leading: SvgPicture.asset(icon),
+          contentPadding: EdgeInsets.only(right: 16.w),
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Container(
+              //   width: 2,
+              //   decoration: ShapeDecoration(
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.only(
+              //         topLeft: Radius.circular(12.r),
+              //         bottomLeft: Radius.circular(12.r),
+              //       ),
+              //     ),
+              //     color: color,
+              //   ),
+              // ),
+              SizedBox(width: wi(16)),
+              SvgPicture.asset(icon),
+            ],
+          ),
           title: Text(
             title,
             style: const TextStyle(

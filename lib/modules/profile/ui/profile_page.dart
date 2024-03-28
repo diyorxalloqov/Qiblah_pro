@@ -2,6 +2,7 @@ import 'package:adhan/adhan.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/namoz_settings_widget.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/settings_item_widget.dart';
+import 'package:qiblah_pro/utils/extension/internet_checker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,9 +14,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   bool isPremium = false;
   late ProfileBloc profileBloc;
-  int? selectedChipIndex;
-  final List<String> _titles = const ['ayol', "erkak"];
-  final List<String> _icons = const [AppIcon.woman, AppIcon.man];
   String selectedLang = '';
 
   @override
@@ -42,9 +40,6 @@ class _ProfilePageState extends State<ProfilePage> {
             child: SingleChildScrollView(
               child: BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, state) {
-                  selectedChipIndex =
-                      state.userData?.userGender == 'erkak' ? 1 : 0;
-
                   // if (state is ProfileFailed) {
                   //   return ErrorOutput(message: state.message);
                   // }
@@ -57,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             children: [
                               Container(
-                                height: context.height * 0.2,
+                                height: he(150),
                                 width: double.infinity,
                                 alignment: Alignment.bottomCenter,
                                 decoration: BoxDecoration(
@@ -82,12 +77,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                             topRight: Radius.circular(20.r))),
                                     child: Column(
                                       children: [
-                                        SpaceHeight(
-                                            height: context.height * 0.04),
+                                        SpaceHeight(height: he(40)),
                                         Text(
                                           state.userData?.userName ?? '',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: AppSizes.size_22,
+                                              fontFamily: AppfontFamily
+                                                  .comforta.fontFamily,
                                               fontWeight: AppFontWeight.w_700),
                                         ),
                                         const SpaceHeight(),
@@ -100,12 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                           maxLines: 3,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: AppSizes.size_14,
-                                            color: smallTextColor,
-                                            fontFamily:
-                                                AppfontFamily.inter.fontFamily,
-                                            fontWeight: AppFontWeight.w_500,
-                                          ),
+                                              fontSize: he(AppSizes.size_14),
+                                              color: smallTextColor,
+                                              fontFamily: AppfontFamily
+                                                  .inter.fontFamily,
+                                              fontWeight: AppFontWeight.w_400),
                                         ),
                                         const SpaceHeight(),
                                         ElevatedButton(
@@ -287,10 +282,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
                           Positioned(
-                              top: context.height * 0.12,
+                              top: context.height * 0.1,
                               child: Container(
-                                width: 100.r,
-                                height: 100.r,
+                                width: 90.h,
+                                height: 90.h,
                                 decoration: ShapeDecoration(
                                   image: state.imagePath.isNotEmpty
                                       ? DecorationImage(
@@ -329,20 +324,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               )),
                         ],
                       ),
-                      const SpaceHeight(),
-                      const SpaceHeight(),
+                      SpaceHeight(height: 12.h),
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 12.w, vertical: 15.h),
-                        height: context.height * 0.33,
+                            horizontal: 12.w, vertical: 14.h),
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: context.isDark
                               ? containerBlackColor
                               : containerColor,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(18),
-                              topRight: Radius.circular(18)),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(18.r),
+                              topRight: Radius.circular(18.r)),
                         ),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,10 +343,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text(
                                 'ilova_sozlamalari'.tr(),
                                 style: TextStyle(
-                                  color: primaryColor,
-                                  fontSize: AppSizes.size_15,
-                                  fontWeight: AppFontWeight.w_500,
-                                ),
+                                    color: primaryColor,
+                                    fontSize: AppSizes.size_12,
+                                    fontWeight: AppFontWeight.w_400,
+                                    fontFamily: AppfontFamily.inter.fontFamily),
                               ),
                               SettingsItemWidget(
                                   onTap: () => showModalBottomSheet(
@@ -413,6 +406,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       ),
                                                       child: GestureDetector(
                                                         onTap: () async {
+                                                          await context
+                                                                  .hasInternet
+                                                              ? profileBloc.add(
+                                                                  const ChangeAppLangEvent(
+                                                                      lang:
+                                                                          'uz'))
+                                                              : null;
                                                           selectedLang = 'uz';
                                                           context.setLocale(
                                                               const Locale(
@@ -471,6 +471,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       ),
                                                       child: GestureDetector(
                                                         onTap: () async {
+                                                          await context
+                                                                  .hasInternet
+                                                              ? profileBloc.add(
+                                                                  const ChangeAppLangEvent(
+                                                                      lang:
+                                                                          'ru'))
+                                                              : null;
                                                           selectedLang = 'ru';
                                                           context.setLocale(
                                                               const Locale(
@@ -523,6 +530,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ? 'O\'zbekcha'
                                               : 'Ruscha'),
                                   icon: AppIcon.globe),
+                              Divider(
+                                color: context.isDark
+                                    ? const Color(0xff16171B)
+                                    : const Color(0xffF5F4FA),
+                              ),
                               ListTile(
                                   leading: SvgPicture.asset(AppIcon.moon,
                                       width: 24,
@@ -537,6 +549,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           : const Color(0xFF293138),
                                       fontSize: AppSizes.size_16,
                                       fontWeight: AppFontWeight.w_500,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
                                     ),
                                   ),
                                   trailing: Switch.adaptive(
@@ -568,37 +582,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                       }
                                     },
                                   )),
+                              Divider(
+                                color: context.isDark
+                                    ? const Color(0xff16171B)
+                                    : const Color(0xffF5F4FA),
+                              ),
+                              //  //////////////////////////////
                               SettingsItemWidget(
-                                  onTap: () => showLocationBottomSheet(
-                                        context,
-                                      ),
+                                  onTap: () => showLocationBottomSheet(context),
                                   title: 'manzil'.tr(),
-                                  subtitleWidget: FutureBuilder(
-                                      future: context
-                                          .read<GeolocationCubit>()
-                                          .getChosenLocation(),
-                                      builder: (context, snapshot) {
-                                        return Text(
-                                          snapshot.data?.region.toString() ??
-                                              'not found',
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                            color: context.isDark
-                                                ? const Color(0xffB5B9BC)
-                                                : const Color(0xff6D7379),
-                                            fontSize: AppSizes.size_16,
-                                            fontFamily:
-                                                AppfontFamily.inter.fontFamily,
-                                            fontWeight: AppFontWeight.w_400,
-                                          ),
-                                        );
-                                      }),
+                                  subtitleWidget: Text(
+                                      StorageRepository.getString(Keys.region)),
                                   icon: AppIcon.location)
                             ]),
+                        //////////////
                       ),
-                      const SpaceHeight(),
-                      const SpaceHeight(),
+                      SpaceHeight(height: 12.h),
                       Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 12.w, vertical: 15.h),
@@ -622,56 +621,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ),
                               const SpaceHeight(),
-                              SizedBox(
-                                height: 60.h,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: List.generate(2, (index) {
-                                    return ChoiceChip(
-                                      backgroundColor: context.isDark
-                                          ? jinsBlackColor
-                                          : jinsColor,
-                                      label: SizedBox(
-                                        height: 45.h,
-                                        width: 130.w,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(_icons[index]),
-                                            const SpaceWidth(),
-                                            Text(
-                                              _titles[index].tr(),
-                                              style: TextStyle(
-                                                  fontSize: AppSizes.size_16,
-                                                  color: context.isDark
-                                                      ? highTextColorWhite
-                                                      : highTextColor,
-                                                  fontWeight:
-                                                      AppFontWeight.w_500),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      side: selectedChipIndex == index
-                                          ? BorderSide(
-                                              color: primaryColor, width: 1)
-                                          : BorderSide.none,
-                                      showCheckmark: false,
-                                      selectedColor:
-                                          primaryColor.withOpacity(0.2),
-                                      visualDensity:
-                                          VisualDensity.adaptivePlatformDensity,
-                                      disabledColor: context.isDark
-                                          ? jinsBlackColor
-                                          : jinsColor,
-                                      selected: selectedChipIndex == index,
-                                    );
-                                  }),
-                                ),
-                              ),
                               BlocBuilder<NamozTimeBloc, NamozTimeState>(
                                 builder: (context, state) {
                                   return Column(
@@ -726,7 +675,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   );
                                 },
                               ),
-                              const SpaceHeight()
                             ]),
                       ),
                     ],

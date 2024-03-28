@@ -128,7 +128,7 @@ Azonning hammasini eshitib bo'lganidan keyin Rasulullohga salovot aytib, ortidan
 
 اللهُمَّ افْتَحْ لِي أبْوَابَ رَحْمَتِكَ
 
- «Allohummaftah liy abvaba rohmatik», deb aytsin.
+ «Allohumma aftah liy abvaba rohmatik», deb aytsin.
 
 (Ma'nosi: Ey Rabbim, bizga rahmat eshiklarini ochgin)
 

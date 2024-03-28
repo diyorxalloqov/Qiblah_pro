@@ -1,8 +1,4 @@
 import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/namoz/bloc/namoz_bloc.dart';
 
@@ -124,15 +120,14 @@ class _NamozPageState extends State<NamozPage> {
                                     ],
                                   ),
                                 ),
-                                Expanded(
-                                  child: Transform.rotate(
-                                      angle: -23.8 * pi / 180,
-                                      child: Image.asset(
-                                        AppImages.joynamoz,
-                                        fit: BoxFit.cover,
-                                        alignment: Alignment.centerRight,
-                                      )),
-                                )
+                                Transform.rotate(
+                                    angle: -23.8 * pi / 180,
+                                    child: Image.asset(
+                                      AppImages.joynamoz,
+                                      fit: BoxFit.cover,
+                                      width: 130,
+                                      alignment: Alignment.centerRight,
+                                    ))
                               ],
                             ),
                           ),

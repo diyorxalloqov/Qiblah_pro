@@ -4,5 +4,4 @@ class AppfontFamily {
   static final roboto = GoogleFonts.roboto();
   static final inter = GoogleFonts.inter();
   static final comforta = GoogleFonts.comfortaa();
-  
 }

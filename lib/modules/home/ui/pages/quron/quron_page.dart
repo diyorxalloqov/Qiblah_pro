@@ -14,6 +14,7 @@ class _QuronPageState extends State<QuronPage> with TickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
+    context.read<QuronBloc>().add(QuronSurahGetEvent());
     _tabController = TabController(length: 3, vsync: this);
     super.initState();
   }

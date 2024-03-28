@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class HomePage extends StatefulWidget {
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                 MediumText(
                     text:
                         '${('assalom_alekum').tr()} ${StorageRepository.getString(Keys.name)}'),
-                SizedBox(height: 5.h),
+                SizedBox(height: 4.h),
                 SmallText(text: "ibodatlaringiz_qabul_bolsin".tr())
               ],
             ),
@@ -93,8 +93,8 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, 'TimePage'),
             child: Container(
-              constraints: BoxConstraints(maxHeight: 145.h, minHeight: 128.h),
-              padding: EdgeInsets.only(left: 18.w, right: 18.w, top: 15.h),
+              constraints: BoxConstraints(maxHeight: 135.h),
+              padding: EdgeInsets.only(left: 18.w, right: 10.w),
               margin: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
                   color: context.isDark ? homeBlackMainColor : null,
@@ -109,66 +109,68 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _currentTime,
-                        style: TextStyle(
-                          fontSize: AppSizes.size_24,
-                          color: context.isDark ? Colors.white : highTextColor,
-                          fontWeight: AppFontWeight.w_700,
+                  Padding(
+                    padding: EdgeInsets.only(top: 16.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _currentTime,
+                          style: TextStyle(
+                            fontSize: he(AppSizes.size_24),
+                            color:
+                                context.isDark ? Colors.white : highTextColor,
+                            fontWeight: AppFontWeight.w_700,
+                          ),
                         ),
-                      ),
-                      const SpaceHeight(),
-                      BlocProvider.value(
-                        value: timeCountDownCubit,
-                        child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
-                          builder: (context, state) {
-                            return SizedBox(
-                              width: 150.w,
-                              child: BlocBuilder<TimeCountDownCubit,
-                                  TimeCountDownState>(
-                                builder: (context, state1) {
-                                  return Text(
-                                    currentNamozTime(state, state1),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: const TextStyle(
-                                      color: Color(0xFF6D7379),
-                                      fontSize: AppSizes.size_12,
-                                      fontWeight: AppFontWeight.w_400,
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
+                        const SpaceHeight(),
+                        BlocProvider.value(
+                          value: timeCountDownCubit,
+                          child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                            builder: (context, state) {
+                              return SizedBox(
+                                width: 150.w,
+                                child: BlocBuilder<TimeCountDownCubit,
+                                    TimeCountDownState>(
+                                  builder: (context, state1) {
+                                    return Text(
+                                      currentNamozTime(state, state1),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: const TextStyle(
+                                        color: Color(0xFF6D7379),
+                                        fontSize: AppSizes.size_12,
+                                        fontWeight: AppFontWeight.w_400,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      const SpaceHeight(),
-                      GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, 'TimePage'),
-                        child: Row(
+                        const SpaceHeight(),
+                        Row(
                           children: [
                             Text(
                               "barchasini_korish".tr(),
                               style: TextStyle(
                                   color: primaryColor,
                                   fontFamily: AppfontFamily.inter.fontFamily,
-                                  fontSize: AppSizes.size_14,
+                                  fontSize: he(AppSizes.size_14),
                                   fontWeight: AppFontWeight.w_700),
                             ),
                             const SpaceWidth(),
                             SvgPicture.asset(AppIcon.arrowRight,
                                 color: primaryColor, width: 30.w)
                           ],
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Spacer(),
                       Container(
@@ -180,35 +182,30 @@ class _HomePageState extends State<HomePage> {
                               : const Color(0xFFE3F6DC).withOpacity(0.3),
                           borderRadius: BorderRadius.circular(50.r),
                         ),
-                        child: Row(
-                          children: [
-                            FutureBuilder(
-                                future: context
-                                    .read<GeolocationCubit>()
-                                    .getChosenLocation(),
-                                builder: (context, snapshot) {
-                                  return Text(
-                                    snapshot.data?.region.toString() ??
-                                        'not found',
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      color: context.isDark
-                                          ? const Color(0xffB5B9BC)
-                                          : const Color(0xff6D7379),
-                                      fontSize: AppSizes.size_14,
-                                      fontFamily:
-                                          AppfontFamily.inter.fontFamily,
-                                      fontWeight: AppFontWeight.w_400,
-                                    ),
-                                  );
-                                }),
-                            const SpaceWidth(),
-                            SvgPicture.asset(AppIcon.location)
-                          ],
+                        child: Center(
+                          child: Row(
+                            children: [
+                              Text(
+                                StorageRepository.getString(Keys.region),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.justify,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: context.isDark
+                                      ? const Color(0xffB5B9BC)
+                                      : const Color(0xff6D7379),
+                                  fontSize: AppSizes.size_14,
+                                  fontFamily: AppfontFamily.inter.fontFamily,
+                                  fontWeight: AppFontWeight.w_400,
+                                ),
+                              ),
+                              SizedBox(width: 1.w),
+                              SvgPicture.asset(AppIcon.location)
+                            ],
+                          ),
                         ),
                       ),
+                      SizedBox(height: 1.h),
                       SvgPicture.asset(AppIcon.moshid, width: 100.w),
                     ],
                   )
@@ -217,7 +214,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            constraints: BoxConstraints(maxHeight: 180.h, minHeight: 161.h),
+            constraints: BoxConstraints(maxHeight: 161.h),
             padding:
                 EdgeInsets.only(bottom: 18.h, top: 18.h, right: 12, left: 12.w),
             decoration: ShapeDecoration(
@@ -234,7 +231,7 @@ class _HomePageState extends State<HomePage> {
                       "bizning_xizmatlar".tr(),
                       style: TextStyle(
                           color: context.isDark ? Colors.white : highTextColor,
-                          fontSize: AppSizes.size_16,
+                          fontSize: he(AppSizes.size_16),
                           fontFamily: AppfontFamily.comforta.fontFamily,
                           fontWeight: AppFontWeight.w_700),
                     ),
@@ -247,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                                 color: primaryColor,
                                 fontFamily: AppfontFamily.inter.fontFamily,
-                                fontSize: AppSizes.size_14,
+                                fontSize: he(AppSizes.size_14),
                                 fontWeight: AppFontWeight.w_700),
                           ),
                           const SpaceWidth(),
@@ -266,8 +263,7 @@ class _HomePageState extends State<HomePage> {
                         itemCount: 5,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: EdgeInsets.only(
-                                left: index == 4 ? 10.w : 20.w, right: 5.w),
+                            padding: EdgeInsets.only(left: 20.w, right: 5.w),
                             child: InkWell(
                               onTap: () => Navigator.pushNamed(
                                   context, _itemPages[index]),
@@ -293,7 +289,16 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   SizedBox(height: 5.h),
-                                  Text(_names[index].tr())
+                                  Text(
+                                    _names[index].tr(),
+                                    style: TextStyle(
+                                        color: context.isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            AppfontFamily.inter.fontFamily,
+                                        fontSize: AppSizes.size_12),
+                                  )
                                 ],
                               ),
                             ),
@@ -306,8 +311,9 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
             child: Text(
               "kunlik_ilm".tr(),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: AppSizes.size_16,
+                fontFamily: AppfontFamily.comforta.fontFamily,
                 fontWeight: AppFontWeight.w_700,
               ),
             ),
@@ -315,12 +321,13 @@ class _HomePageState extends State<HomePage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              ///// dash list
               Column(
                 children: [
-                  SpaceHeight(height: 130.h),
+                  SpaceHeight(height: 108.h),
                   Column(
                     children: List.generate(
-                        11 + 1,
+                        7 + 1,
                         (index) => Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10.w),
                               child: Column(
@@ -335,50 +342,58 @@ class _HomePageState extends State<HomePage> {
                                         shape: const OvalBorder()),
                                   ),
                                   Dash(
-                                    dashThickness: 2,
-                                    direction: Axis.vertical,
-                                    length: context.height * 0.29,
-                                    /*  */
-                                    dashBorderRadius: 10,
-                                    dashLength: 10,
-                                    dashGap: 10,
-                                    dashColor: primaryColor,
-                                  ),
+                                      dashThickness: 2,
+                                      direction: Axis.vertical,
+                                      length: he(250),
+                                      /*  */
+                                      dashBorderRadius: 10,
+                                      dashLength: 10,
+                                      dashGap: 10,
+                                      dashColor: primaryColor),
+                                  if (index == 7)
+                                    Container(
+                                      height: 18,
+                                      width: 18,
+                                      decoration: ShapeDecoration(
+                                          color: context.isDark
+                                              ? primaryColor
+                                              : const Color(0xffD1F3E1),
+                                          shape: const OvalBorder()),
+                                    )
                                 ],
                               ),
                             )),
                   ),
                 ],
               ),
-              Column(
-                children: List.generate(
-                    11,
-                    (index) => Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (index == 0)
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(context, 'newsDetail');
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      bottom: context.bottom + 10),
-                                  height: context.height * 0.3,
-                                  width: context.width * 0.85,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12.r),
-                                      color: context.isDark
-                                          ? homeBlackMainColor
-                                          : Colors.grey),
-                                ),
-                              ),
-                            const CardWidget(),
-                          ],
-                        )),
-              )
+
+              /// card list
+              Flexible(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(10, (index) {
+                    if (index == 0) {
+                      return GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, 'newsDetail'),
+                        child: Container(
+                          height: he(234),
+                          margin: EdgeInsets.only(right: 12.w),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                              color: context.isDark
+                                  ? homeBlackMainColor
+                                  : Colors.grey),
+                        ),
+                      );
+                    }
+                    return const CardWidget();
+                  }),
+                ),
+              ),
             ],
-          )
+          ),
+          SizedBox(height: he(60))
         ],
       ),
     );

@@ -60,9 +60,11 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      canPop: true,
       onPopInvoked: (didPop) {
-        _isKeyboardAppear = false;
-        _isTextFieldFocused = false;
+        didPop ? _isKeyboardAppear = false : null;
+        didPop ? _isTextFieldFocused = false : null;
+        setState(() {});
       },
       child: SingleChildScrollView(
         child: Container(
@@ -72,7 +74,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                   topLeft: Radius.circular(18.r),
                   topRight: Radius.circular(18.r))),
           width: double.infinity,
-          height: _isKeyboardAppear || _isTextFieldFocused ? 700.h : 500.h,
+          height: _isKeyboardAppear || _isTextFieldFocused ? he(650) : null,
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 30.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +84,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppfontFamily.comforta.copyWith(
-                    fontSize: AppSizes.size_24,
+                    fontSize: he(AppSizes.size_28),
                     fontWeight: AppFontWeight.w_700,
                     color: context.isDark ? highTextWhiteColor : highTextColor),
               ),
@@ -100,14 +102,17 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                     },
                     focusNode: _focusNode,
                     controller: _nameController,
+                    keyboardAppearance:
+                        context.isDark ? Brightness.dark : Brightness.light,
                     decoration: InputDecoration(
                       filled: true,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 18.w, vertical: 14.h),
                       hintText: 'ismingizni_yozing'.tr(),
                       hintStyle: TextStyle(
-                        fontSize: AppSizes.size_16,
-                        fontWeight: AppFontWeight.w_400,
-                        color: textFormFieldHintColor,
-                      ),
+                          fontSize: he(AppSizes.size_16),
+                          fontWeight: AppFontWeight.w_400,
+                          color: textFormFieldHintColor),
                       fillColor: context.isDark
                           ? textFormFieldFillColorBlack
                           : textFormFieldFillColor,
@@ -134,7 +139,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
               SmallText(text: 'jins_promt'.tr()),
               const SpaceHeight(),
               SizedBox(
-                height: 60.h,
+                height: 50.h,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: List.generate(2, (index) {
@@ -142,7 +147,6 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                       backgroundColor:
                           context.isDark ? jinsBlackColor : jinsColor,
                       label: SizedBox(
-                        height: 45.h,
                         width: 130.w,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -185,9 +189,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                   }),
                 ),
               ),
-              const SpaceHeight(),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
+                padding: EdgeInsets.only(top: 20.h),
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   child: ElevatedButton(

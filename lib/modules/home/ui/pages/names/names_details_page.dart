@@ -11,32 +11,70 @@ class NamesDetailsPage extends StatefulWidget {
 }
 
 class _NamesDetailsPageState extends State<NamesDetailsPage> {
+  late ScrollController _controller;
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+    _controller.addListener(() {
+      final contentSize = _controller.position.viewportDimension +
+          _controller.position.maxScrollExtent;
+      final target = contentSize *
+          widget.namesDetailsArgument.index /
+          widget.namesDetailsArgument.namesBloc.state.namesModel.length;
+      _controller.position.animateTo(
+        target,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _controller.addListener(() {
+      final contentSize = _controller.position.viewportDimension +
+          _controller.position.maxScrollExtent;
+      final target = contentSize *
+          widget.namesDetailsArgument.index /
+          widget.namesDetailsArgument.namesBloc.state.namesModel.length;
+      _controller.position.animateTo(
+        target,
+        duration: const Duration(seconds: 1),
+        curve: Curves.easeInOut,
+      );
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppbar(context, 'ficha_99_names'.tr()),
         body: ListView.builder(
+            controller: _controller,
             itemCount:
                 widget.namesDetailsArgument.namesBloc.state.namesModel.length,
             itemBuilder: (context, index) {
-              return SS(
+              return Item(
                   index: index,
                   namesDetailsArgument: widget.namesDetailsArgument);
             }));
   }
 }
 
-class SS extends StatefulWidget {
+class Item extends StatefulWidget {
   final NamesDetailsArgument namesDetailsArgument;
   final int index;
-  const SS(
+  const Item(
       {super.key, required this.index, required this.namesDetailsArgument});
 
   @override
-  State<SS> createState() => _SSState();
+  State<Item> createState() => _ItemState();
 }
 
-class _SSState extends State<SS> with WidgetsBindingObserver {
+class _ItemState extends State<Item> with WidgetsBindingObserver {
   final AudioPlayer player = AudioPlayer();
   String error = '';
   String exeption = '';
@@ -55,6 +93,9 @@ class _SSState extends State<SS> with WidgetsBindingObserver {
       // if the app resumes later, it will still remember what position to
       // resume from.
       player.stop();
+    }
+    if (state == AppLifecycleState.resumed) {
+      player.play();
     }
   }
 
@@ -80,7 +121,7 @@ class _SSState extends State<SS> with WidgetsBindingObserver {
     } catch (e) {
       print('Error initializing audio: $e');
       setState(() {
-        error = 'Audio yuklashda xatolik';
+        error = 'audio_error'.tr();
       });
     }
   }
@@ -107,7 +148,7 @@ class _SSState extends State<SS> with WidgetsBindingObserver {
       children: [
         Container(
           margin: const EdgeInsets.all(12.0),
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+          padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 5.h),
           decoration: BoxDecoration(
               color: context.isDark ? containerBlackColor : containerColor,
               borderRadius: BorderRadius.circular(12.r)),

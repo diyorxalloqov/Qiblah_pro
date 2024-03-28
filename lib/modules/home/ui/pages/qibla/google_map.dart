@@ -21,10 +21,7 @@ class MapSampleState extends State<SmallGoogleMap> {
   double longitude = StorageRepository.getDouble(Keys.longitude);
   double latitude = StorageRepository.getDouble(Keys.latitude);
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(41.311081, 69.240562),
-    zoom: 14.4746,
-  );
+  late CameraPosition _kGooglePlex;
 
   // static const CameraPosition _kLake = CameraPosition(
   //     bearing: 192.8334901395799,
@@ -56,6 +53,13 @@ class MapSampleState extends State<SmallGoogleMap> {
 
   @override
   void initState() {
+    _kGooglePlex =
+        CameraPosition(target: LatLng(longitude, latitude), zoom: 14.4746);
+    // _addMarkers(point, markerName)
+    _drawPolyline(
+      initialPoint: LatLng(latitude, longitude),
+      destinationPoint: LatLng(21.4224779, 39.8251832),
+    );
     super.initState();
   }
 
@@ -71,51 +75,31 @@ class MapSampleState extends State<SmallGoogleMap> {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-        onTap: (point) {
-          _addMarkers(point, "Destination");
-          _drawPolyline(
-              initialPoint: LatLng(latitude, longitude),
-              destinationPoint: point);
-        },
         polylines: Set<Polyline>.of(polylines.values),
       ),
     );
   }
-
-  // Future<void> _goToTheMyLocation() async {
-  //   LocationData newLocation = await location.getLocation();
-  //   final GoogleMapController controller = await _controller.future;
-  //   await controller.animateCamera(
-  //     CameraUpdate.newCameraPosition(
-  //       CameraPosition(
-  //           target: LatLng(
-  //             newLocation.latitude!,
-  //             newLocation.longitude!,
-  //           ),
-  //           zoom: 20),
-  //     ),
-  //   );
-  // }
 
   Future<void> _drawPolyline(
       {required LatLng initialPoint, required LatLng destinationPoint}) async {
     polylines.clear();
     polylineCoordinates.clear();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        "AIzaSyBxYMqIM6G4C5SIWroVFvbZ-7Qpu8AFOvM",
-        PointLatLng(initialPoint.latitude, initialPoint.longitude),
-        PointLatLng(destinationPoint.latitude, destinationPoint.longitude),
-        travelMode: TravelMode.walking);
+      'AIzaSyBay6Nv53J-zanMHUf2Jt-bu63P3fgtr-k',
+      PointLatLng(initialPoint.latitude, initialPoint.longitude),
+      PointLatLng(destinationPoint.latitude, destinationPoint.longitude),
+      travelMode: TravelMode.walking,
+    );
 
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       }
 
-      PolylineId id = const PolylineId('polyline');
+      PolylineId id = PolylineId('polyline');
       Polyline polyline = Polyline(
         polylineId: id,
-        color: Colors.red,
+        color: Colors.black,
         points: polylineCoordinates,
         width: 4,
       );
@@ -125,4 +109,33 @@ class MapSampleState extends State<SmallGoogleMap> {
       });
     }
   }
+
+  // Future<void> _drawPolyline(
+  //     {required LatLng initialPoint, required LatLng destinationPoint}) async {
+  //   polylines.clear();
+  //   polylineCoordinates.clear();
+  //   PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+  //       "AIzaSyBxYMqIM6G4C5SIWroVFvbZ-7Qpu8AFOvM",
+  //       PointLatLng(initialPoint.latitude, initialPoint.longitude),
+  //       PointLatLng(destinationPoint.latitude, destinationPoint.longitude),
+  //       travelMode: TravelMode.walking);
+
+  //   if (result.points.isNotEmpty) {
+  //     for (var point in result.points) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     }
+
+  //     PolylineId id = const PolylineId('polyline');
+  //     Polyline polyline = Polyline(
+  //       polylineId: id,
+  //       color: Colors.red,
+  //       points: polylineCoordinates,
+  //       width: 4,
+  //     );
+
+  //     setState(() {
+  //       polylines[id] = polyline;
+  //     });
+  //   }
+  // }
 }

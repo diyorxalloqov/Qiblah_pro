@@ -10,8 +10,9 @@ class HighText extends StatelessWidget {
       text,
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
-      style: AppfontFamily.comforta.copyWith(
-          fontSize: AppSizes.size_28,
+      style: TextStyle(
+          fontFamily: AppfontFamily.comforta.fontFamily,
+          fontSize: he(AppSizes.size_28),
           fontWeight: AppFontWeight.w_700,
           color: context.isDark ? highTextWhiteColor : highTextColor),
     );

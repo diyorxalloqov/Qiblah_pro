@@ -19,7 +19,6 @@ class Keys {
   static const String country = 'country';
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';
-  static const String isPrecise = 'isPrecise';
   static const String isMan = 'isMan';
   static const String name = 'name';
   static const String notification = 'notification';

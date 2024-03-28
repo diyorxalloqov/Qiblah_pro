@@ -51,7 +51,6 @@ class QuronService {
         for (var element in dataList) {
           await QuronDBService().insertOyatList(element);
         }
-
         print(dataList);
         return right(dataList);
       } else {

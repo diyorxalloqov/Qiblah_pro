@@ -1,7 +1,6 @@
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/profile/bloc/profile_bloc.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/password_bottomsheet.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -167,8 +166,8 @@ class _EditProfilePageState extends State<EditProfilePage>
                               alignment: Alignment.centerRight,
                               children: [
                                 Container(
-                                    width: 100.r,
-                                    height: 100.r,
+                                    width: 90.r,
+                                    height: 90.r,
                                     decoration: ShapeDecoration(
                                       image: state.imagePath.isEmpty
                                           ? null
@@ -212,7 +211,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                             ),
                           ),
                         ),
-                        SpaceHeight(height: 20.h),
+                        SpaceHeight(height: 24.h),
                         SmallText(text: 'ismingiz_nima'.tr()),
                         Form(
                           key: _key,
@@ -227,25 +226,36 @@ class _EditProfilePageState extends State<EditProfilePage>
                                     filled: true,
                                     hintText: 'ismingizni_yozing'.tr(),
                                     hintStyle: TextStyle(
-                                      fontSize: AppSizes.size_16,
-                                      fontWeight: AppFontWeight.w_400,
-                                      color: textFormFieldHintColor,
+                                        fontSize: AppSizes.size_16,
+                                        fontWeight: AppFontWeight.w_400,
+                                        color: textFormFieldHintColor),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey.shade300,
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(12.0),
                                     ),
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 16.w),
+                                    constraints:
+                                        BoxConstraints(maxHeight: 48.h),
                                     fillColor: context.isDark
                                         ? textFormFieldFillColorBlack
                                         : Colors.white,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: context.isDark
                                           ? BorderSide.none
-                                          : const BorderSide(
-                                              color: Colors.grey, width: 1),
+                                          : BorderSide(
+                                              color: Colors.grey.shade300,
+                                              width: 1),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                     border: OutlineInputBorder(
                                       borderSide: context.isDark
                                           ? BorderSide.none
-                                          : const BorderSide(
-                                              color: Colors.grey, width: 1),
+                                          : BorderSide(
+                                              color: Colors.grey.shade300,
+                                              width: 1),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                   ),
@@ -267,10 +277,9 @@ class _EditProfilePageState extends State<EditProfilePage>
                                   filled: true,
                                   hintText: 'telefon_raqam'.tr(),
                                   hintStyle: TextStyle(
-                                    fontSize: AppSizes.size_16,
-                                    fontWeight: AppFontWeight.w_400,
-                                    color: textFormFieldHintColor,
-                                  ),
+                                      fontSize: AppSizes.size_16,
+                                      fontWeight: AppFontWeight.w_400,
+                                      color: textFormFieldHintColor),
                                   prefixIcon: TextButton(
                                       onPressed: () async {
                                         final picked =
@@ -296,15 +305,25 @@ class _EditProfilePageState extends State<EditProfilePage>
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: context.isDark
                                         ? BorderSide.none
-                                        : const BorderSide(
-                                            color: Colors.grey, width: 1),
+                                        : BorderSide(
+                                            color: Colors.grey.shade300,
+                                            width: 1),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey.shade300, width: 1),
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 16.w),
+                                  constraints: BoxConstraints(maxHeight: 48.h),
                                   border: OutlineInputBorder(
                                     borderSide: context.isDark
                                         ? BorderSide.none
-                                        : const BorderSide(
-                                            color: Colors.grey, width: 1),
+                                        : BorderSide(
+                                            color: Colors.grey.shade300,
+                                            width: 1),
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                 ),
@@ -320,7 +339,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                         ),
                         SpaceHeight(height: 24.h),
                         SizedBox(
-                          height: 60.h,
+                          height: 50.h,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: List.generate(2, (index) {
@@ -329,7 +348,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                                     ? jinsBlackColor
                                     : Colors.white,
                                 label: SizedBox(
-                                  height: 45.h,
                                   width: 130.w,
                                   child: Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -385,7 +403,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                           },
                           borderRadius: BorderRadius.circular(12.r),
                           child: Container(
-                            height: context.height * 0.07,
+                            height: he(48),
                             decoration: BoxDecoration(
                                 color: smallTextColor.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(12.r)),

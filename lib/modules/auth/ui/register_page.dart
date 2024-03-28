@@ -93,78 +93,92 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: context.isDark ? const Color(0xff153125) : null,
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.only(top: 30.h),
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: context.isDark
-                      ? loginRegisterBlackGradient
-                      : loginRegisterGradient,
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Container(
+            height: context.height,
+            width: context.width,
+            padding: EdgeInsets.only(top: 31.h),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: context.isDark
+                        ? loginRegisterBlackGradient
+                        : loginRegisterGradient,
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft)),
             child: Column(
               children: [
-                SizedBox(
-                  height: context.height * 0.25,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            children: [
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
-                              SpaceWidth(),
-                            ],
-                          ),
-                          CircleAvatar(
-                              radius: 88.r,
-                              backgroundColor: context.isDark
-                                  ? const Color(0xff232C37)
-                                  : Colors.white,
-                              child: Center(
-                                child: SvgPicture.asset(AppIcon.appLogo,
-                                    width: 50),
-                              )),
-                          BlocListener<AuthBloc, AuthState>(
-                            listener: (context, state) {
-                              if (state.status1 == ActionStatus.isSuccess) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, 'bottomNavbar', (route) => false);
-                              } else if (state.status1 ==
-                                  ActionStatus.isError) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(state.error)));
-                              }
-                            },
-                            child: GestureDetector(
-                                onTap: () {
-                                  context.read<AuthBloc>().add(
-                                      RegisterTemporaryEvent(
-                                          countryCode: countryCode));
-                                },
-                                child: SvgPicture.asset(context.isDark
-                                    ? AppIcon.cancelBlack
-                                    : AppIcon.cancel)),
-                          )
-                        ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Row(
+                      children: [
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                        SpaceWidth(),
+                      ],
+                    ),
+                    CircleAvatar(
+                        radius: 61.r,
+                        backgroundColor: context.isDark
+                            ? const Color(0xff232C37)
+                            : Colors.white,
+                        child: Center(
+                            child: SvgPicture.asset(AppIcon.appLogo,
+                                width: 40.w))),
+                    BlocListener<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state.status1 == ActionStatus.isSuccess) {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, 'bottomNavbar', (route) => false);
+                        } else if (state.status1 == ActionStatus.isError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.error)));
+                        }
+                      },
+                      child: BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return GestureDetector(
+                              onTap: () {
+                                context.read<AuthBloc>().add(
+                                    RegisterTemporaryEvent(
+                                        countryCode: countryCode));
+                              },
+                              child: state.status1 == ActionStatus.isLoading
+                                  ? Container(
+                                      height: 24,
+                                      width: 24,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                          color: context.isDark
+                                              ? Colors.black
+                                              : Colors.white),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child:
+                                            CircularProgressIndicator.adaptive(
+                                                backgroundColor: Colors.blue),
+                                      ))
+                                  : SvgPicture.asset(context.isDark
+                                      ? AppIcon.cancelBlack
+                                      : AppIcon.cancel));
+                        },
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
+                const Spacer(),
                 Column(
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 12.w, vertical: 20.h),
+                          horizontal: 12.w, vertical: 28.h),
                       decoration: BoxDecoration(
                         color: context.isDark
                             ? bottomSheetBackgroundBlackColor
-                            : bottomSheetBackgroundColor,
+                            : Colors.white,
                         borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(18),
                             topRight: Radius.circular(18)),
@@ -194,14 +208,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                     // ],
                                     decoration: InputDecoration(
                                       filled: true,
-                                      fillColor: context.isDark
-                                          ? textFormFieldFillColorBlack
-                                          : const Color(0xffE3E7EA),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          horizontal: wi(16)),
+                                      constraints:
+                                          BoxConstraints(maxHeight: he(48)),
+                                     fillColor: context.isDark
+                                      ? textFormFieldFillColorBlack
+                                      : const Color(0xffE3E7EA),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: context.isDark
+                                            ? BorderSide.none
+                                            : const BorderSide(
+                                                color: Color(0xffE3E7EA),
+                                                width: 1),
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                      ),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: context.isDark
                                             ? BorderSide.none
                                             : const BorderSide(
-                                                color: Colors.grey, width: 1),
+                                                color: Color(0xffE3E7EA),
+                                                width: 1),
                                         borderRadius:
                                             BorderRadius.circular(12.0),
                                       ),
@@ -209,7 +237,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         borderSide: context.isDark
                                             ? BorderSide.none
                                             : const BorderSide(
-                                                color: Colors.grey, width: 1),
+                                                color: Color(0xffE3E7EA),
+                                                width: 1),
                                         borderRadius:
                                             BorderRadius.circular(12.0),
                                       ),
@@ -236,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           )),
                                       hintText: 'telefon_raqam'.tr(),
                                       hintStyle: TextStyle(
-                                        fontSize: AppSizes.size_16,
+                                        fontSize: he(AppSizes.size_16),
                                         fontWeight: AppFontWeight.w_400,
                                         color: textFormFieldHintColor,
                                       ),
@@ -248,7 +277,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       return null;
                                     },
                                   ),
-                                  SpaceHeight(height: 15.h),
+                                  SpaceHeight(height: 24.h),
                                   SmallText(text: 'parol'.tr()),
                                   const SpaceHeight(),
                                   TextFormField(
@@ -258,14 +287,28 @@ class _RegisterPageState extends State<RegisterPage> {
                                     obscuringCharacter: "*",
                                     decoration: InputDecoration(
                                         filled: true,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: wi(16)),
+                                        constraints:
+                                            BoxConstraints(maxHeight: he(48)),
                                         fillColor: context.isDark
                                             ? textFormFieldFillColorBlack
-                                            : const Color(0xffE3E7EA),
+                                            : const Color(0xffF5F4FA),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: context.isDark
+                                              ? BorderSide.none
+                                              : const BorderSide(
+                                                  color: Color(0xffE3E7EA),
+                                                  width: 1),
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: context.isDark
                                               ? BorderSide.none
                                               : const BorderSide(
-                                                  color: Colors.grey, width: 1),
+                                                  color: Color(0xffE3E7EA),
+                                                  width: 1),
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                         ),
@@ -273,7 +316,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                           borderSide: context.isDark
                                               ? BorderSide.none
                                               : const BorderSide(
-                                                  color: Colors.grey, width: 1),
+                                                  color: Color(0xffE3E7EA),
+                                                  width: 1),
                                           borderRadius:
                                               BorderRadius.circular(12.0.r),
                                         ),
@@ -286,11 +330,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 },
                                                 icon: passwordVisibile
                                                     ? const Icon(
-                                                        Icons.visibility_off)
+                                                        Icons.visibility_off,
+                                                        color:
+                                                            Color(0xff6D7379))
                                                     : const Icon(
-                                                        Icons.visibility))),
+                                                        Icons.visibility,
+                                                        color: Color(
+                                                            0xff6D7379)))),
                                         hintStyle: TextStyle(
-                                          fontSize: AppSizes.size_16,
+                                          fontSize: he(AppSizes.size_16),
                                           fontWeight: AppFontWeight.w_400,
                                           color: textFormFieldHintColor,
                                         ),
@@ -305,7 +353,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ],
                               ),
                             ),
-                            SpaceHeight(height: 15.h),
+                            SpaceHeight(height: 26.h),
                             BlocListener<AuthBloc, AuthState>(
                               listener: (context, state) {
                                 state.status == ActionStatus.isSuccess
@@ -327,7 +375,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       onPressed: () async {
                                         if (_key.currentState!.validate()) {
                                           context.read<AuthBloc>().add(
-                                              RegisterEvent('sasa@gmail.com',
+                                              RegisterEvent('not have',
                                                   countryCode: countryCode,
                                                   phoneNumber:
                                                       _phoneController.text,
@@ -348,19 +396,21 @@ class _RegisterPageState extends State<RegisterPage> {
                                             ? const CircularProgressIndicator
                                                 .adaptive(
                                                 backgroundColor: Colors.white)
-                                            : Text("royxatdan_otish".tr(),
+                                            : Text(
+                                                "royxatdan_otish".tr(),
                                                 style: TextStyle(
                                                     color: buttonNameColor,
                                                     fontFamily: AppfontFamily
                                                         .inter.fontFamily,
-                                                    fontSize: AppSizes.size_16,
+                                                    fontSize:
+                                                        he(AppSizes.size_16),
                                                     fontWeight:
                                                         AppFontWeight.w_600)),
                                       ));
                                 },
                               ),
                             ),
-                            const SpaceHeight(),
+                            SpaceHeight(height: 12.h),
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -387,6 +437,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     ),
                                   ),
                                 ]),
+                            SpaceHeight(height: 12.h),
                             Row(
                               children: [
                                 const Expanded(child: Divider()),
@@ -403,6 +454,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 const Expanded(child: Divider())
                               ],
                             ),
+                            SpaceHeight(height: 12.h),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [

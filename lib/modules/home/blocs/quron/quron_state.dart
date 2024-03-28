@@ -3,7 +3,7 @@ part of 'quron_bloc.dart';
 class QuronState extends Equatable {
   final ActionStatus status;
   final ActionStatus status1;
-
+  final String error1;
   final String error;
   final List<QuronModel> quronModel;
   final double? quronSize;
@@ -13,6 +13,7 @@ class QuronState extends Equatable {
 
   const QuronState(
       {this.error = '',
+      this.error1 = '',
       this.status1 = ActionStatus.isInitial,
       this.quronModel = const [],
       this.textEnum,
@@ -24,6 +25,7 @@ class QuronState extends Equatable {
   QuronState copyWith(
       {ActionStatus? status,
       String? error,
+      String? error1,
       double? quronSize,
       ActionStatus? status1,
       double? textSize,
@@ -32,6 +34,7 @@ class QuronState extends Equatable {
       List<QuronModel>? quronModel}) {
     return QuronState(
         error: error ?? this.error,
+        error1: error1 ?? this.error1,
         status1: status1 ?? this.status1,
         quronSize: quronSize ?? this.quronSize,
         textSize: textSize ?? this.textSize,
@@ -45,10 +48,12 @@ class QuronState extends Equatable {
   List<Object?> get props => [
         status,
         error,
+        error1,
         quronModel,
         oyatModel,
         quronSize,
         textSize,
-        textEnum
+        textEnum,
+        status1
       ];
 }

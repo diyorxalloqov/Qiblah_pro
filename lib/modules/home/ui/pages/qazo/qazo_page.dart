@@ -84,6 +84,7 @@ class _QazoPageState extends State<QazoPage> {
                   const SpaceHeight(),
                   QazoCardWidget(
                     icon: AppIcon.bomdod,
+                    color: qazoDiagramColor[0],
                     qazoCount: state.bomdod.toString(),
                     title: 'bomdod'.tr(),
                     increment: () =>
@@ -92,6 +93,7 @@ class _QazoPageState extends State<QazoPage> {
                         qazobloc.add(const BomdodEvent(isIncrement: false)),
                   ),
                   QazoCardWidget(
+                    color: qazoDiagramColor[1],
                     icon: AppIcon.peshin,
                     qazoCount: state.peshin.toString(),
                     title: 'peshin'.tr(),
@@ -101,6 +103,7 @@ class _QazoPageState extends State<QazoPage> {
                         qazobloc.add(const PeshinEvent(isIncrement: false)),
                   ),
                   QazoCardWidget(
+                    color: qazoDiagramColor[2],
                     icon: AppIcon.asr,
                     qazoCount: state.asr.toString(),
                     title: 'asr'.tr(),
@@ -110,6 +113,7 @@ class _QazoPageState extends State<QazoPage> {
                         qazobloc.add(const AsrEvent(isIncrement: false)),
                   ),
                   QazoCardWidget(
+                    color: qazoDiagramColor[3],
                     icon: AppIcon.shom,
                     qazoCount: state.shom.toString(),
                     title: 'shom'.tr(),
@@ -119,6 +123,7 @@ class _QazoPageState extends State<QazoPage> {
                         qazobloc.add(const ShomEvent(isIncrement: false)),
                   ),
                   QazoCardWidget(
+                    color: qazoDiagramColor[4],
                     icon: AppIcon.xufton_vitr,
                     qazoCount: state.xufton.toString(),
                     title: 'xufton'.tr(),

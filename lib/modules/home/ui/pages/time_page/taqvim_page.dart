@@ -1,10 +1,5 @@
-import 'package:hijri/hijri_calendar.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/blocs/namoz_time/namoz_time_bloc.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/cubit/geolocation_cubit.dart';
-import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
-import 'package:qiblah_pro/utils/extension/theme.dart';
 
 class TaqvimPage extends StatefulWidget {
   const TaqvimPage({super.key});
@@ -104,24 +99,17 @@ class _TaqvimPageState extends State<TaqvimPage> {
                         children: [
                           SvgPicture.asset(AppIcon.location, width: 20),
                           const SpaceWidth(),
-                          FutureBuilder(
-                              future: context
-                                  .read<GeolocationCubit>()
-                                  .getChosenLocation(),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  snapshot.data?.region.toString() ??
-                                      'not found',
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: AppSizes.size_16,
-                                    fontFamily: AppfontFamily.inter.fontFamily,
-                                    fontWeight: AppFontWeight.w_400,
-                                  ),
-                                );
-                              }),
+                          Text(
+                            StorageRepository.getString(Keys.region),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: AppSizes.size_16,
+                              fontFamily: AppfontFamily.inter.fontFamily,
+                              fontWeight: AppFontWeight.w_400,
+                            ),
+                          )
                         ],
                       ),
                       const SpaceHeight(),
