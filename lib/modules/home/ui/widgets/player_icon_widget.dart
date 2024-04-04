@@ -14,9 +14,9 @@ class PlayerIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      radius: 25.r,
+      radius: 16.r,
       child: CircleAvatar(
-        radius: 25.r,
+        radius: 16.r,
         backgroundColor: backColor,
         child: Center(child: icon),
       ),

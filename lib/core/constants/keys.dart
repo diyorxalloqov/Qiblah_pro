@@ -15,7 +15,7 @@ class Keys {
   static const String calculatingTimeType = 'calculating_time_type';
   static const String madhab = 'madhab';
   static const String setHighLatitudeRule = 'setHighLatitudeRule';
-  static const String region = 'region';
+  static const String capital = 'capital';
   static const String country = 'country';
   static const String latitude = 'latitude';
   static const String longitude = 'longitude';

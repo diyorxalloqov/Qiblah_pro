@@ -117,6 +117,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                 style: TextStyle(
                     fontFamily: AppfontFamily.comforta.fontFamily,
                     fontWeight: AppFontWeight.w_700,
+                    color: context.isDark ? Colors.white : Colors.black,
                     fontSize: AppSizes.size_18),
               ),
               actions: [
@@ -168,7 +169,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
             body: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.all(12.0),
+                  margin: const EdgeInsets.symmetric(vertical: 12.0),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                   decoration: BoxDecoration(
@@ -183,6 +184,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                         style: TextStyle(
                             fontFamily: AppfontFamily.inter.fontFamily,
                             fontSize: AppSizes.size_24,
+                            color: context.isDark ? Colors.white : Colors.black,
                             fontWeight: AppFontWeight.w_500),
                       ),
                       const SpaceHeight(),
@@ -190,6 +192,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                         data.title.toString(),
                         style: TextStyle(
                             fontFamily: AppfontFamily.inter.fontFamily,
+                            color: context.isDark ? Colors.white : Colors.black,
                             fontSize: AppSizes.size_16,
                             fontWeight: AppFontWeight.w_500),
                       ),
@@ -207,15 +210,15 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             fontFamily: AppfontFamily.inter.fontFamily,
                             fontWeight: AppFontWeight.w_500),
                       ),
-                      const SpaceHeight(),
+                      SpaceHeight(height: 50.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {},
-                            radius: 25.r,
+                            radius: 16.r,
                             child: CircleAvatar(
-                              radius: 25.r,
+                              radius: 16.r,
                               backgroundColor: context.isDark
                                   ? circleAvatarBlackColor
                                   : circleAvatarColor,
@@ -231,9 +234,9 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             onTap: () {
                               FlutterShare.share(title: 'title');
                             },
-                            radius: 25.r,
+                            radius: 16.r,
                             child: CircleAvatar(
-                              radius: 25.r,
+                              radius: 16.r,
                               backgroundColor: context.isDark
                                   ? circleAvatarBlackColor
                                   : circleAvatarColor,
@@ -259,11 +262,14 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                       ProcessingState.buffering ||
                                   isDownloading) {
                                 return CircleAvatar(
-                                  radius: 25.r,
+                                  radius: 16.r,
                                   backgroundColor: primaryColor,
-                                  child: const CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(4.0),
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
                                   ),
                                 );
                               } else if (playing != true || error.isNotEmpty) {
@@ -348,28 +354,43 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                           padding: const EdgeInsets.all(30.0),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.grey, width: 1)),
+                              border: Border.all(color: Colors.grey, width: 2)),
                           child: Column(
                             children: [
                               Text(zikrBloc.currentZikr.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 60,
-                                      fontWeight: FontWeight.bold)),
+                                  style: TextStyle(
+                                      fontSize: 60.sp,
+                                      color: context.isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontFamily:
+                                          AppfontFamily.comforta.fontFamily,
+                                      fontWeight: AppFontWeight.w_700)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "/$_selectedItem",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                        color: context.isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            AppfontFamily.comforta.fontFamily,
+                                        fontWeight: AppFontWeight.w_700),
                                   ),
                                   const SmallText(text: ' | '),
                                   Text(
                                     'x${zikrBloc.currentZikrOuterCount ?? 0}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 18,
-                                        fontWeight: FontWeight.bold),
+                                        color: context.isDark
+                                            ? Colors.white
+                                            : Colors.black,
+                                        fontFamily:
+                                            AppfontFamily.comforta.fontFamily,
+                                        fontWeight: AppFontWeight.w_700),
                                   ),
                                 ],
                               ),
@@ -383,7 +404,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             zikrBloc.add(IncrementZikr(index: index));
                             setState(() {});
                             if (_isTap) {
-                              Future.delayed(const Duration(milliseconds: 250),
+                              Future.delayed(const Duration(milliseconds: 160),
                                   () {
                                 _isTap = false;
                                 setState(() {});

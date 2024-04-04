@@ -1,7 +1,6 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ekran.dart';
 import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/korsatish.dart';
-import 'package:qiblah_pro/modules/home/ui/pages/quron/widget/categories/ovoz.dart';
 
 showSettingBottomSheet(BuildContext context) {
   showModalBottomSheet(
@@ -24,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage>
 
   @override
   void initState() {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -92,7 +91,7 @@ class _SettingsPageState extends State<SettingsPage>
                       tabs: [
                         Tab(text: 'ekran'.tr()),
                         Tab(text: 'korsatish'.tr()),
-                        Tab(text: 'ovoz'.tr()),
+                        // Tab(text: 'ovoz'.tr()),
                       ]),
                 ],
               ),
@@ -105,5 +104,8 @@ class _SettingsPageState extends State<SettingsPage>
         ));
   }
 
-  final List<Widget> _screens = const [Ekran(), Korsatish(), Ovoz()];
+  final List<Widget> _screens = const [
+    Ekran(),
+    Korsatish(), /* Ovoz() */
+  ];
 }

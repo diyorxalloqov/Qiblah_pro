@@ -18,7 +18,7 @@
         <!-- Metadata -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBay6Nv53J-zanMHUf2Jt-bu63P3fgtr-k" />
+            android:value="AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc"/>
 
         <!-- Receivers for Local Notifications -->
         <receiver

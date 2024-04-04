@@ -24,6 +24,14 @@ class AppTheme {
           BottomNavigationBarThemeData(backgroundColor: bottomNavbarColor),
       scaffoldBackgroundColor: scaffoldColor,
       cardColor: cardColor,
+      cupertinoOverrideTheme: CupertinoThemeData(
+          applyThemeToAll: true,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: scaffoldColor),
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+      }),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       bottomAppBarTheme: BottomAppBarTheme(color: bottomAppbarColor),
       appBarTheme: AppBarTheme(backgroundColor: appBarColor)
@@ -40,6 +48,16 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       bottomAppBarTheme: BottomAppBarTheme(color: bottomAppbarBlackColor),
       cardColor: cardBlackColor,
+      cupertinoOverrideTheme: CupertinoThemeData(
+          applyThemeToAll: true,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: scaffoldBlackColor),
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        TargetPlatform.android:
+            OpenUpwardsPageTransitionsBuilder(), //FadeUpwardsPageTransitionsBuilder  ZoomPageTransitionsBuilder
+        TargetPlatform.iOS:
+            CupertinoPageTransitionsBuilder(), //CupertinoFullScreenDialogTransitionBuilder
+      }),
       bottomNavigationBarTheme:
           BottomNavigationBarThemeData(backgroundColor: bottomNavbarBlackColor),
       appBarTheme: AppBarTheme(backgroundColor: appBarBlackColor),

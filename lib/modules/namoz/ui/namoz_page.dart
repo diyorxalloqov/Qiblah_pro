@@ -173,10 +173,12 @@ class _NamozPageState extends State<NamozPage> {
                                       ),
                                       const SpaceHeight(),
                                       SizedBox(
-                                          width: 190,
+                                          width: 180.w,
                                           child: Text(
                                             state.namozModel[2].description ??
                                                 '',
+                                            overflow: TextOverflow.clip,
+                                            maxLines: 2,
                                             style: TextStyle(
                                                 fontSize: AppSizes.size_12,
                                                 color: smallTextColor,

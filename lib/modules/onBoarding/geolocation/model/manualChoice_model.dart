@@ -35,20 +35,17 @@
 //     return '$region, $country';
 //   }
 // }
-
 class ManualChoserModel {
-  String? type;
-  List<Features>? features;
+  List<Results>? results;
   Query? query;
 
-  ManualChoserModel({this.type, this.features, this.query});
+  ManualChoserModel({this.results, this.query});
 
   ManualChoserModel.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    if (json['features'] != null) {
-      features = <Features>[];
-      json['features'].forEach((v) {
-        features!.add(Features.fromJson(v));
+    if (json['results'] != null) {
+      results = <Results>[];
+      json['results'].forEach((v) {
+        results!.add(Results.fromJson(v));
       });
     }
     query = json['query'] != null ? Query.fromJson(json['query']) : null;
@@ -56,9 +53,8 @@ class ManualChoserModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    if (features != null) {
-      data['features'] = features!.map((v) => v.toJson()).toList();
+    if (results != null) {
+      data['results'] = results!.map((v) => v.toJson()).toList();
     }
     if (query != null) {
       data['query'] = query!.toJson();
@@ -67,48 +63,16 @@ class ManualChoserModel {
   }
 }
 
-class Features {
-  String? type;
-  Properties? properties;
-  Geometry? geometry;
-  List<double>? bbox;
-
-  Features({this.type, this.properties, this.geometry, this.bbox});
-
-  Features.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    properties = json['properties'] != null
-        ? Properties.fromJson(json['properties'])
-        : null;
-    geometry = json['geometry'] != null
-        ? Geometry.fromJson(json['geometry'])
-        : null;
-    bbox = json['bbox'].cast<double>();
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    if (properties != null) {
-      data['properties'] = properties!.toJson();
-    }
-    if (geometry != null) {
-      data['geometry'] = geometry!.toJson();
-    }
-    data['bbox'] = bbox;
-    return data;
-  }
-}
-
-class Properties {
+class Results {
+  Datasource? datasource;
+  String? oldName;
   String? country;
   String? countryCode;
+  String? state;
   String? city;
   String? postcode;
-  Datasource? datasource;
   double? lon;
   double? lat;
-  int? population;
   String? resultType;
   String? formatted;
   String? addressLine1;
@@ -116,24 +80,20 @@ class Properties {
   String? category;
   Timezone? timezone;
   String? plusCode;
-  String? plusCodeShort;
   Rank? rank;
   String? placeId;
-  String? state;
-  String? county;
-  String? district;
-  String? hamlet;
-  String? stateCode;
+  Bbox? bbox;
 
-  Properties(
-      {this.country,
+  Results(
+      {this.datasource,
+      this.oldName,
+      this.country,
       this.countryCode,
+      this.state,
       this.city,
       this.postcode,
-      this.datasource,
       this.lon,
       this.lat,
-      this.population,
       this.resultType,
       this.formatted,
       this.addressLine1,
@@ -141,26 +101,22 @@ class Properties {
       this.category,
       this.timezone,
       this.plusCode,
-      this.plusCodeShort,
       this.rank,
       this.placeId,
-      this.state,
-      this.county,
-      this.district,
-      this.hamlet,
-      this.stateCode});
+      this.bbox});
 
-  Properties.fromJson(Map<String, dynamic> json) {
-    country = json['country'];
-    countryCode = json['country_code'];
-    city = json['city'];
-    postcode = json['postcode'];
+  Results.fromJson(Map<String, dynamic> json) {
     datasource = json['datasource'] != null
         ? Datasource.fromJson(json['datasource'])
         : null;
+    oldName = json['old_name'];
+    country = json['country'];
+    countryCode = json['country_code'];
+    state = json['state'];
+    city = json['city'];
+    postcode = json['postcode'];
     lon = json['lon'];
     lat = json['lat'];
-    population = json['population'];
     resultType = json['result_type'];
     formatted = json['formatted'];
     addressLine1 = json['address_line1'];
@@ -170,28 +126,24 @@ class Properties {
         ? Timezone.fromJson(json['timezone'])
         : null;
     plusCode = json['plus_code'];
-    plusCodeShort = json['plus_code_short'];
     rank = json['rank'] != null ? Rank.fromJson(json['rank']) : null;
     placeId = json['place_id'];
-    state = json['state'];
-    county = json['county'];
-    district = json['district'];
-    hamlet = json['hamlet'];
-    stateCode = json['state_code'];
+    bbox = json['bbox'] != null ? Bbox.fromJson(json['bbox']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['country'] = country;
-    data['country_code'] = countryCode;
-    data['city'] = city;
-    data['postcode'] = postcode;
     if (datasource != null) {
       data['datasource'] = datasource!.toJson();
     }
+    data['old_name'] = oldName;
+    data['country'] = country;
+    data['country_code'] = countryCode;
+    data['state'] = state;
+    data['city'] = city;
+    data['postcode'] = postcode;
     data['lon'] = lon;
     data['lat'] = lat;
-    data['population'] = population;
     data['result_type'] = resultType;
     data['formatted'] = formatted;
     data['address_line1'] = addressLine1;
@@ -201,16 +153,13 @@ class Properties {
       data['timezone'] = timezone!.toJson();
     }
     data['plus_code'] = plusCode;
-    data['plus_code_short'] = plusCodeShort;
     if (rank != null) {
       data['rank'] = rank!.toJson();
     }
     data['place_id'] = placeId;
-    data['state'] = state;
-    data['county'] = county;
-    data['district'] = district;
-    data['hamlet'] = hamlet;
-    data['state_code'] = stateCode;
+    if (bbox != null) {
+      data['bbox'] = bbox!.toJson();
+    }
     return data;
   }
 }
@@ -246,17 +195,13 @@ class Timezone {
   int? offsetSTDSeconds;
   String? offsetDST;
   int? offsetDSTSeconds;
-  String? abbreviationSTD;
-  String? abbreviationDST;
 
   Timezone(
       {this.name,
       this.offsetSTD,
       this.offsetSTDSeconds,
       this.offsetDST,
-      this.offsetDSTSeconds,
-      this.abbreviationSTD,
-      this.abbreviationDST});
+      this.offsetDSTSeconds});
 
   Timezone.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -264,8 +209,6 @@ class Timezone {
     offsetSTDSeconds = json['offset_STD_seconds'];
     offsetDST = json['offset_DST'];
     offsetDSTSeconds = json['offset_DST_seconds'];
-    abbreviationSTD = json['abbreviation_STD'];
-    abbreviationDST = json['abbreviation_DST'];
   }
 
   Map<String, dynamic> toJson() {
@@ -275,20 +218,27 @@ class Timezone {
     data['offset_STD_seconds'] = offsetSTDSeconds;
     data['offset_DST'] = offsetDST;
     data['offset_DST_seconds'] = offsetDSTSeconds;
-    data['abbreviation_STD'] = abbreviationSTD;
-    data['abbreviation_DST'] = abbreviationDST;
     return data;
   }
 }
 
 class Rank {
+  double? importance;
+  double? popularity;
   int? confidence;
   int? confidenceCityLevel;
   String? matchType;
 
-  Rank({this.confidence, this.confidenceCityLevel, this.matchType});
+  Rank(
+      {this.importance,
+      this.popularity,
+      this.confidence,
+      this.confidenceCityLevel,
+      this.matchType});
 
   Rank.fromJson(Map<String, dynamic> json) {
+    importance = json['importance'];
+    popularity = json['popularity'];
     confidence = json['confidence'];
     confidenceCityLevel = json['confidence_city_level'];
     matchType = json['match_type'];
@@ -296,6 +246,8 @@ class Rank {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['importance'] = importance;
+    data['popularity'] = popularity;
     data['confidence'] = confidence;
     data['confidence_city_level'] = confidenceCityLevel;
     data['match_type'] = matchType;
@@ -303,21 +255,27 @@ class Rank {
   }
 }
 
-class Geometry {
-  String? type;
-  List<double>? coordinates;
+class Bbox {
+  double? lon1;
+  double? lat1;
+  double? lon2;
+  double? lat2;
 
-  Geometry({this.type, this.coordinates});
+  Bbox({this.lon1, this.lat1, this.lon2, this.lat2});
 
-  Geometry.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    coordinates = json['coordinates'].cast<double>();
+  Bbox.fromJson(Map<String, dynamic> json) {
+    lon1 = json['lon1'];
+    lat1 = json['lat1'];
+    lon2 = json['lon2'];
+    lat2 = json['lat2'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['type'] = type;
-    data['coordinates'] = coordinates;
+    data['lon1'] = lon1;
+    data['lat1'] = lat1;
+    data['lon2'] = lon2;
+    data['lat2'] = lat2;
     return data;
   }
 }

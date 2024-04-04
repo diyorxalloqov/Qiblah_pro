@@ -15,10 +15,15 @@ class QuronDBService {
     return lang == 'uz' ? surahTableUzb : surahTableRus;
   }
 
+  static String getOyatTable() {
+    final lang = StorageRepository.getString(Keys.lang);
+    return lang == 'uz' ? oyatTable : oyatTableRus;
+  }
+
   static String surahTableUzb = "surahUzb";
   static String surahTableRus = 'surahRus';
-
   static String oyatTable = 'oyat';
+  static String oyatTableRus = 'oyatRus';
 
   static Database? _database;
 
@@ -33,18 +38,25 @@ class QuronDBService {
   Future<Database> _initDatabase() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, 'quron.db');
-    return await openDatabase(
-      path,
-      onCreate: _onCreate,
-      version: 1,
-      onUpgrade: _onUpgrade,
-      onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
-    );
+    try {
+      return await openDatabase(
+        path,
+        onCreate: _onCreate,
+        version: 1,
+        onUpgrade: _onUpgrade,
+        onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
+      );
+    } catch (e) {
+      print("Error initializing database: $e");
+      rethrow; // Rethrow the exception for higher-level handling
+    }
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     await db.execute("DROP TABLE IF EXISTS $surahTableUzb");
     await db.execute("DROP TABLE IF EXISTS $surahTableRus");
+    await db.execute("DROP TABLE IF EXISTS $oyatTable");
+    await db.execute("DROP TABLE IF EXISTS $oyatTableRus");
     await db.execute(
       'CREATE TABLE $surahTableUzb(id INTEGER PRIMARY KEY ,sura_id TEXT ,sura_name_arabic TEXT, name TEXT, sura_verse_count INTEGER,sura_from INTEGER )',
     );
@@ -54,13 +66,12 @@ class QuronDBService {
     await db.execute(
       'CREATE TABLE $oyatTable (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
     );
+    await db.execute(
+      'CREATE TABLE $oyatTableRus (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
+    );
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // quron
-    print(getSurahTable());
-
-    /// sura fav va saved ni qoshish kerak
     await db.execute(
       'CREATE TABLE $surahTableUzb(id INTEGER PRIMARY KEY ,sura_id TEXT ,sura_name_arabic TEXT, name TEXT, sura_verse_count INTEGER,sura_from INTEGER )',
     );
@@ -70,6 +81,9 @@ class QuronDBService {
     );
     await db.execute(
       'CREATE TABLE $oyatTable (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
+    );
+    await db.execute(
+      'CREATE TABLE $oyatTableRus (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
     );
   }
 
@@ -133,34 +147,36 @@ class QuronDBService {
     });
   }
 
-  Future<void> updateQuron(QuronModel quronModel) async {
-    final db = await _quronDBService.database;
-    /* 
-    
-    serverdan kegan version bilan tekshirish kerak
-
-     */
-    await db.update(
-      getSurahTable(),
-      {
-        "sura_name_arabic": quronModel.suraNameArabic,
-        "name": quronModel.name,
-        "sura_verse_count": quronModel.suraVerseCount,
-        "sura_from": quronModel.suraFrom,
-      },
-      where: 'id = ?',
-      whereArgs: [quronModel.suraId],
-    );
-  }
-
-  /* //////////////////// Oyat DB */
+  /* //////////////////// /////////////////////////// Oyat DB */
 
   Future<void> insertOyatList(OyatModel oyatList) async {
     final db = await _quronDBService.database;
 
     try {
-      await db.insert(oyatTable, oyatList.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.transaction((txn) async {
+        var result = await txn.query(getOyatTable(),
+            where: 'verse_id = ?',
+            whereArgs: [oyatList.verseId],
+            orderBy: 'verse_id ASC');
+
+        if (result.isEmpty) {
+          // No existing data, insert new row
+          await txn.insert(
+            getOyatTable(),
+            oyatList.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore,
+          );
+        } else {
+          // Data already exists, update the row
+          await txn.update(
+            getOyatTable(),
+            oyatList.toJson(),
+            where: 'verse_id = ?',
+            whereArgs: [oyatList.verseId],
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      });
       print('Oyat list inserted successfully');
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
@@ -171,15 +187,12 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       print(suraId);
-      final List<Map<String, dynamic>> maps = await db.query(
-        oyatTable,
-        where: 'sura_id = ?',
-        whereArgs: [suraId],
-      );
+      final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
+          where: 'sura_id = ?', whereArgs: [suraId], orderBy: 'verse_id ASC');
       print("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
-        print("$maps is not empty maps");
+        // print("$maps is not empty maps");
 
         // If data is found, convert the maps to a list of OyatModel objects
         return List.generate(maps.length, (i) {
@@ -199,58 +212,124 @@ class QuronDBService {
     }
   }
 
-  Future<void> updateReadedAndSaved(int verseNumber,
-      {bool? isSaved, bool? isReaded}) async {
+  Future<List<OyatModel>?> getOyatJuzById(int juzNumber) async {
     final db = await _quronDBService.database;
     try {
-      if (isSaved != null) {
-        await db.update(oyatTable, {"isSaved": isSaved ? 1 : 0},
-            where: 'verse_number = ?',
+      print(juzNumber);
+      final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
+          where: 'juz_number = ?',
+          whereArgs: [juzNumber],
+          orderBy: 'verse_id ASC');
+      print("$maps DATA FROM DB IS GET OYAT BY ID");
+
+      if (maps.isNotEmpty) {
+        print("$maps is not empty maps");
+
+        // If data is found, convert the maps to a list of OyatModel objects
+        return List.generate(maps.length, (i) {
+          print(maps[i]['isReaded']);
+          print(maps[i]['isSaved']);
+          return OyatModel.fromJson(maps[i]);
+        });
+      } else {
+        // If no data is found, return an empty list
+        print("No item found in the database with juzNumber $juzNumber");
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      // Handle any database exceptions
+      print("${e.toString()} database Exception");
+      return null;
+    }
+  }
+
+  Future<void> updateReaded(int verseNumber, bool isReaded) async {
+    final db = await _quronDBService.database;
+    try {
+      await db.transaction((txn) async {
+        // transation is used to for db is working well
+        await txn.update(getOyatTable(), {"isReaded": isReaded ? 1 : 0},
+            where: 'verse_id = ?',
             whereArgs: [verseNumber],
             conflictAlgorithm: ConflictAlgorithm.replace);
-        print('saved successfully');
-      }
-      if (isReaded != null) {
-        await db.update(oyatTable, {"isReaded": isReaded ? 1 : 0},
-            where: 'verse_number = ?',
-            whereArgs: [verseNumber],
-            conflictAlgorithm: ConflictAlgorithm.replace);
-        print('readed successfully');
-      }
+      });
+      print('readed save successfully');
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
   }
 
-/*
+  Future<void> updateSaved(int verseNumber, bool isSaved) async {
+    final db = await _quronDBService.database;
+    try {
+      await db.transaction((txn) async {
+        // transation is used to for db is working well
+        await txn.update(getOyatTable(), {"isSaved": isSaved ? 1 : 0},
+            where: 'verse_id = ?',
+            whereArgs: [verseNumber],
+            conflictAlgorithm: ConflictAlgorithm.replace);
 
-Future<void> updateOyat(OyatModel oyatModel) async {
-  final db = await _quronDBService.database;
-  await db.update(
-    oyatTable,
-    oyatModel.toJson(),
-    where: 'id = ?',
-    whereArgs: [oyatModel.id], // Assuming 'id' is the primary key of oyatModel
-  );
-}
- */
+        print('saved save successfully');
+      });
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+    }
+  }
 
-  // Future<void> updateOyat(OyatModel oyatModel) async {
+  Future<List<OyatModel>?> getSavedOyats() async {
+    final db = await _quronDBService.database;
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+        getOyatTable(),
+        where: 'isSaved = ?',
+        whereArgs: [1],
+      );
+      print("$maps DATA FROM DB IS GET OYATByJuz BY ID");
+
+      if (maps.isNotEmpty) {
+        print("$maps is not empty maps");
+
+        return List.generate(maps.length, (i) {
+          return OyatModel.fromJson(maps[i]);
+        });
+      } else {
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      // Handle any database exceptions
+      print("${e.toString()} database Exception");
+      return null;
+    }
+  }
+
+  ////////////////////////////// Oyat by Juz
+  // Future<List<OyatModel>?> getOyatByJuzById(int juzNumber) async {
   //   final db = await _quronDBService.database;
-  //   /*
+  //   try {
+  //     print(juzNumber);
+  //     final List<Map<String, dynamic>> maps = await db.query(
+  //       getOyatByJuzTable(),
+  //       where: 'juz_number = ?',
+  //       whereArgs: [juzNumber],
+  //     );
+  //     print("$maps DATA FROM DB IS GET OYATByJuz BY ID");
 
-  //   serverdan kegan version bilan tekshirish kerak
+  //     if (maps.isNotEmpty) {
+  //       print("$maps is not empty maps");
 
-  //    */
-  //   await db.update(
-  //     surahTable,
-  //     oyatModel.toJson(),
-  //     where: 'id = ?',
-  //     whereArgs: [oyatModel.suraId],
-  //   );
+  //       return List.generate(maps.length, (i) {
+  //         return OyatModel.fromJson(maps[i]);
+  //       });
+  //     } else {
+  //       print("No item found in the database with sura_id $juzNumber");
+  //       return [];
+  //     }
+  //   } on DatabaseException catch (e) {
+  //     // Handle any database exceptions
+  //     print("${e.toString()} database Exception");
+  //     return null;
+  //   }
   // }
-
-  /* //////////////////// Oyat DB */
 
   Future<void> clearDatabases() async {
     final db = await _quronDBService.database;

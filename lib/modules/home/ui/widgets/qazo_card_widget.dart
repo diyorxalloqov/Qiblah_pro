@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class QazoCardWidget extends StatelessWidget {
@@ -34,18 +35,19 @@ class QazoCardWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Container(
-              //   width: 2,
-              //   decoration: ShapeDecoration(
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.only(
-              //         topLeft: Radius.circular(12.r),
-              //         bottomLeft: Radius.circular(12.r),
-              //       ),
-              //     ),
-              //     color: color,
-              //   ),
-              // ),
+              ClipPath(
+                clipper: ShapeBorderClipper(
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Container(
+                  width: 2,
+                  decoration: BoxDecoration(
+                    color: color,
+                  ),
+                ),
+              ),
               SizedBox(width: wi(16)),
               SvgPicture.asset(icon),
             ],
@@ -53,9 +55,7 @@ class QazoCardWidget extends StatelessWidget {
           title: Text(
             title,
             style: const TextStyle(
-              fontSize: AppSizes.size_16,
-              fontWeight: AppFontWeight.w_500,
-            ),
+                fontSize: AppSizes.size_16, fontWeight: AppFontWeight.w_500),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
@@ -88,11 +88,13 @@ class QazoCardWidget extends StatelessWidget {
                 onTap: increment,
                 borderRadius: BorderRadius.circular(100.r),
                 child: CircleAvatar(
-                  backgroundColor: primaryColor,
+                  backgroundColor: context.isDark
+                      ? circleAvatarBlackColor
+                      : circleAvatarColor,
                   child: const Center(
                       child: Text(
                     '+',
-                    style: TextStyle(color: Colors.white, fontSize: 25),
+                    style: TextStyle(fontSize: 25),
                   )),
                 ),
               )

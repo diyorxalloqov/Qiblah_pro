@@ -1,5 +1,6 @@
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/home/ui/pages/zikr/saved_zikrs_details.dart';
 
 class ZikrPage extends StatefulWidget {
   const ZikrPage({super.key});
@@ -9,162 +10,139 @@ class ZikrPage extends StatefulWidget {
 }
 
 class _ZikrPageState extends State<ZikrPage> {
-  late PageController _pageController;
-  int _currentPage = 0;
+  // late PageController _pageController;
+  // int _currentPage = 0;
   late ZikrBloc zikrBloc;
 
   @override
   void initState() {
     zikrBloc = ZikrBloc();
-    _pageController = PageController(initialPage: 0);
+    zikrBloc.add(ZikrCategoryGetDBEvent());
+    // _pageController = PageController(initialPage: 0);
     super.initState();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    // _pageController.dispose();
     super.dispose();
   }
 
-  final List<String> _titles = const [
-    'ertalabki_zikrlar',
-    "tungi_zikrlar",
-    'allohdan_sorash',
-    "kerakli_duolar",
-    "asmaul_husna",
-    "tanlangan_zikrlar"
-  ];
-  final List<String> _icons = const [
-    AppImages.ertalabki_zikr,
-    AppImages.tungi_zikr,
-    AppImages.allohdan_sorash,
-    AppImages.kerakli_duolar,
-    AppImages.asmaul_husna,
-    AppImages.tanlangan_zkir
-  ];
-
-  final List<Color> _colors = [
-    ertalabki_zikr,
-    tungi_zikrlar,
-    allohdan_sorash,
-    kerakli_duolar,
-    asmaul_husna,
-    tanlangan_zikrlar
-  ];
-
-  double percent = 0.53;
+  // double percent = 0.53;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: zikrBloc,
       child: Scaffold(
-          appBar: customAppbar(context, 'zikr'.tr()),
+          appBar: customAppbar(context, 'ficha_zikr'.tr()),
           body: BlocBuilder<ZikrBloc, ZikrState>(
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(15),
+                padding: EdgeInsets.all(15.dg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 190.h,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: PageView.builder(
-                              controller: _pageController,
-                              onPageChanged: (value) {
-                                _currentPage = value;
-                                setState(() {});
-                              },
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                    color: context.isDark
-                                        ? containerBlackColor
-                                        : containerColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Dekabr uchun 1,000,000 savolat chellen...",
-                                        style: TextStyle(
-                                            color: context.isDark
-                                                ? Colors.white
-                                                : Colors.black,
-                                            fontWeight: AppFontWeight.w_600,
-                                            fontSize: AppSizes.size_16),
-                                      ),
-                                      const SpaceHeight(),
-                                      SmallText(text: 'qoldi'.tr()),
-                                      const Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          MediumText(text: '4 000 000'),
-                                          Row(
-                                            children: [
-                                              Icon(Icons.people,
-                                                  color: Colors.grey),
-                                              SpaceWidth(),
-                                              Text('356')
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      const SpaceHeight(),
-                                      LinearPercentIndicator(
-                                        animation: true,
-                                        animationDuration: 1000,
-                                        backgroundColor: context.isDark
-                                            ? mainBlugreyColor
-                                            : const Color(0xffF1F1FA),
-                                        progressColor: primaryColor,
-                                        animateFromLastPercent: true,
-                                        percent: percent,
-                                        lineHeight: 15,
-                                        trailing:
-                                            Text('${(percent * 100).toInt()}%'),
-                                        barRadius: const Radius.circular(47),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              },
-                              itemCount: 5,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // i coming backend data length
-                              for (int i = 0; i < 5; i++)
-                                AnimatedContainer(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 2),
-                                  decoration: BoxDecoration(
-                                    color: _currentPage == i
-                                        ? primaryColor
-                                        : context.isDark
-                                            ? mainBlugreyColor
-                                            : Colors.grey.shade400,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  width: 10,
-                                  height: 10,
-                                  duration: const Duration(milliseconds: 300),
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Socket uchun
+                    //
+                    // SizedBox(
+                    //   height: 190.h,
+                    //   child: Column(
+                    //     children: [
+                    //       Expanded(
+                    //         child: PageView.builder(
+                    //           // controller: _pageController,
+                    //           // onPageChanged: (value) {
+                    //           //   _currentPage = value;
+                    //           //   setState(() {});
+                    //           // },
+                    //           itemBuilder: (context, index) {
+                    //             return Container(
+                    //               padding: const EdgeInsets.all(15),
+                    //               decoration: BoxDecoration(
+                    //                 color: context.isDark
+                    //                     ? containerBlackColor
+                    //                     : containerColor,
+                    //                 borderRadius: BorderRadius.circular(10),
+                    //               ),
+                    //               child: Column(
+                    //                 crossAxisAlignment:
+                    //                     CrossAxisAlignment.start,
+                    //                 children: [
+                    //                   Text(
+                    //                     "Dekabr uchun 1,000,000 savolat chellen...",
+                    //                     style: TextStyle(
+                    //                         color: context.isDark
+                    //                             ? Colors.white
+                    //                             : Colors.black,
+                    //                         fontWeight: AppFontWeight.w_600,
+                    //                         fontSize: AppSizes.size_16),
+                    //                   ),
+                    //                   const SpaceHeight(),
+                    //                   SmallText(text: 'qoldi'.tr()),
+                    //                   const Row(
+                    //                     mainAxisAlignment:
+                    //                         MainAxisAlignment.spaceBetween,
+                    //                     children: [
+                    //                       MediumText(text: '4 000 000'),
+                    //                       Row(
+                    //                         children: [
+                    //                           Icon(Icons.people,
+                    //                               color: Colors.grey),
+                    //                           SpaceWidth(),
+                    //                           Text('356')
+                    //                         ],
+                    //                       ),
+                    //                     ],
+                    //                   ),
+                    //                   const SpaceHeight(),
+                    //                   LinearPercentIndicator(
+                    //                     animation: true,
+                    //                     animationDuration: 1000,
+                    //                     backgroundColor: context.isDark
+                    //                         ? mainBlugreyColor
+                    //                         : const Color(0xffF1F1FA),
+                    //                     progressColor: primaryColor,
+                    //                     animateFromLastPercent: true,
+                    //                     percent: percent,
+                    //                     lineHeight: 15,
+                    //                     trailing:
+                    //                         Text('${(percent * 100).toInt()}%'),
+                    //                     barRadius: const Radius.circular(47),
+                    //                   )
+                    //                 ],
+                    //               ),
+                    //             );
+                    //           },
+                    //           itemCount: 5,
+                    //         ),
+                    //       ),
+                    //       const SizedBox(height: 10),
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           // i coming backend data length
+                    //           for (int i = 0; i < 5; i++)
+                    //             AnimatedContainer(
+                    //               margin:
+                    //                   const EdgeInsets.symmetric(horizontal: 2),
+                    //               decoration: BoxDecoration(
+                    //                 color: _currentPage == i
+                    //                     ? primaryColor
+                    //                     : context.isDark
+                    //                         ? mainBlugreyColor
+                    //                         : Colors.grey.shade400,
+                    //                 borderRadius: BorderRadius.circular(100),
+                    //               ),
+                    //               width: 10,
+                    //               height: 10,
+                    //               duration: const Duration(milliseconds: 300),
+                    //             ),
+                    //         ],
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 20.h),
                     Expanded(
                       child: GridView.builder(
@@ -173,11 +151,99 @@ class _ZikrPageState extends State<ZikrPage> {
                                   crossAxisSpacing: 15,
                                   mainAxisSpacing: 15,
                                   crossAxisCount: 2),
-                          itemCount: 6,
+                          itemCount: state.zikrCategroyModel.isNotEmpty
+                              ? state.zikrCategroyModel.length + 2
+                              : 2,
                           itemBuilder: (context, index) {
+                            if (index == (state.zikrCategroyModel.length)) {
+                              return GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const NamesPage())),
+                                child: Container(
+                                  height: 170.h,
+                                  width: 154.w,
+                                  decoration: BoxDecoration(
+                                      color: context.isDark
+                                          ? containerBlackColor
+                                          : asmaul_husna,
+                                      image: const DecorationImage(
+                                          image: AssetImage(
+                                              AppImages.asmaul_husna),
+                                          alignment: Alignment.bottomRight),
+                                      borderRadius:
+                                          BorderRadius.circular(18.r)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      "asmo_ul_husna".tr(),
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.clip,
+                                          fontFamily:
+                                              AppfontFamily.inter.fontFamily,
+                                          fontSize: AppSizes.size_18,
+                                          fontWeight: AppFontWeight.w_500),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            if (index == state.zikrCategroyModel.length + 1) {
+                              return GestureDetector(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SavedZikrs(zikrBloc: zikrBloc))),
+                                child: Container(
+                                  height: 170.h,
+                                  width: 154.w,
+                                  decoration: BoxDecoration(
+                                      color: context.isDark
+                                          ? containerBlackColor
+                                          : tanlangan_zikrlar,
+                                      image: const DecorationImage(
+                                          image: AssetImage(
+                                              AppImages.tanlangan_zkir),
+                                          alignment: Alignment.bottomRight),
+                                      borderRadius:
+                                          BorderRadius.circular(18.r)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      "zikr".tr(),
+                                      overflow: TextOverflow.clip,
+                                      style: TextStyle(
+                                          overflow: TextOverflow.clip,
+                                          fontFamily:
+                                              AppfontFamily.inter.fontFamily,
+                                          fontSize: AppSizes.size_18,
+                                          fontWeight: AppFontWeight.w_500),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                             return GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, 'zikrMain');
+                                // zikrBloc.add(ZikrGetFromDBEvent(
+                                //     categoryId: state.zikrCategroyModel[index]
+                                //             .categoryId ??
+                                //         '0'));
+                                Navigator.pushNamed(context, 'zikrMain',
+                                    arguments: ZikrArguments(
+                                        zikrBloc: zikrBloc,
+                                        categoryName: state
+                                                .zikrCategroyModel[index]
+                                                .categoryName ??
+                                            '',
+                                        categoryId: state
+                                                .zikrCategroyModel[index]
+                                                .categoryId ??
+                                            '0'));
                               },
                               child: Container(
                                 height: 170.h,
@@ -185,15 +251,21 @@ class _ZikrPageState extends State<ZikrPage> {
                                 decoration: BoxDecoration(
                                     color: context.isDark
                                         ? containerBlackColor
-                                        : _colors[index],
+                                        : hexToColor(
+                                            "#${state.zikrCategroyModel[index].categoryBackgroundColor}"),
                                     image: DecorationImage(
-                                        image: AssetImage(_icons[index]),
+                                        image: CachedNetworkImageProvider(state
+                                                .zikrCategroyModel[index]
+                                                .categoryImageLink ??
+                                            ''),
                                         alignment: Alignment.bottomRight),
                                     borderRadius: BorderRadius.circular(18.r)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Text(
-                                    _titles[index].tr(),
+                                    state.zikrCategroyModel[index]
+                                            .categoryName ??
+                                        '',
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         overflow: TextOverflow.clip,
@@ -206,7 +278,7 @@ class _ZikrPageState extends State<ZikrPage> {
                               ),
                             );
                           }),
-                    )
+                    ),
                   ],
                 ),
               );

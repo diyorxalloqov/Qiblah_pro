@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 showLocationBottomSheet(BuildContext c) {
@@ -162,7 +163,7 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                         return Expanded(
                             child: ListView.builder(
                                 itemCount:
-                                    state.manualChoserModel?.features?.length,
+                                    state.manualChoserModel?.results?.length,
                                 padding: const EdgeInsets.all(10.0),
                                 itemBuilder: (context, index) {
                                   return Column(
@@ -192,38 +193,28 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                             ),
                                             const SpaceWidth(),
                                             const SpaceWidth(),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  state
-                                                          .manualChoserModel
-                                                          ?.features?[index]
-                                                          .properties
-                                                          ?.country ??
-                                                      '',
-                                                  style: const TextStyle(
-                                                    fontSize: AppSizes.size_16,
-                                                    fontWeight:
-                                                        AppFontWeight.w_400,
+                                            Flexible(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(height: 5),
+                                                  Text(
+                                                    state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .formatted ??
+                                                        '',
+                                                    overflow: TextOverflow.clip,
+                                                    style: const TextStyle(
+                                                      fontSize:
+                                                          AppSizes.size_16,
+                                                      fontWeight:
+                                                          AppFontWeight.w_400,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  state
-                                                          .manualChoserModel
-                                                          ?.features?[index]
-                                                          .properties
-                                                          ?.city ??
-                                                      '',
-                                                  style: const TextStyle(
-                                                    fontSize: AppSizes.size_16,
-                                                    fontWeight:
-                                                        AppFontWeight.w_400,
-                                                  ),
-                                                )
-                                              ],
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),

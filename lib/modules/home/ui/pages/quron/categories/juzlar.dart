@@ -1,12 +1,17 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
-class JuzlarPage extends StatelessWidget {
+class JuzlarPage extends StatefulWidget {
   const JuzlarPage({super.key});
 
   @override
+  State<JuzlarPage> createState() => _JuzlarPageState();
+}
+
+class _JuzlarPageState extends State<JuzlarPage> {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: 99,
+        itemCount: 30,
         itemBuilder: (context, index) {
           if (index == 0) {
             return const CardItem(index: 1);
@@ -29,11 +34,10 @@ class CardItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       child: ListTile(
         onTap: () {
+          context.read<QuronBloc>().add(GetJuzFromDb(index: index));
           Navigator.pushNamed(context, 'juzlarDetails',
               arguments: JuzlarDetailsArgument(
-                  suraName: '$index - Juz',
-                  index: index,
-                  suradata: 'suradata'));
+                  suraName: '$index - Juz', index: index));
         },
         leading: Container(
           width: 28,
@@ -55,21 +59,13 @@ class CardItem extends StatelessWidget {
           )),
         ),
         title: Text(
-          '1-Juz',
+          '$index - Juz',
           style: TextStyle(
             color: context.isDark ? Colors.white : Colors.black,
             fontSize: AppSizes.size_16,
             fontFamily: AppfontFamily.inter.fontFamily,
             fontWeight: AppFontWeight.w_500,
           ),
-        ),
-        subtitle: Text(
-          '1-20 sahifalar',
-          style: TextStyle(
-              color: context.isDark ? const Color(0xffE3E7EA) : smallTextColor,
-              fontSize: AppSizes.size_12,
-              fontFamily: AppfontFamily.inter.fontFamily,
-              fontWeight: AppFontWeight.w_400),
         ),
       ),
     );

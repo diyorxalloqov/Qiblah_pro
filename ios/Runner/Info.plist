@@ -58,6 +58,6 @@
 		<key>NSLocationAlwaysUsageDescription</key>
 		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
 		<key>GMSApiKey</key>
-		<string>AIzaSyBay6Nv53J-zanMHUf2Jt-bu63P3fgtr-k</string>
+		<string>AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc</string>
 	</dict>
 </plist>

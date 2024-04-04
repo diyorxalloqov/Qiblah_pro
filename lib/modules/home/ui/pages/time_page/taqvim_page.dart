@@ -100,7 +100,7 @@ class _TaqvimPageState extends State<TaqvimPage> {
                           SvgPicture.asset(AppIcon.location, width: 20),
                           const SpaceWidth(),
                           Text(
-                            StorageRepository.getString(Keys.region),
+                            StorageRepository.getString(Keys.country),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.center,
                             maxLines: 1,

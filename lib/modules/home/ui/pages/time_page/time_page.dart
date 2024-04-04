@@ -208,7 +208,7 @@ class _TimePageState extends State<TimePage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      StorageRepository.getString(Keys.region),
+                                      StorageRepository.getString(Keys.country),
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       maxLines: 1,

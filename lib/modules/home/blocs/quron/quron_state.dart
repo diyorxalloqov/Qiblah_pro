@@ -8,6 +8,12 @@ class QuronState extends Equatable {
   final List<QuronModel> quronModel;
   final double? quronSize;
   final List<OyatModel> oyatModel;
+  final List<OyatModel> oyatModelByJuz;
+  final List<OyatModel> getSavedOyats;
+  final ActionStatus savedOyatStatus;
+  final String savedOyatError;
+  final ActionStatus juzStatus;
+  final String errorJuz;
   final double? textSize;
   final QuronShowingTextEnum? textEnum;
 
@@ -16,8 +22,14 @@ class QuronState extends Equatable {
       this.error1 = '',
       this.status1 = ActionStatus.isInitial,
       this.quronModel = const [],
+      this.getSavedOyats = const [],
+      this.savedOyatStatus = ActionStatus.isInitial,
+      this.savedOyatError = '',
       this.textEnum,
       this.quronSize,
+      this.oyatModelByJuz = const [],
+      this.juzStatus = ActionStatus.isInitial,
+      this.errorJuz = '',
       this.oyatModel = const [],
       this.textSize,
       this.status = ActionStatus.isInitial});
@@ -26,9 +38,15 @@ class QuronState extends Equatable {
       {ActionStatus? status,
       String? error,
       String? error1,
+      List<OyatModel>? oyatModelByJuz,
+      ActionStatus? juzStatus,
+      String? errorJuz,
       double? quronSize,
       ActionStatus? status1,
+      List<OyatModel>? getSavedOyats,
       double? textSize,
+      ActionStatus? savedOyatStatus,
+      String? savedOyatError,
       QuronShowingTextEnum? textEnum,
       List<OyatModel>? oyatModel,
       List<QuronModel>? quronModel}) {
@@ -41,7 +59,13 @@ class QuronState extends Equatable {
         oyatModel: oyatModel ?? this.oyatModel,
         status: status ?? this.status,
         textEnum: textEnum ?? this.textEnum,
-        quronModel: quronModel ?? this.quronModel);
+        quronModel: quronModel ?? this.quronModel,
+        errorJuz: errorJuz ?? this.errorJuz,
+        juzStatus: juzStatus ?? this.juzStatus,
+        getSavedOyats: getSavedOyats ?? this.getSavedOyats,
+        savedOyatStatus: savedOyatStatus ?? this.savedOyatStatus,
+        savedOyatError: savedOyatError ?? this.savedOyatError,
+        oyatModelByJuz: oyatModelByJuz ?? this.oyatModelByJuz);
   }
 
   @override
@@ -54,6 +78,12 @@ class QuronState extends Equatable {
         quronSize,
         textSize,
         textEnum,
-        status1
+        status1,
+        errorJuz,
+        juzStatus,
+        oyatModelByJuz,
+        getSavedOyats,
+        savedOyatStatus,
+        savedOyatError
       ];
 }

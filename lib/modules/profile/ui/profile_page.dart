@@ -592,7 +592,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onTap: () => showLocationBottomSheet(context),
                                   title: 'manzil'.tr(),
                                   subtitleWidget: Text(
-                                      StorageRepository.getString(Keys.region)),
+                                      StorageRepository.getString(Keys.country)),
                                   icon: AppIcon.location)
                             ]),
                         //////////////

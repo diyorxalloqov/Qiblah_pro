@@ -41,6 +41,9 @@ Color bottomSheetBackgroundBlackColor = const Color(0xff1E2125);
 Color jinsColor = const Color(0xffF4F8FA);
 Color jinsBlackColor = const Color(0xff232C37);
 Color mainBlugreyColor = const Color(0xff232C37);
+Color tabBarColor = const Color(0xffF5F4FA);
+Color tabBarBlackColor = const Color(0xff232C37);
+
 List<Color> qazoDiagramColor = const [
   Color(0xff0A9D4E),
   Color(0xffE4CA41),
@@ -85,10 +88,10 @@ List<Color> profileBlackGradient = const [
 // zikr
 Color containerColor = const Color(0xffFFFFFF);
 Color containerBlackColor = const Color(0xff1E2125);
-Color ertalabki_zikr = const Color(0xffFFFDE6);
-Color tungi_zikrlar = const Color(0xffE8E7F2);
-Color allohdan_sorash = const Color(0xffE7F2EF);
-Color kerakli_duolar = const Color(0xffFFECE9);
+// Color ertalabki_zikr = const Color(0xffFFFDE6);
+// Color tungi_zikrlar = const Color(0xffE8E7F2);
+// Color allohdan_sorash = const Color(0xffE7F2EF);
+// Color kerakli_duolar = const Color(0xffFFECE9);
 Color asmaul_husna = const Color(0xffFCF3DC);
 Color tanlangan_zikrlar = const Color(0xffDCECFC);
 

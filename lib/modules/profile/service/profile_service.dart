@@ -83,7 +83,7 @@ class ProfileService {
           data: {
             "user_id": StorageRepository.getString(Keys.userId),
             "user_country_code": userdata.userCountryCode,
-            "user_region": StorageRepository.getString(Keys.region),
+            "user_region": StorageRepository.getString(Keys.country),
             "user_location":
                 "${StorageRepository.getString(Keys.latitude)} ${StorageRepository.getString(Keys.longitude)}",
             "location_status": StorageRepository.getInt(Keys.locationStatus)

@@ -63,7 +63,7 @@ class _QazoPageState extends State<QazoPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${('jami').tr()}:",
+                        "${('jami').tr()}: ",
                         style: TextStyle(
                           color: smallTextColor,
                           fontSize: AppSizes.size_16,
@@ -74,10 +74,9 @@ class _QazoPageState extends State<QazoPage> {
                       Text(
                         state.overall.toString(),
                         style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: AppfontFamily.inter.fontFamily,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontSize: 18,
+                            fontFamily: AppfontFamily.inter.fontFamily,
+                            fontWeight: FontWeight.w600),
                       )
                     ],
                   ),

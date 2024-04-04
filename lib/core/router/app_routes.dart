@@ -62,12 +62,14 @@ class RouteList {
       case "qazo":
         return _navigate(const QazoPage());
       case 'zikrMain':
-        return _navigate(const ZikrMain());
+        return _navigate(
+            ZikrMain(zikrArguments: settings.arguments as ZikrArguments));
       case "namesDetailsPage":
         final args = settings.arguments as NamesDetailsArgument;
         return _navigate(NamesDetailsPage(namesDetailsArgument: args));
       case 'tasbehPage':
-        return _navigate(const TasbehPage());
+        return _navigate(TasbehPage(
+            zikrDetailsArgument: settings.arguments as ZikrDetailsArgument));
       case 'tasbehNamePage':
         return _navigate(TasbehNamePage(
             namesDetailsArgument: settings.arguments as NamesDetailsArgument));

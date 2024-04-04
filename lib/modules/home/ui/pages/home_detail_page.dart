@@ -39,9 +39,9 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
       body: Column(
         children: [
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
               margin: EdgeInsets.only(top: 12.h),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
@@ -49,9 +49,7 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
               child: GridView.builder(
                   itemCount: 5,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      childAspectRatio: 7.8 / 9,
-                      mainAxisSpacing: 18.h,
-                      crossAxisCount: 4),
+                      mainAxisSpacing: 18.h, crossAxisCount: 4),
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () =>

@@ -1,4 +1,4 @@
-class ZikrModel {
+class ZikrCategoryModel {
   String? categoryId;
   String? categoryName;
   String? categoryLang;
@@ -6,21 +6,17 @@ class ZikrModel {
   String? categoryBackgroundColor;
   String? categoryTextColor;
   String? categoryImageLink;
-  String? categoryImageName;
-  String? categoryCreateAt;
 
-  ZikrModel(
+  ZikrCategoryModel(
       {this.categoryId,
       this.categoryName,
       this.categoryLang,
       this.categoryVersion,
       this.categoryBackgroundColor,
       this.categoryTextColor,
-      this.categoryImageLink,
-      this.categoryImageName,
-      this.categoryCreateAt});
+      this.categoryImageLink});
 
-  ZikrModel.fromJson(Map<String, dynamic> json) {
+  ZikrCategoryModel.fromJson(Map<String, dynamic> json) {
     categoryId = json['category_id'];
     categoryName = json['category_name'];
     categoryLang = json['category_lang'];
@@ -28,8 +24,6 @@ class ZikrModel {
     categoryBackgroundColor = json['category_background_color'];
     categoryTextColor = json['category_text_color'];
     categoryImageLink = json['category_image_link'];
-    categoryImageName = json['category_image_name'];
-    categoryCreateAt = json['category_create_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,8 +35,73 @@ class ZikrModel {
     zikrModel['category_background_color'] = categoryBackgroundColor;
     zikrModel['category_text_color'] = categoryTextColor;
     zikrModel['category_image_link'] = categoryImageLink;
-    zikrModel['category_image_name'] = categoryImageName;
-    zikrModel['category_create_at'] = categoryCreateAt;
     return zikrModel;
+  }
+}
+
+// //////////////////////
+
+class ZikrModel {
+  String? zikrId;
+  String? zikrTitle;
+  String? zikrDescription;
+  String? zikrInfo;
+  int? zikrDailyCount;
+  String? zikrAudioLink;
+  int? favouriteCount;
+  String? categoryId;
+  String? categoryName;
+  String? categoryLang;
+  int? categoryVersion;
+  String? zikrAudioName;
+  bool? isSaved;
+
+  ZikrModel(
+      {this.zikrId,
+      this.zikrTitle,
+      this.zikrDescription,
+      this.zikrInfo,
+      this.zikrDailyCount,
+      this.zikrAudioLink,
+      this.favouriteCount,
+      this.categoryId,
+      this.isSaved = false,
+      this.zikrAudioName,
+      this.categoryName,
+      this.categoryLang,
+      this.categoryVersion});
+
+  ZikrModel.fromJson(Map<String, dynamic> json) {
+    zikrId = json['zikr_id'];
+    zikrTitle = json['zikr_title'];
+    zikrDescription = json['zikr_description'];
+    zikrInfo = json['zikr_info'];
+    zikrDailyCount = json['zikr_daily_count'];
+    zikrAudioLink = json['zikr_audio_link'];
+    favouriteCount = json['favourite_count'];
+    categoryId = json['category_id'];
+    categoryName = json['category_name'];
+    categoryLang = json['category_lang'];
+    categoryVersion = json['category_version'];
+    zikrAudioName = json['zikr_audio_name'];
+    isSaved = json['isSaved'] == 1;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['zikr_id'] = zikrId;
+    data['zikr_title'] = zikrTitle;
+    data['zikr_description'] = zikrDescription;
+    data['zikr_info'] = zikrInfo;
+    data['zikr_daily_count'] = zikrDailyCount;
+    data['zikr_audio_link'] = zikrAudioLink;
+    data['favourite_count'] = favouriteCount;
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['category_lang'] = categoryLang;
+    data['category_version'] = categoryVersion;
+    data['zikr_audio_name'] = zikrAudioName;
+    data['isSaved'] = isSaved ?? false ? 1 : 0;
+    return data;
   }
 }

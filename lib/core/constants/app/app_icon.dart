@@ -23,6 +23,7 @@ class AppIcon {
   static const String camera = 'assets/icons/camera.svg';
   static const String play = 'assets/icons/play.svg';
   static const String bookmark = 'assets/icons/bookmark.svg';
+  static const String bookmark_green = 'assets/icons/bookmark_green.svg';
   static const String share = 'assets/icons/share.svg';
   static const String azon = 'assets/icons/azon.svg';
   static const String bomdod = 'assets/icons/bomdod.svg';

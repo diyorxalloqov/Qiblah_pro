@@ -3,20 +3,21 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/zikr_model.dart';
 
 class ZikrDBSevice {
-  static final ZikrDBSevice _namesDBService = ZikrDBSevice._internal();
+  static final ZikrDBSevice _zikrDBService = ZikrDBSevice._internal();
 
-  factory ZikrDBSevice() => _namesDBService;
+  factory ZikrDBSevice() => _zikrDBService;
 
   ZikrDBSevice._internal();
 
-  static String geZikrTable() {
+  static String getCategegoryTable() {
     final lang = StorageRepository.getString(Keys.lang);
     print(lang);
-    return lang == 'uz' ? zikrTableUzb : zikrTableRus;
+    return lang == 'uz' ? categoryUzb : categoryRus;
   }
 
-  static String zikrTableRus = 'zikrRus';
-  static String zikrTableUzb = "zikrUzb";
+  static String categoryRus = 'categoryRus';
+  static String categoryUzb = "categoryUzb";
+  static String zikr = "zikr";
 
   static Database? _database;
 
@@ -39,63 +40,147 @@ class ZikrDBSevice {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    await db.execute("DROP TABLE IF EXISTS $zikrTableUzb");
-    await db.execute("DROP TABLE IF EXISTS $zikrTableRus");
-
+    await db.execute("DROP TABLE IF EXISTS $categoryUzb");
+    await db.execute("DROP TABLE IF EXISTS $categoryRus");
+    await db.execute("DROP TABLE IF EXISTS $zikr");
     await db.execute(
-      'CREATE TABLE $zikrTableUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $categoryUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,category_id TEXT, category_name TEXT, category_lang TEXT,category_version INTEGER,category_background_color TEXT,category_text_color TEXT,category_image_link TEXT)',
     );
     await db.execute(
-      'CREATE TABLE $zikrTableRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $categoryRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,category_id TEXT, category_name TEXT, category_lang TEXT,category_version INTEGER,category_background_color TEXT,category_text_color TEXT,category_image_link TEXT)',
+    );
+    await db.execute(
+      'CREATE TABLE $zikr(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,zikr_id TEXT, zikr_title TEXT,zikr_description TEXT,zikr_info TEXT,zikr_daily_count INTEGER,zikr_audio_link TEXT,favourite_count INTEGER,category_id TEXT,category_name TEXT,category_version INTEGER,category_lang TEXT)',
     );
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // user
+    // zikrCategory
     await db.execute(
-      'CREATE TABLE $zikrTableUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $categoryUzb(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,category_id TEXT, category_name TEXT, category_lang TEXT,category_version INTEGER,category_background_color TEXT,category_text_color TEXT,category_image_link TEXT)',
     );
     await db.execute(
-      'CREATE TABLE $zikrTableRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, category_name TEXT, category_lang TEXT,category_version INTEGER)',
+      'CREATE TABLE $categoryRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,category_id TEXT, category_name TEXT, category_lang TEXT,category_version INTEGER,category_background_color TEXT,category_text_color TEXT,category_image_link TEXT)',
+    );
+    await db.execute(
+      'CREATE TABLE $zikr(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,zikr_id TEXT, zikr_title TEXT,zikr_description TEXT,zikr_info TEXT,zikr_daily_count INTEGER,zikr_audio_link TEXT,favourite_count INTEGER,category_id TEXT,category_name TEXT,category_version INTEGER,category_lang TEXT,zikr_audio_name TEXT,isSaved INTEGER)',
     );
   }
 
-  /// user
-
-  Future<void> insertZikrs(ZikrModel zikrModel) async {
-    final db = await _namesDBService.database;
+  Future<void> insertCategory(ZikrCategoryModel zikrCategory) async {
+    final db = await _zikrDBService.database;
     try {
       await db.insert(
-        geZikrTable(),
-        {
-          "category_name": zikrModel.categoryName,
-          "category_lang": zikrModel.categoryLang,
-          "category_version": zikrModel.categoryVersion,
-        },
-        // conflictAlgorithm: ConflictAlgorithm.replace,
+        getCategegoryTable(),
+        zikrCategory.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
-    print("${geZikrTable().length} names table length from insert");
+    print("${getCategegoryTable().length} zikr table length from insert");
   }
 
-  Future<List<ZikrModel>?> getZikrs() async {
-    final db = await _namesDBService.database;
-    final List<Map<String, dynamic>> maps = await db.query(geZikrTable());
+  Future<List<ZikrCategoryModel>?> getCategory() async {
+    final db = await _zikrDBService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query(getCategegoryTable());
     print("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
-      return ZikrModel(
-        categoryName: maps[i]['category_name'],
-        categoryLang: maps[i]['category_lang'],
-        categoryVersion: maps[i]['category_version'],
-      );
+      return ZikrCategoryModel.fromJson(maps[i]);
     });
   }
 
+  Future<void> insertZikrs(ZikrModel zikrModel) async {
+    final db = await _zikrDBService.database;
+    try {
+      await db.insert(zikr, zikrModel.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+    }
+    print("${zikr.length} zikr table length from insert");
+  }
+
+  Future<List<ZikrModel>?> getZikrs(String categoryId) async {
+    final db = await _zikrDBService.database;
+    print("$categoryId CATEGORY ID");
+    try {
+      print(categoryId);
+      final List<Map<String, dynamic>> maps = await db.query(
+        zikr,
+        where: 'category_id = ?',
+        whereArgs: [categoryId],
+      );
+      print("$maps DATA FROM DB IS GET zikr BY ID");
+
+      if (maps.isNotEmpty) {
+        print("$maps is not empty maps");
+
+        // If data is found, convert the maps to a list of OyatModel objects
+        return List.generate(maps.length, (i) {
+          print("SALOM ${maps[i]['isSaved']}");
+          return ZikrModel.fromJson(maps[i]);
+        });
+      } else {
+        // If no data is found, return an empty list
+        print("No item found in the database with sura_id $categoryId");
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      // Handle any database exceptions
+      print("${e.toString()} database Exception");
+      return null;
+    }
+  }
+
+  Future<void> updateSaved(String zikrId, bool isSaved) async {
+    final db = await _zikrDBService.database;
+    try {
+      await db.transaction((txn) async {
+        // transation is used to for db is working well
+        await txn.update(zikr, {"isSaved": isSaved ? 1 : 0},
+            where: 'zikr_id = ?',
+            whereArgs: [zikrId],
+            conflictAlgorithm: ConflictAlgorithm.replace);
+        print('isSaved $isSaved updated successfully id is $zikrId');
+      });
+      getSavedZikrs();
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+    }
+  }
+
+  Future<List<ZikrModel>?> getSavedZikrs() async {
+    final db = await _zikrDBService.database;
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(
+        zikr,
+        where: 'isSaved = ?',
+        whereArgs: [1], // 1 represents true for the isSaved attribute
+      );
+      print(maps);
+
+      // If data is found, convert the maps to a list of ZikrModel objects
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (i) {
+          return ZikrModel.fromJson(maps[i]);
+        });
+      } else {
+        // If no data is found, return an empty list
+        print("No saved zikrs found in the database");
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      // Handle any database exceptions
+      print("Database Exception: ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<void> clearDatabase() async {
-    final db = await _namesDBService.database;
-    await db.delete(geZikrTable());
+    final db = await _zikrDBService.database;
+    await db.delete(zikr);
     print('db cleared successfully');
   }
 }

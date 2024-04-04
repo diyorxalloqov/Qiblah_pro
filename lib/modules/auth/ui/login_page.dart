@@ -205,7 +205,7 @@ class _RegisterPageState extends State<LoginPage> {
                                   filled: true,
                                   fillColor: context.isDark
                                       ? textFormFieldFillColorBlack
-                                      : const Color(0xffE3E7EA),
+                                      : const Color(0xffF5F4FA),
                                   contentPadding:
                                       EdgeInsets.symmetric(horizontal: wi(16)),
                                   focusedBorder: OutlineInputBorder(
@@ -277,7 +277,7 @@ class _RegisterPageState extends State<LoginPage> {
                                     filled: true,
                                     fillColor: context.isDark
                                         ? textFormFieldFillColorBlack
-                                        : const Color(0xffE3E7EA),
+                                        : const Color(0xffF5F4FA),
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: wi(16)),
                                     focusedBorder: OutlineInputBorder(

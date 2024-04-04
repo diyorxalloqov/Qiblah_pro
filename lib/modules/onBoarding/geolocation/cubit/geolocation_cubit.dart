@@ -382,21 +382,20 @@ class GeolocationCubit extends Cubit<GeolocationState> {
 
     var res = await _locationService.manuaChoiceLocation(place);
     res.fold(
-        (l) => emit(state.copyWith(manualStatus: ActionStatus.isError, error: l)),
+        (l) =>
+            emit(state.copyWith(manualStatus: ActionStatus.isError, error: l)),
         (r) => emit(state.copyWith(
             manualStatus: ActionStatus.isSuccess, manualChoserModel: r)));
     print(state.status);
   }
 
   void saveLocationManual(ManualChoserModel? positionInfo, int index) async {
-    await StorageRepository.putString(Keys.country,
-        positionInfo?.features?[index].properties?.addressLine2 ?? '');
-    await StorageRepository.putString(Keys.region,
-        positionInfo?.features?[index].properties?.addressLine1 ?? '');
+    await StorageRepository.putString(
+        Keys.country, positionInfo?.results?[index].formatted ?? '');
     await StorageRepository.putDouble(
-        Keys.longitude, positionInfo?.features?[index].properties?.lon ?? 0);
+        Keys.longitude, positionInfo?.results?[index].lon ?? 0);
     await StorageRepository.putDouble(
-        Keys.latitude, positionInfo?.features?[index].properties?.lat ?? 0);
+        Keys.latitude, positionInfo?.results?[index].lat ?? 0);
   }
 
   void saveLocationAuto(
@@ -404,7 +403,7 @@ class GeolocationCubit extends Cubit<GeolocationState> {
     await StorageRepository.putString(
         Keys.country, autoChoiceLocationModel?.country.name ?? '');
     await StorageRepository.putString(
-        Keys.region, autoChoiceLocationModel?.country.capital ?? '');
+        Keys.capital, autoChoiceLocationModel?.country.capital ?? '');
     await StorageRepository.putDouble(
         Keys.longitude, autoChoiceLocationModel?.location.longitude ?? 0);
     await StorageRepository.putDouble(

@@ -70,7 +70,10 @@ class CardItem extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: () {
           print("$index tapped index is");
-          // context.read<QuronBloc>().add(GetOyatFromDB(index: index));
+          context.read<QuronBloc>().add(GetOyatFromDB(
+              index: index,
+              suraLength:
+                  quronState.quronModel[index - 1].suraVerseCount ?? 0));
           Navigator.pushNamed(context, 'suralarDetails',
               arguments: SuralarDetailsPageArguments(
                   suraVerseCount:

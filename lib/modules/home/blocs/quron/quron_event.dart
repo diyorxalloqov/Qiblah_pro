@@ -36,10 +36,11 @@ class SizeChangerEvent extends QuronEvent {
 
 class GetOyatFromDB extends QuronEvent {
   final int index;
-  const GetOyatFromDB({required this.index});
+  final int suraLength;
+  const GetOyatFromDB({required this.index,required this.suraLength});
   @override
   // TODO: implement props
-  List<Object> get props => [index];
+  List<Object> get props => [index,suraLength];
 }
 
 class GetOyatFromApi extends QuronEvent {
@@ -61,6 +62,7 @@ class ShowingTextEvent extends QuronEvent {
 class SavedItemEvent extends QuronEvent {
   final bool isSaved;
   final int verseNumber;
+
   const SavedItemEvent({required this.isSaved, required this.verseNumber});
   @override
   // TODO: implement props
@@ -70,8 +72,32 @@ class SavedItemEvent extends QuronEvent {
 class ReadedItemEvent extends QuronEvent {
   final bool isReaded;
   final int verseNumber;
+
   const ReadedItemEvent({required this.isReaded, required this.verseNumber});
   @override
   // TODO: implement props
   List<Object> get props => [isReaded, verseNumber];
+}
+
+class GetJuzFromApi extends QuronEvent {
+  final int index;
+  const GetJuzFromApi({required this.index});
+  @override
+  // TODO: implement props
+  List<Object> get props => [index];
+}
+
+class GetJuzFromDb extends QuronEvent {
+  final int index;
+  const GetJuzFromDb({required this.index});
+  @override
+  // TODO: implement props
+  List<Object> get props => [index];
+}
+
+class GetSavedOyats extends QuronEvent {
+  const GetSavedOyats();
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
 }

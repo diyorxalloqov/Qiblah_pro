@@ -69,7 +69,7 @@ class AuthService {
     };
     print(data);
     try {
-      print('response is trying to register');
+      print('response is trying to temporary');
       Response response =
           await client.post(AppUrls.temporaryRegister, data: data);
       print(response.statusCode);
@@ -102,7 +102,7 @@ class AuthService {
 
     print(data);
     try {
-      print('response is trying to register');
+      print('response is trying to login');
       Response response = await client.post(AppUrls.login, data: data);
       print(response.statusCode);
       print(response.data);

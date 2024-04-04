@@ -15,7 +15,6 @@ String extractTitleFromHtml(String htmlString) {
 }
 
 wrapWithAdaptiveHtml(String html) {
-  print(html);
   return """
       <!DOCTYPE html>
       <html>

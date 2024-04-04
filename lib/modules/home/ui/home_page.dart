@@ -174,29 +174,33 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const Spacer(),
                       Container(
-                        padding:
-                            EdgeInsets.only(right: 10.w, left: 10.w, top: 6.h),
+                        padding: EdgeInsets.only(
+                            right: 8.w, left: 8.w, top: 3.h, bottom: 3.h),
                         decoration: BoxDecoration(
                           color: context.isDark
                               ? const Color(0xff232C37)
-                              : const Color(0xFFE3F6DC).withOpacity(0.3),
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(50.r),
                         ),
-                        child: Center(
+                        child: SizedBox(
+                          width: 85,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                StorageRepository.getString(Keys.region),
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.justify,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: context.isDark
-                                      ? const Color(0xffB5B9BC)
-                                      : const Color(0xff6D7379),
-                                  fontSize: AppSizes.size_14,
-                                  fontFamily: AppfontFamily.inter.fontFamily,
-                                  fontWeight: AppFontWeight.w_400,
+                              Flexible(
+                                child: Text(
+                                  StorageRepository.getString(Keys.capital),
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    color: context.isDark
+                                        ? const Color(0xffB5B9BC)
+                                        : const Color(0xff6D7379),
+                                    fontSize: AppSizes.size_12,
+                                    fontFamily: AppfontFamily.inter.fontFamily,
+                                    fontWeight: AppFontWeight.w_500,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 1.w),

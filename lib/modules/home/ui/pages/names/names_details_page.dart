@@ -11,49 +11,11 @@ class NamesDetailsPage extends StatefulWidget {
 }
 
 class _NamesDetailsPageState extends State<NamesDetailsPage> {
-  late ScrollController _controller;
-
-  @override
-  void initState() {
-    _controller = ScrollController();
-    _controller.addListener(() {
-      final contentSize = _controller.position.viewportDimension +
-          _controller.position.maxScrollExtent;
-      final target = contentSize *
-          widget.namesDetailsArgument.index /
-          widget.namesDetailsArgument.namesBloc.state.namesModel.length;
-      _controller.position.animateTo(
-        target,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
-    });
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _controller.addListener(() {
-      final contentSize = _controller.position.viewportDimension +
-          _controller.position.maxScrollExtent;
-      final target = contentSize *
-          widget.namesDetailsArgument.index /
-          widget.namesDetailsArgument.namesBloc.state.namesModel.length;
-      _controller.position.animateTo(
-        target,
-        duration: const Duration(seconds: 1),
-        curve: Curves.easeInOut,
-      );
-    });
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: customAppbar(context, 'ficha_99_names'.tr()),
         body: ListView.builder(
-            controller: _controller,
             itemCount:
                 widget.namesDetailsArgument.namesBloc.state.namesModel.length,
             itemBuilder: (context, index) {
@@ -160,6 +122,7 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                     .namesModel[widget.index].nameArabic
                     .toString(),
                 style: TextStyle(
+                    color: context.isDark ? Colors.white : Colors.black,
                     fontFamily: AppfontFamily.inter.fontFamily,
                     fontSize: AppSizes.size_24,
                     fontWeight: AppFontWeight.w_500),
@@ -170,6 +133,7 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                     .namesModel[widget.index].title
                     .toString(),
                 style: TextStyle(
+                    color: context.isDark ? Colors.white : Colors.black,
                     fontFamily: AppfontFamily.inter.fontFamily,
                     fontSize: AppSizes.size_16,
                     fontWeight: AppFontWeight.w_500),
@@ -202,9 +166,9 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                               namesBloc: widget.namesDetailsArgument.namesBloc,
                               index: widget.index));
                     },
-                    radius: 25.r,
+                    radius: 16.r,
                     child: CircleAvatar(
-                      radius: 25.r,
+                      radius: 16.r,
                       backgroundColor: context.isDark
                           ? circleAvatarBlackColor
                           : circleAvatarColor,
@@ -219,9 +183,9 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                     onTap: () {
                       FlutterShare.share(title: 'title');
                     },
-                    radius: 25.r,
+                    radius: 16.r,
                     child: CircleAvatar(
-                      radius: 25.r,
+                      radius: 16.r,
                       backgroundColor: context.isDark
                           ? circleAvatarBlackColor
                           : circleAvatarColor,
@@ -244,7 +208,7 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                           processingState == ProcessingState.buffering ||
                           isDownloading) {
                         return CircleAvatar(
-                          radius: 25.r,
+                          radius: 16.r,
                           backgroundColor: primaryColor,
                           child: const CircularProgressIndicator(
                             valueColor:

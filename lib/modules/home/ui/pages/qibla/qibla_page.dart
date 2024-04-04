@@ -25,6 +25,12 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   }
 
   @override
+  void dispose() {
+    geolocationCubit.close();
+    super.dispose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
@@ -158,7 +164,7 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    StorageRepository.getString(Keys.region),
+                    StorageRepository.getString(Keys.country),
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     maxLines: 1,
@@ -245,7 +251,7 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
               ),
               const SizedBox(height: 4),
               Text(
-                StorageRepository.getString(Keys.region),
+                StorageRepository.getString(Keys.country),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 maxLines: 1,

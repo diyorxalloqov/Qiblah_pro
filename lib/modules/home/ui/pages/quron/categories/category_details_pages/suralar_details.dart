@@ -15,18 +15,6 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
-  void initState() {
-    context.read<QuronBloc>().add(GetOyatFromDB(index: widget.data.suraId));
-    super.initState();
-  }
-
-  // @override
-  // void dispose() {
-  //   context.read<QuronBloc>().add(GetOyatFromDB(index: widget.data.index));
-  //   super.dispose();
-  // }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _isSearch
@@ -90,9 +78,7 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
             ),
       body: BlocBuilder<QuronBloc, QuronState>(
         builder: (context, state) {
-          print(state.status1);
           if (state.status1 == ActionStatus.isLoading) {
-            print("STATUS IS LOADING");
             return const LoadingPage();
           }
           if (state.status1 == ActionStatus.isSuccess) {
@@ -120,6 +106,7 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
                       item.meaning!.toLowerCase().contains(searchText)) {
                     return SuralarDetailsItem(
                         index: index,
+                        suraId: widget.data.suraId,
                         state: state,
                         controller: _searchController);
                   } else {
@@ -224,11 +211,13 @@ class _SuralarDetailsPageState extends State<SuralarDetailsPage> {
 class SuralarDetailsItem extends StatefulWidget {
   final int index;
   final QuronState state;
+  final int suraId;
   final TextEditingController controller;
   const SuralarDetailsItem(
       {Key? key,
       required this.state,
       required this.controller,
+      required this.suraId,
       required this.index})
       : super(key: key);
 
@@ -243,14 +232,15 @@ class _TanlanganlarItemState extends State<SuralarDetailsItem> {
 
   @override
   void initState() {
+    print(widget.index);
+    //// verse_id boyicha readed saved
     super.initState();
-    // Ensure that the index is valid and oyatModel is not null
-    if (widget.index >= 0 && widget.index < widget.state.oyatModel.length) {
-      // Initialize isReaded and isSaved with default values or from the model
-      isReaded = widget.state.oyatModel[widget.index].isReaded ?? false;
-      isSaved = widget.state.oyatModel[widget.index].isSaved ?? false;
+    if (widget.index >= 0 &&
+        widget.index < widget.state.oyatModel.length &&
+        widget.state != null) {
+      isReaded = widget.state.oyatModel[widget.index].isReaded;
+      isSaved = widget.state.oyatModel[widget.index].isSaved;
     } else {
-      // Provide default values if the index or oyatModel is invalid
       isReaded = false;
       isSaved = false;
     }
@@ -258,6 +248,7 @@ class _TanlanganlarItemState extends State<SuralarDetailsItem> {
     print("$isReaded ssaaaaaaaaaaalllllloooommmm");
     print("${widget.index} index item coming");
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -366,11 +357,11 @@ class _TanlanganlarItemState extends State<SuralarDetailsItem> {
                                   // Trigger the event to update the database
                                   context.read<QuronBloc>().add(ReadedItemEvent(
                                       isReaded: isReaded,
-                                      verseNumber: widget
+                                      verseNumber: int.parse(widget
                                               .state
                                               .oyatModel[widget.index]
-                                              .verseNumber ??
-                                          0));
+                                              .verseId ??
+                                          '0')));
                                   print(isReaded);
                                 },
                                 borderRadius: BorderRadius.circular(100.r),
@@ -398,12 +389,11 @@ class _TanlanganlarItemState extends State<SuralarDetailsItem> {
                                   setState(() {});
                                   context.read<QuronBloc>().add(SavedItemEvent(
                                       isSaved: isSaved,
-                                      verseNumber: widget
+                                      verseNumber: int.parse(widget
                                               .state
                                               .oyatModel[widget.index]
-                                              .verseNumber ??
-                                          0));
-
+                                              .verseId ??
+                                          '0')));
                                   print(isSaved);
                                 },
                                 borderRadius: BorderRadius.circular(100.r),

@@ -108,10 +108,18 @@ class LocationService {
     final String randomKey = apiKeys[Random().nextInt(apiKeys.length)];
     print(randomKey);
     try {
-      Response response = await client.get(
-          'https://api.geoapify.com/v1/geocode/autocomplete?text=$place&apiKey=$randomKey');
-      print(response.data);
+      Response response = await client
+          .get('https://api.geoapify.com/v1/geocode/search', queryParameters: {
+        "text": place,
+        "lang": StorageRepository.getString(Keys.lang),
+        "limit": 10,
+        "format": "json",
+        "type": "city",
+        "apiKey": randomKey
+      });
+      print("${response.data}");
       print(response.statusCode);
+      print(response.realUri);
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         return right(ManualChoserModel.fromJson(response.data));
       } else {

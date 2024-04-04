@@ -64,4 +64,33 @@ class QuronService {
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }
+
+  Future<Either<String, List<OyatModel>>> getOyatbyjuzNumber(int index) async {
+    try {
+      Response response = await client
+          .get("${AppUrls.oyatByJuz}/$index/", queryParameters: {
+        'lang':
+            StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
+      });
+      if (response.statusCode == 200) {
+        List<OyatModel> dataList = (response.data['data'] as List)
+            .map((e) => OyatModel.fromJson(e))
+            .toList();
+
+        for (var element in dataList) {
+          await QuronDBService().insertOyatList(element);
+        }
+        print(dataList);
+        return right(dataList);
+      } else {
+        print(response.statusMessage);
+        print(response.statusCode);
+        return left(response.statusMessage.toString());
+      }
+    } on DioException catch (e) {
+      print(e.message);
+      print('exeption');
+      return left(NetworkExeptionResponse(e).messageForUser);
+    }
+  }
 }
