@@ -3,7 +3,6 @@ import 'package:qiblah_pro/core/constants/keys.dart';
 import 'package:qiblah_pro/core/db/shared_preferences.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
 import 'package:qiblah_pro/modules/home/models/time_calculation_model.dart';
-import 'package:qiblah_pro/modules/onBoarding/geolocation/service/location_choice_service.dart';
 import 'package:qiblah_pro/utils/enums.dart';
 import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
 

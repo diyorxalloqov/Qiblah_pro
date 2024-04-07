@@ -29,4 +29,3 @@ enum PrayerCalculationMethod {
 
 enum NamozEnum { bomdod, quyosh, peshin, asr, shom, xufton, all }
 
-enum QuronShowingTextEnum { arabic, reading, meaning }

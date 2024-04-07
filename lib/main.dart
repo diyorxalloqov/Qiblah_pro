@@ -10,6 +10,7 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   // await NamesDbService().clearDatabase();
   // await QuronDBService().clearDatabases();
+  // await ZikrDBSevice().clearDatabase();
   await EasyLocalization.ensureInitialized();
   await setupLocator();
   StorageRepository.getString(Keys.lang) == ''

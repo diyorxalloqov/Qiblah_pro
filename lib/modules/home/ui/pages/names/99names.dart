@@ -40,21 +40,13 @@ class _NamesPageState extends State<NamesPage> {
               return const LoadingPage();
             }
             if (state.status == ActionStatus.isSuccess) {
-              return RefreshIndicator.adaptive(
-                onRefresh: () {
-                  final completer = Completer<void>();
-                  namesBloc.add(GetNamesEvent());
-                  completer.complete();
-                  return completer.future;
-                },
-                child: ListView.builder(
-                    itemCount: state.namesModel.length,
-                    itemBuilder: (context, index) => CardItem1(
-                        index: index,
-                        namesBloc: namesBloc,
-                        scrollController: _scrollController,
-                        state: state)),
-              );
+              return ListView.builder(
+                  itemCount: state.namesModel.length,
+                  itemBuilder: (context, index) => CardItem1(
+                      index: index,
+                      namesBloc: namesBloc,
+                      scrollController: _scrollController,
+                      state: state));
             }
             return RefreshIndicator.adaptive(
                 onRefresh: () {

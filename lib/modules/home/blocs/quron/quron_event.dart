@@ -37,10 +37,10 @@ class SizeChangerEvent extends QuronEvent {
 class GetOyatFromDB extends QuronEvent {
   final int index;
   final int suraLength;
-  const GetOyatFromDB({required this.index,required this.suraLength});
+  const GetOyatFromDB({required this.index, required this.suraLength});
   @override
   // TODO: implement props
-  List<Object> get props => [index,suraLength];
+  List<Object> get props => [index, suraLength];
 }
 
 class GetOyatFromApi extends QuronEvent {
@@ -52,11 +52,12 @@ class GetOyatFromApi extends QuronEvent {
 }
 
 class ShowingTextEvent extends QuronEvent {
-  final QuronShowingTextEnum text;
-  const ShowingTextEvent({required this.text});
+  final int index;
+  final bool isShowing;
+  const ShowingTextEvent({required this.index, required this.isShowing});
   @override
   // TODO: implement props
-  List<Object> get props => [text];
+  List<Object> get props => [index, isShowing];
 }
 
 class SavedItemEvent extends QuronEvent {

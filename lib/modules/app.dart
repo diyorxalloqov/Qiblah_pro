@@ -69,6 +69,7 @@ class _AndroidAppState extends State<AndroidApp> with WidgetsBindingObserver {
               BlocProvider(create: (context) => NamozTimeBloc()),
               BlocProvider(create: (context) => QuronBloc()),
               BlocProvider(create: (context) => AuthBloc()),
+              BlocProvider(create: (context) => ZikrBloc()),
             ],
             child: MaterialApp(
               debugShowCheckedModeBanner: false,

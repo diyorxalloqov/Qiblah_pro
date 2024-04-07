@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class HomePage extends StatefulWidget {
@@ -183,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(50.r),
                         ),
                         child: SizedBox(
-                          width: 85,
+                          width: 70.w,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

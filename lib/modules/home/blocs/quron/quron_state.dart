@@ -15,7 +15,9 @@ class QuronState extends Equatable {
   final ActionStatus juzStatus;
   final String errorJuz;
   final double? textSize;
-  final QuronShowingTextEnum? textEnum;
+  final bool isShowingArabic;
+  final bool isShowingMeaning;
+  final bool isShowingReading;
 
   const QuronState(
       {this.error = '',
@@ -25,7 +27,9 @@ class QuronState extends Equatable {
       this.getSavedOyats = const [],
       this.savedOyatStatus = ActionStatus.isInitial,
       this.savedOyatError = '',
-      this.textEnum,
+      this.isShowingArabic = true,
+      this.isShowingMeaning = true,
+      this.isShowingReading = true,
       this.quronSize,
       this.oyatModelByJuz = const [],
       this.juzStatus = ActionStatus.isInitial,
@@ -47,8 +51,10 @@ class QuronState extends Equatable {
       double? textSize,
       ActionStatus? savedOyatStatus,
       String? savedOyatError,
-      QuronShowingTextEnum? textEnum,
       List<OyatModel>? oyatModel,
+      bool? isShowingArabic,
+      bool? isShowingMeaning,
+      bool? isShowingReading,
       List<QuronModel>? quronModel}) {
     return QuronState(
         error: error ?? this.error,
@@ -58,13 +64,15 @@ class QuronState extends Equatable {
         textSize: textSize ?? this.textSize,
         oyatModel: oyatModel ?? this.oyatModel,
         status: status ?? this.status,
-        textEnum: textEnum ?? this.textEnum,
         quronModel: quronModel ?? this.quronModel,
         errorJuz: errorJuz ?? this.errorJuz,
         juzStatus: juzStatus ?? this.juzStatus,
         getSavedOyats: getSavedOyats ?? this.getSavedOyats,
         savedOyatStatus: savedOyatStatus ?? this.savedOyatStatus,
         savedOyatError: savedOyatError ?? this.savedOyatError,
+        isShowingArabic: isShowingArabic ?? this.isShowingArabic,
+        isShowingMeaning: isShowingMeaning ?? this.isShowingMeaning,
+        isShowingReading: isShowingReading ?? this.isShowingReading,
         oyatModelByJuz: oyatModelByJuz ?? this.oyatModelByJuz);
   }
 
@@ -77,13 +85,15 @@ class QuronState extends Equatable {
         oyatModel,
         quronSize,
         textSize,
-        textEnum,
         status1,
         errorJuz,
         juzStatus,
         oyatModelByJuz,
         getSavedOyats,
         savedOyatStatus,
-        savedOyatError
+        savedOyatError,
+        isShowingArabic,
+        isShowingMeaning,
+        isShowingReading
       ];
 }

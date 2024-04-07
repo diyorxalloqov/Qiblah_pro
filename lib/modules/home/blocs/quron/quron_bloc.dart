@@ -68,7 +68,6 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
 
     List<OyatModel>? dataFromDb =
         await _quronDBService.getOyatById(event.index);
-
     if (dataFromDb != null) {
       // Check if any element in dataFromDb has the suraId equal to event.index
       // bool containsIndex =
@@ -82,12 +81,12 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       //   print("Data not found in the database. Fetching from API...");
       //   add(GetOyatFromApi(index: event.index));
       // }
-       List<OyatModel> filteredData =
+      List<OyatModel> filteredData =
           dataFromDb.where((element) => element.suraId == event.index).toList();
-          print("${filteredData.length} JUZ NUMBER BLOC");
-          print("${dataFromDb.length} JUZ NUMBER BLOC");
-      if (filteredData.isNotEmpty &&
-          filteredData.length == event.suraLength) {
+      print("${filteredData.length} JUZ NUMBER BLOC");
+      print("${dataFromDb.length} JUZ NUMBER BLOC");
+      print("${event.suraLength} SURA LENGTH");
+      if (filteredData.isNotEmpty && filteredData.length == event.suraLength) {
         // Check if the length of filtered data matches the expected length based on Juz numbers
         print("Data found in the database");
         emit(state.copyWith(
@@ -112,17 +111,6 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
         (l) => emit(state.copyWith(status1: ActionStatus.isError, error1: l)),
         (r) => emit(
             state.copyWith(status1: ActionStatus.isSuccess, oyatModel: r)));
-  }
-
-  FutureOr<void> _showingText(
-      ShowingTextEvent event, Emitter<QuronState> emit) {
-    if (event.text == QuronShowingTextEnum.arabic) {
-      emit(state.copyWith(textEnum: QuronShowingTextEnum.arabic));
-    } else if (event.text == QuronShowingTextEnum.meaning) {
-      emit(state.copyWith(textEnum: QuronShowingTextEnum.meaning));
-    } else if (event.text == QuronShowingTextEnum.reading) {
-      emit(state.copyWith(textEnum: QuronShowingTextEnum.reading));
-    }
   }
 
   Future<FutureOr<void>> _savedItem(
@@ -174,12 +162,13 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       // Filter the list to get only items where juzNumber matches event.index
       List<OyatModel> filteredData =
           dataFromDb.where((oyat) => oyat.juzNumber == event.index).toList();
-          print("${filteredData.length} JUZ NUMBER BLOC");
-          print("${dataFromDb.length} JUZ NUMBER BLOC");
+      print("${filteredData.length} JUZ NUMBER BLOC");
+      print("${dataFromDb.length} JUZ NUMBER BLOC");
+      print("${juzNumbers[event.index - 1]} JUZ NUMBER List Static Bloc");
+
       if (filteredData.isNotEmpty &&
           filteredData.length == juzNumbers[event.index - 1]) {
         // Check if the length of filtered data matches the expected length based on Juz numbers
-        print(filteredData.first.id);
         print("Data found in the database");
         emit(state.copyWith(
             oyatModelByJuz: filteredData, juzStatus: ActionStatus.isSuccess));
@@ -208,6 +197,17 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       emit(state.copyWith(
           savedOyatStatus: ActionStatus.isError,
           savedOyatError: e.result.toString()));
+    }
+  }
+
+  FutureOr<void> _showingText(
+      ShowingTextEvent event, Emitter<QuronState> emit) {
+    if (event.index == 0) {
+      emit(state.copyWith(isShowingArabic: event.isShowing));
+    } else if (event.index == 1) {
+      emit(state.copyWith(isShowingReading: event.isShowing));
+    } else if (event.index == 2) {
+      emit(state.copyWith(isShowingMeaning: event.isShowing));
     }
   }
 }

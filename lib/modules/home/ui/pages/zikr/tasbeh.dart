@@ -1,10 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class TasbehPage extends StatefulWidget {
   final ZikrDetailsArgument zikrDetailsArgument;
-
   const TasbehPage({super.key, required this.zikrDetailsArgument});
 
   @override
@@ -14,7 +14,7 @@ class TasbehPage extends StatefulWidget {
 class _TasbehNamePageState extends State<TasbehPage>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   bool _isTap = false;
-  int index = 0;
+  int index1 = 0;
   String _selectedItem = ZikrBloc.tasbehSizes[0].toString();
   bool isVibration = false;
   final AudioPlayer player = AudioPlayer();
@@ -22,22 +22,49 @@ class _TasbehNamePageState extends State<TasbehPage>
   String exeption = '';
   bool isDownloading = false;
   late TabController _tabController;
+  bool isSaved = false;
 
   @override
   void initState() {
-    widget.zikrDetailsArgument.zikrBloc.add(ZikrCategoryGetDBEvent());
-    print(widget.zikrDetailsArgument.zikrBloc.state.zikrModel.length);
+    ZikrBloc data = context.read<ZikrBloc>();
     _tabController = TabController(
-        length: widget.zikrDetailsArgument.zikrBloc.state.zikrModel.length,
+        length: widget.zikrDetailsArgument.categoryId == '0'
+            ? data.state.savedZikrs.length
+            : data.state.zikrModel.length,
         vsync: this,
         initialIndex: widget.zikrDetailsArgument.currentIndex);
+    _tabController.addListener(_handleTabChange);
+    isSaved = widget.zikrDetailsArgument.categoryId == '0'
+        ? context
+                .read<ZikrBloc>()
+                .state
+                .savedZikrs[widget.zikrDetailsArgument.currentIndex]
+                .isSaved ??
+            false
+        : context
+                .read<ZikrBloc>()
+                .state
+                .zikrModel[widget.zikrDetailsArgument.currentIndex]
+                .isSaved ??
+            false;
     super.initState();
   }
 
   @override
   void dispose() {
+    _tabController.dispose();
     player.dispose();
+    StorageRepository.putInt(Keys.currentDate, DateTime.now().day);
     super.dispose();
+  }
+
+  void _handleTabChange() async {
+    context.read<ZikrBloc>().add(
+        ZikrGetFromDBEvent(categoryId: widget.zikrDetailsArgument.categoryId));
+    context.read<ZikrBloc>().add(RefreshZikrEvent());
+    if (player.playing ?? false) {
+      await player.stop();
+    }
   }
 
   @override
@@ -67,7 +94,7 @@ class _TasbehNamePageState extends State<TasbehPage>
       // Set the audio source to the local file path
       await player.setFilePath(localFilePath);
     } catch (e) {
-      print('Error initializing audio: $e');
+      debugPrint('Error initializing audio: $e');
       setState(() {
         error = 'Audio yuklashda xatolik';
       });
@@ -78,9 +105,9 @@ class _TasbehNamePageState extends State<TasbehPage>
     final Dio client = serviceLocator<DioSettings>().dio;
     try {
       final Response response = await client.download(url, savePath);
-      print('Downloaded audio: $response');
+      debugPrint('Downloaded audio: $response');
     } on DioException catch (e) {
-      print('Error downloading audio: $e');
+      debugPrint('Error downloading audio: $e');
       exeption = NetworkExeptionResponse(e).messageForUser;
     }
   }
@@ -93,13 +120,16 @@ class _TasbehNamePageState extends State<TasbehPage>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ZikrBloc, ZikrState>(
-      bloc: widget.zikrDetailsArgument.zikrBloc,
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
             scrolledUnderElevation: 0,
             leading: IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  context.read<ZikrBloc>().add(ZikrGetFromDBEvent(
+                      categoryId: widget.zikrDetailsArgument.categoryId));
+                  Navigator.pop(context);
+                },
                 icon: Container(
                   width: 28,
                   height: 28,
@@ -121,9 +151,10 @@ class _TasbehNamePageState extends State<TasbehPage>
             ),
             actions: [
               PopupMenuButton(
+                color: context.isDark ? containerBlackColor : Colors.white,
                 onSelected: (value) {
                   _selectedItem = ZikrBloc.tasbehSizes[value].toString();
-                  index = value;
+                  index1 = value;
                   setState(() {});
                 },
                 child: Container(
@@ -149,7 +180,7 @@ class _TasbehNamePageState extends State<TasbehPage>
               ),
               IconButton(
                   onPressed: () {
-                    widget.zikrDetailsArgument.zikrBloc.add(RefreshZikrEvent());
+                    context.read<ZikrBloc>().add(RefreshZikrEvent());
                     setState(() {});
                   },
                   icon: SvgPicture.asset(AppIcon.refresh,
@@ -158,7 +189,8 @@ class _TasbehNamePageState extends State<TasbehPage>
                   onPressed: () {
                     isVibration = !isVibration;
                     setState(() {});
-                    widget.zikrDetailsArgument.zikrBloc
+                    context
+                        .read<ZikrBloc>()
                         .add(ZikrVibrationEvent(isVibration: isVibration));
                   },
                   icon: SvgPicture.asset(AppIcon.vibration,
@@ -173,10 +205,8 @@ class _TasbehNamePageState extends State<TasbehPage>
                 splashBorderRadius: BorderRadius.circular(12.r),
                 splashFactory: NoSplash.splashFactory,
                 indicator: BoxDecoration(
-                  color: primaryColor,
-                  //  Color(0xffF5F4FA),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
+                    color: primaryColor,
+                    borderRadius: BorderRadius.circular(12.r)),
                 labelStyle: TextStyle(
                     fontFamily: AppfontFamily.comforta.fontFamily,
                     fontWeight: AppFontWeight.w_700,
@@ -194,39 +224,45 @@ class _TasbehNamePageState extends State<TasbehPage>
                 unselectedLabelColor:
                     context.isDark ? Colors.white : Colors.black,
                 onTap: (b) async {
-                  // 
-                  // 
-                  // 
-                  // 
-                  await _init(state.zikrModel[b].zikrAudioLink ?? '',
-                      state.zikrModel[b].zikrAudioName ?? '');
+                  context.read<ZikrBloc>().add(RefreshZikrEvent());
+                  if (player.playing ?? false) {
+                    await player.stop();
+                  }
+                  setState(() {});
                 },
                 tabs: List.generate(
-                  state.zikrModel.length,
+                  widget.zikrDetailsArgument.categoryId == '0'
+                      ? state.savedZikrs.length
+                      : state.zikrModel.length,
                   (index) => Tab(
-                      child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    child: Text(
-                      state.zikrModel[index].zikrTitle ?? '',
-                      style: TextStyle(
-                          fontSize: AppSizes.size_14,
-                          fontFamily: AppfontFamily.comforta.fontFamily,
-                          fontWeight: AppFontWeight.w_700),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Text(
+                        widget.zikrDetailsArgument.categoryId == '0'
+                            ? state.savedZikrs[index].zikrTitle ?? ''
+                            : state.zikrModel[index].zikrTitle ?? '',
+                        style: TextStyle(
+                            fontSize: AppSizes.size_14,
+                            fontFamily: AppfontFamily.comforta.fontFamily,
+                            fontWeight: AppFontWeight.w_700),
+                      ),
                     ),
-                  )),
+                  ),
                 )),
           ),
           body: Column(
             children: [
               Expanded(
-                  // flex: 6,
+                  flex: 4,
                   child: TabBarView(
                       controller: _tabController,
                       children: List.generate(
-                          state.zikrModel.length,
+                          widget.zikrDetailsArgument.categoryId == '0'
+                              ? state.savedZikrs.length
+                              : state.zikrModel.length,
                           (index) => Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 12.0),
+                                margin: const EdgeInsets.only(
+                                    left: 5, right: 5, top: 12),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 18, vertical: 5),
                                 decoration: BoxDecoration(
@@ -239,20 +275,27 @@ class _TasbehNamePageState extends State<TasbehPage>
                                   children: [
                                     GestureDetector(
                                       onTap: () {
-                                        print(state.zikrModel[index].zikrInfo);
                                         showAdaptiveDialog(
                                             context: context,
                                             barrierDismissible: true,
                                             builder: (context) =>
                                                 AlertDialog.adaptive(
-                                                  scrollable: true,
-                                                  // content: HtmlElementView(
-                                                  //   viewType: state
-                                                  //           .zikrModel[index]
-                                                  //           .zikrInfo ??
-                                                  //       '',
-                                                  // )
-                                                ));
+                                                    scrollable: true,
+                                                    content: HtmlWidget(
+                                                      widget.zikrDetailsArgument
+                                                                  .categoryId ==
+                                                              '0'
+                                                          ? state
+                                                                  .savedZikrs[
+                                                                      index]
+                                                                  .zikrInfo ??
+                                                              ''
+                                                          : state
+                                                                  .zikrModel[
+                                                                      index]
+                                                                  .zikrInfo ??
+                                                              '',
+                                                    )));
                                       },
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -261,8 +304,15 @@ class _TasbehNamePageState extends State<TasbehPage>
                                         children: [
                                           const SpaceHeight(),
                                           Text(
-                                            state.zikrModel[index].zikrTitle ??
-                                                '',
+                                            widget.zikrDetailsArgument
+                                                        .categoryId ==
+                                                    '0'
+                                                ? state.savedZikrs[index]
+                                                        .zikrTitle ??
+                                                    ''
+                                                : state.zikrModel[index]
+                                                        .zikrTitle ??
+                                                    '',
                                             style: TextStyle(
                                                 fontFamily: AppfontFamily
                                                     .comforta.fontFamily,
@@ -272,9 +322,15 @@ class _TasbehNamePageState extends State<TasbehPage>
                                           ),
                                           const SpaceHeight(),
                                           Text(
-                                            state.zikrModel[index]
-                                                    .zikrDescription ??
-                                                '',
+                                            widget.zikrDetailsArgument
+                                                        .categoryId ==
+                                                    '0'
+                                                ? state.savedZikrs[index]
+                                                        .zikrDescription ??
+                                                    ''
+                                                : state.zikrModel[index]
+                                                        .zikrDescription ??
+                                                    '',
                                             overflow: TextOverflow.clip,
                                             style: TextStyle(
                                                 fontFamily: AppfontFamily
@@ -293,20 +349,53 @@ class _TasbehNamePageState extends State<TasbehPage>
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          InkWell(
-                                            onTap: () {},
-                                            radius: 16.r,
-                                            child: CircleAvatar(
+                                          BlocListener<ZikrBloc, ZikrState>(
+                                            listener: (context, state) {
+                                              isSaved = widget
+                                                          .zikrDetailsArgument
+                                                          .categoryId ==
+                                                      '0'
+                                                  ? state.savedZikrs[index]
+                                                          .isSaved ??
+                                                      false
+                                                  : state.zikrModel[index]
+                                                          .isSaved ??
+                                                      false;
+                                            },
+                                            child: InkWell(
+                                              onTap: () {
+                                                isSaved = !isSaved;
+                                                setState(() {});
+                                                context.read<ZikrBloc>().add(
+                                                    SavedZikrEvent(
+                                                        zikrId: state
+                                                                .zikrModel[
+                                                                    index]
+                                                                .zikrId ??
+                                                            '0',
+                                                        isSaved: isSaved));
+                                                context.read<ZikrBloc>().add(
+                                                    ZikrGetFromDBEvent(
+                                                        categoryId: widget
+                                                            .zikrDetailsArgument
+                                                            .categoryId));
+                                              },
                                               radius: 16.r,
-                                              backgroundColor: context.isDark
-                                                  ? circleAvatarBlackColor
-                                                  : circleAvatarColor,
-                                              child: Center(
-                                                child: SvgPicture.asset(
-                                                    AppIcon.bookmark,
-                                                    color: context.isDark
-                                                        ? Colors.white
-                                                        : null),
+                                              child: CircleAvatar(
+                                                radius: 16.r,
+                                                backgroundColor: context.isDark
+                                                    ? circleAvatarBlackColor
+                                                    : circleAvatarColor,
+                                                child: Center(
+                                                  child: isSaved
+                                                      ? SvgPicture.asset(AppIcon
+                                                          .bookmark_green)
+                                                      : SvgPicture.asset(
+                                                          AppIcon.bookmark,
+                                                          color: context.isDark
+                                                              ? Colors.white
+                                                              : null),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -314,7 +403,10 @@ class _TasbehNamePageState extends State<TasbehPage>
                                           InkWell(
                                             onTap: () {
                                               FlutterShare.share(
-                                                  title: 'title');
+                                                  // text: state.zikrModel[index]
+                                                  //         .zikrInfo ??
+                                                  //     '',
+                                                  title: 'Ilovani ulashish');
                                             },
                                             radius: 16.r,
                                             child: CircleAvatar(
@@ -340,9 +432,8 @@ class _TasbehNamePageState extends State<TasbehPage>
                                                   playerState?.processingState;
                                               final playing =
                                                   playerState?.playing;
-                                              print(
-                                                  'Processing State: $processingState');
-                                              print('Is Playing: $playing');
+                                              print('Processing State: ');
+                                              print('Is Playing: ');
                                               if (processingState ==
                                                       ProcessingState.loading ||
                                                   processingState ==
@@ -379,12 +470,32 @@ class _TasbehNamePageState extends State<TasbehPage>
                                                                   content: Text(
                                                                       error)));
                                                       await _init(
-                                                          state.zikrModel[index]
-                                                                  .zikrAudioLink ??
-                                                              '',
-                                                          state.zikrModel[index]
-                                                                  .zikrAudioName ??
-                                                              '');
+                                                          widget.zikrDetailsArgument
+                                                                      .categoryId ==
+                                                                  '0'
+                                                              ? state
+                                                                      .savedZikrs[
+                                                                          index]
+                                                                      .zikrAudioLink ??
+                                                                  ''
+                                                              : state
+                                                                      .zikrModel[
+                                                                          index]
+                                                                      .zikrAudioLink ??
+                                                                  '',
+                                                          widget.zikrDetailsArgument
+                                                                      .categoryId ==
+                                                                  '0'
+                                                              ? state
+                                                                      .savedZikrs[
+                                                                          index]
+                                                                      .zikrAudioName ??
+                                                                  ''
+                                                              : state
+                                                                      .zikrModel[
+                                                                          index]
+                                                                      .zikrAudioName ??
+                                                                  '');
                                                       Connectivity()
                                                           .onConnectivityChanged
                                                           .listen(
@@ -403,12 +514,32 @@ class _TasbehNamePageState extends State<TasbehPage>
                                                       });
                                                     } else {
                                                       await _init(
-                                                          state.zikrModel[index]
-                                                                  .zikrAudioLink ??
-                                                              '',
-                                                          state.zikrModel[index]
-                                                                  .zikrAudioName ??
-                                                              '');
+                                                          widget.zikrDetailsArgument
+                                                                      .categoryId ==
+                                                                  '0'
+                                                              ? state
+                                                                      .savedZikrs[
+                                                                          index]
+                                                                      .zikrAudioLink ??
+                                                                  ''
+                                                              : state
+                                                                      .zikrModel[
+                                                                          index]
+                                                                      .zikrAudioLink ??
+                                                                  '',
+                                                          widget.zikrDetailsArgument
+                                                                      .categoryId ==
+                                                                  '0'
+                                                              ? state
+                                                                      .savedZikrs[
+                                                                          index]
+                                                                      .zikrAudioName ??
+                                                                  ''
+                                                              : state
+                                                                      .zikrModel[
+                                                                          index]
+                                                                      .zikrAudioName ??
+                                                                  '');
                                                       await player.play();
                                                     }
                                                   },
@@ -454,12 +585,13 @@ class _TasbehNamePageState extends State<TasbehPage>
                                         ],
                                       ),
                                     ),
-                                    const SpaceHeight()
+                                    const SpaceHeight(),
                                   ],
                                 ),
                               )))),
               const SpaceHeight(),
               Expanded(
+                flex: 4,
                 child: Container(
                   decoration: BoxDecoration(
                       color:
@@ -479,8 +611,7 @@ class _TasbehNamePageState extends State<TasbehPage>
                         child: Column(
                           children: [
                             Text(
-                                widget.zikrDetailsArgument.zikrBloc.currentZikr
-                                    .toString(),
+                                context.read<ZikrBloc>().currentZikr.toString(),
                                 style: TextStyle(
                                     fontSize: 60,
                                     fontWeight: AppFontWeight.w_700,
@@ -499,7 +630,7 @@ class _TasbehNamePageState extends State<TasbehPage>
                                 ),
                                 const SmallText(text: ' | '),
                                 Text(
-                                  'x${widget.zikrDetailsArgument.zikrBloc.currentZikrOuterCount}',
+                                  'x${context.read<ZikrBloc>().currentZikrOuterCount}',
                                   style: TextStyle(
                                       fontSize: AppSizes.size_18,
                                       fontWeight: AppFontWeight.w_700,
@@ -514,9 +645,9 @@ class _TasbehNamePageState extends State<TasbehPage>
                       GestureDetector(
                         onTap: () {
                           _isTap = !_isTap;
-                          print(index);
-                          widget.zikrDetailsArgument.zikrBloc
-                              .add(IncrementZikr(index: index));
+                          context
+                              .read<ZikrBloc>()
+                              .add(IncrementZikr(index: index1));
                           setState(() {});
                           if (_isTap) {
                             Future.delayed(const Duration(milliseconds: 160),
@@ -525,6 +656,34 @@ class _TasbehNamePageState extends State<TasbehPage>
                               setState(() {});
                             });
                           }
+                          int pageindex = _tabController.index;
+                          context.read<ZikrBloc>().add(SavedZikrCountEvent(
+                                zikrId: widget.zikrDetailsArgument.categoryId ==
+                                        '0'
+                                    ? state.savedZikrs[pageindex].zikrId ?? '0'
+                                    : state.zikrModel[pageindex].zikrId ?? '0',
+                                allZikrs: (widget.zikrDetailsArgument
+                                                .categoryId ==
+                                            '0'
+                                        ? state.savedZikrs[pageindex]
+                                                .allZikrs ??
+                                            0
+                                        : state.zikrModel[pageindex].allZikrs ??
+                                            0) +
+                                    state.currentZikr +
+                                    1,
+                                todayZikrs:
+                                    (widget.zikrDetailsArgument.categoryId ==
+                                                '0'
+                                            ? state.savedZikrs[pageindex]
+                                                    .todayZikrs ??
+                                                0
+                                            : state.zikrModel[pageindex]
+                                                    .todayZikrs ??
+                                                0) +
+                                        state.currentZikr +
+                                        1,
+                              ));
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 500),
@@ -551,6 +710,7 @@ class _TasbehNamePageState extends State<TasbehPage>
                           ),
                         ),
                       ),
+                      SizedBox(height: context.bottom / 9 + 30)
                     ],
                   ),
                 ),

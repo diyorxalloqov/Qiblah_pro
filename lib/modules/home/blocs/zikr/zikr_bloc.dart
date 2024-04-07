@@ -20,12 +20,15 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
     on<ZikrGetFromDBEvent>(_zikrgetFromDb);
     on<SavedZikrEvent>(_savedZikr);
     on<GetSavedZikrsEvent>(_savedZikrs);
+    on<SavedZikrCountEvent>(_updatedZikrCount);
+    on<ChangeZeroTodayZikrs>(_changeTodayZikrs);
   }
   final ZikrService _zikrService = ZikrService();
   final ZikrDBSevice _zikrDBSevice = ZikrDBSevice();
 
   int currentZikr = 0;
   int currentZikrOuterCount = 0;
+  int s = 0;
   static const tasbehSizes = [11, 33, 99];
 
   FutureOr<void> _vibration(
@@ -50,6 +53,8 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
 
   FutureOr<void> _incrementZikr(IncrementZikr event, Emitter<ZikrState> emit) {
     currentZikr++;
+    s++;
+    emit(state.copyWith(currentZikr: s));
     if (currentZikr == tasbehSizes[event.index] + 1) {
       currentZikr = 1;
       currentZikrOuterCount++;
@@ -62,12 +67,15 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
   }
 
   FutureOr<void> refreshZikr(RefreshZikrEvent event, Emitter<ZikrState> emit) {
-    currentZikr = 1;
+    currentZikr = 0;
     currentZikrOuterCount = 0;
+    s = 0;
+    emit(state.copyWith(currentZikr: s));
   }
 
   Future<FutureOr<void>> _getCategoriesApi(
       ZikrCategoryGetFromApiEvent event, Emitter<ZikrState> emit) async {
+    emit(state.copyWith(status: ActionStatus.isLoading));
     Either<String, List<ZikrCategoryModel>> res =
         await _zikrService.getCategories();
     res.fold(
@@ -79,6 +87,7 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
   Future<FutureOr<void>> _getCategoryDB(
       ZikrCategoryGetDBEvent event, Emitter<ZikrState> emit) async {
     List<ZikrCategoryModel>? data = await _zikrDBSevice.getCategory();
+    emit(state.copyWith(zikrStatus: ActionStatus.isLoading));
     try {
       if (data != null) {
         if (data.isNotEmpty) {
@@ -109,7 +118,9 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
 
   Future<FutureOr<void>> _zikrgetFromDb(
       ZikrGetFromDBEvent event, Emitter<ZikrState> emit) async {
+    emit(state.copyWith(zikrStatus: ActionStatus.isLoading));
     List<ZikrModel>? localdata = await _zikrDBSevice.getZikrs(event.categoryId);
+
     if (localdata != null && localdata.isNotEmpty) {
       // Check if any element in localdata has the suraId equal to event.index
       bool containsIndex =
@@ -133,7 +144,12 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
 
   Future<FutureOr<void>> _savedZikr(
       SavedZikrEvent event, Emitter<ZikrState> emit) async {
-    await _zikrDBSevice.updateSaved(event.zikrId, event.isSaved);
+    try {
+      await _zikrDBSevice.updateSaved(event.zikrId, event.isSaved);
+    } on DatabaseException catch (e) {
+      print(e.result);
+      print('databse exeption in bloc');
+    }
   }
 
   Future<FutureOr<void>> _savedZikrs(
@@ -156,5 +172,17 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
       emit(state.copyWith(
           error: e.toString(), savedZikrStatus: ActionStatus.isError));
     }
+  }
+
+  Future<FutureOr<void>> _updatedZikrCount(
+      SavedZikrCountEvent event, Emitter<ZikrState> emit) async {
+    await _zikrDBSevice.updateZikrCount(
+        event.zikrId, event.allZikrs, event.todayZikrs);
+    emit(state.copyWith());
+  }
+
+  Future<FutureOr<void>> _changeTodayZikrs(
+      ChangeZeroTodayZikrs event, Emitter<ZikrState> emit) async {
+    await _zikrDBSevice.resetTodayZikrs();
   }
 }

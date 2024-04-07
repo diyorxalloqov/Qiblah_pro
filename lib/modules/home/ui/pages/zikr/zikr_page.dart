@@ -12,32 +12,34 @@ class ZikrPage extends StatefulWidget {
 class _ZikrPageState extends State<ZikrPage> {
   // late PageController _pageController;
   // int _currentPage = 0;
-  late ZikrBloc zikrBloc;
 
   @override
   void initState() {
-    zikrBloc = ZikrBloc();
-    zikrBloc.add(ZikrCategoryGetDBEvent());
     // _pageController = PageController(initialPage: 0);
+    context.read<ZikrBloc>().add(ZikrCategoryGetDBEvent());
+    StorageRepository.getInt(Keys.currentDate) != DateTime.now().day
+        ? context.read<ZikrBloc>().add(ChangeZeroTodayZikrs())
+        : null;
     super.initState();
   }
 
-  @override
-  void dispose() {
-    // _pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _pageController.dispose();
+  //   super.dispose();
+  // }
 
   // double percent = 0.53;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: zikrBloc,
-      child: Scaffold(
-          appBar: customAppbar(context, 'ficha_zikr'.tr()),
-          body: BlocBuilder<ZikrBloc, ZikrState>(
-            builder: (context, state) {
+    return Scaffold(
+        appBar: customAppbar(context, 'ficha_zikr'.tr()),
+        body: BlocBuilder<ZikrBloc, ZikrState>(
+          builder: (context, state) {
+            if (state.status == ActionStatus.isLoading) {
+              return const LoadingPage();
+            } else if (state.status == ActionStatus.isSuccess) {
               return Padding(
                 padding: EdgeInsets.all(15.dg),
                 child: Column(
@@ -193,11 +195,26 @@ class _ZikrPageState extends State<ZikrPage> {
                             }
                             if (index == state.zikrCategroyModel.length + 1) {
                               return GestureDetector(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SavedZikrs(zikrBloc: zikrBloc))),
+                                onTap: () {
+                                  // StorageRepository.getString(
+                                  //             Keys.currentDate) !=
+                                  //         DateTime.now().toString()
+                                  //     ? context.read<ZikrBloc>().add(
+                                  //         SavedZikrCountEvent(
+                                  //             zikrId: state.savedZikrs[index]
+                                  //                     .zikrId ??
+                                  //                 '0',
+                                  //             allZikrs: state.savedZikrs[index]
+                                  //                     .allZikrs ??
+                                  //                 0,
+                                  //             todayZikrs: 0))
+                                  //     : null;
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SavedZikrs()));
+                                },
                                 child: Container(
                                   height: 170.h,
                                   width: 154.w,
@@ -229,13 +246,12 @@ class _ZikrPageState extends State<ZikrPage> {
                             }
                             return GestureDetector(
                               onTap: () {
-                                // zikrBloc.add(ZikrGetFromDBEvent(
-                                //     categoryId: state.zikrCategroyModel[index]
-                                //             .categoryId ??
-                                //         '0'));
+                                context.read<ZikrBloc>().add(ZikrGetFromDBEvent(
+                                    categoryId: state.zikrCategroyModel[index]
+                                            .categoryId ??
+                                        '0'));
                                 Navigator.pushNamed(context, 'zikrMain',
                                     arguments: ZikrArguments(
-                                        zikrBloc: zikrBloc,
                                         categoryName: state
                                                 .zikrCategroyModel[index]
                                                 .categoryName ??
@@ -282,8 +298,11 @@ class _ZikrPageState extends State<ZikrPage> {
                   ],
                 ),
               );
-            },
-          )),
-    );
+            } else if (state.status == ActionStatus.isError) {
+              return Center(child: Text(state.zikrError));
+            }
+            return const SizedBox.shrink();
+          },
+        ));
   }
 }

@@ -1,3 +1,5 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class JuzlarDetailsPage extends StatefulWidget {
@@ -39,11 +41,10 @@ class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
                   ),
                 ),
               ),
-              title: TextFormField(
+              title: TextField(
                 controller: _searchController,
-                onChanged: (value) {
-                  setState(() {});
-                },
+                onChanged: (value) => setState(() {}),
+                // textDirection: TextDirection.ltr,
                 decoration: InputDecoration(
                   hintText: 'qidirish'.tr(),
                   contentPadding:
@@ -56,7 +57,14 @@ class _SuralarDetailsPageState extends State<JuzlarDetailsPage> {
                     },
                     icon: SvgPicture.asset(AppIcon.cancel),
                   ),
-                  border: OutlineInputBorder(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(
+                      color: Color(0xffE3E7EA),
+                      width: 1,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: const BorderSide(
                       color: Color(0xffE3E7EA),
@@ -222,12 +230,11 @@ class JuzlarDetailsItem extends StatefulWidget {
   State<JuzlarDetailsItem> createState() => _TanlanganlarItemState();
 }
 
-class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
+class _TanlanganlarItemState extends State<JuzlarDetailsItem>
+    with WidgetsBindingObserver {
   bool isShowing = false;
   bool isReaded = false;
   bool isSaved = false;
-
- 
 
   @override
   void initState() {
@@ -243,10 +250,81 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
       isReaded = false;
       isSaved = false;
     }
-    print("$isSaved SALOM");
-    print("$isReaded ssaaaaaaaaaaalllllloooommmm");
-    print("${widget.index} index item coming");
   }
+
+  final AudioPlayer player = AudioPlayer();
+  String error = '';
+  String exeption = '';
+  bool isDownloading = false;
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      // Release the player's resources when not in use. We use "stop" so that
+      // if the app resumes later, it will still remember what position to
+      // resume from.
+      player.stop();
+    }
+  }
+
+  Future<void> _init() async {
+    String suraNum =
+        "${widget.state.oyatModelByJuz[widget.index].suraId}".padLeft(3, '0');
+    String juzNumber =
+        "${widget.state.oyatModelByJuz[widget.index].verseNumber}"
+            .padLeft(3, '0');
+    print("$suraNum SURA NUMBER");
+    print("$juzNumber Juz oyat NUMBER");
+    print(widget.index);
+
+    final String url =
+        'https://everyayah.com/data/Alafasy_64kbps/$suraNum$juzNumber.mp3';
+    final String localFilePath = await _getLocalFilePath();
+    final bool fileExists = await File(localFilePath).exists();
+
+    try {
+      if (!fileExists) {
+        setState(() {
+          isDownloading = true;
+        });
+        await _downloadAudio(url, localFilePath);
+        setState(() {
+          isDownloading = false;
+        });
+      }
+      // Set the audio source to the local file path
+      await player.setFilePath(localFilePath);
+    } catch (e) {
+      print('Error initializing audio: $e');
+      setState(() {
+        error = 'Audio yuklashda xatolik';
+      });
+    }
+  }
+
+  Future<void> _downloadAudio(String url, String savePath) async {
+    final Dio client = serviceLocator<DioSettings>().dio;
+    try {
+      final Response response = await client.download(url, savePath);
+      print('Downloaded audio: $response');
+    } on DioException catch (e) {
+      print('Error downloading audio: $e');
+      exeption = NetworkExeptionResponse(e).messageForUser;
+    }
+  }
+
+  Future<String> _getLocalFilePath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/audio_${widget.state.oyatModelByJuz[widget.index].verseId}.mp3';
+  }
+
+  /// path tanlash
 
   @override
   Widget build(BuildContext context) {
@@ -286,53 +364,55 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const SizedBox.shrink(),
-                          Expanded(
-                            child: Text(
-                              widget.state.oyatModelByJuz[widget.index]
-                                  .verseArabic
-                                  .toString(),
-                              overflow: TextOverflow.clip,
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                color: !widget
-                                        .state
-                                        .oyatModelByJuz[widget.index]
-                                        .verseArabic!
-                                        .toLowerCase()
-                                        .contains(widget.controller.text
-                                            .toLowerCase())
-                                    ? primaryColor
-                                    : context.isDark
-                                        ? arabicWhiteTextColor
-                                        : arabicTextColor,
-                                fontSize: widget.state.quronSize ??
-                                    AppSizes.arabicTextSize,
-                                fontFamily: AppfontFamily.inter.fontFamily,
-                                fontWeight: AppFontWeight.arabicFontWeight,
-                              ),
-                            ),
-                          ),
+                          widget.state.isShowingArabic
+                              ? Expanded(
+                                  child: Text(
+                                    widget.state.oyatModelByJuz[widget.index]
+                                        .verseArabic
+                                        .toString(),
+                                    overflow: TextOverflow.clip,
+                                    textDirection: TextDirection.rtl,
+                                    style: TextStyle(
+                                      color: context.isDark
+                                          ? arabicWhiteTextColor
+                                          : arabicTextColor,
+                                      fontSize: widget.state.quronSize ??
+                                          AppSizes.arabicTextSize,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
+                                      fontWeight:
+                                          AppFontWeight.arabicFontWeight,
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
                         ],
                       ),
-                      Text(
-                        '${widget.state.oyatModelByJuz[widget.index].verseNumber} ${widget.state.oyatModelByJuz[widget.index].text}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: context.isDark ? Colors.white : Colors.black,
-                          fontStyle: FontStyle.italic,
-                          fontFamily: AppfontFamily.inter.fontFamily,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                      widget.state.isShowingReading
+                          ? Text(
+                              '${widget.state.oyatModelByJuz[widget.index].verseNumber} ${widget.state.oyatModelByJuz[widget.index].text}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: context.isDark
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: AppfontFamily.inter.fontFamily,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       const SpaceHeight(),
-                      Text(
-                        '''${widget.state.oyatModelByJuz[widget.index].meaning}''',
-                        style: TextStyle(
-                            color: smallTextColor,
-                            fontSize: widget.state.textSize ?? 14.0,
-                            fontFamily: AppfontFamily.inter.fontFamily,
-                            fontWeight: AppFontWeight.w_500),
-                      ),
+                      widget.state.isShowingMeaning
+                          ? Text(
+                              '''${widget.state.oyatModelByJuz[widget.index].meaning}''',
+                              style: TextStyle(
+                                  color: smallTextColor,
+                                  fontSize: widget.state.textSize ?? 14.0,
+                                  fontFamily: AppfontFamily.inter.fontFamily,
+                                  fontWeight: AppFontWeight.w_500),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
@@ -368,6 +448,7 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
                                 },
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
+                                  radius: 16.r,
                                   backgroundColor: isReaded
                                       ? primaryColor
                                       : context.isDark
@@ -401,6 +482,7 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
                                 },
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
+                                  radius: 16.r,
                                   backgroundColor: isSaved
                                       ? primaryColor
                                       : context.isDark
@@ -422,6 +504,7 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
                                 onTap: () {},
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
+                                  radius: 16.r,
                                   backgroundColor: context.isDark
                                       ? circleAvatarBlackColor
                                       : const Color(0xFFF4F7FA),
@@ -435,22 +518,92 @@ class _TanlanganlarItemState extends State<JuzlarDetailsItem> {
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                onTap: () {},
-                                borderRadius: BorderRadius.circular(100.r),
-                                child: CircleAvatar(
-                                  backgroundColor: context.isDark
-                                      ? circleAvatarBlackColor
-                                      : primaryColor,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      AppIcon.play,
-                                      color: context.isDark
-                                          ? const Color(0xffB5B9BC)
-                                          : null,
-                                    ),
-                                  ),
-                                ),
+                              StreamBuilder(
+                                stream: player.playerStateStream,
+                                builder: (context, snapshot) {
+                                  final playerState = snapshot.data;
+                                  final processingState =
+                                      playerState?.processingState;
+                                  final playing = playerState?.playing;
+                                  print('Processing State: $processingState');
+                                  print('Is Playing: $playing');
+                                  if (processingState ==
+                                          ProcessingState.loading ||
+                                      processingState ==
+                                          ProcessingState.buffering ||
+                                      isDownloading) {
+                                    return CircleAvatar(
+                                      radius: 16.r,
+                                      backgroundColor: primaryColor,
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(4.0),
+                                        child: CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.white),
+                                        ),
+                                      ),
+                                    );
+                                  } else if (playing != true ||
+                                      error.isNotEmpty) {
+                                    return PlayerIcon(
+                                      backColor: primaryColor,
+                                      icon: SvgPicture.asset(AppIcon.play),
+                                      onTap: () async {
+                                        if (error.isNotEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(error)));
+                                          await _init();
+                                          Connectivity()
+                                              .onConnectivityChanged
+                                              .listen(
+                                                  (ConnectivityResult result) {
+                                            if (result !=
+                                                ConnectivityResult.none) {
+                                              print('connectivity result');
+                                              setState(() {
+                                                error = '';
+                                                player.stop();
+                                              });
+                                            }
+                                          });
+                                        } else {
+                                          await _init();
+                                          await player.play();
+                                        }
+                                      },
+                                    );
+                                  } else if (processingState ==
+                                          ProcessingState.ready ||
+                                      processingState !=
+                                          ProcessingState.completed) {
+                                    return PlayerIcon(
+                                      backColor: primaryColor.withOpacity(0.2),
+                                      icon: SvgPicture.asset(AppIcon.pause),
+                                      onTap: () async {
+                                        player.pause();
+                                        if (error.isNotEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(content: Text(error)),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  } else {
+                                    return PlayerIcon(
+                                      backColor: primaryColor,
+                                      icon: const Icon(Icons.replay,
+                                          color: Colors.white),
+                                      onTap: () {
+                                        if (error.isEmpty) {
+                                          player.seek(Duration.zero);
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
                               ),
                               const SpaceWidth(),
                             ],

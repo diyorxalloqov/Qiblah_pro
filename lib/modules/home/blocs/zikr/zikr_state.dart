@@ -7,6 +7,7 @@ class ZikrState extends Equatable {
   final List<ZikrCategoryModel> zikrCategroyModel;
   final List<ZikrModel> zikrModel;
   final ActionStatus zikrStatus;
+  final int currentZikr;
   final String zikrError;
   final List<ZikrModel> savedZikrs;
   final ActionStatus savedZikrStatus;
@@ -15,7 +16,7 @@ class ZikrState extends Equatable {
       {this.status = ActionStatus.isInitial,
       this.error = '',
       this.isVibration = false,
-      
+      this.currentZikr = 0,
       this.zikrModel = const [],
       this.savedZikrs = const [],
       this.savedZikrStatus = ActionStatus.isInitial,
@@ -29,6 +30,7 @@ class ZikrState extends Equatable {
     List<ZikrModel>? zikrModel,
     ActionStatus? zikrStatus,
     String? zikrError,
+    int? currentZikr,
     bool? isVibration,
     List<ZikrModel>? savedZikrs,
     ActionStatus? savedZikrStatus,
@@ -42,6 +44,7 @@ class ZikrState extends Equatable {
         isVibration: isVibration ?? this.isVibration,
         zikrError: zikrError ?? this.zikrError,
         zikrModel: zikrModel ?? this.zikrModel,
+        currentZikr: currentZikr ?? this.currentZikr,
         savedZikrStatus: savedZikrStatus ?? this.savedZikrStatus,
         zikrStatus: zikrStatus ?? this.zikrStatus);
   }
@@ -57,5 +60,6 @@ class ZikrState extends Equatable {
         zikrModel,
         savedZikrs,
         savedZikrStatus,
+        currentZikr
       ];
 }

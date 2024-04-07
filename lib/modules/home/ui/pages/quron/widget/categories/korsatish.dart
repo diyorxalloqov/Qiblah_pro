@@ -8,9 +8,12 @@ class Korsatish extends StatefulWidget {
 }
 
 class _KorsatishState extends State<Korsatish> {
-  bool oqilishi = true;
-  bool manosi = true;
-  bool arabchasi = true;
+  final List<String> _title = [
+    'arabcha_shakli',
+    'oqilishi',
+    'manolar_tarjimasi'
+  ];
+  final List<bool> _switchs = [true, true, true];
 
   @override
   Widget build(BuildContext context) {
@@ -31,79 +34,62 @@ class _KorsatishState extends State<Korsatish> {
                     fontWeight: AppFontWeight.w_400,
                     color: primaryColor),
               ),
-              const SpaceHeight(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'arabcha_shakli'.tr(),
-                    style: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontFamily: AppfontFamily.inter.fontFamily,
-                      fontWeight: AppFontWeight.w_400,
-                    ),
-                  ),
-                  Switch.adaptive(
-                    activeTrackColor: primaryColor,
-                    inactiveTrackColor: Colors.white,
-                    activeColor: Colors.white,
-                    value: state.textEnum == QuronShowingTextEnum.arabic,
-                    onChanged: (v) {
-                      context.read<QuronBloc>().add(const ShowingTextEvent(
-                          text: QuronShowingTextEnum.arabic));
-                      arabchasi = v;
-                      setState(() {});
-                    },
-                  )
-                ],
-              ),
-              const SpaceHeight(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'oqilishi'.tr(),
-                    style: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontFamily: AppfontFamily.inter.fontFamily,
-                      fontWeight: AppFontWeight.w_400,
-                    ),
-                  ),
-                  Switch.adaptive(
-                      value: state.textEnum == QuronShowingTextEnum.reading,
-                      activeTrackColor: primaryColor,
-                      inactiveTrackColor: Colors.white,
-                      onChanged: (v) {
-                        oqilishi = v;
-                        context.read<QuronBloc>().add(const ShowingTextEvent(
-                            text: QuronShowingTextEnum.reading));
-                        setState(() {});
-                      })
-                ],
-              ),
-              const SpaceHeight(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'manolar_tarjimasi'.tr(),
-                    style: TextStyle(
-                      fontSize: AppSizes.size_16,
-                      fontFamily: AppfontFamily.inter.fontFamily,
-                      fontWeight: AppFontWeight.w_400,
-                    ),
-                  ),
-                  Switch.adaptive(
-                      value: state.textEnum == QuronShowingTextEnum.meaning,
-                      activeTrackColor: primaryColor,
-                      inactiveTrackColor: Colors.white,
-                      onChanged: (v) {
-                        manosi = v;
-                        context.read<QuronBloc>().add(const ShowingTextEvent(
-                            text: QuronShowingTextEnum.meaning));
-                        setState(() {});
-                      })
-                ],
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          const SpaceHeight(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _title[index].tr(),
+                                style: TextStyle(
+                                  fontSize: AppSizes.size_16,
+                                  fontFamily: AppfontFamily.inter.fontFamily,
+                                  fontWeight: AppFontWeight.w_400,
+                                ),
+                              ),
+                              Switch.adaptive(
+                                activeTrackColor: primaryColor,
+                                inactiveTrackColor: Colors.white,
+                                activeColor: Colors.white,
+                                value: index == 0
+                                    ? state.isShowingArabic
+                                    : index == 1
+                                        ? state.isShowingReading
+                                        : state.isShowingMeaning,
+                                onChanged: (v) {
+                                  // if (state.isShowingArabic &&
+                                  //     state.isShowingMeaning) {
+                                  //   context.read<QuronBloc>().add(
+                                  //       ShowingTextEvent(
+                                  //           index: index, isShowing: v));
+                                  // } else if (state.isShowingArabic &&
+                                  //     state.isShowingReading) {
+                                  //   context.read<QuronBloc>().add(
+                                  //       ShowingTextEvent(
+                                  //           index: index, isShowing: v));
+                                  // } else if (state.isShowingMeaning &&
+                                  //     state.isShowingReading) {
+                                  //   context.read<QuronBloc>().add(
+                                  //       ShowingTextEvent(
+                                  //           index: index, isShowing: v));
+                                  // } else {
+                                  //   showToastMessage('Xato', context);
+                                  // }
+                                  context.read<QuronBloc>().add(
+                                      ShowingTextEvent(
+                                          index: index, isShowing: v));
+                                },
+                              )
+                            ],
+                          ),
+                        ],
+                      );
+                    }),
               ),
             ],
           ),

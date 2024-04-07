@@ -24,17 +24,13 @@ class NamesDetailsArgument {
 }
 
 class ZikrArguments {
-  final ZikrBloc zikrBloc;
   final String categoryId;
   final String categoryName;
-  ZikrArguments(
-      {required this.zikrBloc,
-      required this.categoryName,
-      required this.categoryId});
+  ZikrArguments({required this.categoryName, required this.categoryId});
 }
 
 class ZikrDetailsArgument {
-  final ZikrBloc zikrBloc;
   final int currentIndex;
-  ZikrDetailsArgument({required this.zikrBloc, required this.currentIndex});
+  final String categoryId;
+  ZikrDetailsArgument({required this.categoryId, required this.currentIndex});
 }

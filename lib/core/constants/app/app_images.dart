@@ -17,4 +17,5 @@ class AppImages {
   static const String qibla_direction = 'assets/images/qibla_direction.png';
   static const String qoshimchalar = 'assets/images/qoshimchalar.png';
   static const String splash_back = 'assets/images/splash_back.png';
+  static const String no_network = 'assets/images/no_network.png';
 }

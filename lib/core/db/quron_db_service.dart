@@ -155,9 +155,7 @@ class QuronDBService {
     try {
       await db.transaction((txn) async {
         var result = await txn.query(getOyatTable(),
-            where: 'verse_id = ?',
-            whereArgs: [oyatList.verseId],
-            orderBy: 'verse_id ASC');
+            where: 'verse_id = ?', whereArgs: [oyatList.verseId]);
 
         if (result.isEmpty) {
           // No existing data, insert new row
@@ -173,7 +171,7 @@ class QuronDBService {
             oyatList.toJson(),
             where: 'verse_id = ?',
             whereArgs: [oyatList.verseId],
-            conflictAlgorithm: ConflictAlgorithm.replace,
+            conflictAlgorithm: ConflictAlgorithm.ignore,
           );
         }
       });
@@ -187,8 +185,11 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       print(suraId);
-      final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
-          where: 'sura_id = ?', whereArgs: [suraId], orderBy: 'verse_id ASC');
+      final List<Map<String, dynamic>> maps = await db.query(
+        getOyatTable(),
+        where: 'sura_id = ?',
+        whereArgs: [suraId], /* orderBy: 'verse_id ASC' */
+      );
       print("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
@@ -216,10 +217,11 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       print(juzNumber);
-      final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
-          where: 'juz_number = ?',
-          whereArgs: [juzNumber],
-          orderBy: 'verse_id ASC');
+      final List<Map<String, dynamic>> maps = await db.query(
+        getOyatTable(),
+        where: 'juz_number = ?',
+        whereArgs: [juzNumber],
+      );
       print("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {

@@ -62,7 +62,6 @@ class ZikrGetFromDBEvent extends ZikrEvent {
   List<Object> get props => [categoryId];
 }
 
-
 class SavedZikrEvent extends ZikrEvent {
   final String zikrId;
   final bool isSaved;
@@ -73,6 +72,23 @@ class SavedZikrEvent extends ZikrEvent {
 }
 
 class GetSavedZikrsEvent extends ZikrEvent {
+  @override
+  // TODO: implement props
+  List<Object> get props => [];
+}
+
+class SavedZikrCountEvent extends ZikrEvent {
+  final String zikrId;
+  final int allZikrs;
+  final int todayZikrs;
+  const SavedZikrCountEvent(
+      {required this.zikrId, required this.allZikrs, required this.todayZikrs});
+  @override
+  // TODO: implement props
+  List<Object> get props => [zikrId, allZikrs, todayZikrs];
+}
+
+class ChangeZeroTodayZikrs extends ZikrEvent {
   @override
   // TODO: implement props
   List<Object> get props => [];

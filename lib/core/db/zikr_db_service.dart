@@ -63,7 +63,7 @@ class ZikrDBSevice {
       'CREATE TABLE $categoryRus(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,category_id TEXT, category_name TEXT, category_lang TEXT,category_version INTEGER,category_background_color TEXT,category_text_color TEXT,category_image_link TEXT)',
     );
     await db.execute(
-      'CREATE TABLE $zikr(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,zikr_id TEXT, zikr_title TEXT,zikr_description TEXT,zikr_info TEXT,zikr_daily_count INTEGER,zikr_audio_link TEXT,favourite_count INTEGER,category_id TEXT,category_name TEXT,category_version INTEGER,category_lang TEXT,zikr_audio_name TEXT,isSaved INTEGER)',
+      'CREATE TABLE $zikr(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,zikr_id TEXT, zikr_title TEXT,zikr_description TEXT,zikr_info TEXT,zikr_daily_count INTEGER,zikr_audio_link TEXT,favourite_count INTEGER,category_id TEXT,category_name TEXT,category_version INTEGER,category_lang TEXT,zikr_audio_name TEXT,isSaved INTEGER,today_zikrs INTEGER,all_zikrs INTEGER)',
     );
   }
 
@@ -94,8 +94,10 @@ class ZikrDBSevice {
   Future<void> insertZikrs(ZikrModel zikrModel) async {
     final db = await _zikrDBService.database;
     try {
-      await db.insert(zikr, zikrModel.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
+      await db.transaction((txn) async {
+        await txn.insert(zikr, zikrModel.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      });
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
@@ -106,7 +108,6 @@ class ZikrDBSevice {
     final db = await _zikrDBService.database;
     print("$categoryId CATEGORY ID");
     try {
-      print(categoryId);
       final List<Map<String, dynamic>> maps = await db.query(
         zikr,
         where: 'category_id = ?',
@@ -116,10 +117,7 @@ class ZikrDBSevice {
 
       if (maps.isNotEmpty) {
         print("$maps is not empty maps");
-
-        // If data is found, convert the maps to a list of OyatModel objects
         return List.generate(maps.length, (i) {
-          print("SALOM ${maps[i]['isSaved']}");
           return ZikrModel.fromJson(maps[i]);
         });
       } else {
@@ -145,7 +143,6 @@ class ZikrDBSevice {
             conflictAlgorithm: ConflictAlgorithm.replace);
         print('isSaved $isSaved updated successfully id is $zikrId');
       });
-      getSavedZikrs();
     } on DatabaseException catch (e) {
       print("${e.toString()} database Exception");
     }
@@ -175,6 +172,40 @@ class ZikrDBSevice {
       // Handle any database exceptions
       print("Database Exception: ${e.toString()}");
       return null;
+    }
+  }
+
+  Future<void> updateZikrCount(
+      String zikrId, int allZikrs, int todayZikrs) async {
+    final db = await _zikrDBService.database;
+    try {
+      await db.transaction((txn) async {
+        // transation is used to for db is working well
+        await txn.update(
+            zikr, {"all_zikrs": allZikrs, "today_zikrs": todayZikrs},
+            where: 'zikr_id = ?',
+            whereArgs: [zikrId],
+            conflictAlgorithm: ConflictAlgorithm.replace);
+        print(
+            'zikr count $allZikrs $todayZikrs updated successfully id is $zikrId');
+      });
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+    }
+  }
+
+  Future<void> resetTodayZikrs() async {
+    final db = await _zikrDBService.database;
+    try {
+      await db.transaction((txn) async {
+        await txn.update(
+          zikr,
+          {"today_zikrs": 0},
+        );
+        print('All today_zikrs updated to 0 successfully');
+      });
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
     }
   }
 

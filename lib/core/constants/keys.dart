@@ -23,4 +23,6 @@ class Keys {
   static const String name = 'name';
   static const String notification = 'notification';
   static const String isTemporaryUser = 'temporaryUser';
+  static const String currentDate = 'currentDate';
+
 }

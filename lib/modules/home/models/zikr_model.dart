@@ -55,6 +55,8 @@ class ZikrModel {
   int? categoryVersion;
   String? zikrAudioName;
   bool? isSaved;
+  int? allZikrs;
+  int? todayZikrs;
 
   ZikrModel(
       {this.zikrId,
@@ -69,6 +71,8 @@ class ZikrModel {
       this.zikrAudioName,
       this.categoryName,
       this.categoryLang,
+      this.allZikrs = 0,
+      this.todayZikrs = 0,
       this.categoryVersion});
 
   ZikrModel.fromJson(Map<String, dynamic> json) {
@@ -85,6 +89,8 @@ class ZikrModel {
     categoryVersion = json['category_version'];
     zikrAudioName = json['zikr_audio_name'];
     isSaved = json['isSaved'] == 1;
+    allZikrs = json['all_zikrs'] ?? 0;
+    todayZikrs = json['today_zikrs'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -102,6 +108,8 @@ class ZikrModel {
     data['category_version'] = categoryVersion;
     data['zikr_audio_name'] = zikrAudioName;
     data['isSaved'] = isSaved ?? false ? 1 : 0;
+    data['all_zikrs'] = allZikrs ?? 0;
+    data['today_zikrs'] = todayZikrs ?? 0;
     return data;
   }
 }

@@ -12,25 +12,10 @@ class ZikrMain extends StatefulWidget {
 
 class _ZikrMainState extends State<ZikrMain> {
   @override
-  void initState() {
-    widget.zikrArguments.zikrBloc
-        .add(ZikrGetFromDBEvent(categoryId: widget.zikrArguments.categoryId));
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    widget.zikrArguments.zikrBloc
-        .add(ZikrGetFromDBEvent(categoryId: widget.zikrArguments.categoryId));
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(context, widget.zikrArguments.categoryName),
       body: BlocBuilder<ZikrBloc, ZikrState>(
-        bloc: widget.zikrArguments.zikrBloc,
         builder: (context, state) {
           if (state.zikrStatus == ActionStatus.isLoading) {
             return const LoadingPage();
@@ -44,21 +29,19 @@ class _ZikrMainState extends State<ZikrMain> {
                     return ZikrItem(
                         index: 1,
                         categoryId: widget.zikrArguments.categoryId,
-                        state: state,
-                        zikrBloc: widget.zikrArguments.zikrBloc);
+                        state: state);
                   } else {
                     return ZikrItem(
                         categoryId: widget.zikrArguments.categoryId,
                         index: index + 1,
-                        state: state,
-                        zikrBloc: widget.zikrArguments.zikrBloc);
+                        state: state);
                   }
                 });
           } else if (state.zikrStatus == ActionStatus.isError) {
             return RefreshIndicator.adaptive(
                 onRefresh: () {
                   final completer = Completer<void>();
-                  widget.zikrArguments.zikrBloc.add(ZikrGetFromDBEvent(
+                  context.read<ZikrBloc>().add(ZikrGetFromDBEvent(
                       categoryId: widget.zikrArguments.categoryId));
                   completer.complete();
                   return completer.future;
@@ -80,13 +63,11 @@ class _ZikrMainState extends State<ZikrMain> {
 class ZikrItem extends StatefulWidget {
   final int index;
   final ZikrState state;
-  final ZikrBloc zikrBloc;
   final String categoryId;
   const ZikrItem(
       {super.key,
       required this.index,
       required this.categoryId,
-      required this.zikrBloc,
       required this.state});
 
   @override
@@ -103,17 +84,14 @@ class _ZikrItemState extends State<ZikrItem> {
   }
 
   @override
-  void deactivate() {
-    isSaved = widget.state.zikrModel[widget.index - 1].isSaved ?? false;
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, 'tasbehPage',
-          arguments: ZikrDetailsArgument(
-              zikrBloc: widget.zikrBloc, currentIndex: widget.index - 1)),
+      onTap: () {
+        context.read<ZikrBloc>().add(RefreshZikrEvent());
+        Navigator.pushNamed(context, 'tasbehPage',
+            arguments: ZikrDetailsArgument(
+                categoryId: widget.categoryId, currentIndex: widget.index - 1));
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 20.h),
         padding: EdgeInsets.symmetric(horizontal: 13.w),
@@ -139,7 +117,9 @@ class _ZikrItemState extends State<ZikrItem> {
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
-                const SmallText(text: 'Bugun: 33 Jami: 500')
+                SmallText(
+                    text:
+                        'Bugun: ${widget.state.zikrModel[widget.index - 1].todayZikrs} Jami: ${widget.state.zikrModel[widget.index - 1].allZikrs}')
               ],
             ),
             const SpaceHeight(),
@@ -158,13 +138,13 @@ class _ZikrItemState extends State<ZikrItem> {
                     onPressed: () {
                       isSaved = !isSaved;
                       setState(() {});
-                      widget.zikrBloc.add(SavedZikrEvent(
+                      context.read<ZikrBloc>().add(SavedZikrEvent(
                           zikrId:
                               widget.state.zikrModel[widget.index - 1].zikrId ??
                                   '0',
                           isSaved: isSaved));
-                      // widget.zikrBloc.add(
-                      // ZikrGetFromDBEvent(categoryId: widget.categoryId));
+                      // context.read<ZikrBloc>().add(
+                      //     ZikrGetFromDBEvent(categoryId: widget.categoryId));
                     },
                     icon: isSaved
                         ? SvgPicture.asset(AppIcon.bookmark_green)
