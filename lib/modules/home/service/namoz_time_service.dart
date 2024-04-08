@@ -48,18 +48,10 @@ class NamozTimeService {
       list.add(await dailyPrayerTimes);
       startDate = startDate.add(const Duration(days: 1));
     }
-
-    // print(list.first.asr.time);
-    // print(list.length);
-    // print(list.first.bomdod.time);
-
     return list;
   }
 
   Future<DailyPrayerTimes> calculatePrayerTimes(DateTime dateTime) async {
-    // print(location.latitude);
-    // print(location.longitude);
-
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();
@@ -72,7 +64,6 @@ class NamozTimeService {
   }
 
   Future<DateTime?> getNextPrayerTime() async {
-    // print(location);
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();
@@ -98,46 +89,6 @@ class NamozTimeService {
         return calculatedPrayerTimes.isha;
     }
   }
-  // Future<DateTime?> getNextPrayerTime() async {
-  //   var location = await LocationChooserService().getChosenLocation();
-  //   if (location == null) {
-  //     // Handle the case gracefully without throwing an exception
-  //     print('Location is null');
-  //     return null;
-  //   }
-  //   print('location has');
-  //   print(location.latitude);
-  //   print(location.longitude);
-
-  //   var params = getChosenCalculationMethod().calculationParameters;
-  //   params.madhab = getChosenMadhab();
-  //   params.highLatitudeRule = getChosenHighLatitudeRule();
-
-  //   var dateComponents = DateComponents.from(DateTime.now());
-  //   var calculatedPrayerTimes = PrayerTimes(
-  //     Coordinates(location.latitude, location.longitude),
-  //     dateComponents,
-  //     params,
-  //   );
-
-  //   switch (calculatedPrayerTimes.nextPrayer()) {
-  //     case Prayer.fajr:
-  //       return calculatedPrayerTimes.fajr;
-  //     case Prayer.sunrise:
-  //       return calculatedPrayerTimes.sunrise;
-  //     case Prayer.dhuhr:
-  //       return calculatedPrayerTimes.dhuhr;
-  //     case Prayer.asr:
-  //       return calculatedPrayerTimes.asr;
-  //     case Prayer.maghrib:
-  //       return calculatedPrayerTimes.maghrib;
-  //     case Prayer.isha:
-  //       return calculatedPrayerTimes.isha;
-  //     default:
-  //       // Handle cases where nextPrayer() doesn't match any Prayer type
-  //       return null;
-  //   }
-  // }
 
   Future<void> setChosenCalculationMethod(
       PrayerCalculationMethod method) async {

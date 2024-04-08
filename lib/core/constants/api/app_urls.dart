@@ -18,4 +18,5 @@ class AppUrls {
   static const changePremium = '${Server.server}/api/v1/user/edit/premium';
   static const changeLang = '${Server.server}/api/v1/user/edit/applang';
   static const deleteAccaunt = '${Server.server}/api/v1/user/delete';
+  static const getTapesLenta = '${Server.server}/api/v1/tapes/date';
 }

@@ -25,7 +25,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.isDark ? const Color(0xff1E2125) : Colors.green,
+      backgroundColor: context.isDark ? const Color(0xff1E2125) : primaryColor,
       body: SafeArea(
           child: Container(
         decoration: const BoxDecoration(

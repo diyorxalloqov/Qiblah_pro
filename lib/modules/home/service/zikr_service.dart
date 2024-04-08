@@ -13,7 +13,7 @@ class ZikrService {
             StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
       });
       print(response.statusCode);
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<ZikrCategoryModel> dataList = (response.data['data'] as List)
             .map((e) => ZikrCategoryModel.fromJson(e))
             .toList();
@@ -42,7 +42,7 @@ class ZikrService {
         "category_id": categoryId
       });
       print(response.statusCode);
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<ZikrModel> dataList = (response.data['data'] as List)
             .map((e) => ZikrModel.fromJson(e))
             .toList();

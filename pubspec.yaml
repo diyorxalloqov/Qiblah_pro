@@ -65,6 +65,8 @@ dependencies:
   audio_session: ^0.1.18
   cached_network_image: ^3.3.1
   flutter_widget_from_html: ^0.14.11
+  intl: ^0.18.1
+  shimmer: ^3.0.0
 
 
 

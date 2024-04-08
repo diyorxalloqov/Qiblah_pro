@@ -14,7 +14,12 @@ class NamozSettingsWidget<T extends Enum> extends StatelessWidget {
           itemBuilder: (context, index) {
             var choice = choices[index];
             return ListTile(
-              title: Text(choice.name),
+              title: Text(
+                choice.name,
+                style: TextStyle(
+                  fontFamily: AppfontFamily.inter.fontFamily,
+                ),
+              ),
               onTap: () {
                 context
                     .read<NamozTimeBloc>()

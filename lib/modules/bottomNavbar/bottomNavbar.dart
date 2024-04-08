@@ -48,7 +48,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 SvgPicture.asset(AppIcon.home),
               ],
             ),
-            label: 'Asosiy',
+            label: 'nav_asosiy'.tr(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(AppIcon.namoz),
@@ -66,11 +66,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 SvgPicture.asset(AppIcon.namoz, color: primaryColor),
               ],
             ),
-            label: 'Namoz',
+            label: 'nav_namoz'.tr(),
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(AppIcon.profile),
-            label: 'Profil',
+            label: 'nav_profile'.tr(),
             activeIcon: Column(
               children: [
                 Container(

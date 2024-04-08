@@ -64,10 +64,10 @@ class QuronDBService {
       'CREATE TABLE $surahTableRus(id INTEGER PRIMARY KEY ,sura_id TEXT ,sura_name_arabic TEXT, name TEXT, sura_verse_count INTEGER,sura_from INTEGER )',
     );
     await db.execute(
-      'CREATE TABLE $oyatTable (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
+      'CREATE TABLE $oyatTable (id INTEGER PRIMARY KEY, verse_id INTEGER,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
     );
     await db.execute(
-      'CREATE TABLE $oyatTableRus (id INTEGER PRIMARY KEY, verse_id TEXT,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
+      'CREATE TABLE $oyatTableRus (id INTEGER PRIMARY KEY, verse_id INTEGER,sura_number INTEGER,verse_number INTEGER,juz_number INTEGER,sura_id INTEGER,verse_arabic TEXT,text TEXT,meaning TEXT,verse_create_at TEXT,isSaved INTEGER,isReaded INTEGER)',
     );
   }
 
@@ -185,11 +185,8 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       print(suraId);
-      final List<Map<String, dynamic>> maps = await db.query(
-        getOyatTable(),
-        where: 'sura_id = ?',
-        whereArgs: [suraId], /* orderBy: 'verse_id ASC' */
-      );
+      final List<Map<String, dynamic>> maps = await db
+          .query(getOyatTable(), where: 'sura_id = ?', whereArgs: [suraId]);
       print("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
@@ -217,11 +214,10 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       print(juzNumber);
-      final List<Map<String, dynamic>> maps = await db.query(
-        getOyatTable(),
-        where: 'juz_number = ?',
-        whereArgs: [juzNumber],
-      );
+      final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
+          where: 'juz_number = ?',
+          orderBy: juzNumber == 30 ? 'verse_id ASC' : null,
+          whereArgs: [juzNumber]);
       print("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
@@ -304,34 +300,24 @@ class QuronDBService {
     }
   }
 
-  ////////////////////////////// Oyat by Juz
-  // Future<List<OyatModel>?> getOyatByJuzById(int juzNumber) async {
-  //   final db = await _quronDBService.database;
-  //   try {
-  //     print(juzNumber);
-  //     final List<Map<String, dynamic>> maps = await db.query(
-  //       getOyatByJuzTable(),
-  //       where: 'juz_number = ?',
-  //       whereArgs: [juzNumber],
-  //     );
-  //     print("$maps DATA FROM DB IS GET OYATByJuz BY ID");
-
-  //     if (maps.isNotEmpty) {
-  //       print("$maps is not empty maps");
-
-  //       return List.generate(maps.length, (i) {
-  //         return OyatModel.fromJson(maps[i]);
-  //       });
-  //     } else {
-  //       print("No item found in the database with sura_id $juzNumber");
-  //       return [];
-  //     }
-  //   } on DatabaseException catch (e) {
-  //     // Handle any database exceptions
-  //     print("${e.toString()} database Exception");
-  //     return null;
-  //   }
-  // }
+  Future<List<OyatModel>?> getAllOyat() async {
+    final db = await _quronDBService.database;
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(getOyatTable());
+      print("$maps DATA FROM DB IS GET ALL OYAT");
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (i) {
+          return OyatModel.fromJson(maps[i]);
+        });
+      } else {
+        print("No item found in the database");
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+      return null;
+    }
+  }
 
   Future<void> clearDatabases() async {
     final db = await _quronDBService.database;

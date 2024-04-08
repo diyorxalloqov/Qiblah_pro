@@ -8,12 +8,14 @@ class GeolocationState extends Equatable {
   final ActionStatus status;
   final ActionStatus manualStatus;
   final String error;
+  final String country;
   // final List<PositionInfo> positionList;
 
   const GeolocationState({
     this.locationStatusEnum = LocationStatusEnum.notRequested,
     this.manualChoserModel,
     this.error = '',
+    this.country = '',
     this.manualStatus = ActionStatus.isInitial,
     this.status = ActionStatus.isInitial,
     this.autoChoiceLocationModel, // this.positionList = const [],
@@ -25,6 +27,7 @@ class GeolocationState extends Equatable {
       ManualChoserModel? manualChoserModel,
       LocationStatusEnum? locationStatusEnum,
       String? error,
+      String? country,
       AutoChoiceLocationModel? autoChoiceLocationModel
       // List<PositionInfo>? positionList,
       }) {
@@ -33,6 +36,7 @@ class GeolocationState extends Equatable {
         locationStatusEnum: locationStatusEnum ?? this.locationStatusEnum,
         manualChoserModel: manualChoserModel ?? this.manualChoserModel,
         error: error ?? this.error,
+        country: country ?? this.country,
         autoChoiceLocationModel:
             autoChoiceLocationModel ?? this.autoChoiceLocationModel,
         status: status ?? this.status
@@ -47,6 +51,8 @@ class GeolocationState extends Equatable {
         manualStatus,
         manualChoserModel,
         autoChoiceLocationModel,
-        status, /* positionList */
+        status,
+        /* positionList */
+        country
       ];
 }

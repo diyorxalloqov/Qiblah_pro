@@ -132,6 +132,26 @@ class ZikrDBSevice {
     }
   }
 
+  Future<List<ZikrModel>?> getAllZikr() async {
+    final db = await _zikrDBService.database;
+    try {
+      final List<Map<String, dynamic>> maps = await db.query(zikr);
+      print("$maps DATA FROM DB IS GET ALL ZIKR");
+
+      if (maps.isNotEmpty) {
+        return List.generate(maps.length, (i) {
+          return ZikrModel.fromJson(maps[i]);
+        });
+      } else {
+        print("No item found in the database");
+        return [];
+      }
+    } on DatabaseException catch (e) {
+      print("${e.toString()} database Exception");
+      return null;
+    }
+  }
+
   Future<void> updateSaved(String zikrId, bool isSaved) async {
     final db = await _zikrDBService.database;
     try {

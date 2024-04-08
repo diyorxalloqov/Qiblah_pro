@@ -36,56 +36,43 @@ class _AllFunctionPageState extends State<AllFunctionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppbar(context, "barcha_funksiyalar".tr()),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
-              margin: EdgeInsets.only(top: 12.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: context.isDark ? containerBlackColor : containerColor),
-              child: GridView.builder(
-                  itemCount: 5,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 18.h, crossAxisCount: 4),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () =>
-                          Navigator.pushNamed(context, _itemPages[index]),
-                      borderRadius: BorderRadius.circular(50.r),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.symmetric(horizontal: 14),
-                            decoration: ShapeDecoration(
-                              color: context.isDark
-                                  ? xizmatlarItemBlack
-                                  : xizmatlarItem,
-                              shape: const OvalBorder(
-                                  side: BorderSide(
-                                      color: Colors.black, width: 0.1)),
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset(_icons[index],
-                                  width: 40,
-                                  color: context.isDark
-                                      ? const Color(0xff6D7379)
-                                      : null),
-                            ),
-                          ),
-                          SizedBox(height: 5.h),
-                          Text(_names[index].tr(), textAlign: TextAlign.center)
-                        ],
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
+        margin: EdgeInsets.only(
+            top: 12.h, bottom: MediaQuery.viewPaddingOf(context).bottom + 460),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            color: context.isDark ? containerBlackColor : containerColor),
+        child: GridView.builder(
+            itemCount: 5,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 18.h, crossAxisCount: 4),
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () => Navigator.pushNamed(context, _itemPages[index]),
+                borderRadius: BorderRadius.circular(50.r),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.symmetric(horizontal: 14),
+                      decoration: ShapeDecoration(
+                        color:
+                            context.isDark ? xizmatlarItemBlack : xizmatlarItem,
+                        shape: const OvalBorder(side: BorderSide.none),
                       ),
-                    );
-                  }),
-            ),
-          ),
-          const Spacer(flex: 6)
-        ],
+                      child: Center(
+                        child: SvgPicture.asset(_icons[index],
+                            width: 40,
+                            color: context.isDark ? Colors.white70 : null),
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(_names[index].tr(), textAlign: TextAlign.center)
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }

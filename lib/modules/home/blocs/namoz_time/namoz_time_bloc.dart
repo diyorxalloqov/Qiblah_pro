@@ -228,7 +228,6 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
     try {
       List<DailyPrayerTimes> previousDayTimes =
           await _namozTimeService.calculatePrayerTimesForPreviousMonth();
-      print(previousDayTimes.first.bomdod);
       add(TodayNamozTimes());
 
       emit(state.copyWith(currentMonthTimes: previousDayTimes));

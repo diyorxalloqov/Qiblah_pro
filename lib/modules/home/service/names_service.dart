@@ -14,7 +14,7 @@ class NamesService {
       });
       print(response.statusCode);
       print(response.data);
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<NamesData> dataList = (response.data['data'] as List)
             .map((e) => NamesData.fromJson(e))
             .toList();

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 showLocationBottomSheet(BuildContext c) {
@@ -179,6 +178,9 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                               .read<NamozTimeBloc>()
                                               .add(TodayNamozTimes());
                                           setState(() {});
+                                          context
+                                              .read<GeolocationCubit>()
+                                              .getSavedLocation();
                                           Navigator.pop(context);
                                           _controller.clear();
                                           await StorageRepository.putString(
@@ -207,11 +209,11 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                                         '',
                                                     overflow: TextOverflow.clip,
                                                     style: const TextStyle(
-                                                      fontSize:
-                                                          AppSizes.size_16,
-                                                      fontWeight:
-                                                          AppFontWeight.w_400,
-                                                    ),
+                                                        fontSize:
+                                                            AppSizes.size_16,
+                                                        fontWeight:
+                                                            AppFontWeight
+                                                                .w_400),
                                                   ),
                                                 ],
                                               ),

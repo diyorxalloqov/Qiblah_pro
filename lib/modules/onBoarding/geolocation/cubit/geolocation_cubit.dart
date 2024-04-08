@@ -235,6 +235,7 @@ part 'geolocation_state.dart';
 class GeolocationCubit extends Cubit<GeolocationState> {
   GeolocationCubit() : super(const GeolocationState()) {
     listenServiceStatus();
+    getSavedLocation();
   }
 
   final GeolocatorService _geolocationManager = GeolocatorService();
@@ -392,6 +393,8 @@ class GeolocationCubit extends Cubit<GeolocationState> {
   void saveLocationManual(ManualChoserModel? positionInfo, int index) async {
     await StorageRepository.putString(
         Keys.country, positionInfo?.results?[index].formatted ?? '');
+    await StorageRepository.putString(
+        Keys.capital, positionInfo?.results?[index].city ?? '');
     await StorageRepository.putDouble(
         Keys.longitude, positionInfo?.results?[index].lon ?? 0);
     await StorageRepository.putDouble(
@@ -408,5 +411,9 @@ class GeolocationCubit extends Cubit<GeolocationState> {
         Keys.longitude, autoChoiceLocationModel?.location.longitude ?? 0);
     await StorageRepository.putDouble(
         Keys.latitude, autoChoiceLocationModel?.location.latitude ?? 0);
+  }
+
+  void getSavedLocation() {
+    emit(state.copyWith(country: StorageRepository.getString(Keys.country)));
   }
 }

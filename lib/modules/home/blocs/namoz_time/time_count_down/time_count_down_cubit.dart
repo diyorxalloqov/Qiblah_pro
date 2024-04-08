@@ -20,9 +20,6 @@ class TimeCountDownCubit extends Cubit<TimeCountDownState> {
       return null;
     }
 
-    // if () {
-    // }
-
     _updateTime(nextPrayerTime);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateTime(nextPrayerTime);

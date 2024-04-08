@@ -148,6 +148,7 @@ class _IosAppState extends State<IosApp> with WidgetsBindingObserver {
                       BlocProvider(create: (context) => NamozTimeBloc()),
                       BlocProvider(create: (context) => QuronBloc()),
                       BlocProvider(create: (context) => AuthBloc()),
+                      BlocProvider(create: (context) => ZikrBloc()),
                     ],
                     child: CupertinoApp(
                       debugShowCheckedModeBanner: false,

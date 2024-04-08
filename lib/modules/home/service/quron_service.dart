@@ -17,7 +17,7 @@ class QuronService {
       );
       print(response.realUri);
       print(response.data);
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<QuronModel> dataList = (response.data['data'] as List)
             .map((e) => QuronModel.fromJson(e))
             .toList();
@@ -43,7 +43,7 @@ class QuronService {
         'lang':
             StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
       });
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<OyatModel> dataList = (response.data['data'] as List)
             .map((e) => OyatModel.fromJson(e))
             .toList();
@@ -72,7 +72,7 @@ class QuronService {
         'lang':
             StorageRepository.getString(Keys.lang) == 'ru' ? "russian" : 'uzbek'
       });
-      if (response.statusCode == 200) {
+      if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<OyatModel> dataList = (response.data['data'] as List)
             .map((e) => OyatModel.fromJson(e))
             .toList();

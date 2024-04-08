@@ -130,6 +130,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 fontSize: AppSizes.size_14,
+                                                fontFamily: AppfontFamily
+                                                    .inter.fontFamily,
                                                 color: context.isDark
                                                     ? Colors.white
                                                     : highTextColor,
@@ -167,6 +169,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         : 'oddiy'.tr(),
                                                     style: TextStyle(
                                                         color: primaryColor,
+                                                        fontFamily:
+                                                            AppfontFamily.inter
+                                                                .fontFamily,
+                                                        fontSize:
+                                                            AppSizes.size_12,
                                                         fontWeight:
                                                             AppFontWeight
                                                                 .w_500),
@@ -181,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 borderRadius:
                                                     BorderRadius.circular(12.r),
                                                 child: Container(
-                                                  width: context.width * 0.32,
+                                                  width: wi(124),
                                                   padding: EdgeInsets.symmetric(
                                                       horizontal: 10.w,
                                                       vertical: 6.h),
@@ -253,7 +260,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        AppfontFamily
+                                                                            .inter
+                                                                            .fontFamily,
+                                                                    fontSize:
+                                                                        AppSizes
+                                                                            .size_12,
+                                                                    fontWeight:
+                                                                        AppFontWeight
+                                                                            .w_500,
                                                                     color: Colors
                                                                         .white,
                                                                     overflow:
@@ -588,12 +605,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                     : const Color(0xffF5F4FA),
                               ),
                               //  //////////////////////////////
-                              SettingsItemWidget(
-                                  onTap: () => showLocationBottomSheet(context),
-                                  title: 'manzil'.tr(),
-                                  subtitleWidget: Text(
-                                      StorageRepository.getString(Keys.country)),
-                                  icon: AppIcon.location)
+                              BlocBuilder<GeolocationCubit, GeolocationState>(
+                                builder: (context, state1) {
+                                  return SettingsItemWidget(
+                                      onTap: () =>
+                                          showLocationBottomSheet(context),
+                                      title: 'manzil'.tr(),
+                                      subtitleWidget: Text(
+                                        state1.country,
+                                        style: TextStyle(
+                                            fontSize: AppSizes.size_12,
+                                            fontWeight: AppFontWeight.w_500,
+                                            fontFamily:
+                                                AppfontFamily.inter.fontFamily),
+                                      ),
+                                      icon: AppIcon.location);
+                                },
+                              )
                             ]),
                         //////////////
                       ),
@@ -616,6 +644,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'namoz_sozlamalari'.tr(),
                                 style: TextStyle(
                                   color: primaryColor,
+                                  fontFamily: AppfontFamily.inter.fontFamily,
                                   fontSize: AppSizes.size_15,
                                   fontWeight: AppFontWeight.w_500,
                                 ),
