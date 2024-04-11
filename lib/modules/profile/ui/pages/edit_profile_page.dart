@@ -237,8 +237,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                                     ),
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 16.w),
-                                    constraints:
-                                        BoxConstraints(maxHeight: 48.h),
                                     fillColor: context.isDark
                                         ? textFormFieldFillColorBlack
                                         : Colors.white,
@@ -317,7 +315,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                                   ),
                                   contentPadding:
                                       EdgeInsets.symmetric(horizontal: 16.w),
-                                  constraints: BoxConstraints(maxHeight: 48.h),
                                   border: OutlineInputBorder(
                                     borderSide: context.isDark
                                         ? BorderSide.none
@@ -374,7 +371,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                                 selectedColor: primaryColor.withOpacity(0.2),
                                 disabledColor: textFormFieldHintColor,
                                 onSelected: (value) {
-                                  print(value);
+                                  debugPrint(value.toString());
                                   index == 0 ? isMan = false : isMan = true;
                                   setState(() {
                                     if (value) {
@@ -525,9 +522,10 @@ class _EditProfilePageState extends State<EditProfilePage>
                         ElevatedButton(
                           onPressed: () {
                             if (_key.currentState!.validate()) {
-                              print('hello');
-                              print(StorageRepository.getBool(
-                                  Keys.isTemporaryUser));
+                              debugPrint('hello');
+                              debugPrint(StorageRepository.getBool(
+                                      Keys.isTemporaryUser)
+                                  .toString());
                               if (!StorageRepository.getBool(
                                   Keys.isTemporaryUser)) {
                                 widget.profileBloc.add(ChangeUserDataEvent(

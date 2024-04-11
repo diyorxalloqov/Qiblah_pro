@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:qiblah_pro/core/constants/juz_numbers.dart';
-import 'package:qiblah_pro/core/db/quron_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/models/oyat_model.dart';
 import 'package:qiblah_pro/modules/home/models/quron_model.dart';
 
 part 'quron_event.dart';
@@ -74,30 +70,30 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       //     dataFromDb.any((element) => element.suraId == event.index);
 
       // if (containsIndex) {
-      //   print("Data found in the database");
+      //   debugPrint("Data found in the database");
       //   emit(state.copyWith(
       //       oyatModel: dataFromDb, status1: ActionStatus.isSuccess));
       // } else {
-      //   print("Data not found in the database. Fetching from API...");
+      //   debugPrint("Data not found in the database. Fetching from API...");
       //   add(GetOyatFromApi(index: event.index));
       // }
       List<OyatModel> filteredData =
           dataFromDb.where((element) => element.suraId == event.index).toList();
-      print("${filteredData.length} JUZ NUMBER BLOC");
-      print("${dataFromDb.length} JUZ NUMBER BLOC");
-      print("${event.suraLength} SURA LENGTH");
+      debugPrint("${filteredData.length} JUZ NUMBER BLOC");
+      debugPrint("${dataFromDb.length} JUZ NUMBER BLOC");
+      debugPrint("${event.suraLength} SURA LENGTH");
       if (filteredData.isNotEmpty && filteredData.length == event.suraLength) {
         // Check if the length of filtered data matches the expected length based on Juz numbers
-        print("Data found in the database");
+        debugPrint("Data found in the database");
         emit(state.copyWith(
             oyatModel: filteredData, status1: ActionStatus.isSuccess));
       } else {
-        print(
+        debugPrint(
             "Filtered data not found in the database or length doesn't match. Fetching from API...");
         add(GetOyatFromApi(index: event.index));
       }
     } else {
-      print('No data found in the database. Fetching from API...');
+      debugPrint('No data found in the database. Fetching from API...');
       add(GetOyatFromApi(index: event.index));
     }
   }
@@ -117,11 +113,11 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       SavedItemEvent event, Emitter<QuronState> emit) async {
     try {
       await _quronDBService.updateSaved(event.verseNumber, event.isSaved);
-      print(event.verseNumber);
-      print("${event.isSaved} SSSSSSSSSSSSSSSSSSSSSSSAVED BLOC");
+      debugPrint(event.verseNumber.toString());
+      debugPrint("${event.isSaved} SSSSSSSSSSSSSSSSSSSSSSSAVED BLOC");
     } on DatabaseException catch (e) {
-      print(e.result);
-      print('databse exeption in bloc');
+      debugPrint(e.result.toString());
+      debugPrint('databse exeption in bloc');
     }
   }
 
@@ -129,11 +125,11 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       ReadedItemEvent event, Emitter<QuronState> emit) async {
     try {
       await _quronDBService.updateReaded(event.verseNumber, event.isReaded);
-      print(event.verseNumber);
-      print("${event.isReaded} RRRRRRRRRRRRRRRRRRREADED BLOC");
+      debugPrint(event.verseNumber.toString());
+      debugPrint("${event.isReaded} RRRRRRRRRRRRRRRRRRREADED BLOC");
     } on DatabaseException catch (e) {
-      print(e.result);
-      print('databse exeption in bloc');
+      debugPrint(e.result.toString());
+      debugPrint('databse exeption in bloc');
     }
   }
 
@@ -162,25 +158,25 @@ class QuronBloc extends Bloc<QuronEvent, QuronState> {
       // Filter the list to get only items where juzNumber matches event.index
       List<OyatModel> filteredData =
           dataFromDb.where((oyat) => oyat.juzNumber == event.index).toList();
-      print("${filteredData.length} JUZ NUMBER BLOC");
-      print("${dataFromDb.length} JUZ NUMBER BLOC");
-      print("${juzNumbers[event.index - 1]} JUZ NUMBER List Static Bloc");
+      debugPrint("${filteredData.length} JUZ NUMBER BLOC");
+      debugPrint("${dataFromDb.length} JUZ NUMBER BLOC");
+      debugPrint("${juzNumbers[event.index - 1]} JUZ NUMBER List Static Bloc");
 
       if (filteredData.isNotEmpty &&
           filteredData.length == juzNumbers[event.index - 1]) {
         // Check if the length of filtered data matches the expected length based on Juz numbers
-        print("Data found in the database");
+        debugPrint("Data found in the database");
         emit(state.copyWith(
             oyatModelByJuz: filteredData, juzStatus: ActionStatus.isSuccess));
       } else {
         // Data length doesn't match, fetch from API
-        print(
+        debugPrint(
             "Filtered data not found in the database or length doesn't match. Fetching from API...");
         add(GetJuzFromApi(index: event.index));
       }
     } else {
       // Data not found in the database, fetch from API
-      print('No data found in the database. Fetching from API...');
+      debugPrint('No data found in the database. Fetching from API...');
       add(GetJuzFromApi(index: event.index));
     }
   }

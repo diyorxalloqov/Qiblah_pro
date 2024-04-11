@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 showLocationBottomSheetOnBoarding(
@@ -170,9 +169,6 @@ class _LocationBottomSheetState extends State<LocationBottomSheet1> {
                                                   .saveLocationManual(
                                                       state.manualChoserModel,
                                                       index);
-                                              context
-                                                  .read<NamozTimeBloc>()
-                                                  .add(TodayNamozTimes());
                                               setState(() {});
                                               Navigator.pop(context);
                                               _controller.clear();

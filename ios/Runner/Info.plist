@@ -50,6 +50,10 @@
 		<true />
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true />
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>telegram</string>
+		</array>
 		<!-- Location permission descriptions -->
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>$(QIBLAH_PRO) needs Location access for "prayer times get and where to pisition"!</string>

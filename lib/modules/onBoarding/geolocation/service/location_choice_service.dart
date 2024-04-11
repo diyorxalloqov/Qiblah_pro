@@ -11,11 +11,11 @@
 //       region: StorageRepository.getString(Keys.region),
 //       isPrecise: StorageRepository.getBool(Keys.isPrecise));
 
-//   print(rawJSON.country);
-//   print(rawJSON.region);
-//   print(rawJSON.latitude);
-//   print(rawJSON.isPrecise);
-//   print(rawJSON.longitude);
+//   debugPrint(rawJSON.country);
+//   debugPrint(rawJSON.region);
+//   debugPrint(rawJSON.latitude);
+//   debugPrint(rawJSON.isPrecise);
+//   debugPrint(rawJSON.longitude);
 
 //   return rawJSON;
 // }
@@ -33,9 +33,9 @@
 //       return;
 //     }
 //   }
-//   print('$positionInfo position info service');
+//   debugPrint('$positionInfo position info service');
 
-//   print("${positionToStore.country} position to store");
+//   debugPrint("${positionToStore.country} position to store");
 //   await StorageRepository.putString(Keys.country, positionToStore.country!);
 //   await StorageRepository.putString(Keys.region, positionToStore.region!);
 //   await StorageRepository.putBool(Keys.isPrecise, positionInfo.isPrecise);
@@ -45,7 +45,7 @@
 // }
 
 //   Future<PositionInfo?> addAddressInfo(PositionInfo? positionInfo) async {
-//     print(
+//     debugPrint(
 //         'addAddressInfo lat: ${positionInfo?.latitude} long: ${positionInfo?.longitude}');
 //     if (positionInfo == null) {
 //       // TODO instead emit error to UI state;
@@ -55,9 +55,9 @@
 //     var placemark = (await placemarkFromCoordinates(
 //             positionInfo.latitude, positionInfo.longitude))
 //         .first;
-//     print(
+//     debugPrint(
 //         "${placemark.country} city ${placemark.administrativeArea} area ${positionInfo.isPrecise} location data is ");
-//     print(
+//     debugPrint(
 //         "${positionInfo.country} country ${positionInfo.region} region ${positionInfo.latitude} location data new ");
 
 //     return PositionInfo(
@@ -87,18 +87,18 @@ class LocationService {
 
   Future<Either<String, AutoChoiceLocationModel>> autoChoiceLocation() async {
     final String randomKey = apiKeys[Random().nextInt(apiKeys.length)];
-    print(randomKey);
+    debugPrint(randomKey);
     try {
       Response response = await client
-          .get('https://api.geoapify.com/v1/ipinfo?&apiKey=$randomKey');
-      print(response.data);
+          .get('https://api.geoapify.com/v1/ipinfo?apiKey=$randomKey');
+      debugPrint(response.data.toString());
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         return right(AutoChoiceLocationModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('exeption');
+      debugPrint('exeption');
       return left(e.message.toString());
     }
   }
@@ -106,7 +106,7 @@ class LocationService {
   Future<Either<String, ManualChoserModel>> manuaChoiceLocation(
       String place) async {
     final String randomKey = apiKeys[Random().nextInt(apiKeys.length)];
-    print(randomKey);
+    debugPrint(randomKey);
     try {
       Response response = await client
           .get('https://api.geoapify.com/v1/geocode/search', queryParameters: {
@@ -117,17 +117,17 @@ class LocationService {
         "type": "city",
         "apiKey": randomKey
       });
-      print("${response.data}");
-      print(response.statusCode);
-      print(response.realUri);
+      debugPrint("${response.data}");
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.realUri.toString());
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         return right(ManualChoserModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('exeption');
-      print(e.message);
+      debugPrint('exeption');
+      debugPrint(e.message);
       return left(e.message.toString());
     }
   }

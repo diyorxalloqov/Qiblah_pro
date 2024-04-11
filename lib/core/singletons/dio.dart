@@ -18,12 +18,12 @@ class DioSettings {
   BaseOptions get dioBaseOptions => _dioBaseOptions;
 
   Dio get dio {
-    print(StorageRepository.getString(Keys.lang) == 'ru');
+    debugPrint((StorageRepository.getString(Keys.lang) == 'ru').toString());
     var dio1 = Dio(_dioBaseOptions)..interceptors.add(InterceptorsWrapper(
         // onError: (DioException e, ErrorInterceptorHandler handler) async {
-        //   print('Interceptor OnError');
+        //   debugPrint('Interceptor OnError');
         //   if (e.response?.statusCode == 401) {
-        //     print('Refresh Token');
+        //     debugPrint('Refresh Token');
         //     var responseRefresh =
         //         await Dio().post("AppUrls.tokenRefresh", data: {
         //       "token":
@@ -46,14 +46,14 @@ class DioSettings {
         //   }
         // },
         // onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-        //   print('Interceptor OnRequest');
+        //   debugPrint('Interceptor OnRequest');
 
         //   options.headers.addAll({'Accept-Language': "uz"});
         //   handler.next(options);
         // },
         // onResponse:
         //     (Response response, ResponseInterceptorHandler handler) async {
-        //   print('Interceptor OnResponse');
+        //   debugPrint('Interceptor OnResponse');
         //   // Modify response here if needed
         //   handler.next(response);
         // },

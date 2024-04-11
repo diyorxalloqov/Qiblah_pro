@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class QazoCardWidget extends StatelessWidget {
-  final String icon;
   final String title;
   final String qazoCount;
   final Color color;
@@ -11,7 +9,6 @@ class QazoCardWidget extends StatelessWidget {
 
   const QazoCardWidget(
       {super.key,
-      required this.icon,
       required this.qazoCount,
       required this.color,
       required this.title,
@@ -31,26 +28,12 @@ class QazoCardWidget extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
           contentPadding: EdgeInsets.only(right: 16.w),
-          leading: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ClipPath(
-                clipper: ShapeBorderClipper(
-                  shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Container(
-                  width: 2,
-                  decoration: BoxDecoration(
-                    color: color,
-                  ),
-                ),
-              ),
-              SizedBox(width: wi(16)),
-              SvgPicture.asset(icon),
-            ],
+          leading: Container(
+            height: 18,
+            margin: const EdgeInsets.only(left: 16),
+            width: 18,
+            decoration:
+                ShapeDecoration(color: color, shape: const OvalBorder()),
           ),
           title: Text(
             title,

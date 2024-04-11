@@ -81,7 +81,7 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
       // Set the audio source to the local file path
       await player.setFilePath(localFilePath);
     } catch (e) {
-      print('Error initializing audio: $e');
+      debugPrint('Error initializing audio: $e');
       setState(() {
         error = 'audio_error'.tr();
       });
@@ -92,9 +92,9 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
     final Dio client = serviceLocator<DioSettings>().dio;
     try {
       final Response response = await client.download(url, savePath);
-      print('Downloaded audio: $response');
+      debugPrint('Downloaded audio: $response');
     } on DioException catch (e) {
-      print('Error downloading audio: $e');
+      debugPrint('Error downloading audio: $e');
       exeption = NetworkExeptionResponse(e).messageForUser;
     }
   }
@@ -202,8 +202,8 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                       final playerState = snapshot.data;
                       final processingState = playerState?.processingState;
                       final playing = playerState?.playing;
-                      print('Processing State: $processingState');
-                      print('Is Playing: $playing');
+                      debugPrint('Processing State: $processingState');
+                      debugPrint('Is Playing: $playing');
                       if (processingState == ProcessingState.loading ||
                           processingState == ProcessingState.buffering ||
                           isDownloading) {
@@ -228,7 +228,7 @@ class _ItemState extends State<Item> with WidgetsBindingObserver {
                                   .onConnectivityChanged
                                   .listen((ConnectivityResult result) {
                                 if (result != ConnectivityResult.none) {
-                                  print('connectivity result');
+                                  debugPrint('connectivity result');
                                   setState(() {
                                     error = '';
                                     player.stop();

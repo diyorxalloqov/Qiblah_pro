@@ -7,36 +7,21 @@ import 'package:qiblah_pro/utils/enums.dart';
 import 'package:qiblah_pro/utils/extension/daily_prayer_time.dart';
 
 class NamozTimeService {
-  Future<List<DailyPrayerTimes>> calculatePrayerTimesForPreviousMonth() async {
-    DateTime currentDate = DateTime.now();
-    DateTime startDate = DateTime(currentDate.year, currentDate.month - 1, 1);
-    DateTime endDate = DateTime(currentDate.year, currentDate.month, 0);
+  // Future<List<DailyPrayerTimes>> calculatePrayerTimesInRange(
+  //     DateTime from, DateTime until) async {
+  //   var list = <DailyPrayerTimes>[];
 
-    return await calculatePrayerTimesInRange(startDate, endDate);
-  }
+  //   while (from.isBefore(until) || from.isAtSameMomentAs(until)) {
+  //     var dailyPrayerTimes = calculatePrayerTimes(from);
+  //     list.add(await dailyPrayerTimes);
+  //     from = from.add(const Duration(days: 1));
+  //   }
 
-  Future<List<DailyPrayerTimes>> calculatePrayerTimesForNextMonth() async {
-    DateTime currentDate = DateTime.now();
-    DateTime startDate = DateTime(currentDate.year, currentDate.month + 1, 1);
-    DateTime endDate = DateTime(currentDate.year, currentDate.month + 2, 0);
+  //   return list;
+  // }
 
-    return await calculatePrayerTimesInRange(startDate, endDate);
-  }
-
-  Future<List<DailyPrayerTimes>> calculatePrayerTimesInRange(
-      DateTime from, DateTime until) async {
-    var list = <DailyPrayerTimes>[];
-
-    while (from.isBefore(until) || from.isAtSameMomentAs(until)) {
-      var dailyPrayerTimes = calculatePrayerTimes(from);
-      list.add(await dailyPrayerTimes);
-      from = from.add(const Duration(days: 1));
-    }
-
-    return list;
-  }
-
-  Future<List<DailyPrayerTimes>> calculatePrayerTimesForMonth(int month) async {
+  Future<List<DailyPrayerTimes>> calculatePrayerTimesForMonth(
+      int month, CalculationParameters params) async {
     var list = <DailyPrayerTimes>[];
 
     DateTime currentDate = DateTime.now();
@@ -44,14 +29,15 @@ class NamozTimeService {
     DateTime endDate = DateTime(currentDate.year, currentDate.month + month, 0);
 
     while (startDate.isBefore(endDate) || startDate.isAtSameMomentAs(endDate)) {
-      var dailyPrayerTimes = calculatePrayerTimes(startDate);
+      var dailyPrayerTimes = calculatePrayerTimes(startDate, params);
       list.add(await dailyPrayerTimes);
       startDate = startDate.add(const Duration(days: 1));
     }
     return list;
   }
 
-  Future<DailyPrayerTimes> calculatePrayerTimes(DateTime dateTime) async {
+  Future<DailyPrayerTimes> calculatePrayerTimes(
+      DateTime dateTime, CalculationParameters params) async {
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();
@@ -63,7 +49,7 @@ class NamozTimeService {
         .toDailyPrayerTimes();
   }
 
-  Future<DateTime?> getNextPrayerTime() async {
+  Future<DateTime> getNextPrayerTime() async {
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();
@@ -72,13 +58,14 @@ class NamozTimeService {
             StorageRepository.getDouble(Keys.longitude)),
         DateComponents.from(DateTime.now()),
         params);
+
     switch (calculatedPrayerTimes.nextPrayer()) {
       case Prayer.none:
-        return null;
+        return calculatedPrayerTimes.fajr;
       case Prayer.fajr:
         return calculatedPrayerTimes.fajr;
       case Prayer.sunrise:
-        return calculatedPrayerTimes.dhuhr;
+        return calculatedPrayerTimes.sunrise;
       case Prayer.dhuhr:
         return calculatedPrayerTimes.dhuhr;
       case Prayer.asr:
@@ -127,7 +114,7 @@ List<NamozTimeCalculation> calculationMethodDetails = [
         fajrAngle: 15.0, ishaAngle: 15.0, method: CalculationMethod.other),
   ),
   NamozTimeCalculation(
-    codename: 'muslim_world_league',
+    codename: 'Muslim World League',
     title: 'Muslim World league',
     calculationParameters:
         CalculationMethod.muslim_world_league.getParameters(),
@@ -154,38 +141,38 @@ List<NamozTimeCalculation> calculationMethodDetails = [
   ),
   NamozTimeCalculation(
     codename: 'moon_sighting_committee',
-    title: 'moon_sighting_committee',
+    title: 'Moon Sighting Committee',
     calculationParameters:
         CalculationMethod.moon_sighting_committee.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'north_america',
-    title: 'north_america',
+    title: 'North America',
     calculationParameters: CalculationMethod.north_america.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'kuwait',
-    title: 'kuwait',
+    title: 'Kuwait',
     calculationParameters: CalculationMethod.kuwait.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'qatar',
-    title: 'qatar',
+    title: 'Qatar',
     calculationParameters: CalculationMethod.qatar.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'singapore',
-    title: 'singapore',
+    title: 'Singapore',
     calculationParameters: CalculationMethod.singapore.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'turkey',
-    title: 'turkey',
+    title: 'Turkey',
     calculationParameters: CalculationMethod.turkey.getParameters(),
   ),
   NamozTimeCalculation(
     codename: 'tehran',
-    title: 'tehran',
+    title: 'Tehran',
     calculationParameters: CalculationMethod.tehran.getParameters(),
   )
 ];

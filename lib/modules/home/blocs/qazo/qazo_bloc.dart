@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:qiblah_pro/core/db/shared_preferences.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 part 'qazo_event.dart';

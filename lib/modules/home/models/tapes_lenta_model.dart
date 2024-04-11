@@ -63,7 +63,7 @@ class Zikr {
   String? zikrAudioLink;
   String? zikrAudioName;
   int? favouriteCount;
-  int? categoryId;
+  String? categoryId;
   String? zikrCreateAt;
 
   Zikr(
@@ -116,7 +116,7 @@ class Dua {
   String? zikrAudioLink;
   String? zikrAudioName;
   int? favouriteCount;
-  int? categoryId;
+  String? categoryId;
   String? zikrCreateAt;
 
   Dua(

@@ -2,6 +2,7 @@ class AppImages {
   static const String appLogo = 'assets/images/logo.png';
   static const String person = 'assets/images/person.png';
   static const String notification = 'assets/images/notification.png';
+  static const String reklama = 'assets/images/reklama.png';
   static const String location = 'assets/images/location.png';
   static const String joynamoz = 'assets/images/joynamoz.png';
   static const String tahorat = 'assets/images/tahorat.png';
@@ -18,4 +19,8 @@ class AppImages {
   static const String qoshimchalar = 'assets/images/qoshimchalar.png';
   static const String splash_back = 'assets/images/splash_back.png';
   static const String no_network = 'assets/images/no_network.png';
+  static const String premium = 'assets/images/premium.png';
+  static const String premium_back = 'assets/images/premium_back.png';
+  static const String premium_back_black = 'assets/images/premium_back_black.png';
+  static const String help = 'assets/images/help.png';
 }

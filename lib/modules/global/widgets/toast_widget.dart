@@ -6,7 +6,7 @@ void showToastMessage(String title, BuildContext context) {
       msg: title,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 5,
+      timeInSecForIosWeb: 1,
       backgroundColor: context.isDark ? Colors.black : Colors.white,
       textColor: context.isDark ? Colors.white : Colors.black,
       fontSize: 16.0);

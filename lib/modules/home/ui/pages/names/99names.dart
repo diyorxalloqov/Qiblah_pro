@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class NamesPage extends StatefulWidget {
@@ -35,7 +33,7 @@ class _NamesPageState extends State<NamesPage> {
         value: namesBloc,
         child: BlocBuilder<NamesBloc, NamesState>(
           builder: (context, state) {
-            print(state.status);
+            debugPrint(state.status.toString());
             if (state.status == ActionStatus.isLoading) {
               return const LoadingPage();
             }

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 abstract class NetworkResponseConfig {
   NetworkResponseConfig();
@@ -18,7 +18,7 @@ class NetworkExeptionResponse extends NetworkResponseConfig {
   DioException exeption;
   String messageForUser = '';
   NetworkExeptionResponse(this.exeption) {
-    print(exeption.type);
+    debugPrint(exeption.type.toString());
     if (exeption.type == DioExceptionType.sendTimeout ||
         exeption.type == DioExceptionType.unknown) {
       messageForUser = 'Iltimos Internetingizni tekshiring';

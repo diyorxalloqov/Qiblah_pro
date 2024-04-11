@@ -2,22 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qiblah_pro/core/constants/keys.dart';
-import 'package:qiblah_pro/core/db/quron_db_service.dart';
 import 'package:qiblah_pro/core/db/shared_preferences.dart';
 import 'package:qiblah_pro/core/singletons/service_locator.dart';
 import 'package:qiblah_pro/modules/app.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await NamesDbService().clearDatabase();
-  // await QuronDBService().clearDatabases();
-  // await ZikrDBSevice().clearDatabase();
   await EasyLocalization.ensureInitialized();
+  EasyLocalization.ensureInitialized();
   await setupLocator();
   StorageRepository.getString(Keys.lang) == ''
       ? await StorageRepository.putString(Keys.lang, 'uz')
       : null;
-  EasyLocalization.ensureInitialized();
   runApp(EasyLocalization(
       saveLocale: true,
       startLocale: const Locale('uz'),
@@ -32,6 +28,7 @@ void main(List<String> args) async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ),
   );

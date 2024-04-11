@@ -1,6 +1,6 @@
 import 'dart:math' show sin, cos, tan, atan;
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:qiblah_pro/modules/home/models/qibla_model.dart';
+import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:vector_math/vector_math.dart' show radians, degrees;
 
 class QiblaService {
@@ -12,9 +12,9 @@ class QiblaService {
     var offset = getOffsetFromNorth(latitude, longitude);
     var heading = compassEvent.heading ?? 0.0;
     final qiblah = heading + (360 - offset);
-    print(qiblah);
-    print(heading);
-    print(offset);
+    debugPrint(qiblah.toString());
+    debugPrint(heading.toString());
+    debugPrint(offset.toString());
 
     return DirectionInfo(qiblah, heading, offset);
   }

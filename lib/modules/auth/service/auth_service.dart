@@ -27,14 +27,14 @@ class AuthService {
       "notification": userData.notification,
       "location_status": userData.locationStatus,
     };
-    print(data);
+    debugPrint(data.toString());
     try {
-      print('response is trying to register');
+      debugPrint('response is trying to register');
       Response response = await client.post(AppUrls.register, data: data);
-      print(response.statusCode);
-      print(response.data);
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
 
         return right(AuthModel.fromJson(response.data));
       } else if (response.statusCode == 302) {
@@ -44,7 +44,7 @@ class AuthService {
             NetworkErrorResponse(response.statusMessage.toString()).error);
       }
     } on DioException catch (e) {
-      print('exeption $e');
+      debugPrint('exeption $e');
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }
@@ -67,16 +67,16 @@ class AuthService {
       "notification": userData.notification,
       "location_status": userData.locationStatus
     };
-    print(data);
+    debugPrint(data.toString());
     try {
-      print('response is trying to temporary');
+      debugPrint('response is trying to temporary');
       Response response =
           await client.post(AppUrls.temporaryRegister, data: data);
-      print(response.statusCode);
-      print(response.data);
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
 
         return right(AuthModel.fromJson(response.data));
       } else {
@@ -84,7 +84,7 @@ class AuthService {
             NetworkErrorResponse(response.statusMessage.toString()).error);
       }
     } on DioException catch (e) {
-      print('exeption $e');
+      debugPrint('exeption $e');
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }
@@ -100,15 +100,15 @@ class AuthService {
       "user_app_version": userData.userAppVersion
     };
 
-    print(data);
+    debugPrint(data.toString());
     try {
-      print('response is trying to login');
+      debugPrint('response is trying to login');
       Response response = await client.post(AppUrls.login, data: data);
-      print(response.statusCode);
-      print(response.data);
+      debugPrint(response.statusCode.toString());
+      debugPrint(response.data.toString());
 
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
 
         return right(AuthModel.fromJson(response.data));
       } else {
@@ -116,7 +116,7 @@ class AuthService {
             NetworkErrorResponse(response.statusMessage.toString()).error);
       }
     } on DioException catch (e) {
-      print('exeption $e');
+      debugPrint('exeption $e');
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }

@@ -47,7 +47,7 @@ class QuronDBService {
         onConfigure: (db) async => await db.execute('PRAGMA foreign_keys = ON'),
       );
     } catch (e) {
-      print("Error initializing database: $e");
+      debugPrint("Error initializing database: $e");
       rethrow; // Rethrow the exception for higher-level handling
     }
   }
@@ -75,7 +75,7 @@ class QuronDBService {
     await db.execute(
       'CREATE TABLE $surahTableUzb(id INTEGER PRIMARY KEY ,sura_id TEXT ,sura_name_arabic TEXT, name TEXT, sura_verse_count INTEGER,sura_from INTEGER )',
     );
-    print("salom");
+    debugPrint("salom");
     await db.execute(
       'CREATE TABLE $surahTableRus(id INTEGER PRIMARY KEY ,sura_id TEXT ,sura_name_arabic TEXT, name TEXT, sura_verse_count INTEGER,sura_from INTEGER )',
     );
@@ -127,16 +127,16 @@ class QuronDBService {
         }
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
-    print("${getSurahTable().length} quron table length from insert");
+    debugPrint("${getSurahTable().length} quron table length from insert");
   }
 
   Future<List<QuronModel>?> getQuron() async {
     final db = await _quronDBService.database;
     // await clearDatabase();
     final List<Map<String, dynamic>> maps = await db.query(getSurahTable());
-    print("${maps.length} data length from db");
+    debugPrint("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
       return QuronModel(
           suraNameArabic: maps[i]['sura_name_arabic'],
@@ -175,37 +175,37 @@ class QuronDBService {
           );
         }
       });
-      print('Oyat list inserted successfully');
+      debugPrint('Oyat list inserted successfully');
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
   Future<List<OyatModel>?> getOyatById(int suraId) async {
     final db = await _quronDBService.database;
     try {
-      print(suraId);
+      debugPrint(suraId.toString());
       final List<Map<String, dynamic>> maps = await db
           .query(getOyatTable(), where: 'sura_id = ?', whereArgs: [suraId]);
-      print("$maps DATA FROM DB IS GET OYAT BY ID");
+      debugPrint("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
-        // print("$maps is not empty maps");
+        // debugPrint("$maps is not empty maps");
 
         // If data is found, convert the maps to a list of OyatModel objects
         return List.generate(maps.length, (i) {
-          print(maps[i]['isReaded']);
-          print(maps[i]['isSaved']);
+          debugPrint(maps[i]['isReaded'].toString());
+          debugPrint(maps[i]['isSaved'].toString());
           return OyatModel.fromJson(maps[i]);
         });
       } else {
         // If no data is found, return an empty list
-        print("No item found in the database with sura_id $suraId");
+        debugPrint("No item found in the database with sura_id $suraId");
         return [];
       }
     } on DatabaseException catch (e) {
       // Handle any database exceptions
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -213,30 +213,30 @@ class QuronDBService {
   Future<List<OyatModel>?> getOyatJuzById(int juzNumber) async {
     final db = await _quronDBService.database;
     try {
-      print(juzNumber);
+      debugPrint(juzNumber.toString());
       final List<Map<String, dynamic>> maps = await db.query(getOyatTable(),
           where: 'juz_number = ?',
-          orderBy: juzNumber == 30 ? 'verse_id ASC' : null,
+          orderBy: juzNumber == 1 ? null : 'verse_id ASC',
           whereArgs: [juzNumber]);
-      print("$maps DATA FROM DB IS GET OYAT BY ID");
+      debugPrint("$maps DATA FROM DB IS GET OYAT BY ID");
 
       if (maps.isNotEmpty) {
-        print("$maps is not empty maps");
+        debugPrint("$maps is not empty maps");
 
         // If data is found, convert the maps to a list of OyatModel objects
         return List.generate(maps.length, (i) {
-          print(maps[i]['isReaded']);
-          print(maps[i]['isSaved']);
+          debugPrint(maps[i]['isReaded'].toString());
+          debugPrint(maps[i]['isSaved'].toString());
           return OyatModel.fromJson(maps[i]);
         });
       } else {
         // If no data is found, return an empty list
-        print("No item found in the database with juzNumber $juzNumber");
+        debugPrint("No item found in the database with juzNumber $juzNumber");
         return [];
       }
     } on DatabaseException catch (e) {
       // Handle any database exceptions
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -251,9 +251,9 @@ class QuronDBService {
             whereArgs: [verseNumber],
             conflictAlgorithm: ConflictAlgorithm.replace);
       });
-      print('readed save successfully');
+      debugPrint('readed save successfully');
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
@@ -267,10 +267,10 @@ class QuronDBService {
             whereArgs: [verseNumber],
             conflictAlgorithm: ConflictAlgorithm.replace);
 
-        print('saved save successfully');
+        debugPrint('saved save successfully');
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
@@ -282,10 +282,10 @@ class QuronDBService {
         where: 'isSaved = ?',
         whereArgs: [1],
       );
-      print("$maps DATA FROM DB IS GET OYATByJuz BY ID");
+      debugPrint("$maps DATA FROM DB IS GET OYATByJuz BY ID");
 
       if (maps.isNotEmpty) {
-        print("$maps is not empty maps");
+        debugPrint("$maps is not empty maps");
 
         return List.generate(maps.length, (i) {
           return OyatModel.fromJson(maps[i]);
@@ -295,7 +295,7 @@ class QuronDBService {
       }
     } on DatabaseException catch (e) {
       // Handle any database exceptions
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -304,17 +304,17 @@ class QuronDBService {
     final db = await _quronDBService.database;
     try {
       final List<Map<String, dynamic>> maps = await db.query(getOyatTable());
-      print("$maps DATA FROM DB IS GET ALL OYAT");
+      debugPrint("$maps DATA FROM DB IS GET ALL OYAT");
       if (maps.isNotEmpty) {
         return List.generate(maps.length, (i) {
           return OyatModel.fromJson(maps[i]);
         });
       } else {
-        print("No item found in the database");
+        debugPrint("No item found in the database");
         return [];
       }
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -324,7 +324,7 @@ class QuronDBService {
     // await db.delete(surahTableUzb);
     // await db.delete(surahTableRus);
     await db.delete(oyatTable);
-    print('Oyat db cleared successfully');
-    print('quron db cleared successfully');
+    debugPrint('Oyat db cleared successfully');
+    debugPrint('quron db cleared successfully');
   }
 }

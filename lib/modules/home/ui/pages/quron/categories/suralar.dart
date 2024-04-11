@@ -69,7 +69,7 @@ class CardItem extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         onTap: () {
-          print("$index tapped index is");
+          debugPrint("$index tapped index is");
           context.read<QuronBloc>().add(GetOyatFromDB(
               index: index,
               suraLength:

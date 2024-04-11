@@ -68,7 +68,7 @@
 //           return;
 //         }
 //       } on PermissionRequestInProgressException catch (e) {
-//         print(e.message);
+//         debugPrint(e.message);
 //         // Handle permission request already in progress for iOS
 //         return;
 //       }
@@ -96,9 +96,9 @@
 //           country: placemark.country,
 //           region: placemark.administrativeArea),
 //     );
-//     print("${location.longitude} longtitude");
-//     print("${location.latitude} longtitude");
-//     print("${_locationInfo.position?.country} position get");
+//     debugPrint("${location.longitude} longtitude");
+//     debugPrint("${location.latitude} longtitude");
+//     debugPrint("${_locationInfo.position?.country} position get");
 
 //     emit(state.copyWith(locationInfo: _locationInfo));
 //   }
@@ -173,7 +173,7 @@
 //   List<PositionInfo>? get searchResults => _searchResults;
 
 //   void searchRegionByTitle(String region) async {
-//     print('request keett');
+//     debugPrint('request keett');
 //     emit(state.copyWith(status: ActionStatus.isLoading));
 
 //     // TODO rename foundAddress into a more meaningful name to explain that these are results when user searched for a region
@@ -202,7 +202,7 @@
 //       _searchResults = List.empty();
 //       emit(state.copyWith(status: ActionStatus.isError));
 //     }
-//     print(state.status);
+//     debugPrint(state.status);
 //   }
 
 //   Future<PositionInfo?> getChosenLocation() async =>
@@ -214,16 +214,15 @@
 
 //   Future<PositionInfo?> addAddressInfo(PositionInfo? positionInfo) async {
 //     var s = await locationChooserService.addAddressInfo(positionInfo);
-//     print(s!.country);
-//     print(s.isPrecise);
-//     print(s.latitude);
-//     print(s.longitude);
-//     print(s.region);
+//     debugPrint(s!.country);
+//     debugPrint(s.isPrecise);
+//     debugPrint(s.latitude);
+//     debugPrint(s.longitude);
+//     debugPrint(s.region);
 //     return s;
 //   }
 // }
 
-import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/onBoarding/geolocation/model/auto_complete_model.dart';
@@ -286,7 +285,7 @@ class GeolocationCubit extends Cubit<GeolocationState> {
           return;
         }
       } on PermissionRequestInProgressException catch (e) {
-        print(e.message);
+        debugPrint(e.message);
         // Handle permission request already in progress for iOS
         return;
       }
@@ -378,7 +377,7 @@ class GeolocationCubit extends Cubit<GeolocationState> {
   /// location
 
   void searchRegionByTitle(String place) async {
-    print('request keett');
+    debugPrint('request keett');
     emit(state.copyWith(manualStatus: ActionStatus.isLoading));
 
     var res = await _locationService.manuaChoiceLocation(place);
@@ -387,7 +386,7 @@ class GeolocationCubit extends Cubit<GeolocationState> {
             emit(state.copyWith(manualStatus: ActionStatus.isError, error: l)),
         (r) => emit(state.copyWith(
             manualStatus: ActionStatus.isSuccess, manualChoserModel: r)));
-    print(state.status);
+    debugPrint("${state.status}");
   }
 
   void saveLocationManual(ManualChoserModel? positionInfo, int index) async {
@@ -404,16 +403,20 @@ class GeolocationCubit extends Cubit<GeolocationState> {
   void saveLocationAuto(
       AutoChoiceLocationModel? autoChoiceLocationModel) async {
     await StorageRepository.putString(
-        Keys.country, autoChoiceLocationModel?.country.name ?? '');
+        Keys.country, autoChoiceLocationModel?.country?.name ?? '');
     await StorageRepository.putString(
-        Keys.capital, autoChoiceLocationModel?.country.capital ?? '');
+        Keys.capital, autoChoiceLocationModel?.country?.capital ?? '');
     await StorageRepository.putDouble(
-        Keys.longitude, autoChoiceLocationModel?.location.longitude ?? 0);
+        Keys.longitude, autoChoiceLocationModel?.location?.longitude ?? 0);
     await StorageRepository.putDouble(
-        Keys.latitude, autoChoiceLocationModel?.location.latitude ?? 0);
+        Keys.latitude, autoChoiceLocationModel?.location?.latitude ?? 0);
   }
 
   void getSavedLocation() {
-    emit(state.copyWith(country: StorageRepository.getString(Keys.country)));
+    emit(state.copyWith(
+        country: StorageRepository.getString(Keys.country),
+        capital: StorageRepository.getString(Keys.capital),
+        latitude: StorageRepository.getDouble(Keys.latitude),
+        longtitude: StorageRepository.getDouble(Keys.longitude)));
   }
 }

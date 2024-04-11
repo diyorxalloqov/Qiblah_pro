@@ -1,6 +1,5 @@
 import 'package:path/path.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/models/zikr_model.dart';
 
 class ZikrDBSevice {
   static final ZikrDBSevice _zikrDBService = ZikrDBSevice._internal();
@@ -11,7 +10,7 @@ class ZikrDBSevice {
 
   static String getCategegoryTable() {
     final lang = StorageRepository.getString(Keys.lang);
-    print(lang);
+    debugPrint(lang.toString());
     return lang == 'uz' ? categoryUzb : categoryRus;
   }
 
@@ -76,16 +75,16 @@ class ZikrDBSevice {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
-    print("${getCategegoryTable().length} zikr table length from insert");
+    debugPrint("${getCategegoryTable().length} zikr table length from insert");
   }
 
   Future<List<ZikrCategoryModel>?> getCategory() async {
     final db = await _zikrDBService.database;
     final List<Map<String, dynamic>> maps =
         await db.query(getCategegoryTable());
-    print("${maps.length} data length from db");
+    debugPrint("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
       return ZikrCategoryModel.fromJson(maps[i]);
     });
@@ -99,35 +98,35 @@ class ZikrDBSevice {
             conflictAlgorithm: ConflictAlgorithm.replace);
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
-    print("${zikr.length} zikr table length from insert");
+    debugPrint("${zikr.length} zikr table length from insert");
   }
 
   Future<List<ZikrModel>?> getZikrs(String categoryId) async {
     final db = await _zikrDBService.database;
-    print("$categoryId CATEGORY ID");
+    debugPrint("$categoryId CATEGORY ID");
     try {
       final List<Map<String, dynamic>> maps = await db.query(
         zikr,
         where: 'category_id = ?',
         whereArgs: [categoryId],
       );
-      print("$maps DATA FROM DB IS GET zikr BY ID");
+      debugPrint("$maps DATA FROM DB IS GET zikr BY ID");
 
       if (maps.isNotEmpty) {
-        print("$maps is not empty maps");
+        debugPrint("$maps is not empty maps");
         return List.generate(maps.length, (i) {
           return ZikrModel.fromJson(maps[i]);
         });
       } else {
         // If no data is found, return an empty list
-        print("No item found in the database with sura_id $categoryId");
+        debugPrint("No item found in the database with sura_id $categoryId");
         return [];
       }
     } on DatabaseException catch (e) {
       // Handle any database exceptions
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -136,18 +135,18 @@ class ZikrDBSevice {
     final db = await _zikrDBService.database;
     try {
       final List<Map<String, dynamic>> maps = await db.query(zikr);
-      print("$maps DATA FROM DB IS GET ALL ZIKR");
+      debugPrint("$maps DATA FROM DB IS GET ALL ZIKR");
 
       if (maps.isNotEmpty) {
         return List.generate(maps.length, (i) {
           return ZikrModel.fromJson(maps[i]);
         });
       } else {
-        print("No item found in the database");
+        debugPrint("No item found in the database");
         return [];
       }
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
       return null;
     }
   }
@@ -161,10 +160,10 @@ class ZikrDBSevice {
             where: 'zikr_id = ?',
             whereArgs: [zikrId],
             conflictAlgorithm: ConflictAlgorithm.replace);
-        print('isSaved $isSaved updated successfully id is $zikrId');
+        debugPrint('isSaved $isSaved updated successfully id is $zikrId');
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
@@ -176,7 +175,7 @@ class ZikrDBSevice {
         where: 'isSaved = ?',
         whereArgs: [1], // 1 represents true for the isSaved attribute
       );
-      print(maps);
+      debugPrint(maps.toString());
 
       // If data is found, convert the maps to a list of ZikrModel objects
       if (maps.isNotEmpty) {
@@ -185,12 +184,12 @@ class ZikrDBSevice {
         });
       } else {
         // If no data is found, return an empty list
-        print("No saved zikrs found in the database");
+        debugPrint("No saved zikrs found in the database");
         return [];
       }
     } on DatabaseException catch (e) {
       // Handle any database exceptions
-      print("Database Exception: ${e.toString()}");
+      debugPrint("Database Exception: ${e.toString()}");
       return null;
     }
   }
@@ -206,11 +205,11 @@ class ZikrDBSevice {
             where: 'zikr_id = ?',
             whereArgs: [zikrId],
             conflictAlgorithm: ConflictAlgorithm.replace);
-        print(
+        debugPrint(
             'zikr count $allZikrs $todayZikrs updated successfully id is $zikrId');
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
@@ -222,16 +221,16 @@ class ZikrDBSevice {
           zikr,
           {"today_zikrs": 0},
         );
-        print('All today_zikrs updated to 0 successfully');
+        debugPrint('All today_zikrs updated to 0 successfully');
       });
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
   }
 
   Future<void> clearDatabase() async {
     final db = await _zikrDBService.database;
     await db.delete(zikr);
-    print('db cleared successfully');
+    debugPrint('db cleared successfully');
   }
 }

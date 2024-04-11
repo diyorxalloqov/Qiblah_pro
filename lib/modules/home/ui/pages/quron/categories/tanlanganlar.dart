@@ -88,7 +88,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
 
   @override
   void initState() {
-    print(widget.index);
+    debugPrint(widget.index.toString());
     //// verse_id boyicha readed saved
     super.initState();
     if (widget.index >= 0 && widget.index < widget.savedOyats.length) {
@@ -98,9 +98,9 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
       isReaded = false;
       isSaved = false;
     }
-    print("$isSaved SALOM");
-    print("$isReaded ssaaaaaaaaaaalllllloooommmm");
-    print("${widget.index} index item coming");
+    debugPrint("$isSaved SALOM");
+    debugPrint("$isReaded ssaaaaaaaaaaalllllloooommmm");
+    debugPrint("${widget.index} index item coming");
   }
 
   final AudioPlayer player = AudioPlayer();
@@ -129,9 +129,9 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
         "${widget.state.getSavedOyats[widget.index].suraId}".padLeft(3, '0');
     String juzNumber = "${widget.state.getSavedOyats[widget.index].verseNumber}"
         .padLeft(3, '0');
-    print("$suraNum SURA NUMBER");
-    print("$juzNumber Juz oyat NUMBER");
-    print(widget.index);
+    debugPrint("$suraNum SURA NUMBER");
+    debugPrint("$juzNumber Juz oyat NUMBER");
+    debugPrint(widget.index.toString());
 
     final String url =
         'https://everyayah.com/data/Alafasy_64kbps/$suraNum$juzNumber.mp3';
@@ -151,7 +151,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
       // Set the audio source to the local file path
       await player.setFilePath(localFilePath);
     } catch (e) {
-      print('Error initializing audio: $e');
+      debugPrint('Error initializing audio: $e');
       setState(() {
         error = 'Audio yuklashda xatolik';
       });
@@ -162,9 +162,9 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
     final Dio client = serviceLocator<DioSettings>().dio;
     try {
       final Response response = await client.download(url, savePath);
-      print('Downloaded audio: $response');
+      debugPrint('Downloaded audio: $response');
     } on DioException catch (e) {
-      print('Error downloading audio: $e');
+      debugPrint('Error downloading audio: $e');
       exeption = NetworkExeptionResponse(e).messageForUser;
     }
   }
@@ -282,7 +282,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
                                               .verseId ??
                                           '0')));
 
-                                  print(isReaded);
+                                  debugPrint(isReaded.toString());
                                 },
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
@@ -322,7 +322,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
                                       .add(const GetSavedOyats());
                                   isShowing = false;
                                   setState(() {});
-                                  print(isSaved);
+                                  debugPrint(isSaved.toString());
                                 },
                                 borderRadius: BorderRadius.circular(100.r),
                                 child: CircleAvatar(
@@ -369,8 +369,8 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
                                   final processingState =
                                       playerState?.processingState;
                                   final playing = playerState?.playing;
-                                  print('Processing State: $processingState');
-                                  print('Is Playing: $playing');
+                                  debugPrint('Processing State: $processingState');
+                                  debugPrint('Is Playing: $playing');
                                   if (processingState ==
                                           ProcessingState.loading ||
                                       processingState ==
@@ -405,7 +405,7 @@ class _TanlanganlarItemState extends State<TanlanganlarItem>
                                                   (ConnectivityResult result) {
                                             if (result !=
                                                 ConnectivityResult.none) {
-                                              print('connectivity result');
+                                              debugPrint('connectivity result');
                                               setState(() {
                                                 error = '';
                                                 player.stop();

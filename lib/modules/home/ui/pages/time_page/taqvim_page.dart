@@ -19,26 +19,12 @@ class _TaqvimPageState extends State<TaqvimPage> {
     'xufton'
   ];
 
-  final NamozTimeBloc _namozTimeBloc = NamozTimeBloc();
   HijriCalendar hijriToday = HijriCalendar.now();
-
-  @override
-  void initState() {
-    super.initState();
-    _namozTimeBloc.add(CurrentMonthNamozTimes());
-  }
-
-  @override
-  void dispose() {
-    _namozTimeBloc.add(TodayNamozTimes());
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<NamozTimeBloc, NamozTimeState>(
-        bloc: _namozTimeBloc,
         builder: (context, state) {
           return ListView(
             shrinkWrap: true,
@@ -93,7 +79,7 @@ class _TaqvimPageState extends State<TaqvimPage> {
                           ),
                         ],
                       ),
-                      const SpaceHeight(),
+                      SizedBox(height: 5.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -112,7 +98,7 @@ class _TaqvimPageState extends State<TaqvimPage> {
                           )
                         ],
                       ),
-                      const SpaceHeight(),
+                      SizedBox(height: 7.h),
                       Text(
                         'namoz_taqvimi_promt'.tr(),
                         textAlign: TextAlign.center,
@@ -122,12 +108,12 @@ class _TaqvimPageState extends State<TaqvimPage> {
                             fontWeight: AppFontWeight.w_400,
                             color: smallTextColor),
                       ),
+                      SizedBox(height: 23.h),
                     ],
                   ),
                 ),
               ),
-              const SpaceHeight(),
-              const SpaceHeight(),
+              SizedBox(height: 10.h),
               Container(
                 decoration: BoxDecoration(
                     color: context.isDark ? homeBlackMainColor : Colors.white,
@@ -149,7 +135,7 @@ class _TaqvimPageState extends State<TaqvimPage> {
                           return TableCell(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 1, vertical: 5),
+                                  horizontal: 1, vertical: 12),
                               child: Center(
                                 child: Text(
                                   _names[rowIndex1],
@@ -187,21 +173,36 @@ class _TaqvimPageState extends State<TaqvimPage> {
                           // sana uchun column
                           return TableCell(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 1, vertical: 5),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Center(
-                                child: Text('$colIndex'),
+                                child: Text(
+                                  '$colIndex',
+                                  style: TextStyle(
+                                      color: context.isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
+                                      fontSize: AppSizes.size_12,
+                                      fontWeight: AppFontWeight.w_400),
+                                ),
                               ),
                             ),
                           );
                         }
                         return TableCell(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 1, vertical: 5),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             child: Center(
                               child: Text(
                                 names[rowIndex - 1].time.hhMM(),
+                                style: TextStyle(
+                                    color: context.isDark
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontFamily: AppfontFamily.inter.fontFamily,
+                                    fontSize: AppSizes.size_12,
+                                    fontWeight: AppFontWeight.w_400),
                               ),
                             ),
                           ),
@@ -211,7 +212,6 @@ class _TaqvimPageState extends State<TaqvimPage> {
                   }),
                 ),
               ),
-              const SpaceHeight()
             ],
           );
         },

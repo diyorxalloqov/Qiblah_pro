@@ -8,13 +8,8 @@ abstract class NamozTimeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class TodayNamozTimes extends NamozTimeEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
-
-class CurrentMonthNamozTimes extends NamozTimeEvent {
+class CurrentNamozTimes extends NamozTimeEvent {
+  const CurrentNamozTimes();
   @override
   // TODO: implement props
   List<Object> get props => [];
@@ -38,16 +33,4 @@ class ChangeSettings extends NamozTimeEvent {
   const ChangeSettings({required this.newValue});
   @override
   List<Object> get props => [newValue];
-}
-
-class NextDayNamozTimeEvent extends NamozTimeEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
-}
-
-class PreviousDayNamozTimeEvent extends NamozTimeEvent {
-  @override
-  // TODO: implement props
-  List<Object> get props => [];
 }

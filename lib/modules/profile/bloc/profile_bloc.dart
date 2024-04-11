@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/profile/model/profile_model.dart';
 import 'package:qiblah_pro/modules/profile/service/profile_service.dart';
@@ -27,16 +25,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       PickImageEvent event, Emitter<ProfileState> emit) async {
     try {
       final image = await ImagePicker().pickImage(source: event.source);
-      print("working");
+      debugPrint("working");
       if (image != null) {
-        print('hello');
+        debugPrint('hello');
         final img = File(image.path);
         emit(state.copyWith(imagePath: img.path, isChangeImage: true));
-        print(img);
-        print(img.path);
+        debugPrint(img.toString());
+        debugPrint(img.path);
         add(GetUserdataForEdit());
       } else {
-        print('object');
+        debugPrint('object');
         emit(state.copyWith(isChangeImage: false));
       }
     } catch (e) {

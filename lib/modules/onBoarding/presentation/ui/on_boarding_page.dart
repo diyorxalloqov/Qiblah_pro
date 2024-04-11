@@ -22,31 +22,36 @@ class _OnBoardingState extends State<OnBoarding> {
   final List<String> _images = const [
     AppImages.person,
     AppImages.location,
-    AppImages.notification
+    AppImages.notification,
+    AppImages.reklama
   ];
 
   final List<String> _titles = const [
     "assalom_alekum",
     "joylashuv",
-    "bildirishnomalar"
+    "bildirishnomalar",
+    "reklama"
   ];
 
   final List<String> _subtitles = [
     "app_highlight",
     "joylashuv_promt",
-    "bildirishnoma_promt"
+    "bildirishnoma_promt",
+    "reklama_promt"
   ];
 
   final List<String> _buttonName = [
     "bismillah",
     "btn_davom_etish",
-    "btn_davom_etish"
+    "btn_davom_etish",
+    "premiumni_yoqish"
   ];
 
   final List<String> _textButtonName = [
     "tilni_ozgartirish",
     "qolda_sozlayman",
-    "bildirishnoma_kerakmas"
+    "bildirishnoma_kerakmas",
+    "reklama_bilan_foydalanaman"
   ];
   String selectedLang = '';
 
@@ -95,8 +100,19 @@ class _OnBoardingState extends State<OnBoarding> {
                                   Text(_subtitles[index].tr(),
                                       style: AppfontFamily.inter.copyWith(
                                           color: smallTextColor,
-                                          fontSize: he(AppSizes.size_15),
+                                          fontSize: he(AppSizes.size_16),
                                           fontWeight: AppFontWeight.w_400)),
+                                  _currentPage == 3
+                                      ? Text(
+                                          'reklama_promt1'.tr(),
+                                          style: TextStyle(
+                                              fontFamily: AppfontFamily
+                                                  .inter.fontFamily,
+                                              color: smallTextColor,
+                                              fontSize: he(AppSizes.size_16),
+                                              fontWeight: AppFontWeight.w_600),
+                                        )
+                                      : const SizedBox.shrink(),
                                   SpaceHeight(height: 18.h),
                                   _currentPage == 0
                                       ? Column(
@@ -198,9 +214,10 @@ class _OnBoardingState extends State<OnBoarding> {
                                         bool isPermissionGranted =
                                             await NotificationServices().init();
                                         if (isPermissionGranted) {
-                                          Navigator.of(context)
-                                              .pushNamedAndRemoveUntil(
-                                                  'register', (route) => false);
+                                          pageController.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.easeIn);
                                           context.read<NamozTimeBloc>().add(
                                                 const ScheduleNotificationEvent(
                                                     namoz: NamozEnum.all),
@@ -212,6 +229,13 @@ class _OnBoardingState extends State<OnBoarding> {
                                         if (!isPermissionGranted) {
                                           openAppSettings();
                                         }
+                                        await StorageRepository.putBool(
+                                            Keys.isOnboarding, true);
+                                      } else if (_currentPage == 3) {
+                                        Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                'premiumScreen',
+                                                (route) => false);
                                         await StorageRepository.putBool(
                                             Keys.isOnboarding, true);
                                       }
@@ -249,7 +273,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                           : SizedBox.fromSize(),
                                       TextButton(
                                           onPressed: () async {
-                                            print(_currentPage);
+                                            debugPrint(_currentPage.toString());
                                             _currentPage == 0
                                                 ? showModalBottomSheet(
                                                     context: context,
@@ -259,12 +283,18 @@ class _OnBoardingState extends State<OnBoarding> {
                                                         lang(context))
                                                 : null;
                                             if (_currentPage == 2) {
+                                              pageController.nextPage(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.easeIn);
+                                            } else if (_currentPage == 3) {
                                               Future.delayed(Duration.zero)
                                                   .then((value) => Navigator
                                                       .pushNamedAndRemoveUntil(
                                                           context,
                                                           'register',
-                                                          (route) => false));
+                                                          (route) => false,
+                                                          arguments: true));
                                               await StorageRepository.putBool(
                                                   Keys.isOnboarding, true);
                                             }
@@ -293,7 +323,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 );
         },
         controller: pageController,
-        itemCount: 3,
+        itemCount: 4,
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (int value) {
           setState(() {

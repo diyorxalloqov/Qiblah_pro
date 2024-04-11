@@ -16,8 +16,8 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
 
   @override
   void initState() {
-    geolocationCubit = GeolocationCubit();
     super.initState();
+    geolocationCubit = context.read<GeolocationCubit>();
     geolocationCubit.requirePreciseLocation = false;
     WidgetsBinding.instance.addObserver(this);
   }
@@ -26,9 +26,6 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      // final GeolocationCubit geolocationbloc =
-      //     BlocProvider.of<GeolocationCubit>(context, listen: false);
-      // This widget has been unmounted, so the State no longer has a context (and should be considered defunct).
       if (geolocationCubit.isWaitingForPermission) {
         geolocationCubit.determineLocation();
         geolocationCubit.stopWaitingForPermission();
@@ -38,16 +35,13 @@ class _AutomaticPositionChooserRouteState extends State<AutoChoiceLocation>
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: geolocationCubit,
-      child: Scaffold(
-          body: BlocBuilder<GeolocationCubit, GeolocationState>(
-        bloc: geolocationCubit,
-        builder: (context, state) {
-          return findAprWidgetByLocationInfo(geolocationCubit, state);
-        },
-      )),
-    );
+    return Scaffold(
+        body: BlocBuilder<GeolocationCubit, GeolocationState>(
+      bloc: geolocationCubit,
+      builder: (context, state) {
+        return findAprWidgetByLocationInfo(geolocationCubit, state);
+      },
+    ));
   }
 
   Widget findAprWidgetByLocationInfo(

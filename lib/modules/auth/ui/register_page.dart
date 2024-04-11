@@ -97,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Container(
             height: context.height,
             width: context.width,
-            padding: EdgeInsets.only(top: 31.h),
+            padding: EdgeInsets.only(top: 30.h),
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     colors: context.isDark
@@ -128,45 +128,24 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: SvgPicture.asset(AppIcon.appLogo,
                                 width: 40.w))),
                     BlocListener<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state.status1 == ActionStatus.isSuccess) {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'bottomNavbar', (route) => false);
-                        } else if (state.status1 == ActionStatus.isError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(state.error)));
-                        }
-                      },
-                      child: BlocBuilder<AuthBloc, AuthState>(
-                        builder: (context, state) {
-                          return GestureDetector(
-                              onTap: () {
-                                context.read<AuthBloc>().add(
-                                    RegisterTemporaryEvent(
-                                        countryCode: countryCode));
-                              },
-                              child: state.status1 == ActionStatus.isLoading
-                                  ? Container(
-                                      height: 24,
-                                      width: 24,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          color: context.isDark
-                                              ? Colors.black
-                                              : Colors.white),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child:
-                                            CircularProgressIndicator.adaptive(
-                                                backgroundColor: Colors.blue),
-                                      ))
-                                  : SvgPicture.asset(context.isDark
-                                      ? AppIcon.cancelBlack
-                                      : AppIcon.cancel));
+                        listener: (context, state) {
+                          if (state.status1 == ActionStatus.isSuccess) {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, 'bottomNavbar', (route) => false);
+                          } else if (state.status1 == ActionStatus.isError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.error)));
+                          }
                         },
-                      ),
-                    )
+                        child: GestureDetector(
+                            onTap: () {
+                              context.read<AuthBloc>().add(
+                                  RegisterTemporaryEvent(
+                                      countryCode: countryCode));
+                            },
+                            child: SvgPicture.asset(context.isDark
+                                ? AppIcon.cancelBlack
+                                : AppIcon.cancel)))
                   ],
                 ),
                 const Spacer(),
@@ -174,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 12.w, vertical: 28.h),
+                          horizontal: 12.w, vertical: 18.h),
                       decoration: BoxDecoration(
                         color: context.isDark
                             ? bottomSheetBackgroundBlackColor
@@ -192,166 +171,183 @@ class _RegisterPageState extends State<RegisterPage> {
                             SpaceHeight(height: 20.h),
                             SmallText(text: 'telefon_raqam'.tr()),
                             const SpaceHeight(),
-                            Form(
-                              key: _key,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextFormField(
-                                    controller: _phoneController,
-                                    keyboardType: TextInputType.number,
-                                    // inputFormatters: [
-                                    //   MaskTextInputFormatter(
-                                    //     mask: '00 000 00 00',
-                                    //     filter: {'0': RegExp(r'[0-9]')},
-                                    //   )
-                                    // ],
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: wi(16)),
-                                      constraints:
-                                          BoxConstraints(maxHeight: he(48)),
-                                     fillColor: context.isDark
-                                      ? textFormFieldFillColorBlack
-                                      : const Color(0xffF5F4FA),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: context.isDark
-                                            ? BorderSide.none
-                                            : const BorderSide(
-                                                color: Color(0xffE3E7EA),
-                                                width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
+                            BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                return Form(
+                                  key: _key,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      TextFormField(
+                                        controller: _phoneController,
+                                        keyboardType: TextInputType.number,
+                                        // inputFormatters: [
+                                        //   MaskTextInputFormatter(
+                                        //     mask: '00 000 00 00',
+                                        //     filter: {'0': RegExp(r'[0-9]')},
+                                        //   )
+                                        // ],
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          contentPadding: EdgeInsets.symmetric(
+                                              horizontal: wi(16)),
+                                          fillColor: context.isDark
+                                              ? textFormFieldFillColorBlack
+                                              : const Color(0xffF5F4FA),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: context.isDark
+                                                ? BorderSide.none
+                                                : const BorderSide(
+                                                    color: Color(0xffE3E7EA),
+                                                    width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: context.isDark
+                                                ? BorderSide.none
+                                                : const BorderSide(
+                                                    color: Color(0xffE3E7EA),
+                                                    width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderSide: context.isDark
+                                                ? BorderSide.none
+                                                : const BorderSide(
+                                                    color: Color(0xffE3E7EA),
+                                                    width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          prefixIcon: TextButton(
+                                              onPressed: () async {
+                                                final picked =
+                                                    await countryPicker
+                                                        .showPicker(
+                                                  context: context,
+                                                  backgroundColor: context
+                                                          .isDark
+                                                      ? bottomSheetBackgroundBlackColor
+                                                      : bottomSheetBackgroundColor,
+                                                );
+                                                dialCode =
+                                                    picked?.dialCode ?? '+998';
+                                                countryCode =
+                                                    picked?.code ?? 'UZ';
+                                                setState(() {});
+                                              },
+                                              child: Text(
+                                                dialCode,
+                                                style: TextStyle(
+                                                    color: context.isDark
+                                                        ? Colors.white
+                                                        : Colors.black),
+                                              )),
+                                          hintText: 'telefon_raqam'.tr(),
+                                          hintStyle: TextStyle(
+                                            fontSize: he(AppSizes.size_16),
+                                            fontWeight: AppFontWeight.w_400,
+                                            color: textFormFieldHintColor,
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "validator_prop".tr();
+                                          }
+                                          return null;
+                                        },
                                       ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: context.isDark
-                                            ? BorderSide.none
-                                            : const BorderSide(
-                                                color: Color(0xffE3E7EA),
-                                                width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderSide: context.isDark
-                                            ? BorderSide.none
-                                            : const BorderSide(
-                                                color: Color(0xffE3E7EA),
-                                                width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      prefixIcon: TextButton(
-                                          onPressed: () async {
-                                            final picked =
-                                                await countryPicker.showPicker(
-                                              context: context,
-                                              backgroundColor: context.isDark
-                                                  ? bottomSheetBackgroundBlackColor
-                                                  : bottomSheetBackgroundColor,
-                                            );
-                                            dialCode =
-                                                picked?.dialCode ?? '+998';
-                                            countryCode = picked?.code ?? 'UZ';
-                                            setState(() {});
-                                          },
-                                          child: Text(
-                                            dialCode,
-                                            style: TextStyle(
-                                                color: context.isDark
-                                                    ? Colors.white
-                                                    : Colors.black),
-                                          )),
-                                      hintText: 'telefon_raqam'.tr(),
-                                      hintStyle: TextStyle(
-                                        fontSize: he(AppSizes.size_16),
-                                        fontWeight: AppFontWeight.w_400,
-                                        color: textFormFieldHintColor,
-                                      ),
-                                    ),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "validator_prop".tr();
-                                      }
-                                      return null;
-                                    },
+                                      const SizedBox(height: 4),
+                                      state.status1 == ActionStatus.isLoading
+                                          ? Center(
+                                              child: SizedBox(
+                                                height: 32.h,
+                                                width: 32.w,
+                                                child:
+                                                    const CircularProgressIndicator
+                                                        .adaptive(),
+                                              ),
+                                            )
+                                          : SpaceHeight(height: 24.h),
+                                      SmallText(text: 'parol'.tr()),
+                                      const SpaceHeight(),
+                                      TextFormField(
+                                        focusNode: _focusNode,
+                                        controller: _passwordController,
+                                        obscureText: passwordVisibile,
+                                        obscuringCharacter: "*",
+                                        decoration: InputDecoration(
+                                            filled: true,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: wi(16)),
+                                            fillColor: context.isDark
+                                                ? textFormFieldFillColorBlack
+                                                : const Color(0xffF5F4FA),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: context.isDark
+                                                  ? BorderSide.none
+                                                  : const BorderSide(
+                                                      color: Color(0xffE3E7EA),
+                                                      width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: context.isDark
+                                                  ? BorderSide.none
+                                                  : const BorderSide(
+                                                      color: Color(0xffE3E7EA),
+                                                      width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderSide: context.isDark
+                                                  ? BorderSide.none
+                                                  : const BorderSide(
+                                                      color: Color(0xffE3E7EA),
+                                                      width: 1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0.r),
+                                            ),
+                                            suffixIcon: Visibility(
+                                                child: IconButton(
+                                                    onPressed: () {
+                                                      passwordVisibile =
+                                                          !passwordVisibile;
+                                                      setState(() {});
+                                                    },
+                                                    icon: passwordVisibile
+                                                        ? const Icon(
+                                                            Icons
+                                                                .visibility_off,
+                                                            color: Color(
+                                                                0xff6D7379))
+                                                        : const Icon(
+                                                            Icons.visibility,
+                                                            color: Color(
+                                                                0xff6D7379)))),
+                                            hintStyle: TextStyle(
+                                              fontSize: he(AppSizes.size_16),
+                                              fontWeight: AppFontWeight.w_400,
+                                              color: textFormFieldHintColor,
+                                            ),
+                                            hintText: "parol".tr()),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return "Iltimos bo'sh qoldirmang";
+                                          }
+                                          return null;
+                                        },
+                                      )
+                                    ],
                                   ),
-                                  SpaceHeight(height: 24.h),
-                                  SmallText(text: 'parol'.tr()),
-                                  const SpaceHeight(),
-                                  TextFormField(
-                                    focusNode: _focusNode,
-                                    controller: _passwordController,
-                                    obscureText: passwordVisibile,
-                                    obscuringCharacter: "*",
-                                    decoration: InputDecoration(
-                                        filled: true,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: wi(16)),
-                                        constraints:
-                                            BoxConstraints(maxHeight: he(48)),
-                                        fillColor: context.isDark
-                                            ? textFormFieldFillColorBlack
-                                            : const Color(0xffF5F4FA),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: context.isDark
-                                              ? BorderSide.none
-                                              : const BorderSide(
-                                                  color: Color(0xffE3E7EA),
-                                                  width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: context.isDark
-                                              ? BorderSide.none
-                                              : const BorderSide(
-                                                  color: Color(0xffE3E7EA),
-                                                  width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: context.isDark
-                                              ? BorderSide.none
-                                              : const BorderSide(
-                                                  color: Color(0xffE3E7EA),
-                                                  width: 1),
-                                          borderRadius:
-                                              BorderRadius.circular(12.0.r),
-                                        ),
-                                        suffixIcon: Visibility(
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  passwordVisibile =
-                                                      !passwordVisibile;
-                                                  setState(() {});
-                                                },
-                                                icon: passwordVisibile
-                                                    ? const Icon(
-                                                        Icons.visibility_off,
-                                                        color:
-                                                            Color(0xff6D7379))
-                                                    : const Icon(
-                                                        Icons.visibility,
-                                                        color: Color(
-                                                            0xff6D7379)))),
-                                        hintStyle: TextStyle(
-                                          fontSize: he(AppSizes.size_16),
-                                          fontWeight: AppFontWeight.w_400,
-                                          color: textFormFieldHintColor,
-                                        ),
-                                        hintText: "parol".tr()),
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return "Iltimos bo'sh qoldirmang";
-                                      }
-                                      return null;
-                                    },
-                                  )
-                                ],
-                              ),
+                                );
+                              },
                             ),
                             SpaceHeight(height: 26.h),
                             BlocListener<AuthBloc, AuthState>(
@@ -518,19 +514,19 @@ class _RegisterPageState extends State<RegisterPage> {
             await account.authentication;
         String? accessToken = googleAuth.accessToken;
         String? idToken = googleAuth.idToken;
-        print(account.displayName);
-        print(account.email);
-        print(account.id);
+        debugPrint(account.displayName);
+        debugPrint(account.email);
+        debugPrint(account.id);
 
         // Use accessToken and idToken as needed
-        print('Access Token: $accessToken');
-        print('ID Token: $idToken');
+        debugPrint('Access Token: $accessToken');
+        debugPrint('ID Token: $idToken');
       } else {
         // User canceled the sign-in process
-        print('Google Sign-In canceled');
+        debugPrint('Google Sign-In canceled');
       }
     } on PlatformException catch (error) {
-      print('Google Sign-In Error: $error');
+      debugPrint('Google Sign-In Error: $error');
       // Handle sign-in errors here
     }
   }
@@ -588,14 +584,14 @@ class _RegisterPageState extends State<RegisterPage> {
 //     // );
 
 //     //   if (result.success) {
-//     //     print('Telegram Auth ID: ${result.data}');
+//     //     debugPrint('Telegram Auth ID: ${result.data}');
 //     //     // Handle successful registration
 //     //   } else {
-//     //     print('Telegram Auth Failed');
+//     //     debugPrint('Telegram Auth Failed');
 //     //     // Handle error
 //     //   }
 //     // } catch (error) {
-//     //   print('Telegram Login Error: $error');
+//     //   debugPrint('Telegram Login Error: $error');
 //     //   // Handle error
 //     // }
 //   }
@@ -608,14 +604,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
 //     //   // Check if the login was successful
 //     //   if (result.status == AuthorizationStatus.authorized) {
-//     //     print('Apple Auth ID: ${result.credential.userIdentifier}');
+//     //     debugPrint('Apple Auth ID: ${result.credential.userIdentifier}');
 //     //     // Handle successful registration
 //     //   } else {
-//     //     print('Apple Sign-In Failed');
+//     //     debugPrint('Apple Sign-In Failed');
 //     //     // Handle error
 //     //   }
 //     // } catch (error) {
-//     //   print('Apple Sign-In Error: $error');
+//     //   debugPrint('Apple Sign-In Error: $error');
 //     //   // Handle error
 //     // }
 //   }

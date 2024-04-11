@@ -24,14 +24,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    // print(MediaQuery.of(context).platformBrightness == Brightness.dark);
+    // debugPrint(MediaQuery.of(context).platformBrightness == Brightness.dark);
     // bool _onChanged = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.system
     //     ? MediaQuery.of(context).platformBrightness == Brightness.dark
     //     : AdaptiveTheme.of(context).mode ==
     //         AdaptiveThemeMode
     //             .dark; // AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
     // // MediaQuery.of(context).platformBrightness == Brightness.dark;
-    // print(_onChanged);
+    // debugPrint(_onChanged);
 
     return BlocProvider(
         create: (context) => profileBloc,
@@ -182,8 +182,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ),
                                               InkWell(
                                                 onTap: () {
-                                                  isPremium = !isPremium;
-                                                  setState(() {});
+                                                  Future.delayed(Duration.zero)
+                                                      .then((value) =>
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              'premiumScreen',
+                                                              arguments:
+                                                                  false));
                                                 },
                                                 borderRadius:
                                                     BorderRadius.circular(12.r),
@@ -369,6 +374,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   onTap: () => showModalBottomSheet(
                                       context: context,
                                       isDismissible: true,
+                                      backgroundColor: context.isDark
+                                          ? Colors.black
+                                          : Colors.white,
                                       isScrollControlled: true,
                                       builder: (c) => Column(
                                             mainAxisSize: MainAxisSize.min,
@@ -381,6 +389,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     horizontal: 12.w,
                                                     vertical: 25.h),
                                                 decoration: BoxDecoration(
+                                                  color: context.isDark
+                                                      ? bottomSheetBackgroundBlackColor
+                                                      : Colors.white,
                                                   borderRadius:
                                                       BorderRadius.only(
                                                     topLeft:
@@ -393,6 +404,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     text: 'tilni_ozgartirish'
                                                         .tr()),
                                               ),
+                                              SizedBox(height: 5.h),
                                               Container(
                                                 color: context.isDark
                                                     ? bottomSheetBackgroundBlackColor
@@ -608,8 +620,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               BlocBuilder<GeolocationCubit, GeolocationState>(
                                 builder: (context, state1) {
                                   return SettingsItemWidget(
-                                      onTap: () =>
-                                          showLocationBottomSheet(context),
+                                      onTap: () => showModalBottomSheet(
+                                            isDismissible: true,
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (context) =>
+                                                LocationBottomSheet(c: context),
+                                          ),
                                       title: 'manzil'.tr(),
                                       subtitleWidget: Text(
                                         state1.country,
@@ -655,17 +672,68 @@ class _ProfilePageState extends State<ProfilePage> {
                                   return Column(
                                     children: [
                                       SettingsItemWidget(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return const NamozSettingsWidget(
-                                                      choices:
-                                                          PrayerCalculationMethod
-                                                              .values);
-                                                });
-                                          },
+                                          onTap: () => showModalBottomSheet(
+                                              context: context,
+                                              isDismissible: true,
+                                              elevation: 0,
+                                              backgroundColor: context.isDark
+                                                  ? bottomSheetBackgroundBlackColor
+                                                  : Colors.white,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Center(
+                                                      child: Container(
+                                                        height: 4.h,
+                                                        width: 52.w,
+                                                        margin: const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 10),
+                                                        decoration: BoxDecoration(
+                                                            color: context
+                                                                    .isDark
+                                                                ? const Color(
+                                                                    0xff232C37)
+                                                                : const Color(
+                                                                    0xffE3E7EA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        100.r)),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12.w,
+                                                              vertical: 10.h),
+                                                      child: Text(
+                                                        'hisoblash_usuli'.tr(),
+                                                        style: TextStyle(
+                                                            fontSize: AppSizes
+                                                                .size_18,
+                                                            fontFamily:
+                                                                AppfontFamily
+                                                                    .comforta
+                                                                    .fontFamily,
+                                                            fontWeight:
+                                                                AppFontWeight
+                                                                    .w_700),
+                                                      ),
+                                                    ),
+                                                    const Expanded(
+                                                      child: NamozSettingsWidget(
+                                                          choices:
+                                                              PrayerCalculationMethod
+                                                                  .values),
+                                                    )
+                                                  ],
+                                                );
+                                              }),
                                           title: 'hisoblash_usuli'.tr(),
                                           subtitle: state
                                                   .chosenCalculationMethod
@@ -673,30 +741,130 @@ class _ProfilePageState extends State<ProfilePage> {
                                               'hisoblash_usuli'.tr(),
                                           icon: AppIcon.timeChanger),
                                       SettingsItemWidget(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return const NamozSettingsWidget(
-                                                      choices: Madhab.values);
-                                                });
-                                          },
-                                          title: 'madhab'.tr(),
+                                          onTap: () => showModalBottomSheet(
+                                              context: context,
+                                              isDismissible: true,
+                                              elevation: 0,
+                                              backgroundColor: context.isDark
+                                                  ? bottomSheetBackgroundBlackColor
+                                                  : Colors.white,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Center(
+                                                      child: Container(
+                                                        height: 4.h,
+                                                        width: 52.w,
+                                                        margin: const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 10),
+                                                        decoration: BoxDecoration(
+                                                            color: context
+                                                                    .isDark
+                                                                ? const Color(
+                                                                    0xff232C37)
+                                                                : const Color(
+                                                                    0xffE3E7EA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        100.r)),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12.w,
+                                                              vertical: 10.h),
+                                                      child: Text(
+                                                        'Asr_hisoblash_uslubi'
+                                                            .tr(),
+                                                        style: TextStyle(
+                                                            fontSize: AppSizes
+                                                                .size_18,
+                                                            fontFamily:
+                                                                AppfontFamily
+                                                                    .comforta
+                                                                    .fontFamily,
+                                                            fontWeight:
+                                                                AppFontWeight
+                                                                    .w_700),
+                                                      ),
+                                                    ),
+                                                    const NamozSettingsWidget(
+                                                        choices: Madhab.values)
+                                                  ],
+                                                );
+                                              }),
+                                          title: 'Asr_hisoblash_uslubi'.tr(),
                                           subtitle: state.chosenMadhab.name,
                                           icon: AppIcon.timeChanger),
                                       SettingsItemWidget(
-                                          onTap: () {
-                                            showModalBottomSheet(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return const NamozSettingsWidget(
-                                                      choices: HighLatitudeRule
-                                                          .values);
-                                                });
-                                          },
-                                          title: 'Asr_hisoblash_uslubi'.tr(),
+                                          onTap: () => showModalBottomSheet(
+                                              context: context,
+                                              isDismissible: true,
+                                              elevation: 0,
+                                              backgroundColor: context.isDark
+                                                  ? bottomSheetBackgroundBlackColor
+                                                  : Colors.white,
+                                              builder: (BuildContext context) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Center(
+                                                      child: Container(
+                                                        height: 4.h,
+                                                        width: 52.w,
+                                                        margin: const EdgeInsets
+                                                            .symmetric(
+                                                            vertical: 10),
+                                                        decoration: BoxDecoration(
+                                                            color: context
+                                                                    .isDark
+                                                                ? const Color(
+                                                                    0xff232C37)
+                                                                : const Color(
+                                                                    0xffE3E7EA),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        100.r)),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12.w,
+                                                              vertical: 10.h),
+                                                      child: Text(
+                                                        'burchak'.tr(),
+                                                        style: TextStyle(
+                                                            fontSize: AppSizes
+                                                                .size_18,
+                                                            fontFamily:
+                                                                AppfontFamily
+                                                                    .comforta
+                                                                    .fontFamily,
+                                                            fontWeight:
+                                                                AppFontWeight
+                                                                    .w_700),
+                                                      ),
+                                                    ),
+                                                    const NamozSettingsWidget(
+                                                        choices:
+                                                            HighLatitudeRule
+                                                                .values),
+                                                  ],
+                                                );
+                                              }),
+                                          title: 'burchak'.tr(),
                                           subtitle:
                                               state.chosenHighLatitudeRule.name,
                                           icon: AppIcon.timeChanger),
@@ -708,8 +876,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   );
-                  // }
-                  // return Loading();
                 },
               ),
             ),

@@ -24,7 +24,7 @@ class _SavedZikrsState extends State<SavedZikrs> {
             return const LoadingPage();
           }
           if (state.savedZikrStatus == ActionStatus.isSuccess) {
-            print("SUCCES");
+            debugPrint("SUCCES");
             return state.savedZikrs.isEmpty
                 ? Center(
                     child: Text(

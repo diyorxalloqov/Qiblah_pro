@@ -1,5 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/namoz/model/namoz_model.dart';
+import 'package:qiblah_pro/modules/premium/presentation/ui/premium_screen.dart';
 
 class RouteList {
   static final RouteList _generate = RouteList._init();
@@ -22,8 +22,6 @@ class RouteList {
       case "editProfile":
         return _navigate(
             EditProfilePage(profileBloc: settings.arguments as ProfileBloc));
-      case 'detailPage':
-        return _navigate(const AllFunctionPage());
       case 'newsDetail':
         return _navigate(const NewsDetailPage());
       case 'learnNamozPage':
@@ -73,6 +71,9 @@ class RouteList {
       case 'tasbehNamePage':
         return _navigate(TasbehNamePage(
             namesDetailsArgument: settings.arguments as NamesDetailsArgument));
+      case 'premiumScreen':
+        return _navigate(
+            PremiumScreen(isOnboarding: settings.arguments as bool));
     }
     return null;
   }

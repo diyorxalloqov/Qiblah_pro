@@ -1,17 +1,11 @@
-import 'dart:async';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
-showLocationBottomSheet(BuildContext c) {
-  showModalBottomSheet(
-    isDismissible: true,
-    context: c,
-    isScrollControlled: true,
-    builder: (c) => const LocationBottomSheet(),
-  );
-}
-
 class LocationBottomSheet extends StatefulWidget {
-  const LocationBottomSheet({Key? key}) : super(key: key);
+  final TimeCountDownCubit? timeCountDownCubit;
+  final BuildContext c;
+  const LocationBottomSheet(
+      {Key? key, this.timeCountDownCubit, required this.c})
+      : super(key: key);
 
   @override
   State<LocationBottomSheet> createState() => _LocationBottomSheetState();
@@ -20,13 +14,13 @@ class LocationBottomSheet extends StatefulWidget {
 class _LocationBottomSheetState extends State<LocationBottomSheet> {
   late TextEditingController _controller;
 
-  Timer? _debounce;
+  // Timer? _debounce;
 
-  @override
-  void dispose() {
-    _debounce?.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _debounce?.cancel();
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
@@ -68,173 +62,177 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                 ? bottomSheetBackgroundBlackColor
                 : bottomSheetBackgroundColor,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
-              child: Column(
-                children: [
-                  TextFormField(
-                      controller: _controller,
-                      keyboardType: TextInputType.text,
-                      autocorrect: false,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'manzil_prop'.tr();
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 18.h),
+                child: Column(
+                  children: [
+                    TextFormField(
+                        controller: _controller,
+                        keyboardType: TextInputType.text,
+                        autocorrect: false,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'manzil_prop'.tr();
+                          }
+                          return '';
+                        },
+                        // onChanged: (v) {
+                        //   if (v.isEmpty) {
+                        //     state.positionList.clear();
+                        //     setState(() {});
+                        //   }
+                        //   return searchRegion(v);
+                        // },
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(2.0),
+                          fillColor: context.isDark
+                              ? textFormFieldFillColorBlack
+                              : Colors.white,
+                          filled: true,
+                          suffixIcon: GestureDetector(
+                              onTap: () {
+                                if (_controller.text.isNotEmpty) {
+                                  debugPrint('salom');
+                                  context
+                                      .read<GeolocationCubit>()
+                                      .searchRegionByTitle(_controller.text);
+                                } else {
+                                  showToastMessage(
+                                      "validator_prop".tr(), context);
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: wi(20), vertical: he(10)),
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0, vertical: 5),
+                                child: const Icon(Icons.search,
+                                    color: Colors.white),
+                              )),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: context.isDark
+                                ? const Color(0xffB5B9BC)
+                                : const Color(0xff6D7379),
+                          ),
+                          hintText: 'manzil'.tr(),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          enabled: true,
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Colors.grey.shade300, width: 1),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        )),
+                    const SpaceHeight(),
+                    BlocBuilder<GeolocationCubit, GeolocationState>(
+                      builder: (context, state) {
+                        if (state.manualStatus == ActionStatus.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator.adaptive());
                         }
-                        return '';
-                      },
-                      // onChanged: (v) {
-                      //   if (v.isEmpty) {
-                      //     state.positionList.clear();
-                      //     setState(() {});
-                      //   }
-                      //   return searchRegion(v);
-                      // },
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(2.0),
-                        fillColor: context.isDark
-                            ? textFormFieldFillColorBlack
-                            : Colors.white,
-                        filled: true,
-                        suffixIcon: GestureDetector(
-                            onTap: () {
-                              if (_controller.text.isNotEmpty) {
-                                print('salom');
-                                context
-                                    .read<GeolocationCubit>()
-                                    .searchRegionByTitle(_controller.text);
-                              } else {
-                                showToastMessage(
-                                    "validator_prop".tr(), context);
-                              }
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: wi(20), vertical: he(10)),
-                              decoration: BoxDecoration(
-                                  color: primaryColor,
-                                  borderRadius: BorderRadius.circular(10.r)),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15.0, vertical: 5),
-                              child:
-                                  const Icon(Icons.search, color: Colors.white),
-                            )),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: context.isDark
-                              ? const Color(0xffB5B9BC)
-                              : const Color(0xff6D7379),
-                        ),
-                        hintText: 'manzil'.tr(),
-                        errorBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey.shade300, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        enabled: true,
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey.shade300, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey.shade300, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey.shade300, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        border: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.grey.shade300, width: 1),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      )),
-                  const SpaceHeight(),
-                  BlocBuilder<GeolocationCubit, GeolocationState>(
-                    builder: (context, state) {
-                      if (state.manualStatus == ActionStatus.isLoading) {
-                        return const Center(
-                            child: CircularProgressIndicator.adaptive());
-                      }
-                      if (state.manualStatus == ActionStatus.isSuccess) {
-                        return Expanded(
-                            child: ListView.builder(
-                                itemCount:
-                                    state.manualChoserModel?.results?.length,
-                                padding: const EdgeInsets.all(10.0),
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          context
-                                              .read<GeolocationCubit>()
-                                              .saveLocationManual(
-                                                  state.manualChoserModel,
-                                                  index);
-                                          context
-                                              .read<NamozTimeBloc>()
-                                              .add(TodayNamozTimes());
-                                          setState(() {});
-                                          context
-                                              .read<GeolocationCubit>()
-                                              .getSavedLocation();
-                                          Navigator.pop(context);
-                                          _controller.clear();
-                                          await StorageRepository.putString(
-                                              Keys.locationStatus, '2');
-                                        },
-                                        child: Row(
-                                          children: [
-                                            SvgPicture.asset(
-                                              AppIcon.location,
-                                              width: 24.w,
-                                              color: smallTextColor,
-                                            ),
-                                            const SpaceWidth(),
-                                            const SpaceWidth(),
-                                            Flexible(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(height: 5),
-                                                  Text(
-                                                    state
-                                                            .manualChoserModel
-                                                            ?.results?[index]
-                                                            .formatted ??
-                                                        '',
-                                                    overflow: TextOverflow.clip,
-                                                    style: const TextStyle(
-                                                        fontSize:
-                                                            AppSizes.size_16,
-                                                        fontWeight:
-                                                            AppFontWeight
-                                                                .w_400),
-                                                  ),
-                                                ],
+                        if (state.manualStatus == ActionStatus.isSuccess) {
+                          return Expanded(
+                              child: ListView.builder(
+                                  itemCount:
+                                      state.manualChoserModel?.results?.length,
+                                  padding: const EdgeInsets.all(10.0),
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () async {
+                                            context
+                                                .read<GeolocationCubit>()
+                                                .saveLocationManual(
+                                                    state.manualChoserModel,
+                                                    index);
+                                            context
+                                                .read<GeolocationCubit>()
+                                                .getSavedLocation();
+                                            widget.c
+                                                .read<NamozTimeBloc>()
+                                                .add(const CurrentNamozTimes());
+                                            widget.timeCountDownCubit
+                                                ?.cancelTimes();
+                                            widget.timeCountDownCubit
+                                                ?.startCoundDown();
+                                            Navigator.pop(context);
+                                            _controller.clear();
+                                            await StorageRepository.putString(
+                                                Keys.locationStatus, '2');
+                                            setState(() {});
+                                          },
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                AppIcon.location,
+                                                width: 24.w,
+                                                color: smallTextColor,
                                               ),
-                                            ),
-                                          ],
+                                              const SpaceWidth(),
+                                              const SpaceWidth(),
+                                              Flexible(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const SizedBox(height: 5),
+                                                    Text(
+                                                      state
+                                                              .manualChoserModel
+                                                              ?.results?[index]
+                                                              .formatted ??
+                                                          '',
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      style: const TextStyle(
+                                                          fontSize:
+                                                              AppSizes.size_16,
+                                                          fontWeight:
+                                                              AppFontWeight
+                                                                  .w_400),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const SpaceHeight(),
-                                      const Divider()
-                                    ],
-                                  );
-                                }));
-                      } else if (state.manualStatus == ActionStatus.isError) {
-                        return Center(child: Text("natija".tr()));
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  )
-                ],
-              ),
-            ),
+                                        const SpaceHeight(),
+                                        const Divider()
+                                      ],
+                                    );
+                                  }));
+                        } else if (state.manualStatus == ActionStatus.isError) {
+                          return Center(child: Text("natija".tr()));
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    )
+                  ],
+                )),
           ),
         ],
       ),

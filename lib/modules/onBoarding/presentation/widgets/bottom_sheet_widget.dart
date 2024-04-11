@@ -176,7 +176,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                       onSelected: (value) {
                         setState(() {
                           index == 0 ? isMan = false : isMan = true;
-                          print(isMan);
+                          debugPrint(isMan.toString());
                           if (value) {
                             selectedChipIndex = index;
                           } else {
@@ -196,7 +196,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_key.currentState!.validate()) {
-                        print(isMan);
+                        debugPrint(isMan.toString());
                         await StorageRepository.putString(
                             Keys.name, _nameController.text);
                         await StorageRepository.putBool(Keys.isMan, isMan);

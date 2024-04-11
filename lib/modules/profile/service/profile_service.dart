@@ -16,15 +16,15 @@ class ProfileService {
           data: formData,
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data)); // not using
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error during image upload: $e');
+      debugPrint('Error during image upload: $e');
       return left(e.message.toString());
     }
   }
@@ -40,15 +40,15 @@ class ProfileService {
           },
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }
@@ -64,15 +64,15 @@ class ProfileService {
           },
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }
@@ -90,15 +90,15 @@ class ProfileService {
           },
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }
@@ -116,15 +116,15 @@ class ProfileService {
           data: requestData,
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }
@@ -138,15 +138,15 @@ class ProfileService {
           },
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }
@@ -157,15 +157,15 @@ class ProfileService {
           data: {"user_id": StorageRepository.getString(Keys.userId)},
           options: Options(
               headers: {'token': StorageRepository.getString(Keys.token)}));
-      print('Response status: ${response.statusCode}');
+      debugPrint('Response status: ${response.statusCode}');
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
-        print(response.data);
+        debugPrint(response.data.toString());
         return right(ProfileModel.fromJson(response.data));
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
       return left(e.message.toString());
     }
   }

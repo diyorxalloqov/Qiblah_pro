@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:qiblah_pro/core/db/quron_db_service.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/models/oyat_model.dart';
 import 'package:qiblah_pro/modules/home/models/quron_model.dart';
 
 class QuronService {
@@ -15,8 +13,8 @@ class QuronService {
       Response response = await client.get(
         "${AppUrls.quronSurahList}limit=$limit&page=$page&lang=$lang",
       );
-      print(response.realUri);
-      print(response.data);
+      debugPrint(response.realUri.toString());
+      debugPrint(response.data.toString());
       if (response.statusCode! >= 200 && response.statusCode! <= 299) {
         List<QuronModel> dataList = (response.data['data'] as List)
             .map((e) => QuronModel.fromJson(e))
@@ -24,14 +22,14 @@ class QuronService {
         for (var myData in dataList) {
           await _quronDBService.insertQuron(myData);
         }
-        print(response.statusCode);
+        debugPrint(response.statusCode.toString());
         return right(dataList);
       } else {
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print('exeption');
-      print(e.message);
+      debugPrint('exeption');
+      debugPrint(e.message);
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }
@@ -51,16 +49,16 @@ class QuronService {
         for (var element in dataList) {
           await QuronDBService().insertOyatList(element);
         }
-        print(dataList);
+        debugPrint(dataList.toString());
         return right(dataList);
       } else {
-        print(response.statusMessage);
-        print(response.statusCode);
+        debugPrint(response.statusMessage);
+        debugPrint(response.statusCode.toString());
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print(e.message);
-      print('exeption');
+      debugPrint(e.message);
+      debugPrint('exeption');
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }
@@ -80,16 +78,16 @@ class QuronService {
         for (var element in dataList) {
           await QuronDBService().insertOyatList(element);
         }
-        print(dataList);
+        debugPrint(dataList.toString());
         return right(dataList);
       } else {
-        print(response.statusMessage);
-        print(response.statusCode);
+        debugPrint(response.statusMessage);
+        debugPrint(response.statusCode.toString());
         return left(response.statusMessage.toString());
       }
     } on DioException catch (e) {
-      print(e.message);
-      print('exeption');
+      debugPrint(e.message);
+      debugPrint('exeption');
       return left(NetworkExeptionResponse(e).messageForUser);
     }
   }

@@ -15,8 +15,8 @@ class QiblaCubit extends Cubit<QiblaState> {
   double latitude = StorageRepository.getDouble(Keys.latitude);
 
   Stream<DirectionInfo>? directionInfoStream() {
-    print("$longitude LONG QIBLA");
-    print("$latitude LAT QIBLA");
+    debugPrint("$longitude LONG QIBLA");
+    debugPrint("$latitude LAT QIBLA");
     _directionInfoStream = FlutterCompass.events?.map((event) {
       if (longitude.toString().isNotEmpty && latitude.toString().isNotEmpty) {
         return _qiblaService.getQiblaDirectionForLocation(

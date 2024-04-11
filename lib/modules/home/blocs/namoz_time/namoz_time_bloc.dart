@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:adhan/adhan.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
@@ -17,40 +15,30 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
   NotificationServices services = NotificationServices();
 
   NamozTimeBloc() : super(const NamozTimeState()) {
-    on<TodayNamozTimes>(_getTodayTimes);
-    // add(TodayNamozTimes());
-    on<CurrentMonthNamozTimes>(_currentMonth);
+    on<CurrentNamozTimes>(_currentMonth);
+    add(const CurrentNamozTimes());
     on<ScheduleNotificationEvent>(_scheduleNotification);
-    // add(CurrentMonthNamozTimes());  add ni ui da button bosilganda ishlatilyapdi
     on<LoadSettings>(_namozSettings);
     add(LoadSettings());
     on<ChangeSettings>(_changeNamozSettings);
-    on<NextDayNamozTimeEvent>(_nextDayTime);
-    on<PreviousDayNamozTimeEvent>(_previousDayTime);
     add(const ScheduleNotificationEvent(namoz: NamozEnum.all));
   }
 
-  FutureOr<void> _getTodayTimes(
-      TodayNamozTimes event, Emitter<NamozTimeState> emit) async {
-    emit(state.copyWith(status: ActionStatus.isLoading));
-    try {
-      DailyPrayerTimes todayPrayerTimes =
-          await _namozTimeService.calculatePrayerTimes(DateTime.now());
-      print(todayPrayerTimes.bomdod.time);
-      emit(state.copyWith(
-          dailyTimes: todayPrayerTimes, status: ActionStatus.isSuccess));
-    } on ArgumentError catch (e) {
-      print(e.message);
-      emit(state.copyWith(error: 'error $e', status: ActionStatus.isError));
-    }
-  }
-
   FutureOr<void> _currentMonth(
-      CurrentMonthNamozTimes event, Emitter<NamozTimeState> emit) async {
+      CurrentNamozTimes event, Emitter<NamozTimeState> emit) async {
+    var params = state.chosenCalculationMethod?.calculationParameters;
+    params?.madhab = state.chosenMadhab;
+    params?.highLatitudeRule = state.chosenHighLatitudeRule;
+
     try {
       List<DailyPrayerTimes> prayerTimes =
-          await _namozTimeService.calculatePrayerTimesForMonth(1);
-      emit(state.copyWith(currentMonthTimes: prayerTimes));
+          await _namozTimeService.calculatePrayerTimesForMonth(
+              1, params ?? CalculationParameters(fajrAngle: 0));
+      DailyPrayerTimes todayPrayerTimes =
+          await _namozTimeService.calculatePrayerTimes(
+              DateTime.now(), params ?? CalculationParameters(fajrAngle: 0));
+      emit(state.copyWith(
+          currentMonthTimes: prayerTimes, dailyTimes: todayPrayerTimes));
     } on ArgumentError catch (e) {
       emit(state.copyWith(error: 'error $e'));
     }
@@ -58,7 +46,6 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   FutureOr<void> _scheduleNotification(
       ScheduleNotificationEvent event, Emitter<NamozTimeState> emit) async {
-    add(TodayNamozTimes());
     try {
       var dailyTimes = state.dailyTimes;
       if (dailyTimes == null) {
@@ -83,12 +70,12 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
           tz.TZDateTime.from(dailyTimes.xufton.time, tz.local);
 
       // Set the notification based on the event namoz
-      print(localBomdodTime);
-      print(localQuyoshTime);
-      print(localPeshinTime);
-      print(localAsrTime);
-      print(localShomTime);
-      print(localXuftonTime);
+      debugPrint(localBomdodTime.toString());
+      debugPrint(localQuyoshTime.toString());
+      debugPrint(localPeshinTime.toString());
+      debugPrint(localAsrTime.toString());
+      debugPrint(localShomTime.toString());
+      debugPrint(localXuftonTime.toString());
       if (event.namoz == NamozEnum.bomdod) {
         await services.setNotification(
           body: 'Bomdod vaqti kirdi',
@@ -161,9 +148,11 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
             id: 5);
       }
     } catch (e) {
-      print('Error scheduling notification: $e');
+      debugPrint('Error scheduling notification: $e');
     }
   }
+
+  //// working well
 
   FutureOr<void> _namozSettings(
       LoadSettings event, Emitter<NamozTimeState> emit) {
@@ -171,27 +160,16 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
         _namozTimeService.getChosenCalculationMethod();
     Madhab madhab = _namozTimeService.getChosenMadhab();
     HighLatitudeRule rule = _namozTimeService.getChosenHighLatitudeRule();
-    print('salom ${timeCalculation.title}');
-    print('hello ${madhab.name}');
-    print('hi ${rule.name}');
+    debugPrint('salom ${timeCalculation.title}');
+    debugPrint('hello ${madhab.name}');
+    debugPrint('hi ${rule.name}');
 
     emit(state.copyWith(
         chosenCalculationMethod: timeCalculation,
         chosenMadhab: madhab,
         chosenHighLatitudeRule: rule));
-    // Re-calculates the time to show correct prayer times
-    add(TodayNamozTimes());
-    // add(CurrentWeekNamozTimes());
+    add(const CurrentNamozTimes());
   }
-
-////////////////////////////
-
-  ////  uida list ichida oyni vaqtlarini page viewda qilish kerak
-  ///
-  ///
-  ///
-  ///
-  ///
 
   FutureOr<void> _changeNamozSettings(
       ChangeSettings event, Emitter<NamozTimeState> emit) async {
@@ -203,37 +181,5 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
       await _namozTimeService.setHighLatitudeRule(event.newValue);
     }
     add(LoadSettings());
-  }
-
-  FutureOr<void> _nextDayTime(
-      NextDayNamozTimeEvent event, Emitter<NamozTimeState> emit) async {
-    emit(state.copyWith(status: ActionStatus.isLoading));
-
-    try {
-      List<DailyPrayerTimes> nextDayTimes =
-          await _namozTimeService.calculatePrayerTimesForNextMonth();
-      print(nextDayTimes.first.peshin);
-      add(TodayNamozTimes());
-      emit(state.copyWith(currentMonthTimes: nextDayTimes));
-    } on ArgumentError catch (e) {
-      print(e.message);
-      emit(state.copyWith(error: 'error $e'));
-    }
-  }
-
-  FutureOr<void> _previousDayTime(
-      PreviousDayNamozTimeEvent event, Emitter<NamozTimeState> emit) async {
-    emit(state.copyWith(status: ActionStatus.isLoading));
-
-    try {
-      List<DailyPrayerTimes> previousDayTimes =
-          await _namozTimeService.calculatePrayerTimesForPreviousMonth();
-      add(TodayNamozTimes());
-
-      emit(state.copyWith(currentMonthTimes: previousDayTimes));
-    } on ArgumentError catch (e) {
-      print(e.message);
-      emit(state.copyWith(error: 'error $e'));
-    }
   }
 }

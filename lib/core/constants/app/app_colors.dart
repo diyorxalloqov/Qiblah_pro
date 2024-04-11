@@ -74,12 +74,23 @@ List<Color> loginRegisterBlackGradient = const [
   Color(0xff1C3321),
 ];
 
-List<Color> profileGradient = [
-  Colors.lightGreen.shade50,
-  Colors.green.shade50,
-  Colors.green.shade50
+List<Color> profileGradient = const [
+  Color(0xffE2F5DE),
+  Color(0xffDEF2E5),
+  Color(0xffECFAE1),
 ];
 List<Color> profileBlackGradient = const [
+  Color(0xff25351D),
+  Color(0xff153125),
+  Color(0xff1C3321),
+];
+
+List<Color> premiumGradient = const [
+  Color(0xffECFAE1),
+  Color(0xffE2F5DE),
+  Color(0xffDEF2E5),
+];
+List<Color> premiumBlackGradient = const [
   Color(0xff25351D),
   Color(0xff153125),
   Color(0xff1C3321),
@@ -88,10 +99,6 @@ List<Color> profileBlackGradient = const [
 // zikr
 Color containerColor = const Color(0xffFFFFFF);
 Color containerBlackColor = const Color(0xff1E2125);
-// Color ertalabki_zikr = const Color(0xffFFFDE6);
-// Color tungi_zikrlar = const Color(0xffE8E7F2);
-// Color allohdan_sorash = const Color(0xffE7F2EF);
-// Color kerakli_duolar = const Color(0xffFFECE9);
 Color asmaul_husna = const Color(0xffFCF3DC);
 Color tanlangan_zikrlar = const Color(0xffDCECFC);
 

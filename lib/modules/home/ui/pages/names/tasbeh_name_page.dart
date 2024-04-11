@@ -64,7 +64,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
       // Set the audio source to the local file path
       await player.setFilePath(localFilePath);
     } catch (e) {
-      print('Error initializing audio: $e');
+      debugPrint('Error initializing audio: $e');
       setState(() {
         error = 'Audio yuklashda xatolik';
       });
@@ -75,9 +75,9 @@ class _TasbehNamePageState extends State<TasbehNamePage>
     final Dio client = serviceLocator<DioSettings>().dio;
     try {
       final Response response = await client.download(url, savePath);
-      print('Downloaded audio: $response');
+      debugPrint('Downloaded audio: $response');
     } on DioException catch (e) {
-      print('Error downloading audio: $e');
+      debugPrint('Error downloading audio: $e');
       exeption = NetworkExeptionResponse(e).messageForUser;
     }
   }
@@ -187,7 +187,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             color: context.isDark ? Colors.white : Colors.black,
                             fontWeight: AppFontWeight.w_500),
                       ),
-                      const SpaceHeight(),
+                      SizedBox(height: 12.h),
                       Text(
                         data.title.toString(),
                         style: TextStyle(
@@ -196,21 +196,18 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             fontSize: AppSizes.size_16,
                             fontWeight: AppFontWeight.w_500),
                       ),
-                      const SpaceHeight(),
+                      SizedBox(height: 3.h),
                       SmallText(text: data.translation.toString()),
-                      const SpaceHeight(),
+                      SizedBox(height: 12.h),
                       Text(
                         data.description.toString(),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 7,
                         style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: AppSizes.size_14,
+                            fontSize: AppSizes.size_12.sp,
                             color: smallTextColor,
                             fontFamily: AppfontFamily.inter.fontFamily,
                             fontWeight: AppFontWeight.w_500),
                       ),
-                      SpaceHeight(height: 50.h),
+                      SpaceHeight(height: 10.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -255,8 +252,8 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                               final processingState =
                                   playerState?.processingState;
                               final playing = playerState?.playing;
-                              print('Processing State: $processingState');
-                              print('Is Playing: $playing');
+                              debugPrint('Processing State: $processingState');
+                              debugPrint('Is Playing: $playing');
                               if (processingState == ProcessingState.loading ||
                                   processingState ==
                                       ProcessingState.buffering ||
@@ -286,7 +283,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                           .onConnectivityChanged
                                           .listen((ConnectivityResult result) {
                                         if (result != ConnectivityResult.none) {
-                                          print('connectivity result');
+                                          debugPrint('connectivity result');
                                           setState(() {
                                             error = '';
                                             player.stop();
@@ -351,10 +348,11 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                         const SpaceHeight(),
                         const SpaceHeight(),
                         Container(
-                          padding: const EdgeInsets.all(30.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.grey, width: 2)),
+                              border: Border.all(
+                                  color: Colors.grey.shade200, width: 3)),
                           child: Column(
                             children: [
                               Text(zikrBloc.currentZikr.toString(),
@@ -382,7 +380,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                                   ),
                                   const SmallText(text: ' | '),
                                   Text(
-                                    'x${zikrBloc.currentZikrOuterCount ?? 0}',
+                                    'x${zikrBloc.currentZikrOuterCount}',
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: context.isDark
@@ -400,7 +398,7 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                         GestureDetector(
                           onTap: () {
                             _isTap = !_isTap;
-                            print(index);
+                            debugPrint(index.toString());
                             zikrBloc.add(IncrementZikr(index: index));
                             setState(() {});
                             if (_isTap) {
@@ -412,9 +410,9 @@ class _TasbehNamePageState extends State<TasbehNamePage>
                             }
                           },
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeInOut,
-                            height: _isTap ? 95.h : 75.h,
+                            height: _isTap ? 85.h : 75.h,
                             margin: const EdgeInsets.only(top: 20),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,

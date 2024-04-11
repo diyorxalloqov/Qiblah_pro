@@ -447,8 +447,8 @@ class _TasbehNamePageState extends State<TasbehPage>
                                                         ?.processingState;
                                                 final playing =
                                                     playerState?.playing;
-                                                print('Processing State: ');
-                                                print('Is Playing: ');
+                                                debugPrint('Processing State: ');
+                                                debugPrint('Is Playing: ');
                                                 if (processingState ==
                                                         ProcessingState
                                                             .loading ||
@@ -520,7 +520,7 @@ class _TasbehNamePageState extends State<TasbehPage>
                                                           if (result !=
                                                               ConnectivityResult
                                                                   .none) {
-                                                            print(
+                                                            debugPrint(
                                                                 'connectivity result');
                                                             setState(() {
                                                               error = '';

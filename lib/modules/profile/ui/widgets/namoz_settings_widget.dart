@@ -10,6 +10,7 @@ class NamozSettingsWidget<T extends Enum> extends StatelessWidget {
     return BlocBuilder<NamozTimeBloc, NamozTimeState>(
       builder: (context, state) {
         return ListView.builder(
+          shrinkWrap: true,
           itemCount: choices.length,
           itemBuilder: (context, index) {
             var choice = choices[index];
@@ -17,8 +18,8 @@ class NamozSettingsWidget<T extends Enum> extends StatelessWidget {
               title: Text(
                 choice.name,
                 style: TextStyle(
-                  fontFamily: AppfontFamily.inter.fontFamily,
-                ),
+                    color: context.isDark ? Colors.white : Colors.black,
+                    fontFamily: AppfontFamily.inter.fontFamily),
               ),
               onTap: () {
                 context

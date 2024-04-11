@@ -5,6 +5,7 @@ class AppIcon {
   static const String man = 'assets/icons/man.svg';
   static const String woman = 'assets/icons/woman.svg';
   static const String telegram = 'assets/icons/telegram.svg';
+  static const String telegram_green = 'assets/icons/telegram_green.svg';
   static const String facebook = 'assets/icons/facebook.svg';
   static const String apple = 'assets/icons/apple.svg';
   static const String google = 'assets/icons/google.svg';
@@ -62,6 +63,7 @@ class AppIcon {
   static const String notification = 'assets/icons/notification.svg';
   static const String timeChanger = 'assets/icons/time_changer.svg';
   static const String tahoratIcon = 'assets/icons/tahorat.svg';
+  static const String info = 'assets/icons/info.svg';
   static const String xatolik_icon = 'assets/icons/xatolik_icon.svg';
 
 

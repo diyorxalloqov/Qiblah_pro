@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
-import 'package:qiblah_pro/modules/home/models/zikr_model.dart';
 import 'package:qiblah_pro/modules/home/service/zikr_service.dart';
 import 'package:vibration/vibration.dart';
 
@@ -127,16 +124,16 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
           localdata.any((element) => element.categoryId == event.categoryId);
 
       if (containsIndex) {
-        print("Data found in the database");
+        debugPrint("Data found in the database");
         emit(state.copyWith(
             zikrModel: localdata, zikrStatus: ActionStatus.isSuccess));
       } else {
-        print("Data not found in the database. Fetching from API...");
+        debugPrint("Data not found in the database. Fetching from API...");
         add(ZikrGetFromApiEvent(
             page: 1, limit: 100, categoryId: event.categoryId));
       }
     } else {
-      print('No data found in the database. Fetching from API...');
+      debugPrint('No data found in the database. Fetching from API...');
       add(ZikrGetFromApiEvent(
           page: 1, limit: 100, categoryId: event.categoryId));
     }
@@ -147,8 +144,8 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
     try {
       await _zikrDBSevice.updateSaved(event.zikrId, event.isSaved);
     } on DatabaseException catch (e) {
-      print(e.result);
-      print('databse exeption in bloc');
+      debugPrint(e.result.toString());
+      debugPrint('databse exeption in bloc');
     }
   }
 
@@ -156,12 +153,12 @@ class ZikrBloc extends Bloc<ZikrEvent, ZikrState> {
       GetSavedZikrsEvent event, Emitter<ZikrState> emit) async {
     emit(state.copyWith(savedZikrStatus: ActionStatus.isLoading));
     List<ZikrModel>? data = await _zikrDBSevice.getSavedZikrs();
-    print("$data BLOC DATA");
+    debugPrint("$data BLOC DATA");
     try {
       if (data != null) {
-        print('HELLO');
+        debugPrint('HELLO');
         if (data.isNotEmpty) {
-          print(true);
+          debugPrint(true.toString());
           emit(state.copyWith(
               savedZikrs: data, savedZikrStatus: ActionStatus.isSuccess));
         } else {

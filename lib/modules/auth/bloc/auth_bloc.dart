@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dartz/dartz.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -30,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     Uuid uuid = const Uuid();
     String id = uuid.v4();
-    print('Generated UUID: $id');
+    debugPrint('Generated UUID: $id');
 
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
@@ -65,7 +63,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             : StorageRepository.getString(Keys.locationStatus) == '2'
                 ? 2
                 : 3,
-        userPhoneLang: Platform.localeName ?? 'UZ'));
+        userPhoneLang: Platform.localeName));
     res.fold(
         (l) => emit(state.copyWith(status: ActionStatus.isError, error: l)),
         (r) async {
@@ -85,7 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     Uuid uuid = const Uuid();
     String id = uuid.v4();
-    print('Generated UUID: $id');
+    debugPrint('Generated UUID: $id');
 
     if (Platform.isAndroid) {
       androidInfo = await deviceInfo.androidInfo;
@@ -113,7 +111,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 : iosInfo?.systemVersion,
             userPhoneModel:
                 Platform.isAndroid ? androidInfo?.model : iosInfo?.model,
-            userPhoneLang: Platform.localeName ?? 'UZ',
+            userPhoneLang: Platform.localeName,
             locationStatus:
                 StorageRepository.getString(Keys.locationStatus) == '1'
                     ? 1
@@ -135,7 +133,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     Uuid uuid = const Uuid();
     String id = uuid.v4();
-    print('Generated UUID: $id');
+    debugPrint('Generated UUID: $id');
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     Either<String, AuthModel> res = await _authService.login(

@@ -10,7 +10,7 @@ class NamesDbService {
 
   static String getNamesTable() {
     final lang = StorageRepository.getString(Keys.lang);
-    print(lang);
+    debugPrint(lang.toString());
     return lang == 'uz' ? namesTableUzb : namesTableRus;
   }
 
@@ -49,7 +49,7 @@ class NamesDbService {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    print(getNamesTable());
+    debugPrint(getNamesTable().toString());
     // user
     await db.execute(
       'CREATE TABLE $namesTableUzb (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name_arabic TEXT, name_audio_link TEXT, title TEXT, description TEXT, translation TEXT)',
@@ -76,15 +76,15 @@ class NamesDbService {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } on DatabaseException catch (e) {
-      print("${e.toString()} database Exception");
+      debugPrint("${e.toString()} database Exception");
     }
-    print("${getNamesTable()} names table length from insert");
+    debugPrint("${getNamesTable()} names table length from insert");
   }
 
   Future<List<NamesData>?> getNames() async {
     final db = await _namesDBService.database;
     final List<Map<String, dynamic>> maps = await db.query(getNamesTable());
-    print("${maps.length} data length from db");
+    debugPrint("${maps.length} data length from db");
     return List.generate(maps.length, (i) {
       return NamesData(
         nameArabic: maps[i]['name_arabic'],
@@ -124,6 +124,6 @@ class NamesDbService {
     final db = await _namesDBService.database;
     await db.delete(namesTableRus);
     await db.delete(namesTableUzb);
-    print('db cleared successfully');
+    debugPrint('db cleared successfully');
   }
 }

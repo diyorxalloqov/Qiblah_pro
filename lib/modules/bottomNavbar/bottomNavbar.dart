@@ -1,4 +1,5 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
+import 'package:qiblah_pro/modules/home/ui/home_page.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({Key? key}) : super(key: key);

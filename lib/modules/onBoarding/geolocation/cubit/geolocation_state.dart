@@ -9,13 +9,18 @@ class GeolocationState extends Equatable {
   final ActionStatus manualStatus;
   final String error;
   final String country;
-  // final List<PositionInfo> positionList;
+  final String capital;
+  final double latitude;
+  final double longtitude;
 
   const GeolocationState({
     this.locationStatusEnum = LocationStatusEnum.notRequested,
     this.manualChoserModel,
     this.error = '',
+    this.capital = '',
     this.country = '',
+    this.latitude = 0,
+    this.longtitude = 0,
     this.manualStatus = ActionStatus.isInitial,
     this.status = ActionStatus.isInitial,
     this.autoChoiceLocationModel, // this.positionList = const [],
@@ -28,20 +33,22 @@ class GeolocationState extends Equatable {
       LocationStatusEnum? locationStatusEnum,
       String? error,
       String? country,
-      AutoChoiceLocationModel? autoChoiceLocationModel
-      // List<PositionInfo>? positionList,
-      }) {
+      String? capital,
+      double? latitude,
+      double? longtitude,
+      AutoChoiceLocationModel? autoChoiceLocationModel}) {
     return GeolocationState(
         manualStatus: manualStatus ?? this.manualStatus,
         locationStatusEnum: locationStatusEnum ?? this.locationStatusEnum,
         manualChoserModel: manualChoserModel ?? this.manualChoserModel,
         error: error ?? this.error,
         country: country ?? this.country,
+        capital: capital ?? this.capital,
         autoChoiceLocationModel:
             autoChoiceLocationModel ?? this.autoChoiceLocationModel,
-        status: status ?? this.status
-        // positionList: positionList ?? this.positionList,
-        );
+        status: status ?? this.status,
+        latitude: latitude ?? this.latitude,
+        longtitude: longtitude ?? this.longtitude);
   }
 
   @override
@@ -52,7 +59,9 @@ class GeolocationState extends Equatable {
         manualChoserModel,
         autoChoiceLocationModel,
         status,
-        /* positionList */
-        country
+        country,
+        latitude,
+        longtitude,
+        capital
       ];
 }

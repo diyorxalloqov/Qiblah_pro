@@ -78,7 +78,7 @@ class _QiblaPageState extends State<QiblaPage> with WidgetsBindingObserver {
   }
 
   findAprWidgetByLocationInfo(GeolocationState state, GeolocationCubit cubit) {
-    print(state.locationStatusEnum);
+    debugPrint(state.locationStatusEnum.toString());
     switch (state.locationStatusEnum) {
       case LocationStatusEnum.failed:
         return failedCase(cubit);

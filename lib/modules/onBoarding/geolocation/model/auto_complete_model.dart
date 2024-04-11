@@ -1,285 +1,349 @@
-class AutoChoiceLocationModel{
-  final City city;
-  final Continent continent;
-  final Country country;
-  final Location location;
-  final List<Subdivision> subdivisions;
-  final StateData state;
-  final List<Datasource> datasource;
-  final String ip;
+class AutoChoiceLocationModel {
+  City? city;
+  Continent? continent;
+  Country? country;
+  Location? location;
+  List<Subdivisions>? subdivisions;
+  State? state;
+  List<Datasource>? datasource;
+  String? ip;
 
-  AutoChoiceLocationModel({
-    required this.city,
-    required this.continent,
-    required this.country,
-    required this.location,
-    required this.subdivisions,
-    required this.state,
-    required this.datasource,
-    required this.ip,
-  });
+  AutoChoiceLocationModel(
+      {this.city,
+      this.continent,
+      this.country,
+      this.location,
+      this.subdivisions,
+      this.state,
+      this.datasource,
+      this.ip});
 
-  factory AutoChoiceLocationModel.fromJson(Map<String, dynamic> json) {
-    return AutoChoiceLocationModel(
-      city: City.fromJson(json['city']),
-      continent: Continent.fromJson(json['continent']),
-      country: Country.fromJson(json['country']),
-      location: Location.fromJson(json['location']),
-      subdivisions: (json['subdivisions'] as List<dynamic>)
-          .map((e) => Subdivision.fromJson(e))
-          .toList(),
-      state: StateData.fromJson(json['state']),
-      datasource: (json['datasource'] as List<dynamic>)
-          .map((e) => Datasource.fromJson(e))
-          .toList(),
-      ip: json['ip'],
-    );
+  AutoChoiceLocationModel.fromJson(Map<String, dynamic> json) {
+    city = json['city'] != null ? City.fromJson(json['city']) : null;
+    continent = json['continent'] != null
+        ? Continent.fromJson(json['continent'])
+        : null;
+    country =
+        json['country'] != null ? Country.fromJson(json['country']) : null;
+    location = json['location'] != null
+        ? Location.fromJson(json['location'])
+        : null;
+    if (json['subdivisions'] != null) {
+      subdivisions = <Subdivisions>[];
+      json['subdivisions'].forEach((v) {
+        subdivisions!.add(Subdivisions.fromJson(v));
+      });
+    }
+    state = json['state'] != null ? State.fromJson(json['state']) : null;
+    if (json['datasource'] != null) {
+      datasource = <Datasource>[];
+      json['datasource'].forEach((v) {
+        datasource!.add(Datasource.fromJson(v));
+      });
+    }
+    ip = json['ip'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'city': city.toJson(),
-      'continent': continent.toJson(),
-      'country': country.toJson(),
-      'location': location.toJson(),
-      'subdivisions': subdivisions.map((e) => e.toJson()).toList(),
-      'state': state.toJson(),
-      'datasource': datasource.map((e) => e.toJson()).toList(),
-      'ip': ip,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (city != null) {
+      data['city'] = city!.toJson();
+    }
+    if (continent != null) {
+      data['continent'] = continent!.toJson();
+    }
+    if (country != null) {
+      data['country'] = country!.toJson();
+    }
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (subdivisions != null) {
+      data['subdivisions'] = subdivisions!.map((v) => v.toJson()).toList();
+    }
+    if (state != null) {
+      data['state'] = state!.toJson();
+    }
+    if (datasource != null) {
+      data['datasource'] = datasource!.map((v) => v.toJson()).toList();
+    }
+    data['ip'] = ip;
+    return data;
   }
 }
 
 class City {
-  final Map<String, String> names;
-  final String name;
+  Names? names;
+  String? name;
 
-  City({
-    required this.names,
-    required this.name,
-  });
+  City({this.names, this.name});
 
-  factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      names: Map<String, String>.from(json['names']),
-      name: json['name'],
-    );
+  City.fromJson(Map<String, dynamic> json) {
+    names = json['names'] != null ? Names.fromJson(json['names']) : null;
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'names': names,
-      'name': name,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (names != null) {
+      data['names'] = names!.toJson();
+    }
+    data['name'] = name;
+    return data;
+  }
+}
+
+class Names {
+  String? en;
+
+  Names({this.en});
+
+  Names.fromJson(Map<String, dynamic> json) {
+    en = json['en'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['en'] = en;
+    return data;
   }
 }
 
 class Continent {
-  final String code;
-  final int geonameId;
-  final Map<String, String> names;
-  final String name;
+  String? code;
+  int? geonameId;
+  Names? names;
+  String? name;
 
-  Continent({
-    required this.code,
-    required this.geonameId,
-    required this.names,
-    required this.name,
-  });
+  Continent({this.code, this.geonameId, this.names, this.name});
 
-  factory Continent.fromJson(Map<String, dynamic> json) {
-    return Continent(
-      code: json['code'],
-      geonameId: json['geoname_id'],
-      names: Map<String, String>.from(json['names']),
-      name: json['name'],
-    );
+  Continent.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    geonameId = json['geoname_id'];
+    names = json['names'] != null ? Names.fromJson(json['names']) : null;
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'geoname_id': geonameId,
-      'names': names,
-      'name': name,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['geoname_id'] = geonameId;
+    if (names != null) {
+      data['names'] = names!.toJson();
+    }
+    data['name'] = name;
+    return data;
+  }
+}
+
+class LocationNames {
+  String? de;
+  String? en;
+  String? es;
+  String? fa;
+  String? fr;
+  String? ja;
+  String? ko;
+  String? ptBR;
+  String? ru;
+  String? zhCN;
+
+  LocationNames(
+      {this.de,
+      this.en,
+      this.es,
+      this.fa,
+      this.fr,
+      this.ja,
+      this.ko,
+      this.ptBR,
+      this.ru,
+      this.zhCN});
+
+  LocationNames.fromJson(Map<String, dynamic> json) {
+    de = json['de'];
+    en = json['en'];
+    es = json['es'];
+    fa = json['fa'];
+    fr = json['fr'];
+    ja = json['ja'];
+    ko = json['ko'];
+    ptBR = json['pt-BR'];
+    ru = json['ru'];
+    zhCN = json['zh-CN'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['de'] = de;
+    data['en'] = en;
+    data['es'] = es;
+    data['fa'] = fa;
+    data['fr'] = fr;
+    data['ja'] = ja;
+    data['ko'] = ko;
+    data['pt-BR'] = ptBR;
+    data['ru'] = ru;
+    data['zh-CN'] = zhCN;
+    return data;
   }
 }
 
 class Country {
-  final int geonameId;
-  final String isoCode;
-  final Map<String, String> names;
-  final String name;
-  final String nameNative;
-  final String phoneCode;
-  final String capital;
-  final String currency;
-  final String flag;
-  final List<Language> languages;
+  int? geonameId;
+  String? isoCode;
+  Names? names;
+  String? name;
+  String? nameNative;
+  String? phoneCode;
+  String? capital;
+  String? currency;
+  String? flag;
+  List<Languages>? languages;
 
-  Country({
-    required this.geonameId,
-    required this.isoCode,
-    required this.names,
-    required this.name,
-    required this.nameNative,
-    required this.phoneCode,
-    required this.capital,
-    required this.currency,
-    required this.flag,
-    required this.languages,
-  });
+  Country(
+      {this.geonameId,
+      this.isoCode,
+      this.names,
+      this.name,
+      this.nameNative,
+      this.phoneCode,
+      this.capital,
+      this.currency,
+      this.flag,
+      this.languages});
 
-  factory Country.fromJson(Map<String, dynamic> json) {
-    return Country(
-      geonameId: json['geoname_id'],
-      isoCode: json['iso_code'],
-      names: Map<String, String>.from(json['names']),
-      name: json['name'],
-      nameNative: json['name_native'],
-      phoneCode: json['phone_code'],
-      capital: json['capital'],
-      currency: json['currency'],
-      flag: json['flag'],
-      languages: (json['languages'] as List<dynamic>)
-          .map((e) => Language.fromJson(e))
-          .toList(),
-    );
+  Country.fromJson(Map<String, dynamic> json) {
+    geonameId = json['geoname_id'];
+    isoCode = json['iso_code'];
+    names = json['names'] != null ? Names.fromJson(json['names']) : null;
+    name = json['name'];
+    nameNative = json['name_native'];
+    phoneCode = json['phone_code'];
+    capital = json['capital'];
+    currency = json['currency'];
+    flag = json['flag'];
+    if (json['languages'] != null) {
+      languages = <Languages>[];
+      json['languages'].forEach((v) {
+        languages!.add(Languages.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'geoname_id': geonameId,
-      'iso_code': isoCode,
-      'names': names,
-      'name': name,
-      'name_native': nameNative,
-      'phone_code': phoneCode,
-      'capital': capital,
-      'currency': currency,
-      'flag': flag,
-      'languages': languages.map((e) => e.toJson()).toList(),
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['geoname_id'] = geonameId;
+    data['iso_code'] = isoCode;
+    if (names != null) {
+      data['names'] = names!.toJson();
+    }
+    data['name'] = name;
+    data['name_native'] = nameNative;
+    data['phone_code'] = phoneCode;
+    data['capital'] = capital;
+    data['currency'] = currency;
+    data['flag'] = flag;
+    if (languages != null) {
+      data['languages'] = languages!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Languages {
+  String? isoCode;
+  String? name;
+  String? nameNative;
+
+  Languages({this.isoCode, this.name, this.nameNative});
+
+  Languages.fromJson(Map<String, dynamic> json) {
+    isoCode = json['iso_code'];
+    name = json['name'];
+    nameNative = json['name_native'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['iso_code'] = isoCode;
+    data['name'] = name;
+    data['name_native'] = nameNative;
+    return data;
   }
 }
 
 class Location {
-  final double latitude;
-  final double longitude;
+  double? latitude;
+  double? longitude;
 
-  Location({
-    required this.latitude,
-    required this.longitude,
-  });
+  Location({this.latitude, this.longitude});
 
-  factory Location.fromJson(Map<String, dynamic> json) {
-    return Location(
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-    );
+  Location.fromJson(Map<String, dynamic> json) {
+    latitude = json['latitude'];
+    longitude = json['longitude'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    return data;
   }
 }
 
-class Subdivision {
-  final Map<String, String> names;
+class Subdivisions {
+  Names? names;
 
-  Subdivision({
-    required this.names,
-  });
+  Subdivisions({this.names});
 
-  factory Subdivision.fromJson(Map<String, dynamic> json) {
-    return Subdivision(
-      names: Map<String, String>.from(json['names']),
-    );
+  Subdivisions.fromJson(Map<String, dynamic> json) {
+    names = json['names'] != null ? Names.fromJson(json['names']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'names': names,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (names != null) {
+      data['names'] = names!.toJson();
+    }
+    return data;
   }
 }
 
-class StateData {
-  final String name;
+class State {
+  String? name;
 
-  StateData({
-    required this.name,
-  });
+  State({this.name});
 
-  factory StateData.fromJson(Map<String, dynamic> json) {
-    return StateData(
-      name: json['name'],
-    );
+  State.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    return data;
   }
 }
 
 class Datasource {
-  final String name;
-  final String attribution;
-  final String license;
+  String? name;
+  String? attribution;
+  String? license;
 
-  Datasource({
-    required this.name,
-    required this.attribution,
-    required this.license,
-  });
+  Datasource({this.name, this.attribution, this.license});
 
-  factory Datasource.fromJson(Map<String, dynamic> json) {
-    return Datasource(
-      name: json['name'],
-      attribution: json['attribution'],
-      license: json['license'],
-    );
+  Datasource.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    attribution = json['attribution'];
+    license = json['license'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'attribution': attribution,
-      'license': license,
-    };
-  }
-}
-
-class Language {
-  final String isoCode;
-  final String name;
-  final String nameNative;
-
-  Language({
-    required this.isoCode,
-    required this.name,
-    required this.nameNative,
-  });
-
-  factory Language.fromJson(Map<String, dynamic> json) {
-    return Language(
-      isoCode: json['iso_code'],
-      name: json['name'],
-      nameNative: json['name_native'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'iso_code': isoCode,
-      'name': name,
-      'name_native': nameNative,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['attribution'] = attribution;
+    data['license'] = license;
+    return data;
   }
 }

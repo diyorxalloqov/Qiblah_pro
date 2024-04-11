@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/blocs/tapes/tapes_bloc.dart';
 import 'package:qiblah_pro/modules/home/ui/widgets/tapes_shimmer.dart';
@@ -11,8 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late String _currentTime;
-
   final List<String> _names = const [
     "quron",
     "ficha_qibla",
@@ -38,43 +36,32 @@ class _HomePageState extends State<HomePage> {
   ];
 
   late TimeCountDownCubit _timeCountDownCubit;
-  late Timer _timer;
   late TapesBloc _tapesBloc;
 
   final GlobalKey _cardKey = GlobalKey();
   final GlobalKey _cardKey1 = GlobalKey();
   final GlobalKey _cardKey2 = GlobalKey();
   final GlobalKey _cardKey3 = GlobalKey();
-  double cardHeight = 250;
+  double cardHeight = 300;
   double cardHeight1 = 250;
   double cardHeight2 = 250;
   double cardHeight3 = 250;
+  bool isTapped = false;
 
   @override
   void initState() {
     super.initState();
-    context.read<NamozTimeBloc>().add(TodayNamozTimes());
-    _timeCountDownCubit = TimeCountDownCubit();
+    _timeCountDownCubit = TimeCountDownCubit()..startCoundDown();
+    context.read<GeolocationCubit>().getSavedLocation();
+    context.read<NamozTimeBloc>().add(const CurrentNamozTimes());
     _tapesBloc = TapesBloc();
-    _updateCurrentTime();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateCurrentTime();
-    });
   }
 
-  @override
-  void dispose() {
-    _timeCountDownCubit.close();
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void _updateCurrentTime() {
-    setState(() {
-      _currentTime = '${DateTime.now().hour.toString().padLeft(2, '0')}:'
-          '${DateTime.now().minute.toString().padLeft(2, '0')}';
-    });
-  }
+  // @override
+  // void dispose() {
+  //   _timeCountDownCubit.close();
+  //   super.dispose();
+  // }
 
   @override
   build(BuildContext context) {
@@ -123,30 +110,31 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 16.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _currentTime,
-                          style: TextStyle(
-                            fontSize: he(AppSizes.size_24),
-                            color:
-                                context.isDark ? Colors.white : highTextColor,
-                            fontWeight: AppFontWeight.w_700,
-                          ),
-                        ),
-                        const SpaceHeight(),
-                        BlocProvider.value(
-                          value: _timeCountDownCubit,
-                          child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
-                            builder: (context, state) {
-                              return SizedBox(
+                    child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                      builder: (context, state) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              currentNamozTime(state).hhMM(),
+                              style: TextStyle(
+                                fontSize: he(AppSizes.size_24),
+                                color: context.isDark
+                                    ? Colors.white
+                                    : highTextColor,
+                                fontWeight: AppFontWeight.w_700,
+                              ),
+                            ),
+                            const SpaceHeight(),
+                            BlocProvider.value(
+                              value: _timeCountDownCubit,
+                              child: SizedBox(
                                 width: 150.w,
                                 child: BlocBuilder<TimeCountDownCubit,
                                     TimeCountDownState>(
                                   builder: (context, state1) {
                                     return Text(
-                                      currentNamozTime(state, state1),
+                                      currentNamozName(state, state1),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
                                       style: const TextStyle(
@@ -157,27 +145,28 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SpaceHeight(),
-                        Row(
-                          children: [
-                            Text(
-                              "barchasini_korish".tr(),
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontFamily: AppfontFamily.inter.fontFamily,
-                                  fontSize: he(AppSizes.size_14),
-                                  fontWeight: AppFontWeight.w_700),
+                              ),
                             ),
-                            const SpaceWidth(),
-                            SvgPicture.asset(AppIcon.arrowRight,
-                                color: primaryColor, width: 30.w)
+                            const SpaceHeight(),
+                            Row(
+                              children: [
+                                Text(
+                                  "barchasini_korish".tr(),
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
+                                      fontSize: he(AppSizes.size_14),
+                                      fontWeight: AppFontWeight.w_700),
+                                ),
+                                const SpaceWidth(),
+                                SvgPicture.asset(AppIcon.arrowRight,
+                                    color: primaryColor, width: 30.w)
+                              ],
+                            )
                           ],
-                        )
-                      ],
+                        );
+                      },
                     ),
                   ),
                   Column(
@@ -199,21 +188,26 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Flexible(
-                                child: Text(
-                                  StorageRepository.getString(Keys.capital),
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    color: context.isDark
-                                        ? const Color(0xffB5B9BC)
-                                        : const Color(0xff6D7379),
-                                    fontSize: AppSizes.size_12,
-                                    fontFamily: AppfontFamily.inter.fontFamily,
-                                    fontWeight: AppFontWeight.w_500,
-                                  ),
-                                ),
+                              BlocBuilder<GeolocationCubit, GeolocationState>(
+                                builder: (context, state) {
+                                  return Flexible(
+                                    child: Text(
+                                      state.capital,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        color: context.isDark
+                                            ? const Color(0xffB5B9BC)
+                                            : const Color(0xff6D7379),
+                                        fontSize: AppSizes.size_12,
+                                        fontFamily:
+                                            AppfontFamily.inter.fontFamily,
+                                        fontWeight: AppFontWeight.w_500,
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                               SizedBox(width: 1.w),
                               SvgPicture.asset(AppIcon.location)
@@ -230,7 +224,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Container(
-            constraints: BoxConstraints(maxHeight: 161.h),
+            constraints: BoxConstraints(maxHeight: isTapped ? 260.h : 161.h),
             padding:
                 EdgeInsets.only(bottom: 5.h, top: 18.h, right: 12, left: 12.w),
             decoration: ShapeDecoration(
@@ -251,75 +245,142 @@ class _HomePageState extends State<HomePage> {
                           fontFamily: AppfontFamily.comforta.fontFamily,
                           fontWeight: AppFontWeight.w_700),
                     ),
-                    InkWell(
-                      onTap: () => Navigator.pushNamed(context, 'detailPage'),
-                      child: Row(
-                        children: [
-                          Text(
-                            "barchasini_korish".tr(),
-                            style: TextStyle(
-                                color: primaryColor,
-                                fontFamily: AppfontFamily.inter.fontFamily,
-                                fontSize: he(AppSizes.size_14),
-                                fontWeight: AppFontWeight.w_700),
+                    isTapped
+                        ? const SizedBox(height: 32)
+                        : InkWell(
+                            onTap: () {
+                              isTapped = true;
+                              setState(() {});
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "barchasini_korish".tr(),
+                                  style: TextStyle(
+                                      color: primaryColor,
+                                      fontFamily:
+                                          AppfontFamily.inter.fontFamily,
+                                      fontSize: he(AppSizes.size_14),
+                                      fontWeight: AppFontWeight.w_700),
+                                ),
+                                const SpaceWidth(),
+                                SvgPicture.asset(AppIcon.arrowRight,
+                                    color: primaryColor, width: 30.w),
+                                const SpaceWidth(),
+                              ],
+                            ),
                           ),
-                          const SpaceWidth(),
-                          SvgPicture.asset(AppIcon.arrowRight,
-                              color: primaryColor, width: 30.w),
-                          const SpaceWidth(),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
                 const SpaceHeight(),
                 Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        addAutomaticKeepAlives: true,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 5.w),
-                            child: InkWell(
-                              onTap: () => Navigator.pushNamed(
-                                  context, _itemPages[index]),
-                              borderRadius: BorderRadius.circular(50.r),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: ShapeDecoration(
-                                      color: context.isDark
-                                          ? xizmatlarItemBlack
-                                          : xizmatlarItem,
-                                      shape: const OvalBorder(
-                                          side: BorderSide.none),
-                                    ),
-                                    child: Center(
-                                      child: SvgPicture.asset(_icons[index],
-                                          width: 40,
-                                          color: context.isDark
-                                              ? Colors.white70
-                                              : null),
+                    child: isTapped
+                        ? GridView.builder(
+                            itemCount: 5,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    mainAxisSpacing: 10.h,
+                                    crossAxisSpacing: 8.w,
+                                    crossAxisCount: 4),
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) => Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 20.w, right: 5.w),
+                                  child: InkWell(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, _itemPages[index]),
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: ShapeDecoration(
+                                            color: context.isDark
+                                                ? xizmatlarItemBlack
+                                                : xizmatlarItem,
+                                            shape: const OvalBorder(
+                                                side: BorderSide.none),
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                                _icons[index],
+                                                width: 40,
+                                                color: context.isDark
+                                                    ? Colors.white70
+                                                    : null),
+                                          ),
+                                        ),
+                                        SizedBox(height: 5.h),
+                                        Text(
+                                          _names[index].tr(),
+                                          style: TextStyle(
+                                              color: context.isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                              fontFamily: AppfontFamily
+                                                  .inter.fontFamily,
+                                              fontSize: AppSizes.size_12),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(height: 5.h),
-                                  Text(
-                                    _names[index].tr(),
-                                    style: TextStyle(
-                                        color: context.isDark
-                                            ? Colors.white
-                                            : Colors.black,
-                                        fontFamily:
-                                            AppfontFamily.inter.fontFamily,
-                                        fontSize: AppSizes.size_12),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        })),
+                                ))
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding:
+                                    EdgeInsets.only(left: 20.w, right: 5.w),
+                                child: InkWell(
+                                  onTap: () => Navigator.pushNamed(
+                                      context, _itemPages[index]),
+                                  borderRadius: BorderRadius.circular(50.r),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: ShapeDecoration(
+                                          color: context.isDark
+                                              ? xizmatlarItemBlack
+                                              : xizmatlarItem,
+                                          shape: const OvalBorder(
+                                              side: BorderSide.none),
+                                        ),
+                                        child: Center(
+                                          child: SvgPicture.asset(_icons[index],
+                                              width: 40,
+                                              color: context.isDark
+                                                  ? Colors.white70
+                                                  : null),
+                                        ),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Text(
+                                        _names[index].tr(),
+                                        style: TextStyle(
+                                            color: context.isDark
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontFamily:
+                                                AppfontFamily.inter.fontFamily,
+                                            fontSize: AppSizes.size_12),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            })),
+                isTapped
+                    ? GestureDetector(
+                        onTap: () {
+                          isTapped = false;
+                          setState(() {});
+                        },
+                        child:
+                            Icon(Icons.keyboard_arrow_up, color: primaryColor))
+                    : const SizedBox.shrink()
               ],
             ),
           ),
@@ -471,7 +532,8 @@ class _HomePageState extends State<HomePage> {
                                   if (renderBox != null) {
                                     // double cardWidth = renderBox.size.width;
                                     cardHeight = renderBox.size.height;
-                                    print("Card height: $cardHeight");
+                                    setState(() {});
+                                    // debugPrint("Card height: $cardHeight");
                                   }
                                 });
                                 return CardWidget(
@@ -499,7 +561,8 @@ class _HomePageState extends State<HomePage> {
                                       ?.findRenderObject() as RenderBox?;
                                   if (renderBox != null) {
                                     cardHeight1 = renderBox.size.height;
-                                    print("Card height1: $cardHeight1");
+                                    setState(() {});
+                                    // debugPrint("Card height1: $cardHeight1");
                                   }
                                 });
                                 return CardWidget(
@@ -525,7 +588,8 @@ class _HomePageState extends State<HomePage> {
                                       ?.findRenderObject() as RenderBox?;
                                   if (renderBox != null) {
                                     cardHeight2 = renderBox.size.height;
-                                    print("Card height2: $cardHeight2");
+                                    setState(() {});
+                                    // debugPrint("Card height2: $cardHeight2");
                                   }
                                 });
                                 return CardWidget(
@@ -551,7 +615,8 @@ class _HomePageState extends State<HomePage> {
                                       ?.findRenderObject() as RenderBox?;
                                   if (renderBox != null) {
                                     cardHeight3 = renderBox.size.height;
-                                    print("Card height3: $cardHeight3");
+                                    // debugPrint("Card height3: $cardHeight3");
+                                    setState(() {});
                                   }
                                 });
                                 return CardWidget(
@@ -584,32 +649,53 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  String currentNamozTime(NamozTimeState state, TimeCountDownState state1) {
-    String hour = state1.durationUntilNextPrayer != Duration.zero
-        ? state1.durationUntilNextPrayer.getFormattedCountdownHour()
-        : '';
-    String minute = state1.durationUntilNextPrayer != Duration.zero
-        ? state1.durationUntilNextPrayer.getFormattedCountdownMinute()
-        : '';
-    print(hour);
+  DateTime currentNamozTime(NamozTimeState state) {
     if (state.dailyTimes != null) {
       if (state.dailyTimes!.bomdod.isCurrent) {
-        return "${'quyosh'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.quyosh.time;
       } else if (state.dailyTimes!.quyosh.isCurrent) {
-        return "${'peshin'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.peshin.time;
       } else if (state.dailyTimes!.peshin.isCurrent) {
-        return "${'asr'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.asr.time;
       } else if (state.dailyTimes!.asr.isCurrent) {
-        return "${'shom'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.shom.time;
       } else if (state.dailyTimes!.shom.isCurrent) {
-        return "${'xufton'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.xufton.time;
       } else if (state.dailyTimes!.xufton.isCurrent) {
-        return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+        return state.dailyTimes!.bomdod.time;
       } else {
-        return 'bomdod'.tr();
+        return state.dailyTimes!.bomdod.time;
       }
     } else {
-      return '';
+      return DateTime.now();
     }
+  }
+}
+
+String currentNamozName(NamozTimeState state, TimeCountDownState state1) {
+  String hour = state1.durationUntilNextPrayer != Duration.zero
+      ? state1.durationUntilNextPrayer.getFormattedCountdownHour()
+      : '';
+  String minute = state1.durationUntilNextPrayer != Duration.zero
+      ? state1.durationUntilNextPrayer.getFormattedCountdownMinute()
+      : '';
+  if (state.dailyTimes != null) {
+    if (state.dailyTimes!.bomdod.isCurrent) {
+      return "${'quyosh'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else if (state.dailyTimes!.quyosh.isCurrent) {
+      return "${'peshin'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else if (state.dailyTimes!.peshin.isCurrent) {
+      return "${'asr'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else if (state.dailyTimes!.asr.isCurrent) {
+      return "${'shom'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else if (state.dailyTimes!.shom.isCurrent) {
+      return "${'xufton'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else if (state.dailyTimes!.xufton.isCurrent) {
+      return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    } else {
+      return "${'bomdod'.tr()} ${hour != '0' ? hour : ''} ${hour != '0' && hour.isNotEmpty ? ('soat'.tr()) : ''} ${minute != '0' ? minute : ''} ${minute != '0' && minute.isNotEmpty ? ("daqiqadan_song").tr() : ''}";
+    }
+  } else {
+    return '';
   }
 }
