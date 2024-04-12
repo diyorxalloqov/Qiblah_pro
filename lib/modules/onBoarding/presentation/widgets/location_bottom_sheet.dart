@@ -2,9 +2,7 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class LocationBottomSheet extends StatefulWidget {
   final TimeCountDownCubit? timeCountDownCubit;
-  final BuildContext c;
-  const LocationBottomSheet(
-      {Key? key, this.timeCountDownCubit, required this.c})
+  const LocationBottomSheet({Key? key, this.timeCountDownCubit})
       : super(key: key);
 
   @override
@@ -171,13 +169,41 @@ class _LocationBottomSheetState extends State<LocationBottomSheet> {
                                             context
                                                 .read<GeolocationCubit>()
                                                 .getSavedLocation();
-                                            widget.c
+                                            context.read<NamozTimeBloc>().add(
+                                                LocationSaveEvent(
+                                                    capital: state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .city ??
+                                                        '',
+                                                    lat: state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .lat ??
+                                                        0,
+                                                    long: state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .lon ??
+                                                        0));
+                                            context
                                                 .read<NamozTimeBloc>()
                                                 .add(const CurrentNamozTimes());
+
                                             widget.timeCountDownCubit
                                                 ?.cancelTimes();
                                             widget.timeCountDownCubit
-                                                ?.startCoundDown();
+                                                ?.startCoundDown(
+                                                    state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .lat ??
+                                                        0,
+                                                    state
+                                                            .manualChoserModel
+                                                            ?.results?[index]
+                                                            .lon ??
+                                                        0);
                                             Navigator.pop(context);
                                             _controller.clear();
                                             await StorageRepository.putString(

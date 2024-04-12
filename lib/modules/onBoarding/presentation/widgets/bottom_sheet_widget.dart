@@ -113,15 +113,21 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget>
                           fontSize: he(AppSizes.size_16),
                           fontWeight: AppFontWeight.w_400,
                           color: textFormFieldHintColor),
-                      fillColor: context.isDark
-                          ? textFormFieldFillColorBlack
-                          : textFormFieldFillColor,
                       enabledBorder: OutlineInputBorder(
                         borderSide: context.isDark
                             ? BorderSide.none
-                            : const BorderSide(color: Colors.grey, width: 1),
+                            : const BorderSide(color: Colors.grey, width: 0.2),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: context.isDark
+                            ? BorderSide.none
+                            : const BorderSide(color: Colors.grey, width: 0.2),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      fillColor: context.isDark
+                          ? textFormFieldFillColorBlack
+                          : textFormFieldFillColor,
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(12.0),

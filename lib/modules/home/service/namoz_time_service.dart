@@ -21,7 +21,7 @@ class NamozTimeService {
   // }
 
   Future<List<DailyPrayerTimes>> calculatePrayerTimesForMonth(
-      int month, CalculationParameters params) async {
+      int month, CalculationParameters params, double lat, double long) async {
     var list = <DailyPrayerTimes>[];
 
     DateTime currentDate = DateTime.now();
@@ -29,35 +29,29 @@ class NamozTimeService {
     DateTime endDate = DateTime(currentDate.year, currentDate.month + month, 0);
 
     while (startDate.isBefore(endDate) || startDate.isAtSameMomentAs(endDate)) {
-      var dailyPrayerTimes = calculatePrayerTimes(startDate, params);
+      var dailyPrayerTimes = calculatePrayerTimes(startDate, params, lat, long);
       list.add(await dailyPrayerTimes);
       startDate = startDate.add(const Duration(days: 1));
     }
     return list;
   }
 
-  Future<DailyPrayerTimes> calculatePrayerTimes(
-      DateTime dateTime, CalculationParameters params) async {
-    var params = getChosenCalculationMethod().calculationParameters;
-    params.madhab = getChosenMadhab();
-    params.highLatitudeRule = getChosenHighLatitudeRule();
+  Future<DailyPrayerTimes> calculatePrayerTimes(DateTime dateTime,
+      CalculationParameters params, double lat, double long) async {
+    // var params = getChosenCalculationMethod().calculationParameters;
+    // params.madhab = getChosenMadhab();
+    // params.highLatitudeRule = getChosenHighLatitudeRule();
     return PrayerTimes(
-            Coordinates(StorageRepository.getDouble(Keys.latitude),
-                StorageRepository.getDouble(Keys.longitude)),
-            DateComponents.from(dateTime),
-            params)
+            Coordinates(lat, long), DateComponents.from(dateTime), params)
         .toDailyPrayerTimes();
   }
 
-  Future<DateTime> getNextPrayerTime() async {
+  Future<DateTime> getNextPrayerTime(double lat, double long) async {
     var params = getChosenCalculationMethod().calculationParameters;
     params.madhab = getChosenMadhab();
     params.highLatitudeRule = getChosenHighLatitudeRule();
     var calculatedPrayerTimes = PrayerTimes(
-        Coordinates(StorageRepository.getDouble(Keys.latitude),
-            StorageRepository.getDouble(Keys.longitude)),
-        DateComponents.from(DateTime.now()),
-        params);
+        Coordinates(lat, long), DateComponents.from(DateTime.now()), params);
 
     switch (calculatedPrayerTimes.nextPrayer()) {
       case Prayer.none:

@@ -232,10 +232,9 @@ class _OnBoardingState extends State<OnBoarding> {
                                         await StorageRepository.putBool(
                                             Keys.isOnboarding, true);
                                       } else if (_currentPage == 3) {
-                                        Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(
-                                                'premiumScreen',
-                                                (route) => false);
+                                        Navigator.of(context).pushNamed(
+                                            'premiumScreen',
+                                            arguments: true);
                                         await StorageRepository.putBool(
                                             Keys.isOnboarding, true);
                                       }

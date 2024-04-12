@@ -418,5 +418,8 @@ class GeolocationCubit extends Cubit<GeolocationState> {
         capital: StorageRepository.getString(Keys.capital),
         latitude: StorageRepository.getDouble(Keys.latitude),
         longtitude: StorageRepository.getDouble(Keys.longitude)));
+    print(state.country);
+    print(state.capital);
+    print("${state.latitude} ${state.longtitude}");
   }
 }

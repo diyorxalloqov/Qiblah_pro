@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
 
@@ -85,15 +86,17 @@ class _TaqvimPageState extends State<TaqvimPage> {
                         children: [
                           SvgPicture.asset(AppIcon.location, width: 20),
                           const SpaceWidth(),
-                          Text(
-                            StorageRepository.getString(Keys.country),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: AppSizes.size_16,
-                              fontFamily: AppfontFamily.inter.fontFamily,
-                              fontWeight: AppFontWeight.w_400,
+                          Flexible(
+                            child: Text(
+                              StorageRepository.getString(Keys.country),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: AppSizes.size_16,
+                                fontFamily: AppfontFamily.inter.fontFamily,
+                                fontWeight: AppFontWeight.w_400,
+                              ),
                             ),
                           )
                         ],

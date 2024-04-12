@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/blocs/tapes/tapes_bloc.dart';
 import 'package:qiblah_pro/modules/home/ui/widgets/tapes_shimmer.dart';
@@ -51,17 +50,24 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _timeCountDownCubit = TimeCountDownCubit()..startCoundDown();
+    NamozTimeBloc namozBloc = context.read<NamozTimeBloc>();
     context.read<GeolocationCubit>().getSavedLocation();
-    context.read<NamozTimeBloc>().add(const CurrentNamozTimes());
+    namozBloc.add(const CurrentNamozTimes());
+    namozBloc.add(LoadSettings());
+    _timeCountDownCubit = TimeCountDownCubit();
+    _timeCountDownCubit.startCoundDown(
+        namozBloc.state.latitude ?? StorageRepository.getDouble(Keys.latitude),
+        namozBloc.state.longtitude ??
+            StorageRepository.getDouble(Keys.longitude));
+
     _tapesBloc = TapesBloc();
   }
 
-  // @override
-  // void dispose() {
-  //   _timeCountDownCubit.close();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _timeCountDownCubit.cancelTimes();
+    super.dispose();
+  }
 
   @override
   build(BuildContext context) {
@@ -105,94 +111,91 @@ class _HomePageState extends State<HomePage> {
                           const Color(0xff7CD722).withOpacity(0.25),
                           const Color(0xff0A9D4E).withOpacity(0.2)
                         ])),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 16.h),
-                    child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
-                      builder: (context, state) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              currentNamozTime(state).hhMM(),
-                              style: TextStyle(
-                                fontSize: he(AppSizes.size_24),
-                                color: context.isDark
-                                    ? Colors.white
-                                    : highTextColor,
-                                fontWeight: AppFontWeight.w_700,
-                              ),
-                            ),
-                            const SpaceHeight(),
-                            BlocProvider.value(
-                              value: _timeCountDownCubit,
-                              child: SizedBox(
-                                width: 150.w,
-                                child: BlocBuilder<TimeCountDownCubit,
-                                    TimeCountDownState>(
-                                  builder: (context, state1) {
-                                    return Text(
-                                      currentNamozName(state, state1),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: const TextStyle(
-                                        color: Color(0xFF6D7379),
-                                        fontSize: AppSizes.size_12,
-                                        fontWeight: AppFontWeight.w_400,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SpaceHeight(),
-                            Row(
-                              children: [
-                                Text(
-                                  "barchasini_korish".tr(),
-                                  style: TextStyle(
-                                      color: primaryColor,
-                                      fontFamily:
-                                          AppfontFamily.inter.fontFamily,
-                                      fontSize: he(AppSizes.size_14),
-                                      fontWeight: AppFontWeight.w_700),
-                                ),
-                                const SpaceWidth(),
-                                SvgPicture.asset(AppIcon.arrowRight,
-                                    color: primaryColor, width: 30.w)
-                              ],
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
+              child: BlocBuilder<NamozTimeBloc, NamozTimeState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Spacer(),
-                      Container(
-                        padding: EdgeInsets.only(
-                            right: 8.w, left: 8.w, top: 3.h, bottom: 3.h),
-                        decoration: BoxDecoration(
-                          color: context.isDark
-                              ? const Color(0xff232C37)
-                              : Colors.white,
-                          borderRadius: BorderRadius.circular(50.r),
-                        ),
-                        child: SizedBox(
-                          width: 70.w,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      Padding(
+                          padding: EdgeInsets.only(top: 16.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              BlocBuilder<GeolocationCubit, GeolocationState>(
-                                builder: (context, state) {
-                                  return Flexible(
+                              Text(
+                                currentNamozTime(state).hhMM(),
+                                style: TextStyle(
+                                  fontSize: he(AppSizes.size_24),
+                                  color: context.isDark
+                                      ? Colors.white
+                                      : highTextColor,
+                                  fontWeight: AppFontWeight.w_700,
+                                ),
+                              ),
+                              const SpaceHeight(),
+                              BlocProvider.value(
+                                value: _timeCountDownCubit,
+                                child: SizedBox(
+                                  width: 150.w,
+                                  child: BlocBuilder<TimeCountDownCubit,
+                                      TimeCountDownState>(
+                                    builder: (context, state1) {
+                                      return Text(
+                                        currentNamozName(state, state1),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                          color: Color(0xFF6D7379),
+                                          fontSize: AppSizes.size_12,
+                                          fontWeight: AppFontWeight.w_400,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SpaceHeight(),
+                              Row(
+                                children: [
+                                  Text(
+                                    "barchasini_korish".tr(),
+                                    style: TextStyle(
+                                        color: primaryColor,
+                                        fontFamily:
+                                            AppfontFamily.inter.fontFamily,
+                                        fontSize: he(AppSizes.size_14),
+                                        fontWeight: AppFontWeight.w_700),
+                                  ),
+                                  const SpaceWidth(),
+                                  SvgPicture.asset(AppIcon.arrowRight,
+                                      color: primaryColor, width: 30.w)
+                                ],
+                              )
+                            ],
+                          )),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Spacer(),
+                          Container(
+                            padding: EdgeInsets.only(
+                                right: 8.w, left: 8.w, top: 3.h, bottom: 3.h),
+                            decoration: BoxDecoration(
+                              color: context.isDark
+                                  ? const Color(0xff232C37)
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(50.r),
+                            ),
+                            child: SizedBox(
+                              width: 70.w,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Flexible(
                                     child: Text(
-                                      state.capital,
+                                      state.capital ??
+                                          StorageRepository.getString(
+                                              Keys.capital),
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
@@ -206,20 +209,20 @@ class _HomePageState extends State<HomePage> {
                                         fontWeight: AppFontWeight.w_500,
                                       ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                  SizedBox(width: 1.w),
+                                  SvgPicture.asset(AppIcon.location)
+                                ],
                               ),
-                              SizedBox(width: 1.w),
-                              SvgPicture.asset(AppIcon.location)
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                      SizedBox(height: 1.h),
-                      SvgPicture.asset(AppIcon.moshid, width: 100.w),
+                          SizedBox(height: 1.h),
+                          SvgPicture.asset(AppIcon.moshid, width: 100.w),
+                        ],
+                      )
                     ],
-                  )
-                ],
+                  );
+                },
               ),
             ),
           ),

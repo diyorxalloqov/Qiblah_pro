@@ -67,9 +67,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     res.fold(
         (l) => emit(state.copyWith(status: ActionStatus.isError, error: l)),
         (r) async {
-      emit(state.copyWith(status: ActionStatus.isSuccess, authModel: r));
+      emit(state.copyWith(
+          status: ActionStatus.isSuccess,
+          authModel: r,
+          isTemporaryUser: StorageRepository.getBool(Keys.isTemporaryUser)));
       await StorageRepository.putString(Keys.token, r.token ?? '');
+      await StorageRepository.putString(Keys.password, event.password);
       await StorageRepository.putString(Keys.userId, r.data?.userId ?? '');
+      await StorageRepository.putBool(Keys.isTemporaryUser, false);
     });
   }
 
@@ -121,7 +126,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     res.fold(
         (l) => emit(state.copyWith(status1: ActionStatus.isError, error: l)),
         (r) async {
-      emit(state.copyWith(status1: ActionStatus.isSuccess, authModel: r));
+      emit(state.copyWith(
+          status1: ActionStatus.isSuccess,
+          authModel: r,
+          isTemporaryUser: StorageRepository.getBool(Keys.isTemporaryUser)));
       await StorageRepository.putString(Keys.token, r.token ?? '');
       await StorageRepository.putBool(Keys.isTemporaryUser, true);
     });
@@ -149,11 +157,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         (l) =>
             emit(state.copyWith(loginerror: l, status2: ActionStatus.isError)),
         (r) async {
-      emit(state.copyWith(status2: ActionStatus.isSuccess));
+      emit(state.copyWith(
+          status2: ActionStatus.isSuccess,
+          isTemporaryUser: StorageRepository.getBool(Keys.isTemporaryUser)));
       await StorageRepository.putString(Keys.userId, r.data?.userId ?? '');
       await StorageRepository.putString(Keys.token, r.token ?? '');
       await StorageRepository.putString(Keys.password, event.password);
       await StorageRepository.putString(Keys.phone, event.phoneNumber);
+      await StorageRepository.putBool(Keys.isTemporaryUser, false);
     });
   }
 }

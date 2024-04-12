@@ -7,15 +7,21 @@ class NamozTimeState extends Equatable {
   final List<DailyPrayerTimes> currentMonthTimes;
   final NamozTimeCalculation? chosenCalculationMethod;
   final Madhab chosenMadhab;
-  // final Duration durationUntilNextPrayer;
+  final Duration durationUntilNextPrayer;
   final HighLatitudeRule chosenHighLatitudeRule;
+  final double? latitude;
+  final double? longtitude;
+  final String? capital;
 
   const NamozTimeState(
       {this.error = '',
+      this.capital,
       this.dailyTimes,
-      // this.durationUntilNextPrayer = const Duration(seconds: 0),
+      this.durationUntilNextPrayer = const Duration(seconds: 0),
       this.status = ActionStatus.isInitial,
       this.chosenCalculationMethod,
+      this.latitude ,
+      this.longtitude,
       this.chosenHighLatitudeRule = HighLatitudeRule.twilight_angle,
       this.chosenMadhab = Madhab.hanafi,
       this.currentMonthTimes = const []});
@@ -25,17 +31,23 @@ class NamozTimeState extends Equatable {
       List<DailyPrayerTimes>? currentMonthTimes,
       NamozTimeCalculation? chosenCalculationMethod,
       Madhab? chosenMadhab,
-      // Duration? durationUntilNextPrayer,
+      double? latitude,
+      double? longtitude,
+      String? capital,
+      Duration? durationUntilNextPrayer,
       ActionStatus? status,
       HighLatitudeRule? chosenHighLatitudeRule,
       DailyPrayerTimes? dailyTimes,
       List<DailyPrayerTimes>? currentWeekTimes}) {
     return NamozTimeState(
       error: error ?? this.error,
+      capital: capital ?? this.capital,
       chosenCalculationMethod:
           chosenCalculationMethod ?? this.chosenCalculationMethod,
-      // durationUntilNextPrayer:
-      //     durationUntilNextPrayer ?? this.durationUntilNextPrayer,
+      durationUntilNextPrayer:
+          durationUntilNextPrayer ?? this.durationUntilNextPrayer,
+      latitude: latitude ?? this.latitude,
+      longtitude: longtitude ?? this.longtitude,
       chosenHighLatitudeRule:
           chosenHighLatitudeRule ?? this.chosenHighLatitudeRule,
       status: status ?? this.status,
@@ -53,7 +65,10 @@ class NamozTimeState extends Equatable {
         chosenCalculationMethod,
         chosenHighLatitudeRule,
         chosenMadhab,
-        // durationUntilNextPrayer,
-        status
+        latitude,
+        longtitude,
+        durationUntilNextPrayer,
+        status,
+        capital
       ];
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/premium/presentation/widgets/help_dialog.dart';
 
@@ -368,7 +370,12 @@ class _PremiumScreenState extends State<PremiumScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      // final addition = InAppPurchase.instance
+                      //     .getPlatformAddition<
+                      //         InAppPurchaseAndroidPlatformAddition>();
+                      // final purchases = await addition.queryPastPurchases();
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: primaryColor,
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -394,3 +401,21 @@ class _PremiumScreenState extends State<PremiumScreen> {
     );
   }
 }
+
+// Future<BillingResultWrapper> consumePurchase(PurchaseDetails purchase) {
+//   return _billingClientManager.runWithClient(
+//     (BillingClient client) =>
+//         client.consumeAsync(purchase.verificationData.serverVerificationData),
+//   );
+// }
+
+// final Stream<GooglePlayUserChoiceDetails> userChoiceDetailsStream =
+//     _userChoiceDetailsStreamController.stream;
+
+//     Future<AlternativeBillingOnlyReportingDetailsWrapper>
+//     createAlternativeBillingOnlyReportingDetails() async {
+//   final AlternativeBillingOnlyReportingDetailsWrapper wrapper =
+//       await _billingClientManager.runWithClient((BillingClient client) =>
+//           client.createAlternativeBillingOnlyReportingDetails());
+//   return wrapper;
+// }

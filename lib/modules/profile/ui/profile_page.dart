@@ -1,4 +1,5 @@
 import 'package:adhan/adhan.dart';
+import 'package:qiblah_pro/modules/auth/bloc/auth_bloc.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/namoz_settings_widget.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/settings_item_widget.dart';
@@ -75,230 +76,267 @@ class _ProfilePageState extends State<ProfilePage> {
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(20.r),
                                             topRight: Radius.circular(20.r))),
-                                    child: Column(
-                                      children: [
-                                        SpaceHeight(height: he(40)),
-                                        Text(
-                                          state.userData?.userName ?? '',
-                                          style: TextStyle(
-                                              fontSize: AppSizes.size_22,
-                                              fontFamily: AppfontFamily
-                                                  .comforta.fontFamily,
-                                              fontWeight: AppFontWeight.w_700),
-                                        ),
-                                        const SpaceHeight(),
-                                        Text(
-                                          StorageRepository.getBool(
-                                                  Keys.isTemporaryUser)
-                                              ? 'royxatdan_otish_promt'.tr()
-                                              : "",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: he(AppSizes.size_14),
-                                              color: smallTextColor,
-                                              fontFamily: AppfontFamily
-                                                  .inter.fontFamily,
-                                              fontWeight: AppFontWeight.w_400),
-                                        ),
-                                        const SpaceHeight(),
-                                        ElevatedButton(
-                                            onPressed: () =>
-                                                Navigator.pushNamed(
-                                                    context, "editProfile",
-                                                    arguments: profileBloc),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: context.isDark
-                                                    ? containerBlackColor
-                                                    : Colors.white,
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 24.w,
-                                                    vertical: 12.h),
-                                                shape: RoundedRectangleBorder(
-                                                    side: BorderSide(
-                                                        color: primaryColor,
-                                                        width: 1),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.r))),
-                                            child: Text(
-                                              StorageRepository.getBool(
-                                                      Keys.isTemporaryUser)
-                                                  ? "royxatdan_otish".tr()
-                                                  : 'tahrirlash'.tr(),
-                                              overflow: TextOverflow.ellipsis,
+                                    child: BlocBuilder<AuthBloc, AuthState>(
+                                      builder: (context, state1) {
+                                        return Column(
+                                          children: [
+                                            SpaceHeight(height: he(40)),
+                                            Text(
+                                              state.userData?.userName ?? '',
                                               style: TextStyle(
-                                                fontSize: AppSizes.size_14,
-                                                fontFamily: AppfontFamily
-                                                    .inter.fontFamily,
-                                                color: context.isDark
-                                                    ? Colors.white
-                                                    : highTextColor,
-                                                fontWeight: AppFontWeight.w_500,
-                                              ),
-                                            )),
-                                        Container(
-                                          width: double.infinity,
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 12.w, vertical: 10.h),
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 13.h, horizontal: 18.w),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12.r),
-                                            gradient: LinearGradient(
-                                                colors: context.isDark
-                                                    ? profileBlackGradient
-                                                    : profileGradient),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  MediumText(
-                                                      text: 'sizning_holatingiz'
-                                                          .tr()),
-                                                  Text(
-                                                    isPremium
-                                                        ? 'premium'.tr()
-                                                        : 'oddiy'.tr(),
-                                                    style: TextStyle(
-                                                        color: primaryColor,
-                                                        fontFamily:
-                                                            AppfontFamily.inter
-                                                                .fontFamily,
-                                                        fontSize:
-                                                            AppSizes.size_12,
-                                                        fontWeight:
-                                                            AppFontWeight
-                                                                .w_500),
-                                                  )
-                                                ],
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  Future.delayed(Duration.zero)
-                                                      .then((value) =>
-                                                          Navigator.pushNamed(
-                                                              context,
-                                                              'premiumScreen',
-                                                              arguments:
-                                                                  false));
+                                                  fontSize: AppSizes.size_22,
+                                                  fontFamily: AppfontFamily
+                                                      .comforta.fontFamily,
+                                                  fontWeight:
+                                                      AppFontWeight.w_700),
+                                            ),
+                                            const SpaceHeight(),
+                                            Text(
+                                              state1.isTemporaryUser ??
+                                                      StorageRepository.getBool(
+                                                          Keys.isTemporaryUser)
+                                                  ? 'royxatdan_otish_promt'.tr()
+                                                  : "",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      he(AppSizes.size_14),
+                                                  color: smallTextColor,
+                                                  fontFamily: AppfontFamily
+                                                      .inter.fontFamily,
+                                                  fontWeight:
+                                                      AppFontWeight.w_400),
+                                            ),
+                                            const SpaceHeight(),
+                                            ElevatedButton(
+                                                onPressed: () async {
+                                                  if (await context
+                                                      .hasInternet) {
+                                                    Navigator.pushNamed(
+                                                        context, "editProfile",
+                                                        arguments: profileBloc);
+                                                  } else {
+                                                    showToastMessage(
+                                                        'internetga_ulanmagan'
+                                                            .tr(),
+                                                        context);
+                                                  }
                                                 },
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor: context
+                                                            .isDark
+                                                        ? containerBlackColor
+                                                        : Colors.white,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 24.w,
+                                                            vertical: 12.h),
+                                                    shape: RoundedRectangleBorder(
+                                                        side: BorderSide(
+                                                            color: primaryColor,
+                                                            width: 1),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    12.r))),
+                                                child: Text(
+                                                  state1.isTemporaryUser ??
+                                                          StorageRepository
+                                                              .getBool(Keys
+                                                                  .isTemporaryUser)
+                                                      ? "royxatdan_otish".tr()
+                                                      : 'tahrirlash'.tr(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: AppSizes.size_14,
+                                                    fontFamily: AppfontFamily
+                                                        .inter.fontFamily,
+                                                    color: context.isDark
+                                                        ? Colors.white
+                                                        : highTextColor,
+                                                    fontWeight:
+                                                        AppFontWeight.w_500,
+                                                  ),
+                                                )),
+                                            Container(
+                                              width: double.infinity,
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 12.w,
+                                                  vertical: 10.h),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 13.h,
+                                                  horizontal: 18.w),
+                                              decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(12.r),
-                                                child: Container(
-                                                  width: wi(124),
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10.w,
-                                                      vertical: 6.h),
-                                                  decoration: BoxDecoration(
-                                                      color: isPremium
-                                                          ? context.isDark
-                                                              ? const Color(
-                                                                      0xffD1F3E1)
-                                                                  .withOpacity(
-                                                                      0.2)
-                                                              : Colors.white
-                                                          : primaryColor,
-                                                      border: isPremium
-                                                          ? Border.all(
-                                                              color:
-                                                                  smallTextColor,
-                                                              width: 0.5)
-                                                          : null,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.r)),
-                                                  child: isPremium
-                                                      ? Column(
-                                                          children: [
-                                                            Text(
-                                                              "tugash_sanasi"
-                                                                  .tr(),
-                                                              style: TextStyle(
-                                                                color: context
-                                                                        .isDark
-                                                                    ? smallTextWhiteColor
-                                                                        .withOpacity(
-                                                                            0.7)
-                                                                    : smallTextColor,
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              '24 dekabr 2024 ',
-                                                              style: TextStyle(
-                                                                color: context
-                                                                        .isDark
-                                                                    ? Colors
-                                                                        .white
-                                                                    : const Color(
-                                                                        0xFF1D2124),
-                                                                fontSize:
-                                                                    AppSizes
-                                                                        .size_12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        )
-                                                      : Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Flexible(
-                                                              child: Text(
-                                                                'premiumni_yoqish'
-                                                                    .tr(),
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        AppfontFamily
-                                                                            .inter
-                                                                            .fontFamily,
+                                                gradient: LinearGradient(
+                                                    colors: context.isDark
+                                                        ? profileBlackGradient
+                                                        : profileGradient),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      MediumText(
+                                                          text:
+                                                              'sizning_holatingiz'
+                                                                  .tr()),
+                                                      Text(
+                                                        isPremium
+                                                            ? 'premium'.tr()
+                                                            : 'oddiy'.tr(),
+                                                        style: TextStyle(
+                                                            color: primaryColor,
+                                                            fontFamily:
+                                                                AppfontFamily
+                                                                    .inter
+                                                                    .fontFamily,
+                                                            fontSize: AppSizes
+                                                                .size_12,
+                                                            fontWeight:
+                                                                AppFontWeight
+                                                                    .w_500),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      if (await context
+                                                          .hasInternet) {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            'premiumScreen',
+                                                            arguments: false);
+                                                      } else {
+                                                        showToastMessage(
+                                                            'internetga_ulanmagan'
+                                                                .tr(),
+                                                            context);
+                                                      }
+                                                    },
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.r),
+                                                    child: Container(
+                                                      width: wi(124),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10.w,
+                                                              vertical: 6.h),
+                                                      decoration: BoxDecoration(
+                                                          color: isPremium
+                                                              ? context.isDark
+                                                                  ? const Color(
+                                                                          0xffD1F3E1)
+                                                                      .withOpacity(
+                                                                          0.2)
+                                                                  : Colors.white
+                                                              : primaryColor,
+                                                          border: isPremium
+                                                              ? Border.all(
+                                                                  color:
+                                                                      smallTextColor,
+                                                                  width: 0.5)
+                                                              : null,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.r)),
+                                                      child: isPremium
+                                                          ? Column(
+                                                              children: [
+                                                                Text(
+                                                                  "tugash_sanasi"
+                                                                      .tr(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: context
+                                                                            .isDark
+                                                                        ? smallTextWhiteColor
+                                                                            .withOpacity(0.7)
+                                                                        : smallTextColor,
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  '24 dekabr 2024 ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: context.isDark
+                                                                        ? Colors
+                                                                            .white
+                                                                        : const Color(
+                                                                            0xFF1D2124),
                                                                     fontSize:
                                                                         AppSizes
                                                                             .size_12,
                                                                     fontWeight:
-                                                                        AppFontWeight
-                                                                            .w_500,
-                                                                    color: Colors
-                                                                        .white,
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            )
+                                                          : Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Flexible(
+                                                                  child: Text(
+                                                                    'premiumni_yoqish'
+                                                                        .tr(),
                                                                     overflow:
                                                                         TextOverflow
-                                                                            .ellipsis),
-                                                                maxLines: 2,
-                                                              ),
+                                                                            .ellipsis,
+                                                                    style: TextStyle(
+                                                                        fontFamily: AppfontFamily
+                                                                            .inter
+                                                                            .fontFamily,
+                                                                        fontSize:
+                                                                            AppSizes
+                                                                                .size_12,
+                                                                        fontWeight:
+                                                                            AppFontWeight
+                                                                                .w_500,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis),
+                                                                    maxLines: 2,
+                                                                  ),
+                                                                ),
+                                                                const SpaceWidth(),
+                                                                const Icon(
+                                                                  Icons
+                                                                      .keyboard_arrow_right,
+                                                                  color: Colors
+                                                                      .white,
+                                                                )
+                                                              ],
                                                             ),
-                                                            const SpaceWidth(),
-                                                            const Icon(
-                                                              Icons
-                                                                  .keyboard_arrow_right,
-                                                              color:
-                                                                  Colors.white,
-                                                            )
-                                                          ],
-                                                        ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
                                     )),
                               )
                             ],
@@ -624,8 +662,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             isDismissible: true,
                                             context: context,
                                             isScrollControlled: true,
-                                            builder: (context) =>
-                                                LocationBottomSheet(c: context),
+                                            builder: (a) =>
+                                                const LocationBottomSheet(),
                                           ),
                                       title: 'manzil'.tr(),
                                       subtitleWidget: Text(

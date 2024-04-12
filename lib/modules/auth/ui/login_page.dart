@@ -15,6 +15,7 @@ class _RegisterPageState extends State<LoginPage> {
   late GlobalKey<FormState> _key;
   late TextEditingController _phoneController;
   late TextEditingController _passwordController;
+  late GlobalKey<ScaffoldMessengerState> _scaffoldkey;
 
   bool prefix = false;
 
@@ -44,6 +45,7 @@ class _RegisterPageState extends State<LoginPage> {
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
     _key = GlobalKey<FormState>();
+    _scaffoldkey = GlobalKey<ScaffoldMessengerState>();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         prefix = true;
@@ -92,6 +94,7 @@ class _RegisterPageState extends State<LoginPage> {
     );
     return Scaffold(
       backgroundColor: context.isDark ? const Color(0xff153125) : null,
+      key: _scaffoldkey,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -130,6 +133,7 @@ class _RegisterPageState extends State<LoginPage> {
                     BlocListener<AuthBloc, AuthState>(
                         listener: (context, state) {
                           if (state.status1 == ActionStatus.isSuccess) {
+                            _scaffoldkey.currentState?.hideCurrentSnackBar();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'bottomNavbar', (route) => false);
                           } else if (state.status1 == ActionStatus.isError) {
@@ -349,10 +353,11 @@ class _RegisterPageState extends State<LoginPage> {
                         SpaceHeight(height: 26.h),
                         BlocListener<AuthBloc, AuthState>(
                           listener: (context, state) {
-                            state.status2 == ActionStatus.isSuccess
-                                ? Navigator.pushNamedAndRemoveUntil(
-                                    context, 'bottomNavbar', (route) => false)
-                                : null;
+                            if (state.status2 == ActionStatus.isSuccess) {
+                              _scaffoldkey.currentState?.hideCurrentSnackBar();
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, 'bottomNavbar', (route) => false);
+                            }
                             if (state.status2 == ActionStatus.isError) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -414,7 +419,7 @@ class _RegisterPageState extends State<LoginPage> {
                                 onTap: () =>
                                     Navigator.pushNamed(context, 'register'),
                                 child: Text(
-                                  'kirish'.tr(),
+                                  'royxatdan_otish'.tr(),
                                   style: TextStyle(
                                     color: primaryColor,
                                     fontSize: AppSizes.size_16,

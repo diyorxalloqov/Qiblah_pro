@@ -16,31 +16,42 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   NamozTimeBloc() : super(const NamozTimeState()) {
     on<CurrentNamozTimes>(_currentMonth);
-    add(const CurrentNamozTimes());
+    // add(const CurrentNamozTimes());
     on<ScheduleNotificationEvent>(_scheduleNotification);
     on<LoadSettings>(_namozSettings);
     add(LoadSettings());
     on<ChangeSettings>(_changeNamozSettings);
+    on<LocationSaveEvent>(_saveLocation);
     add(const ScheduleNotificationEvent(namoz: NamozEnum.all));
   }
 
   FutureOr<void> _currentMonth(
       CurrentNamozTimes event, Emitter<NamozTimeState> emit) async {
+    emit(state.copyWith(status: ActionStatus.isLoading));
     var params = state.chosenCalculationMethod?.calculationParameters;
     params?.madhab = state.chosenMadhab;
     params?.highLatitudeRule = state.chosenHighLatitudeRule;
+    print("${state.latitude} namoz bloc ${state.longtitude} ");
 
     try {
       List<DailyPrayerTimes> prayerTimes =
           await _namozTimeService.calculatePrayerTimesForMonth(
-              1, params ?? CalculationParameters(fajrAngle: 0));
+              1,
+              params ?? CalculationParameters(fajrAngle: 0),
+              state.latitude ?? StorageRepository.getDouble(Keys.latitude),
+              state.longtitude ?? StorageRepository.getDouble(Keys.longitude));
       DailyPrayerTimes todayPrayerTimes =
           await _namozTimeService.calculatePrayerTimes(
-              DateTime.now(), params ?? CalculationParameters(fajrAngle: 0));
+              DateTime.now(),
+              params ?? CalculationParameters(fajrAngle: 0),
+              state.latitude ?? StorageRepository.getDouble(Keys.latitude),
+              state.longtitude ?? StorageRepository.getDouble(Keys.longitude));
       emit(state.copyWith(
-          currentMonthTimes: prayerTimes, dailyTimes: todayPrayerTimes));
+          status: ActionStatus.isSuccess,
+          currentMonthTimes: prayerTimes,
+          dailyTimes: todayPrayerTimes));
     } on ArgumentError catch (e) {
-      emit(state.copyWith(error: 'error $e'));
+      emit(state.copyWith(error: 'error $e', status: ActionStatus.isError));
     }
   }
 
@@ -181,5 +192,11 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
       await _namozTimeService.setHighLatitudeRule(event.newValue);
     }
     add(LoadSettings());
+  }
+
+  FutureOr<void> _saveLocation(
+      LocationSaveEvent event, Emitter<NamozTimeState> emit) {
+    emit(state.copyWith(
+        latitude: event.lat, longtitude: event.long, capital: event.capital));
   }
 }

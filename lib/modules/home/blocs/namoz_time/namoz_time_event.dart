@@ -34,3 +34,13 @@ class ChangeSettings extends NamozTimeEvent {
   @override
   List<Object> get props => [newValue];
 }
+
+class LocationSaveEvent extends NamozTimeEvent {
+  final double lat;
+  final double long;
+  final String capital;
+  const LocationSaveEvent({required this.lat,required this.capital, required this.long});
+  @override
+  // TODO: implement props
+  List<Object> get props => [lat, long,capital];
+}

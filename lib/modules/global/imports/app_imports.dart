@@ -102,7 +102,6 @@ export 'package:qiblah_pro/modules/profile/bloc/profile_bloc.dart';
 export 'package:qiblah_pro/modules/profile/ui/pages/edit_profile_page.dart';
 export 'package:qiblah_pro/modules/profile/ui/profile_page.dart';
 export 'package:qiblah_pro/modules/profile/ui/widgets/edit_password_bottom_sheet.dart';
-export 'package:qiblah_pro/modules/profile/ui/widgets/image_picker_widget.dart';
 export 'package:qiblah_pro/modules/splash_page.dart';
 export 'package:qiblah_pro/utils/date_utils.dart';
 export 'package:qiblah_pro/utils/enums.dart';

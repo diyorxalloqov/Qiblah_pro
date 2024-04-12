@@ -2,6 +2,9 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/password_bottomsheet.dart';
+import 'package:qiblah_pro/utils/extension/internet_checker.dart';
+
+TextEditingController _phoneController = TextEditingController();
 
 class EditProfilePage extends StatefulWidget {
   final ProfileBloc profileBloc;
@@ -13,7 +16,6 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage>
     with WidgetsBindingObserver {
-  late TextEditingController _phoneController;
   late TextEditingController _nameController;
   late GlobalKey<FormState> _key;
 
@@ -24,7 +26,6 @@ class _EditProfilePageState extends State<EditProfilePage>
   @override
   void initState() {
     super.initState();
-    _phoneController = TextEditingController();
     _nameController = TextEditingController();
     _key = GlobalKey<FormState>();
     WidgetsBinding.instance.addObserver(this);
@@ -147,7 +148,8 @@ class _EditProfilePageState extends State<EditProfilePage>
           bloc: widget.profileBloc,
           builder: (context, state) {
             _nameController.text = state.userData?.userName ?? '';
-            _phoneController.text = state.userData?.userPhoneNumber ?? '';
+            _phoneController.text = state.userData?.userPhoneNumber ??
+                StorageRepository.getString(Keys.phone);
             return SingleChildScrollView(
               child: Padding(
                   padding:
@@ -156,10 +158,9 @@ class _EditProfilePageState extends State<EditProfilePage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GestureDetector(
-                          onTap: () => showAdaptiveDialog(
-                              context: context,
-                              builder: (context) => ImagePickerWidget(
-                                  profileBloc: widget.profileBloc)),
+                          onTap: () => widget.profileBloc.add(
+                              const PickImageEvent(
+                                  source: ImageSource.gallery)),
                           child: Align(
                             alignment: Alignment.center,
                             child: Stack(
@@ -202,9 +203,9 @@ class _EditProfilePageState extends State<EditProfilePage>
                                         state.imagePath.isEmpty
                                             ? AppIcon.camera
                                             : AppIcon.edit,
-                                        color: state.imagePath.isNotEmpty
+                                        color: state.imagePath.isEmpty
                                             ? context.isDark
-                                                ? Colors.white
+                                                ? Colors.grey
                                                 : Colors.black
                                             : null)),
                               ],
@@ -389,14 +390,19 @@ class _EditProfilePageState extends State<EditProfilePage>
                         SpaceHeight(height: 20.h),
                         InkWell(
                           onTap: () {
-                            StorageRepository.getBool(Keys.isTemporaryUser)
-                                ? ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('parol_prop'.tr())))
-                                : showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (c) =>
-                                        const EditPasswordBottomSheet());
+                            if (StorageRepository.getBool(
+                                Keys.isTemporaryUser)) {
+                              isRegistered = true;
+                              setState(() {});
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('parol_prop'.tr())));
+                            } else {
+                              showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) => EditPasswordBottomSheet(
+                                      profileBloc: widget.profileBloc));
+                            }
                           },
                           borderRadius: BorderRadius.circular(12.r),
                           child: Container(
@@ -520,37 +526,43 @@ class _EditProfilePageState extends State<EditProfilePage>
                         ),
                         SpaceHeight(height: 15.h),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_key.currentState!.validate()) {
-                              debugPrint('hello');
-                              debugPrint(StorageRepository.getBool(
-                                      Keys.isTemporaryUser)
-                                  .toString());
-                              if (!StorageRepository.getBool(
-                                  Keys.isTemporaryUser)) {
-                                widget.profileBloc.add(ChangeUserDataEvent(
-                                    name: _nameController.text,
-                                    gender: selectedChipIndex == 1
-                                        ? 'erkak'
-                                        : 'ayol',
-                                    phone: _phoneController.text));
-                                Navigator.pop(context);
-                              } else {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (context) =>
-                                        const PasswordBottomSheet());
+                          onPressed: () async {
+                            if (await context.hasInternet) {
+                              if (_key.currentState!.validate()) {
+                                debugPrint('hello');
+                                debugPrint(StorageRepository.getBool(
+                                        Keys.isTemporaryUser)
+                                    .toString());
+                                if (!StorageRepository.getBool(
+                                    Keys.isTemporaryUser)) {
+                                  widget.profileBloc.add(ChangeUserDataEvent(
+                                      name: _nameController.text,
+                                      gender: selectedChipIndex == 1
+                                          ? 'erkak'
+                                          : 'ayol',
+                                      phone: _phoneController.text));
+                                  Navigator.pop(context);
+                                } else {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      builder: (context) => PasswordBottomSheet(
+                                          phoneController: _phoneController,
+                                          countryCode: dialCode));
+                                }
                               }
-                            }
-                            if (StorageRepository.getBool(
-                                Keys.isTemporaryUser)) {
-                              /// password qoldi
-                              isRegistered = true;
-                              setState(() {});
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content:
-                                          Text('royxatdan_otmagansiz'.tr())));
+                              if (StorageRepository.getBool(
+                                  Keys.isTemporaryUser)) {
+                                isRegistered = true;
+                                setState(() {});
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('royxatdan_otmagansiz'.tr())));
+                              }
+                            } else {
+                              showToastMessage(
+                                  'internetga_ulanmagan'.tr(), context);
                             }
                           },
                           style: ElevatedButton.styleFrom(

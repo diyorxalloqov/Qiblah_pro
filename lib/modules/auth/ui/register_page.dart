@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   late GlobalKey<FormState> _key;
   late TextEditingController _phoneController;
   late TextEditingController _passwordController;
+  late GlobalKey<ScaffoldMessengerState> _scaffoldKey;
 
   bool prefix = false;
 
@@ -43,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void initState() {
     _phoneController = TextEditingController();
     _passwordController = TextEditingController();
+    _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
     _key = GlobalKey<FormState>();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
@@ -92,6 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
     return Scaffold(
       backgroundColor: context.isDark ? const Color(0xff153125) : null,
+      key: _scaffoldKey,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -130,6 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     BlocListener<AuthBloc, AuthState>(
                         listener: (context, state) {
                           if (state.status1 == ActionStatus.isSuccess) {
+                            _scaffoldKey.currentState?.hideCurrentSnackBar();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'bottomNavbar', (route) => false);
                           } else if (state.status1 == ActionStatus.isError) {
@@ -352,10 +356,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             SpaceHeight(height: 26.h),
                             BlocListener<AuthBloc, AuthState>(
                               listener: (context, state) {
-                                state.status == ActionStatus.isSuccess
-                                    ? Navigator.pushNamedAndRemoveUntil(context,
-                                        'bottomNavbar', (route) => false)
-                                    : null;
+                                if (state.status == ActionStatus.isSuccess) {
+                                  _scaffoldKey.currentState
+                                      ?.hideCurrentSnackBar();
+                                  Navigator.pushNamedAndRemoveUntil(context,
+                                      'bottomNavbar', (route) => false);
+                                }
+
                                 if (state.status == ActionStatus.isError) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
@@ -369,6 +376,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 builder: (context, state) {
                                   return ElevatedButton(
                                       onPressed: () async {
+                                        _scaffoldKey.currentState
+                                            ?.hideCurrentSnackBar();
                                         if (_key.currentState!.validate()) {
                                           context.read<AuthBloc>().add(
                                               RegisterEvent('not have',
