@@ -18,14 +18,6 @@ class TimeCountDownCubit extends Cubit<TimeCountDownState> {
     _updateTime(nextPrayerTime);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       _updateTime(nextPrayerTime);
-      if (state.durationUntilNextPrayer.inSeconds <= 0) {
-        debugPrint(
-            "durationUntilNextPrayer ${state.durationUntilNextPrayer} 0 ga teng boldi");
-        // nextPrayerTime = nextPrayerTime.add(const Duration(seconds: 0));
-        // durationUntilNextPrayer = nextPrayerTime.difference(now);
-        await _namozTimeService.getNextPrayerTime(lat, long);
-        // emit(state.copyWith(durationUntilNextPrayer: durationUntilNextPrayer));
-      }
     });
   }
 
@@ -35,13 +27,14 @@ class TimeCountDownCubit extends Cubit<TimeCountDownState> {
 
     Duration durationUntilNextPrayer = nextPrayerTime.difference(now);
 
-    //  if (durationUntilNextPrayer.inSeconds <= 0) {
-    //     debugPrint("durationUntilNextPrayer $durationUntilNextPrayer 0 ga teng boldi");
-    //     // nextPrayerTime = nextPrayerTime.add(const Duration(seconds: 0));
-    //   durationUntilNextPrayer = nextPrayerTime.difference(now);
-    //     // emit(state.copyWith(durationUntilNextPrayer: durationUntilNextPrayer));
-    //   }
-    ////
+    if (durationUntilNextPrayer.inSeconds <= 0) {
+      // debugPrint(
+      //     "durationUntilNextPrayer $durationUntilNextPrayer 0 ga teng boldi");
+      DateTime now1 = DateTime.now().toUtc();
+      nextPrayerTime = nextPrayerTime.toUtc();
+      Duration durationUntilNextPrayer = nextPrayerTime.difference(now1);
+      emit(state.copyWith(durationUntilNextPrayer: durationUntilNextPrayer));
+    }
     emit(state.copyWith(durationUntilNextPrayer: durationUntilNextPrayer));
   }
 

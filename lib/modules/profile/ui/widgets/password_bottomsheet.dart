@@ -180,7 +180,7 @@ class _PasswordBottomSheetState extends State<PasswordBottomSheet>
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "validator_prop".tr();
-                      } else if (value.length > 6) {
+                      } else if (value.length <= 6) {
                         return "password_valid".tr();
                       }
                       return null;

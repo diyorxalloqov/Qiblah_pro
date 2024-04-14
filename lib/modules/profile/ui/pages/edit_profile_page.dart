@@ -4,8 +4,6 @@ import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/profile/ui/widgets/password_bottomsheet.dart';
 import 'package:qiblah_pro/utils/extension/internet_checker.dart';
 
-TextEditingController _phoneController = TextEditingController();
-
 class EditProfilePage extends StatefulWidget {
   final ProfileBloc profileBloc;
   const EditProfilePage({super.key, required this.profileBloc});
@@ -18,6 +16,7 @@ class _EditProfilePageState extends State<EditProfilePage>
     with WidgetsBindingObserver {
   late TextEditingController _nameController;
   late GlobalKey<FormState> _key;
+  late TextEditingController _phoneController;
 
   int selectedChipIndex = StorageRepository.getBool(Keys.isMan) ? 1 : 0;
   final List<String> _titles = const ['ayol', "erkak"];
@@ -27,6 +26,7 @@ class _EditProfilePageState extends State<EditProfilePage>
   void initState() {
     super.initState();
     _nameController = TextEditingController();
+    _phoneController = TextEditingController();
     _key = GlobalKey<FormState>();
     WidgetsBinding.instance.addObserver(this);
   }
@@ -48,7 +48,6 @@ class _EditProfilePageState extends State<EditProfilePage>
 
   String dialCode = '+998';
   bool isMan = true;
-  bool isRegistered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -392,8 +391,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                           onTap: () {
                             if (StorageRepository.getBool(
                                 Keys.isTemporaryUser)) {
-                              isRegistered = true;
-                              setState(() {});
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('parol_prop'.tr())));
                             } else {
@@ -479,10 +476,24 @@ class _EditProfilePageState extends State<EditProfilePage>
                                                       )),
                                                   ElevatedButton(
                                                       onPressed: () {
-                                                        widget.profileBloc.add(
-                                                            DeleteAccauntEvent());
-                                                        Navigator.pop(context);
-                                                        SystemNavigator.pop();
+                                                        if (StorageRepository
+                                                            .getBool(Keys
+                                                                .isTemporaryUser)) {
+                                                          Navigator.pop(
+                                                              context);
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  content: Text(
+                                                                      'royxatdan_otmagansiz'
+                                                                          .tr())));
+                                                        } else {
+                                                          widget.profileBloc.add(
+                                                              DeleteAccauntEvent());
+                                                          Navigator.pop(
+                                                              context);
+                                                          SystemNavigator.pop();
+                                                        }
                                                       },
                                                       style: ElevatedButton
                                                           .styleFrom(
@@ -553,8 +564,6 @@ class _EditProfilePageState extends State<EditProfilePage>
                               }
                               if (StorageRepository.getBool(
                                   Keys.isTemporaryUser)) {
-                                isRegistered = true;
-                                setState(() {});
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
@@ -574,7 +583,7 @@ class _EditProfilePageState extends State<EditProfilePage>
                           ),
                           child: Center(
                             child: Text(
-                              isRegistered
+                              StorageRepository.getBool(Keys.isTemporaryUser)
                                   ? 'royxatdan_otish'.tr()
                                   : 'saqlash'.tr(),
                               style: const TextStyle(

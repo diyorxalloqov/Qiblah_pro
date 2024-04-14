@@ -1,12 +1,10 @@
 import 'package:adhan/adhan.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/models/daily_prayer_times_model.dart';
 import 'package:qiblah_pro/modules/home/models/time_calculation_model.dart';
 import 'package:qiblah_pro/modules/home/service/namoz_time_service.dart';
 import 'package:qiblah_pro/modules/home/service/notification_service.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+
 part 'namoz_time_event.dart';
 part 'namoz_time_state.dart';
 
@@ -22,7 +20,6 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
     add(LoadSettings());
     on<ChangeSettings>(_changeNamozSettings);
     on<LocationSaveEvent>(_saveLocation);
-    add(const ScheduleNotificationEvent(namoz: NamozEnum.all));
   }
 
   FutureOr<void> _currentMonth(
@@ -57,106 +54,130 @@ class NamozTimeBloc extends Bloc<NamozTimeEvent, NamozTimeState> {
 
   FutureOr<void> _scheduleNotification(
       ScheduleNotificationEvent event, Emitter<NamozTimeState> emit) async {
+    add(const CurrentNamozTimes());
+    var nextPrayerTime = await _namozTimeService.getNextPrayerTime(
+        state.latitude ?? StorageRepository.getDouble(Keys.latitude),
+        state.longtitude ?? StorageRepository.getDouble(Keys.longitude));
     try {
       var dailyTimes = state.dailyTimes;
       if (dailyTimes == null) {
         // Handle the case where dailyTimes is null
         return;
       }
+      await services.init();
+      debugPrint("${state.dailyTimes?.bomdod.time} time only ");
 
-      DateTime bomdodTime = dailyTimes.bomdod.time;
+      DateTime now = DateTime.now().toUtc();
+      DateTime nextPrayerTime1 = nextPrayerTime.toUtc();
 
-      // Convert bomdodTime to the timezone used by the Flutter Local Notifications plugin
-      var timeZoneName = await FlutterTimezone.getLocalTimezone();
-      tz.initializeTimeZones();
-      tz.setLocalLocation(tz.getLocation(timeZoneName));
-      var localBomdodTime = tz.TZDateTime.from(bomdodTime, tz.local);
-      var localQuyoshTime =
-          tz.TZDateTime.from(dailyTimes.quyosh.time, tz.local);
-      var localPeshinTime =
-          tz.TZDateTime.from(dailyTimes.peshin.time, tz.local);
-      var localAsrTime = tz.TZDateTime.from(dailyTimes.asr.time, tz.local);
-      var localShomTime = tz.TZDateTime.from(dailyTimes.shom.time, tz.local);
-      var localXuftonTime =
-          tz.TZDateTime.from(dailyTimes.xufton.time, tz.local);
+      Duration duration = nextPrayerTime1.difference(now);
 
-      // Set the notification based on the event namoz
-      debugPrint(localBomdodTime.toString());
-      debugPrint(localQuyoshTime.toString());
-      debugPrint(localPeshinTime.toString());
-      debugPrint(localAsrTime.toString());
-      debugPrint(localShomTime.toString());
-      debugPrint(localXuftonTime.toString());
       if (event.namoz == NamozEnum.bomdod) {
-        await services.setNotification(
-          body: 'Bomdod vaqti kirdi',
-          title: 'Bomdod',
-          date: localBomdodTime,
-          id: 0,
-        );
+        StorageRepository.getBool(Keys.bomdodNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Bomdod vaqti kirdi',
+                  title: 'Bomdod',
+                  date: state.dailyTimes?.bomdod.time ?? DateTime.now(),
+                  id: 0,
+                );
+              })
+            : await services.cancelNotification(0);
       } else if (event.namoz == NamozEnum.quyosh) {
-        await services.setNotification(
-          body: 'Bomdod vaqti chiqdi',
-          title: 'Quyosh',
-          date: localQuyoshTime,
-          id: 1,
-        );
+        StorageRepository.getBool(Keys.quyoshNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Bomdod vaqti chiqdi',
+                  title: 'Quyosh',
+                  date: state.dailyTimes?.quyosh.time ?? DateTime.now(),
+                  id: 1,
+                );
+              })
+            : await services.cancelNotification(1);
       } else if (event.namoz == NamozEnum.peshin) {
-        await services.setNotification(
-          body: 'Peshin vaqti kirdi',
-          title: 'Peshin',
-          date: localPeshinTime,
-          id: 2,
-        );
+        StorageRepository.getBool(Keys.peshinNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Peshin vaqti kirdi',
+                  title: 'Peshin',
+                  date: state.dailyTimes?.peshin.time ?? DateTime.now(),
+                  id: 2,
+                );
+              })
+            : await services.cancelNotification(2);
       } else if (event.namoz == NamozEnum.asr) {
-        await services.setNotification(
-          body: 'Asr vaqti kirdi',
-          title: 'Asr',
-          date: localAsrTime,
-          id: 3,
-        );
+        StorageRepository.getBool(Keys.asrNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Asr vaqti kirdi',
+                  title: 'Asr',
+                  date: state.dailyTimes?.asr.time ?? DateTime.now(),
+                  id: 3,
+                );
+              })
+            : await services.cancelNotification(3);
       } else if (event.namoz == NamozEnum.shom) {
-        await services.setNotification(
-          body: 'Shom vaqti kirdi',
-          title: 'Shom',
-          date: localShomTime,
-          id: 4,
-        );
+        StorageRepository.getBool(Keys.shomNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Shom vaqti kirdi',
+                  title: 'Shom',
+                  date: state.dailyTimes?.shom.time ?? DateTime.now(),
+                  id: 4,
+                );
+              })
+            : await services.cancelNotification(4);
       } else if (event.namoz == NamozEnum.xufton) {
-        await services.setNotification(
-          body: 'Xufton vaqti kirdi',
-          title: 'Xufton',
-          date: localXuftonTime,
-          id: 5,
-        );
+        StorageRepository.getBool(Keys.xuftonNotification)
+            ? Timer.periodic(duration, (timer) async {
+                await services.setNotification(
+                  // periodic qilsa boldi
+                  body: 'Xufton vaqti kirdi',
+                  title: 'Xufton',
+                  date: state.dailyTimes?.xufton.time ?? DateTime.now(),
+                  id: 5,
+                );
+              })
+            : await services.cancelNotification(5);
       } else if (event.namoz == NamozEnum.all) {
-        await services.setNotification(
-            body: 'Bomdod vaqti kirdi',
-            title: 'Bomdod',
-            date: localBomdodTime,
-            id: 0);
-        await services.setNotification(
-            body: 'Bomdod vaqti chiqdi',
-            title: 'Quyosh',
-            date: localQuyoshTime,
-            id: 1);
-        await services.setNotification(
-            body: 'Peshin vaqti kirdi',
-            title: 'Peshin',
-            date: localPeshinTime,
-            id: 2);
-        await services.setNotification(
-            body: 'Asr vaqti kirdi', title: 'Asr', date: localAsrTime, id: 3);
-        await services.setNotification(
-            body: 'Shom vaqti kirdi',
-            title: 'Shom',
-            date: localShomTime,
-            id: 4);
-        await services.setNotification(
-            body: 'Xufton vaqti kirdi',
-            title: 'Xufton',
-            date: localXuftonTime,
-            id: 5);
+        /// hammasini periodic qilish kerak
+        Timer.periodic(duration, (timer) async {
+          await services.setNotification(
+              body: 'Bomdod vaqti kirdi',
+              title: 'Bomdod',
+              date: state.dailyTimes?.bomdod.time ?? DateTime.now(),
+              id: 0);
+          await services.setNotification(
+              body: 'Bomdod vaqti chiqdi',
+              title: 'Quyosh',
+              date: state.dailyTimes?.quyosh.time ?? DateTime.now(),
+              id: 1);
+          await services.setNotification(
+              body: 'Peshin vaqti kirdi',
+              title: 'Peshin',
+              date: state.dailyTimes?.peshin.time ?? DateTime.now(),
+              id: 2);
+          await services.setNotification(
+              body: 'Asr vaqti kirdi',
+              title: 'Asr',
+              date: state.dailyTimes?.asr.time ?? DateTime.now(),
+              id: 3);
+          await services.setNotification(
+              body: 'Shom vaqti kirdi',
+              title: 'Shom',
+              date: state.dailyTimes?.shom.time ?? DateTime.now(),
+              id: 4);
+          await services.setNotification(
+              body: 'Xufton vaqti kirdi',
+              title: 'Xufton',
+              date: state.dailyTimes?.xufton.time ?? DateTime.now(),
+              id: 5);
+        });
       }
     } catch (e) {
       debugPrint('Error scheduling notification: $e');

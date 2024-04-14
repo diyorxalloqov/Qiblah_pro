@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
             child: Text(
               "kunlik_ilm".tr(),
               style: TextStyle(
@@ -424,222 +424,233 @@ class _HomePageState extends State<HomePage> {
                   return const TapesShimmer();
                 }
                 if (state.status == ActionStatus.isSuccess) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: [
-                          SizedBox(height: he(cardHeight / 2)),
-                          Container(
-                            height: 18,
-                            width: 18,
-                            margin: EdgeInsets.symmetric(horizontal: 10..w),
-                            decoration: ShapeDecoration(
-                                color: context.isDark
-                                    ? primaryColor
-                                    : const Color(0xffD1F3E1),
-                                shape: const OvalBorder()),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Dash(
-                                dashThickness: 2,
-                                direction: Axis.vertical,
-                                length: he(
-                                    ((cardHeight ~/ 2) + (cardHeight1 ~/ 2))
-                                            .toDouble() -
-                                        18.h),
-                                dashLength: 15,
-                                dashGap: 10,
-                                dashColor: primaryColor),
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                height: 18,
-                                width: 18,
-                                margin: EdgeInsets.symmetric(horizontal: 10..w),
-                                decoration: ShapeDecoration(
-                                    color: context.isDark
-                                        ? primaryColor
-                                        : const Color(0xffD1F3E1),
-                                    shape: const OvalBorder()),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                child: Dash(
-                                    dashThickness: 2,
-                                    direction: Axis.vertical,
-                                    length: he(((cardHeight1 ~/ 2) +
-                                                (cardHeight2 ~/ 2))
-                                            .toDouble() -
-                                        18.h),
-                                    dashLength: 15,
-                                    dashGap: 10,
-                                    dashColor: primaryColor),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Container(
-                                height: 18,
-                                width: 18,
-                                margin: EdgeInsets.symmetric(horizontal: 10..w),
-                                decoration: ShapeDecoration(
-                                    color: context.isDark
-                                        ? primaryColor
-                                        : const Color(0xffD1F3E1),
-                                    shape: const OvalBorder()),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                child: Dash(
-                                    dashThickness: 2,
-                                    direction: Axis.vertical,
-                                    length: he(((cardHeight2 ~/ 2) +
-                                                (cardHeight3 ~/ 2))
-                                            .toDouble() -
-                                        18.h),
-                                    dashLength: 15,
-                                    dashGap: 10,
-                                    dashColor: primaryColor),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 18,
-                            width: 18,
-                            margin: EdgeInsets.symmetric(horizontal: 10..w),
-                            decoration: ShapeDecoration(
-                                color: context.isDark
-                                    ? primaryColor
-                                    : const Color(0xffD1F3E1),
-                                shape: const OvalBorder()),
-                          ),
-                        ],
-                      ),
-                      Flexible(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                  return Padding(
+                    padding: EdgeInsets.only(top: 20.0.h),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
                           children: [
-                            Builder(
-                              builder: (BuildContext context) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  RenderBox? renderBox = _cardKey.currentContext
-                                      ?.findRenderObject() as RenderBox?;
-                                  if (renderBox != null) {
-                                    // double cardWidth = renderBox.size.width;
-                                    cardHeight = renderBox.size.height;
-                                    setState(() {});
-                                    // debugPrint("Card height: $cardHeight");
-                                  }
-                                });
-                                return CardWidget(
-                                  key: _cardKey,
-                                  zikrNumber:
-                                      '(${state.tapesModel?.verse?.juzNumber ?? 0}:${state.tapesModel?.verse?.verseNumber ?? 0})',
-                                  lentaName: 'kun_oyati'.tr(),
-                                  isZikr: true,
-                                  name: state.tapesModel?.verse?.meaning ?? '',
-                                  description:
-                                      state.tapesModel?.verse?.verseArabic ??
-                                          '',
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, 'quron'),
-                                  textDirection: TextDirection.rtl,
-                                );
-                              },
+                            SizedBox(height: he(cardHeight / 2)),
+                            Container(
+                              height: 18,
+                              width: 18,
+                              margin: EdgeInsets.symmetric(horizontal: 10..w),
+                              decoration: ShapeDecoration(
+                                  color: context.isDark
+                                      ? primaryColor
+                                      : const Color(0xffD1F3E1),
+                                  shape: const OvalBorder()),
                             ),
-                            Builder(
-                              builder: (BuildContext context) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  RenderBox? renderBox = _cardKey1
-                                      .currentContext
-                                      ?.findRenderObject() as RenderBox?;
-                                  if (renderBox != null) {
-                                    cardHeight1 = renderBox.size.height;
-                                    setState(() {});
-                                    // debugPrint("Card height1: $cardHeight1");
-                                  }
-                                });
-                                return CardWidget(
-                                    key: _cardKey1,
-                                    zikrNumber: '',
-                                    lentaName: 'kun_zikri'.tr(),
-                                    isZikr: false,
-                                    name:
-                                        state.tapesModel?.zikr?.zikrTitle ?? '',
-                                    description: state.tapesModel?.zikr
-                                            ?.zikrDescription ??
-                                        '',
-                                    onTap: () =>
-                                        Navigator.pushNamed(context, 'zikr'));
-                              },
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              child: Dash(
+                                  dashThickness: 2,
+                                  direction: Axis.vertical,
+                                  length: he(
+                                      ((cardHeight ~/ 2) + (cardHeight1 ~/ 2))
+                                              .toDouble() -
+                                          18.h),
+                                  dashLength: 15,
+                                  dashGap: 10,
+                                  dashColor: primaryColor),
                             ),
-                            Builder(
-                              builder: (BuildContext context) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  RenderBox? renderBox = _cardKey2
-                                      .currentContext
-                                      ?.findRenderObject() as RenderBox?;
-                                  if (renderBox != null) {
-                                    cardHeight2 = renderBox.size.height;
-                                    setState(() {});
-                                    // debugPrint("Card height2: $cardHeight2");
-                                  }
-                                });
-                                return CardWidget(
-                                  key: _cardKey2,
-                                  lentaName: 'asmaul_husna'.tr(),
-                                  isZikr: true,
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, 'names'),
-                                  name: state.tapesModel?.name?.title ?? '',
-                                  description:
-                                      state.tapesModel?.name?.description ?? '',
-                                  zikrNumber:
-                                      '${state.tapesModel?.name?.nameId ?? 0} - ${'ism'.tr()}',
-                                );
-                              },
+                            Column(
+                              children: [
+                                Container(
+                                  height: 18,
+                                  width: 18,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 10..w),
+                                  decoration: ShapeDecoration(
+                                      color: context.isDark
+                                          ? primaryColor
+                                          : const Color(0xffD1F3E1),
+                                      shape: const OvalBorder()),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: Dash(
+                                      dashThickness: 2,
+                                      direction: Axis.vertical,
+                                      length: he(((cardHeight1 ~/ 2) +
+                                                  (cardHeight2 ~/ 2))
+                                              .toDouble() -
+                                          18.h),
+                                      dashLength: 15,
+                                      dashGap: 10,
+                                      dashColor: primaryColor),
+                                ),
+                              ],
                             ),
-                            Builder(
-                              builder: (BuildContext context) {
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  RenderBox? renderBox = _cardKey3
-                                      .currentContext
-                                      ?.findRenderObject() as RenderBox?;
-                                  if (renderBox != null) {
-                                    cardHeight3 = renderBox.size.height;
-                                    // debugPrint("Card height3: $cardHeight3");
-                                    setState(() {});
-                                  }
-                                });
-                                return CardWidget(
-                                  key: _cardKey3,
-                                  lentaName: 'kun_duosi'.tr(),
-                                  isZikr: false,
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, 'zikr'),
-                                  zikrNumber: '',
-                                  name: state.tapesModel?.dua?.zikrTitle ?? '',
-                                  description:
-                                      state.tapesModel?.dua?.zikrDescription ??
-                                          '',
-                                );
-                              },
+                            Column(
+                              children: [
+                                Container(
+                                  height: 18,
+                                  width: 18,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 10..w),
+                                  decoration: ShapeDecoration(
+                                      color: context.isDark
+                                          ? primaryColor
+                                          : const Color(0xffD1F3E1),
+                                      shape: const OvalBorder()),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 10.w),
+                                  child: Dash(
+                                      dashThickness: 2,
+                                      direction: Axis.vertical,
+                                      length: he(((cardHeight2 ~/ 2) +
+                                                  (cardHeight3 ~/ 2))
+                                              .toDouble() -
+                                          18.h),
+                                      dashLength: 15,
+                                      dashGap: 10,
+                                      dashColor: primaryColor),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 18,
+                              width: 18,
+                              margin: EdgeInsets.symmetric(horizontal: 10..w),
+                              decoration: ShapeDecoration(
+                                  color: context.isDark
+                                      ? primaryColor
+                                      : const Color(0xffD1F3E1),
+                                  shape: const OvalBorder()),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                        Flexible(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Builder(
+                                builder: (BuildContext context) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    RenderBox? renderBox = _cardKey
+                                        .currentContext
+                                        ?.findRenderObject() as RenderBox?;
+                                    if (renderBox != null) {
+                                      // double cardWidth = renderBox.size.width;
+                                      cardHeight = renderBox.size.height;
+                                      setState(() {});
+                                      // debugPrint("Card height: $cardHeight");
+                                    }
+                                  });
+                                  return CardWidget(
+                                    key: _cardKey,
+                                    zikrNumber:
+                                        '(${state.tapesModel?.verse?.juzNumber ?? 0}:${state.tapesModel?.verse?.verseNumber ?? 0})',
+                                    lentaName: 'kun_oyati'.tr(),
+                                    isZikr: true,
+                                    name:
+                                        state.tapesModel?.verse?.meaning ?? '',
+                                    description:
+                                        state.tapesModel?.verse?.verseArabic ??
+                                            '',
+                                    onTap: () =>
+                                        Navigator.pushNamed(context, 'quron'),
+                                    textDirection: TextDirection.rtl,
+                                  );
+                                },
+                              ),
+                              Builder(
+                                builder: (BuildContext context) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    RenderBox? renderBox = _cardKey1
+                                        .currentContext
+                                        ?.findRenderObject() as RenderBox?;
+                                    if (renderBox != null) {
+                                      cardHeight1 = renderBox.size.height;
+                                      setState(() {});
+                                      // debugPrint("Card height1: $cardHeight1");
+                                    }
+                                  });
+                                  return CardWidget(
+                                      key: _cardKey1,
+                                      zikrNumber: '',
+                                      lentaName: 'kun_zikri'.tr(),
+                                      isZikr: false,
+                                      name: state.tapesModel?.zikr?.zikrTitle ??
+                                          '',
+                                      description: state.tapesModel?.zikr
+                                              ?.zikrDescription ??
+                                          '',
+                                      onTap: () =>
+                                          Navigator.pushNamed(context, 'zikr'));
+                                },
+                              ),
+                              Builder(
+                                builder: (BuildContext context) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    RenderBox? renderBox = _cardKey2
+                                        .currentContext
+                                        ?.findRenderObject() as RenderBox?;
+                                    if (renderBox != null) {
+                                      cardHeight2 = renderBox.size.height;
+                                      setState(() {});
+                                      // debugPrint("Card height2: $cardHeight2");
+                                    }
+                                  });
+                                  return CardWidget(
+                                    key: _cardKey2,
+                                    lentaName: 'asmaul_husna'.tr(),
+                                    isZikr: true,
+                                    onTap: () =>
+                                        Navigator.pushNamed(context, 'names'),
+                                    name: state.tapesModel?.name?.title ?? '',
+                                    description:
+                                        state.tapesModel?.name?.description ??
+                                            '',
+                                    zikrNumber:
+                                        '${state.tapesModel?.name?.nameId ?? 0} - ${'ism'.tr()}',
+                                  );
+                                },
+                              ),
+                              Builder(
+                                builder: (BuildContext context) {
+                                  WidgetsBinding.instance
+                                      .addPostFrameCallback((_) {
+                                    RenderBox? renderBox = _cardKey3
+                                        .currentContext
+                                        ?.findRenderObject() as RenderBox?;
+                                    if (renderBox != null) {
+                                      cardHeight3 = renderBox.size.height;
+                                      // debugPrint("Card height3: $cardHeight3");
+                                      setState(() {});
+                                    }
+                                  });
+                                  return CardWidget(
+                                    key: _cardKey3,
+                                    lentaName: 'kun_duosi'.tr(),
+                                    isZikr: false,
+                                    onTap: () =>
+                                        Navigator.pushNamed(context, 'zikr'),
+                                    zikrNumber: '',
+                                    name:
+                                        state.tapesModel?.dua?.zikrTitle ?? '',
+                                    description: state
+                                            .tapesModel?.dua?.zikrDescription ??
+                                        '',
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
                 return const SizedBox.shrink();

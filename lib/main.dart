@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:qiblah_pro/core/constants/keys.dart';
 import 'package:qiblah_pro/core/db/shared_preferences.dart';
 import 'package:qiblah_pro/core/singletons/service_locator.dart';
@@ -11,6 +12,8 @@ void main(List<String> args) async {
   await EasyLocalization.ensureInitialized();
   EasyLocalization.ensureInitialized();
   await setupLocator();
+  await MobileAds.instance.initialize();
+
   StorageRepository.getString(Keys.lang) == ''
       ? await StorageRepository.putString(Keys.lang, 'uz')
       : null;
@@ -33,55 +36,3 @@ void main(List<String> args) async {
     ),
   );
 }
-
- 
-
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: LayoutBuilderExample(),
-//     );
-//   }
-// }
-
-// class LayoutBuilderExample extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Layout Builder Example'),
-//       ),
-//       body: LayoutBuilder(
-//         builder: (context, constraints) {
-//           return Center(
-//             child: Container(
-//               color: Colors.blue,
-//               height: constraints.maxHeight * 0.5,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Text(
-//                     'Max Width: ${constraints.maxWidth.toStringAsFixed(2)}',
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                   SizedBox(height: 10),
-//                   Text(
-//                     'Max Height: ${constraints.maxHeight.toStringAsFixed(2)}',
-//                     style: TextStyle(color: Colors.white),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }

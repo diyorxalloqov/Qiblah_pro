@@ -10,7 +10,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Qiblah Pro</string>
+		<string>Qiblah</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -54,6 +54,24 @@
 		<array>
 			<string>telegram</string>
 		</array>
+		<!-- Notification service -->
+		<key>NSUserNotificationEnabled</key>
+		<true />
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<!-- Configure notification presentation options -->
+		<key>UIUserNotificationTypeAlert</key>
+		<array>
+			<string>UIUserNotificationTypeSound</string>
+			<string>UIUserNotificationTypeBadge</string>
+		</array>
+		<key>UIUserNotificationTypeSound</key>
+		<string>your_custom_sound.wav</string> <!-- Optional: Specify a custom sound file -->
+		<key>UIUserNotificationTypeBadge</key>
+		<true />
 		<!-- Location permission descriptions -->
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>$(QIBLAH_PRO) needs Location access for "prayer times get and where to pisition"!</string>
@@ -63,5 +81,7 @@
 		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
 		<key>GMSApiKey</key>
 		<string>AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc</string>
+		<key>GADApplicationIdentifier</key>
+		<string>ca-app-pub-3940256099942544~3347511713</string>
 	</dict>
 </plist>

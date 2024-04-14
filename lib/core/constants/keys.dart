@@ -24,5 +24,12 @@ class Keys {
   static const String notification = 'notification';
   static const String isTemporaryUser = 'temporaryUser';
   static const String currentDate = 'currentDate';
+  static const String bomdodNotification = 'bomdodNotification';
+  static const String quyoshNotification = 'quyoshNotification';
+  static const String peshinNotification = 'peshinNotification';
+  static const String asrNotification = 'asrNotification';
+  static const String shomNotification = 'shomNotification';
+  static const String xuftonNotification = 'xuftonNotification';
+
 
 }

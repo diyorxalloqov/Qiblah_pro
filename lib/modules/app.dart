@@ -22,6 +22,7 @@ class AndroidApp extends StatefulWidget {
 class _AndroidAppState extends State<AndroidApp> with WidgetsBindingObserver {
   @override
   void initState() {
+    RouteList.router.loadAd();
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
@@ -98,6 +99,7 @@ class IosApp extends StatefulWidget {
 }
 
 class _IosAppState extends State<IosApp> with WidgetsBindingObserver {
+
   @override
   void initState() {
     super.initState();

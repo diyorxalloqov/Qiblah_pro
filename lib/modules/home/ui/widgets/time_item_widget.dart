@@ -1,7 +1,7 @@
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 
 class TimeItem extends StatelessWidget {
-  final VoidCallback volumeOnTap;
+  final VoidCallback? volumeOnTap;
   final String namozName;
   final String time;
   final Widget icon;

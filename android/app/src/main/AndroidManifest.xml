@@ -2,6 +2,7 @@
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -18,7 +19,7 @@
         <!-- Metadata -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc"/>
+            android:value="AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc" />
 
         <!-- Receivers for Local Notifications -->
         <receiver
@@ -68,5 +69,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
     </application>
 </manifest>

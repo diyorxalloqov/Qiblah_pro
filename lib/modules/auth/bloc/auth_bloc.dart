@@ -131,7 +131,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           authModel: r,
           isTemporaryUser: StorageRepository.getBool(Keys.isTemporaryUser)));
       await StorageRepository.putString(Keys.token, r.token ?? '');
-      await StorageRepository.putBool(Keys.isTemporaryUser, true);
     });
   }
 

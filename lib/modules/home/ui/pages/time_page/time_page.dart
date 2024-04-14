@@ -9,12 +9,12 @@ class TimePage extends StatefulWidget {
 
 class _TimePageState extends State<TimePage> {
   late TimeCountDownCubit _timeCountDownCubit;
-  bool _isBomdod = true;
-  bool _isQuyosh = true;
-  bool _isPeshin = true;
-  bool _isAsr = true;
-  bool _isShom = true;
-  bool _isXufton = true;
+  bool _isBomdod = StorageRepository.getBool(Keys.bomdodNotification);
+  bool _isQuyosh = StorageRepository.getBool(Keys.quyoshNotification);
+  bool _isPeshin = StorageRepository.getBool(Keys.peshinNotification);
+  bool _isAsr = StorageRepository.getBool(Keys.asrNotification);
+  bool _isShom = StorageRepository.getBool(Keys.shomNotification);
+  bool _isXufton = StorageRepository.getBool(Keys.xuftonNotification);
   bool isNext = false;
   bool isPrev = false;
   late DateTime _displayedDate;
@@ -397,19 +397,29 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () async {
-                                                        _isBomdod = !_isBomdod;
-                                                        setState(() {});
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isBomdod =
+                                                                  !_isBomdod;
+                                                              setState(() {});
 
-                                                        _isBomdod
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz: NamozEnum
-                                                                        .bomdod))
-                                                            : null;
-                                                      }),
+                                                              _isBomdod
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                        
+                                                                          namoz:
+                                                                              NamozEnum.bomdod))
+                                                                  : null;
+
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.bomdodNotification,
+                                                                      _isBomdod);
+                                                            }
+                                                          : null),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
@@ -437,18 +447,26 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () {
-                                                        _isQuyosh = !_isQuyosh;
-                                                        setState(() {});
-                                                        _isQuyosh
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz: NamozEnum
-                                                                        .quyosh))
-                                                            : null;
-                                                      }),
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isQuyosh =
+                                                                  !_isQuyosh;
+                                                              setState(() {});
+                                                              _isQuyosh
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                          namoz:
+                                                                              NamozEnum.quyosh))
+                                                                  : null;
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.quyoshNotification,
+                                                                      _isQuyosh);
+                                                            }
+                                                          : null),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
@@ -476,18 +494,26 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () {
-                                                        _isPeshin = !_isPeshin;
-                                                        setState(() {});
-                                                        _isPeshin
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz: NamozEnum
-                                                                        .peshin))
-                                                            : null;
-                                                      }),
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isPeshin =
+                                                                  !_isPeshin;
+                                                              setState(() {});
+                                                              _isPeshin
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                          namoz:
+                                                                              NamozEnum.peshin))
+                                                                  : null;
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.peshinNotification,
+                                                                      _isPeshin);
+                                                            }
+                                                          : null),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
@@ -515,19 +541,25 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () {
-                                                        _isAsr = !_isAsr;
-                                                        setState(() {});
-                                                        _isAsr
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz:
-                                                                        NamozEnum
-                                                                            .asr))
-                                                            : null;
-                                                      }),
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isAsr = !_isAsr;
+                                                              setState(() {});
+                                                              _isAsr
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                          namoz:
+                                                                              NamozEnum.asr))
+                                                                  : null;
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.asrNotification,
+                                                                      _isAsr);
+                                                            }
+                                                          : null),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
@@ -555,18 +587,26 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () {
-                                                        _isShom = !_isShom;
-                                                        setState(() {});
-                                                        _isShom
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz: NamozEnum
-                                                                        .shom))
-                                                            : null;
-                                                      }),
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isShom =
+                                                                  !_isShom;
+                                                              setState(() {});
+                                                              _isShom
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                          namoz:
+                                                                              NamozEnum.shom))
+                                                                  : null;
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.shomNotification,
+                                                                      _isShom);
+                                                            }
+                                                          : null),
                                                 ),
                                                 Container(
                                                   width: double.infinity,
@@ -606,18 +646,26 @@ class _TimePageState extends State<TimePage> {
                                                                   .volume_off_outlined,
                                                               color:
                                                                   Colors.white),
-                                                      volumeOnTap: () {
-                                                        _isXufton = !_isXufton;
-                                                        setState(() {});
-                                                        _isXufton
-                                                            ? context
-                                                                .read<
-                                                                    NamozTimeBloc>()
-                                                                .add(const ScheduleNotificationEvent(
-                                                                    namoz: NamozEnum
-                                                                        .xufton))
-                                                            : null;
-                                                      }),
+                                                      volumeOnTap: index ==
+                                                              _currentDay
+                                                          ? () async {
+                                                              _isXufton =
+                                                                  !_isXufton;
+                                                              setState(() {});
+                                                              _isXufton
+                                                                  ? context
+                                                                      .read<
+                                                                          NamozTimeBloc>()
+                                                                      .add(const ScheduleNotificationEvent(
+                                                                          namoz:
+                                                                              NamozEnum.xufton))
+                                                                  : null;
+                                                              await StorageRepository
+                                                                  .putBool(
+                                                                      Keys.xuftonNotification,
+                                                                      _isXufton);
+                                                            }
+                                                          : null),
                                                 ),
                                               ],
                                             ),

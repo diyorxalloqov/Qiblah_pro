@@ -9,6 +9,7 @@ class TapesShimmer extends StatelessWidget {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: 4,
+      padding: EdgeInsets.zero,
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Container(

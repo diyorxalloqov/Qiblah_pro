@@ -1,6 +1,7 @@
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/home/service/notification_service.dart';
+import 'package:qiblah_pro/services.dart';
 
 class OnBoarding extends StatefulWidget {
   const OnBoarding({Key? key}) : super(key: key);
@@ -219,16 +220,31 @@ class _OnBoardingState extends State<OnBoarding> {
                                                   milliseconds: 300),
                                               curve: Curves.easeIn);
                                           context.read<NamozTimeBloc>().add(
-                                                const ScheduleNotificationEvent(
-                                                    namoz: NamozEnum.all),
-                                              );
-                                          StorageRepository.putBool(
+                                              const ScheduleNotificationEvent(
+                                                  namoz: NamozEnum.all));
+
+                                          /// notific
+                                          await StorageRepository.putBool(
+                                              Keys.bomdodNotification, true);
+                                          await StorageRepository.putBool(
+                                              Keys.quyoshNotification, true);
+                                          await StorageRepository.putBool(
+                                              Keys.peshinNotification, true);
+                                          await StorageRepository.putBool(
+                                              Keys.asrNotification, true);
+                                          await StorageRepository.putBool(
+                                              Keys.shomNotification, true);
+                                          await StorageRepository.putBool(
+                                              Keys.xuftonNotification, true);
+                                          //// notification enabled
+                                          await StorageRepository.putBool(
                                               Keys.notification,
                                               isPermissionGranted);
                                         }
                                         if (!isPermissionGranted) {
                                           openAppSettings();
                                         }
+                                        AppServices().setOneSignal();
                                         await StorageRepository.putBool(
                                             Keys.isOnboarding, true);
                                       } else if (_currentPage == 3) {
@@ -282,6 +298,24 @@ class _OnBoardingState extends State<OnBoarding> {
                                                         lang(context))
                                                 : null;
                                             if (_currentPage == 2) {
+                                              /// notific
+                                              await StorageRepository.putBool(
+                                                  Keys.bomdodNotification,
+                                                  false);
+                                              await StorageRepository.putBool(
+                                                  Keys.quyoshNotification,
+                                                  false);
+                                              await StorageRepository.putBool(
+                                                  Keys.peshinNotification,
+                                                  false);
+                                              await StorageRepository.putBool(
+                                                  Keys.asrNotification, false);
+                                              await StorageRepository.putBool(
+                                                  Keys.shomNotification, false);
+                                              await StorageRepository.putBool(
+                                                  Keys.xuftonNotification,
+                                                  false);
+                                              //// notification diabled
                                               pageController.nextPage(
                                                   duration: const Duration(
                                                       milliseconds: 300),

@@ -131,11 +131,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: SvgPicture.asset(AppIcon.appLogo,
                                 width: 40.w))),
                     BlocListener<AuthBloc, AuthState>(
-                        listener: (context, state) {
+                        listener: (context, state) async {
                           if (state.status1 == ActionStatus.isSuccess) {
                             _scaffoldKey.currentState?.hideCurrentSnackBar();
                             Navigator.pushNamedAndRemoveUntil(
                                 context, 'bottomNavbar', (route) => false);
+                            await StorageRepository.putBool(
+                                Keys.isTemporaryUser, true);
                           } else if (state.status1 == ActionStatus.isError) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(state.error)));

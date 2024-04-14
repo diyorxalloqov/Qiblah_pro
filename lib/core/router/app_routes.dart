@@ -1,3 +1,5 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:qiblah_pro/modules/global/google_ads/service/ads_helper.dart';
 import 'package:qiblah_pro/modules/global/imports/app_imports.dart';
 import 'package:qiblah_pro/modules/premium/presentation/ui/premium_screen.dart';
 
@@ -6,6 +8,7 @@ class RouteList {
   static RouteList get router => _generate;
 
   RouteList._init();
+  int tappedPages = 0;
 
   Route? onGenerate(RouteSettings settings) {
     switch (settings.name) {
@@ -79,8 +82,31 @@ class RouteList {
   }
 
   _navigate(Widget widget) {
+    tappedPages++;
+    print(tappedPages);
+    if (tappedPages == 6) {
+      tappedPages = 0;
+      loadAd();
+      _interstitialAd?.show();
+    }
     return MaterialPageRoute(builder: (context) => widget);
   }
 
-  // SecondPage(data: settings.arguments as UserModel)
+  // _interstitialAd?.dispose();
+  ///               _interstitialAd?.show(); button bosilganda
+
+  bool isFullPageAdLoaded = false;
+  InterstitialAd? _interstitialAd;
+
+  void loadAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialId(),
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            _interstitialAd = ad;
+          },
+          onAdFailedToLoad: (error) {}),
+    );
+  }
 }
