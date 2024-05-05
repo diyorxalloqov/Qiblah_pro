@@ -18,6 +18,7 @@ class ScheduledNotificationHelper {
     return res ?? false;
   }
 
+
   /// Schedule notification for each prayer time.
   void schedulePrayNotification(List<DailyPrayerTimes> times) async {
     NotificationService().init();
