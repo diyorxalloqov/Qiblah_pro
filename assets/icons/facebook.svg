@@ -1,0 +1,15 @@
+<svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Facebook">
+<rect x="1" y="0.5" width="37" height="37" rx="18.5" stroke="#E3E7EA"/>
+<g id="Group 215">
+<circle id="bg" cx="19.5" cy="19" r="14" fill="url(#paint0_linear_80_4047)"/>
+<path id="f" d="M24.7137 23.2816L25.3356 19.3301H21.4452V16.767C21.4452 15.6857 21.9877 14.6311 23.7302 14.6311H25.5V11.267C25.5 11.267 23.8945 11 22.3603 11C19.1548 11 17.0617 12.8929 17.0617 16.3184V19.3301H13.5V23.2816H17.0617V32.8345C17.7767 32.944 18.5082 33 19.2534 33C19.9986 33 20.7302 32.944 21.4452 32.8345V23.2816H24.7137Z" fill="white"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_80_4047" x1="19.5" y1="5" x2="19.5" y2="32.917" gradientUnits="userSpaceOnUse">
+<stop stop-color="#18ACFE"/>
+<stop offset="1" stop-color="#0163E0"/>
+</linearGradient>
+</defs>
+</svg>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true />
+		</dict>
+		<key>CFBundleDevelopmentRegion</key>
+		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		<key>CFBundleDisplayName</key>
+		<string>Qiblah</string>
+		<key>CFBundleExecutable</key>
+		<string>$(EXECUTABLE_NAME)</string>
+		<key>CFBundleIdentifier</key>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		<key>CFBundleInfoDictionaryVersion</key>
+		<string>6.0</string>
+		<key>CFBundleName</key>
+		<string>Qiblah</string>
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
+		<key>CFBundleShortVersionString</key>
+		<string>$(FLUTTER_BUILD_NAME)</string>
+		<key>CFBundleSignature</key>
+		<string>????</string>
+		<key>CFBundleVersion</key>
+		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>LSRequiresIPhoneOS</key>
+		<true />
+		<key>UILaunchStoryboardName</key>
+		<string>LaunchScreen</string>
+		<key>UIMainStoryboardFile</key>
+		<string>Main</string>
+		<key>UISupportedInterfaceOrientations</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>UISupportedInterfaceOrientations~ipad</key>
+		<array>
+			<string>UIInterfaceOrientationPortrait</string>
+			<string>UIInterfaceOrientationPortraitUpsideDown</string>
+			<string>UIInterfaceOrientationLandscapeLeft</string>
+			<string>UIInterfaceOrientationLandscapeRight</string>
+		</array>
+		<key>CADisableMinimumFrameDurationOnPhone</key>
+		<true />
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true />
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>telegram</string>
+		</array>
+		<!-- Notification service -->
+		<key>NSUserNotificationEnabled</key>
+		<true />
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>remote-notification</string>
+		</array>
+		<!-- Configure notification presentation options -->
+		<key>UIUserNotificationTypeAlert</key>
+		<array>
+			<string>UIUserNotificationTypeSound</string>
+			<string>UIUserNotificationTypeBadge</string>
+		</array>
+		<key>UIUserNotificationTypeSound</key>
+		<string>your_custom_sound.wav</string> <!-- Optional: Specify a custom sound file -->
+		<key>UIUserNotificationTypeBadge</key>
+		<true />
+		<!-- Location permission descriptions -->
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>$(QIBLAH_PRO) needs Location access for "prayer times get and where to pisition"!</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>$(PRODUCT_NAME) needs Location access for "to get for prayers time"!</string>
+		<key>GMSApiKey</key>
+		<string>AIzaSyCrx4cv3JNjbMDLEJPpQiUyMtLFdj37Egc</string>
+		<key>GADApplicationIdentifier</key>
+		<string>ca-app-pub-3940256099942544~3347511713</string>
+		<!--  workmanager -->
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>processing</string>
+
+			<!-- If you need periodic tasks in iOS 13+ you need to enable Background Fetch as well -->
+			<string>fetch</string>
+		</array>
+		<key>BGTaskSchedulerPermittedIdentifiers</key>
+		<array>
+			<string>task-identifier</string>
+
+			<!-- Register a periodic task in iOS 13+ -->
+			<string>be.tramckrijte.workmanagerExample.iOSBackgroundAppRefresh</string>
+		</array>
+	</dict>
+</plist>

@@ -1,0 +1,2190 @@
+[
+  {
+    "category_name": "Namoz o’qishni o’rganish",
+    "gender": "erkak",
+    "description": "Erkaklar uchun batafsil besh mahal namoz",
+    "title_color": "#615745",
+    "description_color": "#9B9384",
+    "image": "image.png",
+    "background_color": "#F4ECD9",
+    "type_is_big": "true",
+    "category_items": [
+      {
+        "sub_category": "Azon",
+        "sub_category_image": "image.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "name": "Azon va Iqomat",
+            "content_Path": "azonVaIqomat.html"
+          },
+          {
+            "name": "Azon tartibi",
+            "content_Path": "azonTartibi.html"
+          },
+          {
+            "name": "Iqomat tartibi",
+            "content_Path": "iqomatTartibi.html"
+          },
+          {
+            "name": "Azon",
+            "content_Path": "azon.html"
+          },
+          {
+            "name": "Azon Duosi",
+            "content_Path": "azonDuosi.html"
+          },
+          {
+            "name": "Iqomat takbiri",
+            "content_Path": "iqomatTakbiri.html"
+          }
+        ]
+      },
+      {
+        "sub_category": "Bomdod",
+        "sub_category_image": "ic_bomdod.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_bomdod_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_bomdod_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_bomdod_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_bomdod_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_bomdod_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_bomdod_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_bomdod_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_bomdod_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_bomdod_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_bomdod_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_bomdod_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_bomdod_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_bomdod_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_bomdod_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_bomdod_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_bomdod_16.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_bomdod_17.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Peshin",
+        "sub_category_image": "ic_peshin.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_peshin_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_peshin_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_peshin_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_peshin_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_peshin_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_peshin_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_peshin_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_peshin_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_peshin_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_peshin_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_peshin_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_peshin_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_peshin_17.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_peshin_18.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_peshin_19.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_20.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_peshin_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_22.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_peshin_23.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_peshin_24.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_peshin_25.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_26.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_peshin_27.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_peshin_28.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_peshin_29.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_peshin_30.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Asr",
+        "sub_category_image": "ic_asr.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_asr_1.html",
+            "name": "Iqomat takbiri"
+          },
+          {
+            "content_Path": "e_asr_2.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_asr_3.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_asr_4.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_asr_5.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_asr_6.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_asr_7.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_8.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_asr_9.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_10.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_asr_11.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_asr_12.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_asr_13.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_14.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_asr_15.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_16.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_asr_17.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_asr_18.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_asr_19.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_asr_20.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_21.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_asr_22.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_23.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_asr_24.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_asr_25.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_asr_26.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_27.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_asr_28.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_asr_29.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_asr_30.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_asr_31.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Shom",
+        "sub_category_image": "ic_shom.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_shom_1.html",
+            "name": "Iqomat takbiri"
+          },
+          {
+            "content_Path": "e_shom_2.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_shom_3.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_shom_4.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_shom_5.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_shom_6.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_shom_7.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_8.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_shom_9.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_10.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_shom_11.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_shom_12.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_shom_13.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_14.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_shom_15.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_16.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_shom_17.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_shom_18.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_shom_19.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_shom_20.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_21.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_shom_22.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_shom_23.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_shom_24.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_shom_25.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Xufton",
+        "sub_category_image": "ic_xufton.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_xufton_1.html",
+            "name": "Iqomat takbiri"
+          },
+          {
+            "content_Path": "e_xufton_2.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_xufton_3.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_xufton_4.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_xufton_5.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_xufton_6.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_xufton_7.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_8.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_xufton_9.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_10.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_xufton_11.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_xufton_12.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_xufton_13.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_14.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_xufton_15.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_16.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_xufton_17.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_xufton_18.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_xufton_19.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_xufton_20.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_21.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_xufton_22.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_23.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_xufton_24.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_xufton_25.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_xufton_26.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_27.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_xufton_28.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_xufton_29.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_xufton_30.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_xufton_31.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Vitr",
+        "sub_category_image": "ic_vitr.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "e_vitr_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "e_vitr_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_vitr_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_vitr_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_vitr_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_vitr_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_vitr_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_vitr_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_vitr_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_vitr_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_vitr_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_vitr_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "e_vitr_17.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "e_vitr_18.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "e_vitr_19.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "e_vitr_20.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "e_vitr_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_22.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "e_vitr_23.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "e_vitr_24.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "e_vitr_25.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "e_vitr_26.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Qazo namozlari",
+        "sub_category_image": "ic_qazo.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "name": "Qazo namozlari",
+            "content_Path": "qazo_namoz.html"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category_name": "Namoz o'qishni o'rganish",
+    "gender": "ayol",
+    "description": "Ayollar uchun batafsil besh mahal namoz",
+    "title_color": "#615745",
+    "description_color": "#9B9384",
+    "image": "image.png",
+    "background_color": "#F4ECD9",
+    "type_is_big": "true",
+    "category_items": [
+      {
+        "sub_category": "Ayollarga xos holatlar",
+        "sub_category_image": "image.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "ayollarga_xos_1.html",
+            "name": "Ayollarga xos holatlar"
+          },
+          {
+            "content_Path": "ayollarga_xos_2.html",
+            "name": "Ayollar sochlarini yig'ishi haqida"
+          }
+        ]
+      },
+      {
+        "sub_category": "Bomdod",
+        "sub_category_image": "ic_bomdod.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_bomdod_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_bomdod_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_bomdod_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_bomdod_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_bomdod_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_bomdod_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_bomdod_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_bomdod_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_bomdod_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_bomdod_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_bomdod_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_bomdod_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_bomdod_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_bomdod_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_bomdod_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_bomdod_16.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_bomdod_17.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Peshin",
+        "sub_category_image": "ic_peshin.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_peshin_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_peshin_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_peshin_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_peshin_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_peshin_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_peshin_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_peshin_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_peshin_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_peshin_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_peshin_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_peshin_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_peshin_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_peshin_17.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_peshin_18.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_peshin_19.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_20.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_peshin_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_22.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_peshin_23.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_peshin_24.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_peshin_25.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_26.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_peshin_27.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_peshin_28.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_peshin_29.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_peshin_30.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Asr",
+        "sub_category_image": "ic_asr.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_asr_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_asr_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_asr_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_asr_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_asr_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_asr_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_asr_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_asr_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_asr_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_asr_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_asr_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_asr_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_asr_17.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_asr_18.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_asr_19.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_20.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_asr_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_22.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_asr_23.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_asr_24.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_asr_25.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_26.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_asr_27.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_asr_28.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_asr_29.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_asr_30.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Shom",
+        "sub_category_image": "ic_shom.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_shom_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_shom_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_shom_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_shom_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_shom_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_shom_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_shom_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_shom_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_shom_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_shom_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_shom_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_shom_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_shom_17.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_shom_18.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_shom_19.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_20.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_shom_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_shom_22.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_shom_23.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_shom_24.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Xufton",
+        "sub_category_image": "ic_xufton.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_xufton_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_xufton_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_xufton_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_xufton_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_xufton_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_xufton_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_xufton_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_xufton_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_xufton_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_xufton_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_xufton_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_xufton_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_xufton_17.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_xufton_18.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_xufton_19.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_20.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_xufton_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_22.html",
+            "name": "4-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_xufton_23.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_xufton_24.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_xufton_25.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_26.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_xufton_27.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_xufton_28.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_xufton_29.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_xufton_30.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Vitr",
+        "sub_category_image": "ic_vitr.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "a_vitr_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "a_vitr_2.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_vitr_3.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_vitr_4.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_vitr_5.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_vitr_6.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_7.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_vitr_8.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_9.html",
+            "name": "2-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_vitr_10.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_vitr_11.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_vitr_12.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_13.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_vitr_14.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_15.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_vitr_16.html",
+            "name": "3-chi rakat: Qiyom"
+          },
+          {
+            "content_Path": "a_vitr_17.html",
+            "name": "Takbir"
+          },
+          {
+            "content_Path": "a_vitr_18.html",
+            "name": "Qiyom"
+          },
+          {
+            "content_Path": "a_vitr_19.html",
+            "name": "Ruku"
+          },
+          {
+            "content_Path": "a_vitr_20.html",
+            "name": "Qavma"
+          },
+          {
+            "content_Path": "a_vitr_21.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_22.html",
+            "name": "Jalsa"
+          },
+          {
+            "content_Path": "a_vitr_23.html",
+            "name": "Sajda"
+          },
+          {
+            "content_Path": "a_vitr_24.html",
+            "name": "Qa’da"
+          },
+          {
+            "content_Path": "a_vitr_25.html",
+            "name": "Salom"
+          },
+          {
+            "content_Path": "a_vitr_26.html",
+            "name": "Yakun"
+          }
+        ]
+      },
+      {
+        "sub_category": "Qazo namozlari",
+        "sub_category_image": "ic_qazo.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "qazo_namoz.html",
+            "name": "Qazo namozlari"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category_name": "Tahorat olishni o'rganish",
+    "description": "Barcha uchun batafsil poklanish ilmlari",
+    "title_color": "#000000",
+    "description_color": "#000000",
+    "image": "image.png",
+    "background_color": "#FFFFFF",
+    "type_is_big": "true",
+    "category_items": [
+      {
+        "sub_category": "Tahorat olish tartibi",
+        "sub_category_image": "tahorat.png",
+        "is_items_numeric": "true",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "tah_tartibi_1.html",
+            "name": "Niyat"
+          },
+          {
+            "content_Path": "tah_tartibi_2.html",
+            "name": "Qo’llarni yuvish"
+          },
+          {
+            "content_Path": "tah_tartibi_3.html",
+            "name": "Og’iz chayish"
+          },
+          {
+            "content_Path": "tah_tartibi_4.html",
+            "name": "Burunni chayish"
+          },
+          {
+            "content_Path": "tah_tartibi_5.html",
+            "name": "Yuzni yuvish"
+          },
+          {
+            "content_Path": "tah_tartibi_6.html",
+            "name": "Qo’llarni tirsakgacha yuvish"
+          },
+          {
+            "content_Path": "tah_tartibi_7.html",
+            "name": "Boshga mas’h tortish"
+          },
+          {
+            "content_Path": "tah_tartibi_8.html",
+            "name": "Quloq va bo’yinga mas’h tortish"
+          },
+          {
+            "content_Path": "tah_tartibi_9.html",
+            "name": "Oyoqlarni yuvish"
+          }
+        ]
+      },
+      {
+        "sub_category": "Tahorat nima?",
+        "sub_category_image": "tahorat.png",
+        "is_items_numeric": "false",
+        "sub_category_items": [
+          {
+            "content_Path": "tahorat_nima.html",
+            "name": "Tahora nima?"
+          }
+        ]
+      },
+      {
+        "sub_category": "Tahoratni buzadigan hollar",
+        "sub_category_image": "tahorat.png",
+        "is_items_numeric": "false",
+        "sub_category_items": [
+          {
+            "content_Path": "tahoratni_buzadigan.html",
+            "name": "Tahoratni buzadigan hollar"
+          }
+        ]
+      },
+      {
+        "sub_category": "G'usl",
+        "sub_category_image": "tahorat.png",
+        "is_items_numeric": "false",
+        "sub_category_items": [
+          {
+            "content_Path": "gusl.html",
+            "name": "G'usl"
+          }
+        ]
+      },
+      {
+        "sub_category": "Tayammum",
+        "sub_category_image": "tahorat.png",
+        "is_items_numeric": "false",
+        "sub_category_items": [
+          {
+            "content_Path": "tayammum.html",
+            "name": "Tayammum"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category_name": "Namozdagi xatoliklar",
+    "description": "",
+    "title_color": "#334751",
+    "description_color": "#000000",
+    "image": "image.png",
+    "background_color": "#FDE3E3",
+    "type_is_big": "false",
+    "category_items": [
+      {
+        "sub_category": "Namozni buzadigan hollar",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "namozni_buzadigan_hollar.html",
+            "name": "Namozni buzadigan hollar"
+          },
+          {
+            "content_Path": "namozni_savobini_kamaytiradigan.html",
+            "name": "Namozni savobini kamaytiradigan harakatlar"
+          }
+        ]
+      },
+      {
+        "sub_category": "Niyat/Qavma",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "niyat_1.html",
+            "name": "Niyat"
+          }
+        ]
+      },
+      {
+        "sub_category": "Takbir",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "takbir_xato_1.html",
+            "name": "Xatolik 1"
+          },
+          {
+            "content_Path": "takbir_xato_2.html",
+            "name": "Xatolik 2"
+          },
+          {
+            "content_Path": "takbir_xato_3.html",
+            "name": "Xatolik 3"
+          },
+          {
+            "content_Path": "takbir_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      },
+      {
+        "sub_category": "Qiyom",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "qiyom_xato_1.html",
+            "name": "Xatolik 1"
+          },
+          {
+            "content_Path": "qiyom_xato_2.html",
+            "name": "Xatolik 2"
+          },
+          {
+            "content_Path": "qiyom_xato_3.html",
+            "name": "Xatolik 3"
+          },
+          {
+            "content_Path": "qiyom_xato_4.html",
+            "name": "Xatolik 4"
+          },
+          {
+            "content_Path": "qiyom_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      },
+      {
+        "sub_category": "Ruku",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "ruku_xato_1.html",
+            "name": "Xatolik 1"
+          },
+          {
+            "content_Path": "ruku_xato_2.html",
+            "name": "Xatolik 2"
+          },
+          {
+            "content_Path": "ruku_xato_3.html",
+            "name": "Xatolik 3"
+          },
+          {
+            "content_Path": "ruku_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      },
+      {
+        "sub_category": "Sajda",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "sajda_xato_1.html",
+            "name": "Xatolik 1"
+          },
+          {
+            "content_Path": "sajda_xato_2.html",
+            "name": "Xatolik 2"
+          },
+          {
+            "content_Path": "sajda_xato_3.html",
+            "name": "Xatolik 3"
+          },
+          {
+            "content_Path": "sajda_xato_4.html",
+            "name": "Xatolik 4"
+          },
+          {
+            "content_Path": "sajda_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      },
+      {
+        "sub_category": "Jalsa/Qa'da",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "qada_xato_1.html",
+            "name": "Xatolik 1"
+          },
+          {
+            "content_Path": "qada_xato_2.html",
+            "name": "Xatolik 2"
+          },
+          {
+            "content_Path": "qada_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      },
+      {
+        "sub_category": "Salom",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "salom_xato.html",
+            "name": "Xatolik"
+          },
+          {
+            "content_Path": "salom_togri.html",
+            "name": "To'g'ri"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category_name": "Qo'shimchalar",
+    "description": "",
+    "title_color": "#4F3131",
+    "description_color": "#000000",
+    "image": "image.png",
+    "background_color": "#F5E6E1",
+    "type_is_big": "false",
+    "category_items": [
+      {
+        "sub_category": "POKLANISHGA OID SAVOLLAR",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "poklanishga_oid1.html",
+            "name": "Agarda tahoratdan so'ng kiyimga tarkibida spirt bo'lgan atir sepilsa"
+          },
+          {
+            "content_Path": "poklanishga_oid2.html",
+            "name": "Ter chiqsa tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid3.html",
+            "name": "Qon chiqsa tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid4.html",
+            "name": "Paypoqqa mas'h tortish mumkinmi?"
+          },
+          {
+            "content_Path": "poklanishga_oid5.html",
+            "name": "Uxlash bilan tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid6.html",
+            "name": "Junublikdan (jinsiy yaqinlik yoki ehtilom) g'usl qilgan kishi tahorat qilmay namoz o'qisa bo'ladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid7.html",
+            "name": "Sovuq vaqtda junub kishi g'usl qilmasa ham bo'ladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid8.html",
+            "name": "Tayammum nima?"
+          },
+          {
+            "content_Path": "poklanishga_oid9.html",
+            "name": "G'usl qanday qilinadi?"
+          },
+          {
+            "content_Path": "poklanishga_oid10.html",
+            "name": "Badanga moy surtsa tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid11.html",
+            "name": "Tahorat qilganda a'zolarni 3 martadan ko'p yuvish mumkinmi?"
+          },
+          {
+            "content_Path": "poklanishga_oid12.html",
+            "name": "Tahorat qilganda zaruratdan a'zolarni 3 martadan kam (1 yoki 2 marta) yuvish mumkinmi?"
+          },
+          {
+            "content_Path": "poklanishga_oid13.html",
+            "name": "Misvok qilganda tishi qonaydigan kishi tahorat qilayotganda misvok qilmasa ham bo'ladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid14.html",
+            "name": "Yel chiqishi tahoratni buzadimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid15.html",
+            "name": "Soch-soqol olganda tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid16.html",
+            "name": "Badandan hid chiqish bilan tahorat buziladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid17.html",
+            "name": "So'kinish tahoratni buzadimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid18.html",
+            "name": "Er xotin yaqinlikdan keyin biri g'usl olib chiqib, ikkinchisi hali g'usl olmagan paytda bir biriga ko'zi tushib qolsa, poklangan kishining g'usli bekor bo'ladimi?"
+          },
+          {
+            "content_Path": "poklanishga_oid19.html",
+            "name": "Yoddan Qur'on qiroat qilish uchun tahoratli bo'lish shartmi?"
+          }
+        ]
+      },
+      {
+        "sub_category": "NAMOZGA OID SAVOLLAR",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "namozga_oid1.html",
+            "name": "Namoz o'qish necha yoshdan farz bo'ladi?"
+          },
+          {
+            "content_Path": "namozga_oid2.html",
+            "name": "Namozni uyda o’qiganda azon va iqomat aytiladimi?"
+          },
+          {
+            "content_Path": "namozga_oid3.html",
+            "name": "Yolg‘iz namoz o‘qiganda ham azon va takbir aytib namoz o‘qish kerakmi?"
+          },
+          {
+            "content_Path": "namozga_oid4.html",
+            "name": "Nafl namozi qanday namoz?"
+          },
+          {
+            "content_Path": "namozga_oid5.html",
+            "name": "Namoz o'qiyotgan kishing oldidan odam o'tsa, namoz buziladimi?"
+          },
+          {
+            "content_Path": "namozga_oid6.html",
+            "name": "Namozda \"Fotiha\" surasidan oldin har rakatda \"Bismillahir rahmonir rohiym\" aytiladimi?"
+          },
+          {
+            "content_Path": "namozga_oid7.html",
+            "name": "Juma namozini uyda o'qisa bo'ladimi?"
+          },
+          {
+            "content_Path": "namozga_oid8.html",
+            "name": "Qazo namozlar qachon o'qiladi?"
+          },
+          {
+            "content_Path": "namozga_oid9.html",
+            "name": "Musofir muqimga iqtido qilganda namozni qanday o'qiydi?"
+          },
+          {
+            "content_Path": "namozga_oid10.html",
+            "name": "Shom namozining uchinchi rakatida zam sura o'qib qo'yilsa nima bo'ladi?"
+          },
+          {
+            "content_Path": "namozga_oid11.html",
+            "name": "Vitr namozida qunut duosini o'qish esdan chiqib qolsa nima qiladi?"
+          },
+          {
+            "content_Path": "namozga_oid12.html",
+            "name": "Imomga iqtido qilgan kishi \"Fotiha\" surasini o'qiydimi?"
+          },
+          {
+            "content_Path": "namozga_oid13.html",
+            "name": "Ish kiyimi bilan namoz o'qish mumkinmi?"
+          },
+          {
+            "content_Path": "namozga_oid14.html",
+            "name": "Bomdod va peshin namozida kishi masjidga kirganda imom farz namozini o'qiyotgan bo'lsa nima qilish kerak?"
+          },
+          {
+            "content_Path": "namozga_oid15.html",
+            "name": "Uxlab qolish yoki esdan chiqarish sababli o'qilmagan namozlar uchun nima qilishi kerak?"
+          },
+          {
+            "content_Path": "namozga_oid16.html",
+            "name": "Janoza namozini o'qish qanday amal?"
+          },
+          {
+            "content_Path": "namozga_oid17.html",
+            "name": "Ba'zi kishilar tashahhud o'qiyotgan vaqtda barmog'ini ko'taradilar. Nega bunday qilinadi?"
+          },
+          {
+            "content_Path": "namozga_oid18.html",
+            "name": "Namozda biror amalni imomdan oldin qilib qo'ysa, namoz buziladimi?"
+          },
+          {
+            "content_Path": "namozga_oid19.html",
+            "name": "Taroveh namozi qanday namoz?"
+          },
+          {
+            "content_Path": "namozga_oid20.html",
+            "name": "Namozda \"Fotiha\" surasini o'qib bo'lganda \"Omiyn\"ni ovoz chiqarib aytiladimi?"
+          },
+          {
+            "content_Path": "namozga_oid21.html",
+            "name": "Jamoat namozidan so'ng tasbeh va duolarni jamoat bilan birga qilish shartmi?"
+          },
+          {
+            "content_Path": "namozga_oid22.html",
+            "name": "Musofir odam safarda namozlarni qanday o'qiydi?"
+          }
+        ]
+      },
+      {
+        "sub_category": "SURA VA DUOLAR",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "duolar_1.html",
+            "name": "G'usl duosi"
+          },
+          {
+            "content_Path": "duolar_2.html",
+            "name": "Azon"
+          },
+          {
+            "content_Path": "duolar_3.html",
+            "name": "Iqomat takbiri"
+          },
+          {
+            "content_Path": "duolar_4.html",
+            "name": "Sano duosi"
+          },
+          {
+            "content_Path": "duolar_5.html",
+            "name": "Fotiha surasi"
+          },
+          {
+            "content_Path": "duolar_6.html",
+            "name": "Kavsar surasi"
+          },
+          {
+            "content_Path": "duolar_7.html",
+            "name": "Ixlos surasi"
+          },
+          {
+            "content_Path": "duolar_8.html",
+            "name": "Falaq surasi"
+          },
+          {
+            "content_Path": "duolar_9.html",
+            "name": "An-nos surasi"
+          },
+          {
+            "content_Path": "duolar_10.html",
+            "name": "Qunut duosi"
+          },
+          {
+            "content_Path": "duolar_11.html",
+            "name": "Attahiyyat duosi"
+          },
+          {
+            "content_Path": "duolar_12.html",
+            "name": "«Salovot» duosi"
+          },
+          {
+            "content_Path": "duolar_13.html",
+            "name": "«Robbana» duosi"
+          },
+          {
+            "content_Path": "duolar_14.html",
+            "name": "Oyatal kursi"
+          }
+        ]
+      },
+      {
+        "sub_category": "OLTI DINIY KALIMA",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "kalima_1.html",
+            "name": "Kalimai toyyiba"
+          },
+          {
+            "content_Path": "kalima_2.html",
+            "name": "Kalimai shahodat"
+          },
+          {
+            "content_Path": "kalima_3.html",
+            "name": "Kalimai tavhid"
+          },
+          {
+            "content_Path": "kalima_4.html",
+            "name": "Kalimai raddi kufr"
+          },
+          {
+            "content_Path": "kalima_5.html",
+            "name": "Kalimai istigʼfor"
+          },
+          {
+            "content_Path": "kalima_6.html",
+            "name": "Kalimai tamjid"
+          }
+        ]
+      },
+      {
+        "sub_category": "SALOVOTLAR",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "salovat_1.html",
+            "name": "Salotu munjiya"
+          },
+          {
+            "content_Path": "salovat_2.html",
+            "name": "Salotu fathiyya"
+          },
+          {
+            "content_Path": "salovat_3.html",
+            "name": "Sayyidul istigʼfor"
+          },
+          {
+            "content_Path": "salovat_4.html",
+            "name": "Yana bir istigʼfor duosi"
+          }
+        ]
+      },
+      {
+        "sub_category": "QUR'ONI KARIMDAN BA'ZI DUOLAR",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "bazi_duolar1.html",
+            "name": "Odam alayhissalom va momo Havvo jannatdan chiqarilganlarida ushbu duoni o'qiganlar:"
+          },
+          {
+            "content_Path": "bazi_duolar2.html",
+            "name": "Nuh alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar3.html",
+            "name": "Lut alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar4.html",
+            "name": "Ibrohim alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar5.html",
+            "name": "Yusuf alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar6.html",
+            "name": "Shuayb alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar7.html",
+            "name": "Muso alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar8.html",
+            "name": "Yunus alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar9.html",
+            "name": "Zakariyo alayhissalomning duolari:"
+          },
+          {
+            "content_Path": "bazi_duolar10.html",
+            "name": "Ahli ilmning duosi:"
+          },
+          {
+            "content_Path": "bazi_duolar11.html",
+            "name": "Qur'oni karimda Muhammad alayhissalomga o'rgatilgan ba'zi duolar:"
+          }
+        ]
+      },
+      {
+        "sub_category": "ALLOH TAOLONING O'N TO'RT SIFATI",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "allohning_14_sifati.html",
+            "name": "Alloh taoloning o'n to'rt sifati"
+          }
+        ]
+      },
+      {
+        "sub_category": "QIRQ FARZ",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "qirq_farz.html",
+            "name": "Qirq farz"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category_name": "Jamoat namozlari",
+    "description": "",
+    "title_color": "#4F3131",
+    "description_color": "#000000",
+    "image": "image.png",
+    "background_color": "#F8F0EB",
+    "type_is_big": "false",
+    "category_items": [
+      {
+        "sub_category": "Juma namozi",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "juma_namozi.html",
+            "name": "Juma namozi"
+          }
+        ]
+      },
+      {
+        "sub_category": "Hayit namozi",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "hayit_namozi.html",
+            "name": "Hayit namozi"
+          }
+        ]
+      },
+      {
+        "sub_category": "Musofir namozi",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "musofir_namozi.html",
+            "name": "Musofir namozi"
+          }
+        ]
+      },
+      {
+        "sub_category": "Janoza namozi",
+        "sub_category_image": "xatolik.png",
+        "is_items_numeric": "false",
+        "symbol_color": "#ff00ff",
+        "sub_category_items": [
+          {
+            "content_Path": "janoza_namozi.html",
+            "name": "Janoza namozi"
+          },
+          {
+            "content_Path": "janoza_duolari.html",
+            "name": "Janoza duolari"
+          }
+        ]
+      }
+    ]
+  }
+]

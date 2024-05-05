@@ -1,0 +1,6 @@
+{
+    "java.project.sourcePaths": [
+        "lib/modules/namoz/model"
+    ],
+    "cmake.sourceDirectory": "/home/diyor/Behad/qiblah_pro/linux/flutter"
+}
